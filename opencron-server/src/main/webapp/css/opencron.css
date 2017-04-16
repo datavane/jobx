@@ -1,0 +1,92 @@
+.highcharts-button{
+    display: none;
+}
+.select-self{
+    background-color:rgba(0,0,0,0.4)!important;
+    border: 1px solid rgba(0,0,0,0.3)!important;
+    height: 23px;
+}
+.select-self > option{
+    background-color: #d9edf7;
+}
+.input-sm{
+    width: 75.333%;
+    margin-bottom: 5px;
+}
+
+.radio-label{
+    margin-top: 7px;
+}
+.tips{
+    font-size: 12px;
+    color: #BBBBBB;
+}
+b{color: red;}
+.item{
+    width: 120px;
+}
+
+.change-text {
+    background: rgba(0, 0, 0, 0) url("/img/img-cover.png") no-repeat scroll 0 0;
+    bottom: 23px;
+    color: #fff;
+    display: none;
+    font-size: 11px;
+    font-weight: lighter;
+    height: 35px;
+    left: 42px;
+    line-height: 25px;
+    position: absolute;
+    text-align: center;
+    width: 110px;
+}
+
+.btn-login {
+    height: 30px;
+    width: 80px;
+}
+.btn-submit {
+    background-color: #15a4fa;
+    border: 1px solid #15a4fa;
+    border-radius: 3px;
+    color: #fff;
+    cursor: pointer;
+    height: 30px;
+    text-align: center;
+    width: 160px;
+}
+.btn-login {
+    height: 30px;
+    width: 80px;
+}
+
+
+#avatar-modal .btn {
+    padding: 2px 9px 3px;
+}
+
+.head-set td,.head-set tr{border:0}
+
+.mask{
+    height:100%;
+    width:100%;
+    position:fixed;
+    _position:absolute;
+    top:0; z-index:9999;
+    opacity:0.5;
+    filter: alpha(opacity=50);
+    background-color:rgb(30,30,30);
+    display: none;
+}
+
+.textured {
+    background: rgba(0, 0, 0, 0.30) url(/img/dot_pattern.png) repeat;
+}
+
+.textured2 {
+    background: rgba(0, 0, 0, 0.15) url(/img/dot_pattern.png) repeat;
+}
+
+.block-color{
+    background-color: rgba(0,0,0,0.3);
+}

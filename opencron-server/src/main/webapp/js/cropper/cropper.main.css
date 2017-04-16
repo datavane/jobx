@@ -1,0 +1,149 @@
+.cropper-body {
+  margin: 2px 14px 20px 0px;
+}
+.alert{
+  border-radius:4px;
+  margin:10px 0 0;
+  padding:8px;
+}
+
+.upload-txt {
+  cursor: pointer;
+  height: 25px;
+  left: 55px;
+  outline: medium none;
+  position: absolute;
+  top: 149px;
+  width: 260px;
+  color:#bfbfbf;
+  font-size: 13px;
+}
+
+.upload-add {
+  background-image: url("../../img/add.png");
+  background-size: 100% 100%;
+  float: left;
+  height: 25px;
+  margin-right: 4px;
+  width: 27px;
+  margin-top: -4px;
+}
+
+.close{
+  right:0px;
+  top:2px;
+}
+.avatar-view {
+  display: block;
+  margin: 15% auto 5%;
+  height: 220px;
+  width: 220px;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0,0,0,.15);
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.avatar-view img {
+  width: 100%;
+}
+
+.avatar-body {
+  padding-right: 8px;
+  padding-left: 8px;
+}
+
+.avatar-save{
+  margin-left: 6px;
+}
+
+.avatar-upload {
+  overflow: hidden;
+}
+
+.avatar-upload label {
+  display: block;
+  float: left;
+  clear: left;
+  width: 100px;
+}
+
+.avatar-upload input {
+  display: block;
+}
+
+.avater-alert {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.avatar-wrapper {
+  width:auto;
+  height: 300px;
+  border:1px solid rgba(200, 200, 200, 0.25);
+  border-radius: 5px !important;
+  margin-top: 15px;
+  overflow: hidden;
+}
+
+.avatar-wrapper:hover {
+  border-color:rgba(235, 235, 235, 0.35);
+  box-shadow: 0 0 5px rgba(0,0,0,.15);
+}
+
+
+.avatar-wrapper img {
+  display: block;
+  height: auto;
+  max-width: 100%;
+}
+
+.avatar-preview {
+  border-radius: 50% !important;
+  border: 2px solid rgba(200, 220, 220, 0.35);
+  float: left;
+  overflow: hidden;
+}
+
+.cropper-view-box,.cropper-face {
+  border-radius: 50%;
+}
+
+.avatar-preview:hover {
+  border-color: rgba(235, 235, 235, 0.55);
+  box-shadow: 0 0 5px rgba(0,0,0,.15);
+}
+
+.avatar-preview img {
+  width: 100%;
+}
+
+.preview-lg {
+  height: 180px;
+  width: 180px;
+  margin: 70px 3px 35px;
+}
+
+@media (min-width: 992px) {
+  .avatar-preview {
+    float: none;
+  }
+}
+
+.avatar-btns {
+  margin-top: 20px;
+  margin-bottom: 6px;
+}
+
+.loading {
+  display: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: #fff url("../../img/uploading.gif") no-repeat center center;
+  opacity: .75;
+  filter: alpha(opacity=75);
+  z-index: 9999999;
+}

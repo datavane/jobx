@@ -1,0 +1,73 @@
+<div style="background-color:#ECECEC; padding: 35px;" align="center">
+    <div style="width: 700px;background-color:#ffffff; padding: 40px 20px 40px 20px;">
+        <table style="width: 660px; margin: 0px auto; text-align: left; position: relative; font-size: 14px; font-family:微软雅黑, 黑体; line-height: 1.5; box-shadow: rgb(153, 153, 153) 0px 0px 0px;background:#fff;" align="center" cellpadding="0">
+            <tbody>
+                <tr>
+                    <th style="text-align: center;height: 25px; line-height: 25px; padding: 15px 35px; background-color: rgba(100, 149, 255,0.8);" valign="middle">
+                        <span style="color: rgb(255, 255, 255);">
+                            <font size="7">
+                                opencron
+                            </font>
+                        </span>
+                        <br>
+                        <font style="color: rgb(255, 255, 255); " face="微软雅黑" size="4">
+                            <span style="font-weight: normal;">
+                                Welcome to opencron,Let's crontab easy
+                            </span>
+                        </font>
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        <div style="border: 1px solid #eeeeee;padding: 0px 20px;margin: 35px 0px">
+                            <div style="text-align: center;margin: 10px 0px 8px 0px;border-bottom: 1px solid #eeeeee;">
+                                <font size="5">
+                                    Opencron告警
+                                </font>
+                            </div>
+                            <div style="padding:25px 35px 10px; background-color:#fff;">
+                                <p style="margin: 5px 0px; ">
+                                    <font style="line-height: 20px; " color="#333333">
+                                        <font style="line-height: 22px; " size="4">
+                                            <b>
+                                                你好：
+                                            </b>
+                                        </font>
+                                    </font>
+                                </p>
+                                <p style="margin-left: 40px;" size="3">
+                                    <font size="3">
+                                        ${message}
+                                    </font>
+                                </p>
+                                <br>
+                                <p align="right">
+                                    <font style="line-height: 16px;font-style:italic; " size="3">
+                                        <b>
+                                            Opencron,Let's crontab easy
+                                        </b>
+                                    </font>
+                                </p>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div style="text-align:center; margin-top:0px; background:rgba(100, 149, 255,0.8); padding:1px 0px;">
+                            <p>
+                                Copyright © 2012 - 2016
+                                <a href="http://www.opencron.org" target="_blank" style="text-decoration:none;">
+                                    &nbsp;
+                                    <font color="#fff">
+                                        benjobs
+                                    </font>
+                                </a>
+                            </p>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

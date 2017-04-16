@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:websocket="http://www.springframework.org/schema/websocket"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+        http://www.springframework.org/schema/websocket
+        http://www.springframework.org/schema/websocket/spring-websocket.xsd">
+
+    <bean id="terminalHandler" class="org.opencron.server.websocket.TerminalHandler"/>
+    <bean id="webSocketHandShaker" class="org.opencron.server.websocket.TerminalHandShaker"/>
+
+    <websocket:handlers>
+        <websocket:mapping path="/terminal.ws" handler="terminalHandler" />
+        <websocket:handshake-interceptors>
+            <ref bean="webSocketHandShaker"/>
+        </websocket:handshake-interceptors>
+    </websocket:handlers>
+
+    <websocket:handlers>
+        <websocket:mapping path="/terminal.js" handler="terminalHandler" />
+        <websocket:handshake-interceptors>
+            <ref bean="webSocketHandShaker"/>
+        </websocket:handshake-interceptors>
+        <websocket:sockjs/>
+    </websocket:handlers>
+
+</beans>

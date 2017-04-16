@@ -1,0 +1,36 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:task="http://www.springframework.org/schema/task"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+           http://www.springframework.org/schema/task
+			http://www.springframework.org/schema/task/spring-task-4.2.xsd"
+	   default-lazy-init="true">
+
+	<description>Spring公共配置文件</description>
+
+	<!-- 定义受环境影响易变的变量 -->
+	<bean id="config" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+		<property name="locations">
+			<list>
+				<value>classpath:*.properties</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="propertyConfigurer" class="org.opencron.common.utils.PropertyPlaceholder">
+		<property name="properties" ref="config" />
+		<property name="ignoreResourceNotFound" value="true"/>
+	</bean>
+
+	<context:annotation-config />
+
+	<task:annotation-driven/>
+
+	<context:component-scan base-package="org.opencron.server.service,org.opencron.server.dao,org.opencron.server.job,org.opencron.server.websocket" scoped-proxy="targetClass" use-default-filters="true"/>
+
+	<bean class="org.opencron.server.job.OpencronTask" lazy-init="false"/>
+
+</beans>
