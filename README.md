@@ -1,7 +1,7 @@
 ## opencron
 
     
-一个强大的linux定时任务调度系统.一个功能完善真正通用的linux定时任务调度定系统,满足多种场景下各种复杂的定时任务调度,同时集成了linux实时监控,webssh,提供一个方便管理定时任务的平台.
+一个功能完善真正通用的linux定时任务调度定系统,满足多种场景下各种复杂的定时任务调度,同时集成了linux实时监控,webssh,提供一个方便管理定时任务的平台.
 
 你是否有定时执行任务计划的需求,需要在linux的crontab里一一定义任务?
  -  需要在每台linux服务器的crontab里一一定义任务
@@ -101,7 +101,7 @@ jdbc.url=jdbc:mysql://${you_mysql_host}:3306/opencron?useUnicode=true&characterE
 jdbc.username=${user}
 jdbc.password=${password}
 
-3)发布到tomcat或者其他的web服务器启动即可.第一次会自动创建表,默认初始用户名opencron,密码opencron
+3)发布到tomcat或者其他的web服务器启动即可.第一次会自动创建表,默认初始用户名opencron,密码opencron,第一次登陆会提示修改密码.
 
 4):进入到opencron的管理端第一件要做的事情就是添加要管理的执行器.在菜单的第二栏点击"执行器管理"->添加执行器,执行器ip，就是上面你部署的opencron-agent的机器ip，端口号是要连接的opencron-agent的启动端口，密码也是opencron-agent端的连接密码,输入ip,端口和密码后点击"检查通信",如果成功则server和agnet端已经成功通信，server可以管理agent了,添加保持即可.如果连接失败，
 可能有一下即可原因:
