@@ -1,0 +1,12 @@
+*/target
+.idea/*
+*.iml
+.metadata/*
+.recommenders/*
+*/.classpath
+*/.project
+*/.settings
+*/.DS_Store
+.idea/
+opencron-server/src/main/webapp/upload/
+opencron-server/webapp/
