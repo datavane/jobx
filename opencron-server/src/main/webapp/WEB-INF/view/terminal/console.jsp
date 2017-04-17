@@ -16,12 +16,12 @@
     <!-- Bootstrap -->
     <link rel="stylesheet" href="${contextPath}/css/bootstrap.css?resId=${resourceId}" >
     <script type="text/javascript" src="${contextPath}/js/bootstrap.js?resId=${resourceId}"></script>
-    <link rel="stylesheet" href="${contextPath}/css/opencron.term.css?resId=${resourceId}" >
 
     <!--fileinput-->
     <link href="${contextPath}/js/fileinput/css/fileinput.css" media="all" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="${contextPath}/js/fileinput/js/fileinput.js?resId=${resourceId}" ></script>
     <script type="text/javascript" src="${contextPath}/js/fileinput/js/locales/zh.js?resId=${resourceId}"></script>
+    <link rel="stylesheet" href="${contextPath}/css/opencron.term.css?resId=${resourceId}" >
 
     <!--term-->
     <link type="text/css" rel="stylesheet" href="${contextPath}/js/xterm/xterm.css?resId=${resourceId}">
@@ -31,8 +31,7 @@
     <script src="${contextPath}/js/xterm/addons/attach/attach.js?resId=${resourceId}" type="text/javascript"></script>
     <script src="${contextPath}/js/xterm/addons/fit/fit.js?resId=${resourceId}" type="text/javascript"></script>
     <script src="${contextPath}/js/xterm/addons/fullscreen/fullscreen.js?resId=${resourceId}" type="text/javascript"></script>
-    <script type="text/javascript" src="${contextPath}/js/opencron.term.js?resId=${resourceId}"></script>
-
+    <script src="${contextPath}/js/opencron.term.js?resId=${resourceId}" type="text/javascript" ></script>
     <script type="text/javascript" src="${contextPath}/js/opencron.js?resId=${resourceId}"></script>
 
     <title>opencron Terminal</title>
@@ -40,7 +39,7 @@
 
 <body>
 
-<div id="navigation" class="navbar navbar-default" role="navigation">
+<div id="appbar" class="navbar navbar-default" role="navigation">
     <div class="container">
         <div>
             <ul class="nav navbar-nav">
@@ -66,12 +65,10 @@
                 <li class="dropdown">
                     <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" title="主题"><i aria-hidden="true" class="fa fa-gear"></i>&nbsp;主题<b class="caret"></b></a>
                     <ul class="dropdown-menu theme" >
-                        <li><a theme="default" href="javascript:void(0)"><span class="circle" style="background-color:#cccccc"></span>&nbsp;默认</a></li>
-                        <li><a theme="black" href="javascript:void(0)"><span class="circle" style="background-color:black"></span>&nbsp;黑色</a></li>
-                        <li><a theme="green" href="javascript:void(0)"><span class="circle" style="background-color:green"></span>&nbsp;绿色</a></li>
-                        <li><a theme="yellow" href="javascript:void(0)"><span class="circle" style="background-color:yellow"></span>&nbsp;黄色</a></li>
-                        <li><a theme="white" href="javascript:void(0)"><span class="circle" style="background-color:rgb(235,235,235)"></span>&nbsp;白色</a></li>
+                        <li><a theme="default" href="javascript:void(0)"><span class="circle" style="background-color:#dddddd"></span>&nbsp;默认</a></li>
                         <li><a theme="gray" href="javascript:void(0)"><span class="circle" style="background-color:gray"></span>&nbsp;灰色</a></li>
+                        <li><a theme="green" href="javascript:void(0)"><span class="circle" style="background-color:green"></span>&nbsp;绿色</a></li>
+                        <li><a theme="black" href="javascript:void(0)"><span class="circle" style="background-color:black"></span>&nbsp;黑色</a></li>
                     </ul>
                 </li>
 
@@ -87,7 +84,7 @@
     </div>
 </div>
 
-<div id="term"></div>
+<div id="terminal-container"></div>
 
 <div id="upload_push" class="modal fade" >
     <div class="modal-dialog">
@@ -124,7 +121,9 @@
             opencronTerm.theme($(this).attr("theme"));
         });
 
-        $("#term").css("padding-top",$("#navigation").outerHeight()+5+"px");
+        $("#terminal-container").css({
+            "padding-top":$("#appbar").outerHeight()+5+"px"
+        });
 
         $('#file').fileinput({
             language: 'zh',

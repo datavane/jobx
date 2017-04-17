@@ -5,14 +5,14 @@
     this.contextPath = (window.location.protocol === "https:" ? "wss://" : "ws://") + window.location.host;
     this.backgroundColor = '#000000';
     this.fontColor = "#cccccc";
-    this.termNode = $("#term");
+    this.termContainer = $("#terminal-container");
     this.open();
 }
 
 ;OpencronTerm.prototype.getSize = function () {
     var cols = Math.floor($(window).innerWidth() / 7.2261);//基于fontSize=12的cols参考值
     var span = $("<span>");
-    this.termNode.append(span);
+    this.termContainer.append(span);
     var array = ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'z', 'x', 'c', 'v', 'b', 'n', 'm', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
     var i = 0;
     while (true) {
@@ -26,9 +26,9 @@
     span.remove();
     return {
         width: $(window).innerWidth(),
-        height: $(window).innerHeight() - $("#navigation").outerHeight(),
+        height: $(window).innerHeight() - $("#appbar").outerHeight(),
         cols: cols,
-        rows: Math.floor(($(window).innerHeight() - $("#navigation").outerHeight() - 5) / 17.15)
+        rows: Math.floor(($(window).innerHeight() - $("#appbar").outerHeight() - 5) / 17.15)
     };
 }
 
@@ -39,47 +39,50 @@
 
     self.term = new Terminal({
         termName: "xterm",
-        cols: self.offset.cols,
-        rows: self.offset.rows,
         useStyle: true,
         screenKeys: true,
         cursorBlink: false,
         convertEol: true,
+        scrollback: 1000,
+        tabstopwidth: 4,
         colors: Terminal.xtermColors
     });
-
-    self.term.open(self.termNode.empty()[0]);
+    self.term.open(self.termContainer.empty()[0]);
     self.theme(self.args[2]);
     self.term.fit();
     self.term.resize(self.offset.cols, self.offset.rows);
-
     $(window).resize(function () {
         var currSize = self.getSize();
         if (self.offset.cols != currSize.cols || self.offset.rows != currSize.rows) {
             self.offset = currSize;
+            $(".terminal").height(self.offset.height);
             self.term.resize(self.offset.cols, self.offset.rows);
             $.ajax({
-                url: '/terminal/resize?token=' + self.args[0] + "&csrf=" + self.args[1] + '&cols=' + self.offset.cols + '&rows=' + self.offset.rows + "&width=" + self.offset.width + "&height=" + self.offset.height,
+                headers: {"csrf": self.args[1]},
+                url: '/terminal/resize',
+                data: {
+                    "token": self.args[0],
+                    "cols": self.offset.cols,
+                    "rows": self.offset.rows,
+                    "width": self.offset.width,
+                    "heigh": self.offset.heigh
+                },
                 cache: false
             });
         }
     });
 
-    var url = this.contextPath + '/terminal.ws';
     var params = "?cols=" + self.offset.cols + "&rows=" + self.offset.rows + "&width=" + self.offset.width + "&height=" + self.offset.height;
-    if ('WebSocket' in window) {
-        self.socket = new WebSocket(url + params);
-    } else if ('MozWebSocket' in window) {
-        self.socket = new MozWebSocket(url + params);
-    } else {
-        url = "http://" + window.location.host + "/terminal.js";
-        self.socket = SockJS(url + params);
+    window.WebSocket = window.WebSocket || window.MozWebSocket;
+    if(window.WebSocket) {
+        self.socket = new WebSocket(this.contextPath + '/terminal.ws' + params);
+    }else {
+        self.socket = SockJS("http://" + window.location.host + "/terminal.js" + params);
     }
 
     self.socket.onopen = function () {
         self.term.attach(self.socket);
         self._initialized = true;
-        //self.term.write("Welcome to opencron terminal!Connect Starting...\n");
     };
 
     self.socket.onerror = function () {
@@ -120,7 +123,7 @@
 
     $(document).keypress(function (e) {
         var keyCode = (e.keyCode) ? e.keyCode : e.charCode;
-        if (keyCode == 13) {
+        if (keyCode === 13) {
             //在中文输入框里点击Enter按钮触发发送事件.
             if (self.hasOwnProperty("inFocus") && self.inFocus) {
                 $("#sendBtn").click();
@@ -134,6 +137,7 @@
     });
 };
 
+
 ;OpencronTerm.prototype.theme = function () {
     'use strict';
     if (this.themeName == arguments[0]) {
@@ -141,10 +145,6 @@
     }
     this.themeName = arguments[0] || "default";
     switch (this.themeName) {
-        case "yellow":
-            this.backgroundColor = '#FFFFDD';
-            this.fontColor = "#000000";
-            break;
         case "green":
             this.backgroundColor = '#000000';
             this.fontColor = "#00FF00";
@@ -157,22 +157,11 @@
             this.backgroundColor = '#000000';
             this.fontColor = "#AAAAAA";
             break;
-        case "white":
-            this.backgroundColor = '#FFFFFF';
-            this.fontColor = "#000000";
-            break;
         default:
             this.backgroundColor = '#000000';
             this.fontColor = "#cccccc";
             break;
     }
-
-    $('body').css("background-color", this.backgroundColor);
-
-    $(".terminal").css({
-        "background-color": this.backgroundColor,
-        "color": this.fontColor
-    }).focus();
     /**
      * 别动,很神奇....非读熟源码是写不出下面的代码的.
      */
@@ -183,16 +172,6 @@
     style.id = 'term-style';
     // textContent doesn't work well with IE for <style> elements.
     style.innerHTML = ''
-        + '.terminal {\n'
-        + '  float: left;\n'
-        + '  font-family: Courier, monospace;\n'
-        + '  font-size: ' + this.term.fontSize + 'px;\n'
-        + '  line-height: ' + this.term.lineHeight + 'px;\n'
-        + '  color: ' + this.backgroundColor + ';\n'
-        + '  background: ' + this.fontColor + ';\n'
-        + '  padding: 5px;\n'
-        + '}\n'
-        + '\n'
         + '.terminal:not(.xterm-cursor-style-underline):not(.xterm-cursor-style-bar) .terminal-cursor {\n'
         + '  color: ' + this.backgroundColor + ';\n'
         + '  background: ' + this.fontColor + ';\n'
@@ -201,9 +180,15 @@
         + '  outline: 1px solid ' + this.backgroundColor + ';\n'
         + '  outline-offset: -1px;\n'
         + '  background-color: transparent;\n'
-        + '}\n'
-        + '\n';
+        + '}\n';
     head.insertBefore(style, head.lastChild);
+
+    $('body').css("background-color", this.backgroundColor);
+
+    $(".terminal").css({
+        "background-color": this.backgroundColor,
+        "color": this.fontColor
+    }).focus();
 
     //同步到后台服务器
     $.ajax({
@@ -211,4 +196,3 @@
         cache: false
     });
 };
-
