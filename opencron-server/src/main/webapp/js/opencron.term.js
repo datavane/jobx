@@ -5,31 +5,14 @@
     this.contextPath = (window.location.protocol === "https:" ? "wss://" : "ws://") + window.location.host;
     this.backgroundColor = '#000000';
     this.fontColor = "#cccccc";
+    this.termNode = $("#term");
     this.open();
 }
 
-;OpencronTerm.prototype.resize = function () {
-    var self = this;
-    $(window).resize(function () {
-        window.setTimeout(function () {
-            var currSize = self.size();
-            if (self.display.cols != currSize.cols || self.display.rows != currSize.rows) {
-                self.display = currSize;
-                self.term.resize(self.display.cols, self.display.rows);
-                $.ajax({
-                    url: '/terminal/resize?token=' + self.args[0] + "&csrf=" + self.args[1] + '&cols=' + self.display.cols + '&rows=' + self.display.rows + "&width=" + self.display.width + "&height=" + self.display.height,
-                    cache: false
-                });
-            }
-        }, 1000);
-    });
-}
-
-;
-OpencronTerm.prototype.size = function () {
+;OpencronTerm.prototype.getSize = function () {
     var cols = Math.floor($(window).innerWidth() / 7.2261);//基于fontSize=12的cols参考值
     var span = $("<span>");
-    $('body').append(span);
+    this.termNode.append(span);
     var array = ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'z', 'x', 'c', 'v', 'b', 'n', 'm', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
     var i = 0;
     while (true) {
@@ -45,16 +28,45 @@ OpencronTerm.prototype.size = function () {
         width: $(window).innerWidth(),
         height: $(window).innerHeight() - $("#navigation").outerHeight(),
         cols: cols,
-        rows: Math.floor(($(window).innerHeight() - $("#navigation").outerHeight()-5) / 17.15)
+        rows: Math.floor(($(window).innerHeight() - $("#navigation").outerHeight() - 5) / 17.15)
     };
 }
 
-;
-OpencronTerm.prototype.open = function () {
+;OpencronTerm.prototype.open = function () {
+
     var self = this;
-    var size = this.size();
+    self.offset = self.getSize();
+
+    self.term = new Terminal({
+        termName: "xterm",
+        cols: self.offset.cols,
+        rows: self.offset.rows,
+        useStyle: true,
+        screenKeys: true,
+        cursorBlink: false,
+        convertEol: true,
+        colors: Terminal.xtermColors
+    });
+
+    self.term.open(self.termNode.empty()[0]);
+    self.theme(self.args[2]);
+    self.term.fit();
+    self.term.resize(self.offset.cols, self.offset.rows);
+
+    $(window).resize(function () {
+        var currSize = self.getSize();
+        if (self.offset.cols != currSize.cols || self.offset.rows != currSize.rows) {
+            self.offset = currSize;
+            self.term.resize(self.offset.cols, self.offset.rows);
+            $.ajax({
+                url: '/terminal/resize?token=' + self.args[0] + "&csrf=" + self.args[1] + '&cols=' + self.offset.cols + '&rows=' + self.offset.rows + "&width=" + self.offset.width + "&height=" + self.offset.height,
+                cache: false
+            });
+        }
+    });
+
     var url = this.contextPath + '/terminal.ws';
-    var params = "?cols=" + size.cols + "&rows=" + size.rows + "&width=" + size.width + "&height=" + size.height;
+    var params = "?cols=" + self.offset.cols + "&rows=" + self.offset.rows + "&width=" + self.offset.width + "&height=" + self.offset.height;
     if ('WebSocket' in window) {
         self.socket = new WebSocket(url + params);
     } else if ('MozWebSocket' in window) {
@@ -64,38 +76,11 @@ OpencronTerm.prototype.open = function () {
         self.socket = SockJS(url + params);
     }
 
-    self.termNode = $("#term");
-    self.term = new Terminal({
-        termName: "xterm",
-        cols: self.size().cols,
-        rows: self.size().rows,
-        useStyle: true,
-        screenKeys: true,
-        cursorBlink: false,
-        convertEol: true,
-        colors: Terminal.xtermColors
-    });
-
-    self.display = self.size();
-    self.term.open(self.termNode.empty()[0]);
-    self.theme(self.args[2]);
-
     self.socket.onopen = function () {
-        self.resize();
+        self.term.attach(self.socket);
+        self._initialized = true;
         //self.term.write("Welcome to opencron terminal!Connect Starting...\n");
     };
-
-    self.socket.onmessage = function (event) {
-        self.term.write(event.data);
-    };
-
-    self.term.on('data', function (data) {
-        self.socket.send(data);
-    });
-
-    self.term.on('paste', function (data, ev) {
-        self.term.write(data);
-    });
 
     self.socket.onerror = function () {
         self.term.write("Sorry! opencron terminal connect error!please try again.\n");
@@ -147,7 +132,6 @@ OpencronTerm.prototype.open = function () {
             }
         }
     });
-
 };
 
 ;OpencronTerm.prototype.theme = function () {
@@ -213,12 +197,12 @@ OpencronTerm.prototype.open = function () {
         + '  color: ' + this.backgroundColor + ';\n'
         + '  background: ' + this.fontColor + ';\n'
         + '}\n'
-        +'.terminal:not(.focus) .terminal-cursor {\n'
-        + '  outline: 1px solid '+this.backgroundColor+';\n'
+        + '.terminal:not(.focus) .terminal-cursor {\n'
+        + '  outline: 1px solid ' + this.backgroundColor + ';\n'
         + '  outline-offset: -1px;\n'
         + '  background-color: transparent;\n'
         + '}\n'
-        +'\n';
+        + '\n';
     head.insertBefore(style, head.lastChild);
 
     //同步到后台服务器
