@@ -25,9 +25,12 @@
 
     <!--term-->
     <link type="text/css" rel="stylesheet" href="${contextPath}/js/xterm/xterm.css?resId=${resourceId}">
+    <link type="text/css" rel="stylesheet" href="${contextPath}/js/xterm/addons/fullscreen/fullscreen.css?resId=${resourceId}" />
+
     <script src="${contextPath}/js/xterm/xterm.js?resId=${resourceId}" type="text/javascript"></script>
     <script src="${contextPath}/js/xterm/addons/attach/attach.js?resId=${resourceId}" type="text/javascript"></script>
     <script src="${contextPath}/js/xterm/addons/fit/fit.js?resId=${resourceId}" type="text/javascript"></script>
+    <script src="${contextPath}/js/xterm/addons/fullscreen/fullscreen.js?resId=${resourceId}" type="text/javascript"></script>
     <script type="text/javascript" src="${contextPath}/js/opencron.term.js?resId=${resourceId}"></script>
 
     <script type="text/javascript" src="${contextPath}/js/opencron.js?resId=${resourceId}"></script>
@@ -113,16 +116,12 @@
        document.title = '${name}';
         opencronTerm =  new OpencronTerm('${token}','${csrf}','${theme}');
         //去掉a点击时的虚线框
-        $(".container").find("a").each(function (i,a) {
-            $(a).focus(function () {
-                this.blur();
-            });
-        });
+        $(".container").find("a").focus(function () {
+            this.blur();
+        })
 
-        $(".theme").find("a").each(function (i,a) {
-            $(a).click(function () {
-                opencronTerm.theme($(this).attr("theme"));
-            });
+        $(".theme").find("a").click(function () {
+            opencronTerm.theme($(this).attr("theme"));
         });
 
         $("#term").css("padding-top",$("#navigation").outerHeight()+5+"px");

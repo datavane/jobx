@@ -52,7 +52,6 @@ OpencronTerm.prototype.size = function () {
 ;
 OpencronTerm.prototype.open = function () {
     var self = this;
-
     var size = this.size();
     var url = this.contextPath + '/terminal.ws';
     var params = "?cols=" + size.cols + "&rows=" + size.rows + "&width=" + size.width + "&height=" + size.height;
@@ -92,6 +91,10 @@ OpencronTerm.prototype.open = function () {
 
     self.term.on('data', function (data) {
         self.socket.send(data);
+    });
+
+    self.term.on('paste', function (data, ev) {
+        self.term.write(data);
     });
 
     self.socket.onerror = function () {
