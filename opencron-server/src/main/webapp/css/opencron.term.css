@@ -7,6 +7,11 @@ body{
     font-size: 12px;
 }
 
+#term {
+     margin: 0 auto;
+     padding: 2px;
+ }
+
 .dropdown-menu > li > a {
     color: #7A7A7A;
 }
