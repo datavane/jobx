@@ -58,7 +58,7 @@ import static org.opencron.common.utils.CommonUtils.notEmpty;
  * Created by ChenHui on 2016/2/17.
  */
 @Controller
-public class HomeController extends BaseController {
+public class HomeController  extends BaseController{
 
     @Autowired
     private HomeService homeService;
@@ -238,7 +238,7 @@ public class HomeController extends BaseController {
         String successFormat = "{\"result\":\"%s\",\"state\":200}";
         String errorFormat = "{\"message\":\"%s\",\"state\":500}";
 
-        Cropper cropper = JSON.parseObject( unescape(data), Cropper.class);
+        Cropper cropper = JSON.parseObject( data, Cropper.class);
 
         //检查后缀
         if (!".BMP,.JPG,.JPEG,.PNG,.GIF".contains(extensionName.toUpperCase())) {

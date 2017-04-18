@@ -43,13 +43,12 @@
                             type:"POST",
                             url:"${contextPath}/job/batchexec",
                             data:{
-                                "command":cmd,
+                                "command":$.base64.encode(cmd),
                                 "agentIds":ids
                             }
                         });
                         alertMsg( "该作业已启动,正在执行中.");
                     }
-
                 }else {
                     alert("请选择执行器！");
                 }

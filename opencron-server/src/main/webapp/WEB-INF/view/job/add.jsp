@@ -172,7 +172,10 @@
                                 },
                                 success:function(data){
                                     if (data == "success"){
+                                        var cmd = $("#command").val();
+                                        $("#command").val(encode(cmd));
                                         $("#job").submit();
+                                        $("#command").val(cmd);
                                         return false;
                                     }else {
                                         alert("时间规则语法错误!");
@@ -185,7 +188,10 @@
                             });
                             return false;
                         }else {
+                            var cmd = $("#command").val();
+                            $("#command").val(encode(cmd));
                             $("#job").submit();
+                            $("#command").val(cmd);
                             return false;
                         }
                         return false;
@@ -398,7 +404,7 @@
                                     "<input type='hidden' name='child.jobId' value=''>"+
                                     "<input type='hidden' name='child.jobName' value='"+jobName+"'>"+
                                     "<input type='hidden' name='child.agentId' value='"+$("#agentId1").val()+"'>"+
-                                    "<input type='hidden' name='child.command' value='"+$("#command1").val()+"'>"+
+                                    "<input type='hidden' name='child.command' value='"+ encode($("#command1").val())+"'>"+
                                     "<input type='hidden' name='child.redo' value='"+$('#itemRedo').val()+"'>"+
                                     "<input type='hidden' name='child.runCount' value='"+$("#runCount1").val()+"'>"+
                                     "<input type='hidden' name='child.timeout' value='"+$("#timeout1").val()+"'>"+
@@ -425,7 +431,7 @@
                                     $(element).attr("value",$("#agentId1").val());
                                 }
                                 if ($(element).attr("name") == "child.command"){
-                                    $(element).attr("value",$("#command1").val());
+                                    $(element).attr("value", decode($("#command1").val()));
                                 }
 
                                 if ($(element).attr("name") == "child.timeout"){
@@ -464,7 +470,7 @@
                     $("#agentId1").val($(element).val());
                 }
                 if ($(element).attr("name") == "child.command"){
-                    $("#command1").val($(element).val());
+                    $("#command1").val(decode($(element).val()));
                 }
                 if ($(element).attr("name") == "child.redo") {
                     itemRedo($("#itemRedo").val()||$(element).val());
@@ -476,10 +482,6 @@
 
                 if ($(element).attr("name") == "child.timeout"){
                     $("#timeout1").val($(element).val());
-                }
-
-                if ($(element).attr("name") == "child.command"){
-                    $("#command1").val($(element).val());
                 }
 
                 if ($(element).attr("name") == "child.comment"){
@@ -511,6 +513,16 @@
                 $("#redo1").parent().removeClass("checked");
                 $("#redo1").parent().attr("aria-checked",false);
             }
+        }
+
+
+        function encode(text){
+            return  $.base64.encode(text);
+        }
+
+
+        function decode(text){
+            return  $.base64.decode(text);
         }
 
     </script>

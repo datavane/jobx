@@ -26,6 +26,7 @@ import java.util.*;
 import com.alibaba.fastjson.JSON;
 import org.opencron.common.job.Opencron;
 import org.opencron.common.job.Opencron.ExecType;
+import org.opencron.common.utils.DigestUtils;
 import org.opencron.server.domain.Job;
 import org.opencron.server.job.OpencronTools;
 import org.opencron.server.service.*;
@@ -49,7 +50,7 @@ import static org.opencron.common.utils.CommonUtils.notEmpty;
 
 @Controller
 @RequestMapping("/job")
-public class JobController extends BaseController {
+public class JobController  extends BaseController{
 
     @Autowired
     private ExecuteService executeService;
@@ -113,8 +114,7 @@ public class JobController extends BaseController {
 
     @RequestMapping(value = "/save")
     public String save(HttpSession session,Job job, HttpServletRequest request) throws SchedulerException {
-        job.setCommand(unescape(job.getCommand()));
-        job.setCronExp(unescape(job.getCronExp()));
+        job.setCommand( DigestUtils.passBase64(job.getCommand()));
         if (job.getJobId()!=null) {
             Job job1 = jobService.getJob(job.getJobId());
             if (!jobService.checkJobOwner(session,job1.getUserId())) return "redirect:/job/view?csrf="+ OpencronTools.getCSRF(session);
@@ -158,7 +158,7 @@ public class JobController extends BaseController {
                 chind.setJobName((String) jobName[i]);
                 chind.setAgentId(Long.parseLong((String) agentId[i]));
 
-                String cmd = unescape((String) command[i]);
+                String cmd = DigestUtils.passBase64((String) command[i]);
                 chind.setCommand(cmd);
 
                 chind.setCronExp(job.getCronExp());
@@ -215,8 +215,7 @@ public class JobController extends BaseController {
         if (!jobService.checkJobOwner(session,jober.getUserId())) return;
         jober.setExecType(job.getExecType());
         jober.setCronType(job.getCronType());
-        jober.setCronExp(unescape(job.getCronExp()));
-        jober.setCommand(unescape(job.getCommand()));
+        jober.setCommand(DigestUtils.passBase64(job.getCommand()));
         jober.setJobName(job.getJobName());
         jober.setRedo(job.getRedo());
         jober.setRunCount(job.getRunCount());
@@ -235,7 +234,7 @@ public class JobController extends BaseController {
 
     @RequestMapping("/editcmd")
     public void editCmd(HttpSession session,HttpServletResponse response,Long jobId, String command) throws SchedulerException {
-        command = unescape(command);
+        command = DigestUtils.passBase64(command);
         Job jober = jobService.getJob(jobId);
         if (!jobService.checkJobOwner(session,jober.getUserId())) return;
         jober.setCommand(command);
@@ -275,7 +274,7 @@ public class JobController extends BaseController {
     @RequestMapping("/batchexec")
     public void batchExec(HttpSession session, String command, String agentIds) {
         if (notEmpty(agentIds) && notEmpty(command)){
-            command = unescape(command);
+            command = DigestUtils.passBase64(command);
             Long userId = OpencronTools.getUserId(session);
             try {
                 this.executeService.batchExecuteJob(userId,command,agentIds);

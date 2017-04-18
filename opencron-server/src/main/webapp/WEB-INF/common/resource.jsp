@@ -60,6 +60,7 @@
 
     <!-- MD5 -->
     <script type="text/javascript" src="${contextPath}/js/md5.js?resId=${resourceId}"></script>
+    <script type="text/javascript" src="${contextPath}/js/jquery.base64.js?resId=${resourceId}"></script>
     <script type="text/javascript" src="${contextPath}/js/html5/html5shiv/html5shiv.js?resId=${resourceId}"></script>
     <script type="text/javascript" src="${contextPath}/js/gauge.js?resId=${resourceId}"></script>
     <script type="text/javascript" src="${contextPath}/js/jquery.cookie.js?resId=${resourceId}"></script>

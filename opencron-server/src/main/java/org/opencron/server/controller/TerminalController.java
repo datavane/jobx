@@ -52,7 +52,7 @@ import static org.opencron.server.service.TerminalService.*;
  */
 @Controller
 @RequestMapping("/terminal")
-public class TerminalController extends BaseController {
+public class TerminalController  extends BaseController{
 
     @Autowired
     private TerminalService termService;
@@ -194,7 +194,6 @@ public class TerminalController extends BaseController {
                     if (CommonUtils.isEmpty(path)) {
                         path = ".";
                     }else {
-                        path = unescape(path);
                         if (path.endsWith("/")) {
                             path = path.substring(0, path.lastIndexOf("/"));
                         }

@@ -76,7 +76,7 @@
 
             <tr>
                 <td class="item"><i class="glyphicon glyphicon-th-large"></i>&nbsp;执行命令：</td>
-                <td>${job.command}</td>
+                <td>${cron:escapeHtml(job.command)}</td>
             </tr>
 
             <tr>

@@ -42,7 +42,7 @@
                                     $("#checkcronExp").html("");
                                     $("#id").val(obj.jobId);
                                     $("#magentId").val(obj.agentId);
-                                    $("#jobName").val(obj.jobName);
+                                    $("#jobName").val(escapeHtml(obj.jobName));
                                     $("#agent").val(obj.agentName+"   "+obj.ip);
                                     $("#cronExp").val(obj.cronExp);
                                     $("#cmd").val(obj.command);
@@ -248,7 +248,7 @@
                 "cronType":cronType,
                 "cronExp":cronExp,
                 "agentId":agentId,
-                "command":command,
+                "command": encode(command),
                 "timeout":timeout,
                 "execType":execType,
                 "jobName":jobName,
@@ -310,7 +310,7 @@
                                 "cronType":job.cronType,
                                 "cronExp":job.cronExp,
                                 "agentId":job.agentId,
-                                "command":job.command,
+                                "command": job.command,
                                 "execType":job.execType,
                                 "jobName":job.jobName,
                                 "redo":job.redo,
@@ -326,9 +326,10 @@
                                     $('#jobModal').modal('hide');
                                     alertMsg("修改成功");
 
-                                    $("#jobName_"+job.jobId).html(job.jobName);
+                                    $("#jobName_"+job.jobId).html(escapeHtml(job.jobName));
+                                    $("#command_"+job.jobId).html(escapeHtml(decode(job.command)));
                                     $("#cronType_"+job.jobId).html(job.cronType == "0" ? "crontab" : "quartz");
-                                    $("#cronExp_"+job.jobId).html(job.cronExp);
+                                    $("#cronExp_"+job.jobId).html(escapeHtml(job.cronExp));
                                     if (job.execType == "0"){
                                         $("#execType_"+job.jobId).html('<font color="green">自动</font>');
                                     }else {
@@ -579,7 +580,7 @@
                 url:"${contextPath}/job/editcmd",
                 data:{
                     "jobId":jobId,
-                    "command":command
+                    "command":encode(command)
                 },
                 success:function(data){
                     if (data == "success"){
@@ -589,7 +590,7 @@
                         if(command.length > 50){
                             command = command.substring(0,50)+"...";
                         }
-                        $("#command_"+jobId).html(command);
+                        $("#command_"+jobId).html(escapeHtml(command));
                     }else {
                         alert("修改失败");
                     }
@@ -599,6 +600,20 @@
                     return false;
                 }
             });
+        }
+
+        function encode(text){
+            return  $.base64.encode(text);
+        }
+
+        function decode(text){
+            return  $.base64.decode(text);
+        }
+
+        function escapeHtml(text) {
+            if(text){
+                return text.replace("<","&lt;").replace(">","&gt;");
+            }
         }
 
     </script>
@@ -719,8 +734,8 @@
                     <c:if test="${permission eq false}"><td>${r.operateUname}</td></c:if>
                     <td style="white-space: nowrap;">
                         <div class="opencron_command">
-                            <a href="#" title="${r.command}" onclick="editCmd('${r.jobId}')"  id="command_${r.jobId}">
-                                    ${r.command}
+                            <a href="#" title="${cron:escapeHtml(r.command)}" onclick="editCmd('${r.jobId}')"  id="command_${r.jobId}">
+                                    ${cron:escapeHtml(r.command)}
                             </a>
                         </div>
                     </td>
@@ -777,8 +792,8 @@
                             <c:if test="${permission eq false}"><td>${c.operateUname}</td></c:if>
                             <td style="white-space: nowrap;">
                                 <div class="opencron_command">
-                                    <a href="#" title="${c.command}" onclick="editCmd('${c.jobId}')" id="command_${c.jobId}">
-                                            ${c.command}
+                                    <a href="#" title="${cron:escapeHtml(c.command)}" onclick="editCmd('${c.jobId}')" id="command_${c.jobId}">
+                                            ${cron:escapeHtml(c.command)}
                                     </a>
                                 </div>
                             </td>

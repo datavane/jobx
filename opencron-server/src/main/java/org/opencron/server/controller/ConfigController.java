@@ -37,7 +37,7 @@ import javax.servlet.http.HttpSession;
  */
 @Controller
 @RequestMapping("config")
-public class ConfigController extends BaseController {
+public class ConfigController  extends BaseController{
 
     @Autowired
     private ConfigService configService;
@@ -60,8 +60,8 @@ public class ConfigController extends BaseController {
     @RequestMapping("/edit")
     public String edit(HttpSession session, Config config) {
         config.setConfigId(configService.getSysConfig().getConfigId());
-        config.setTemplate(unescape(config.getTemplate()));
-        config.setSendUrl(unescape(config.getSendUrl()));
+        config.setTemplate(config.getTemplate());
+        config.setSendUrl(config.getSendUrl());
         configService.update(config);
         return "redirect:/config/view?csrf="+ OpencronTools.getCSRF(session);
     }

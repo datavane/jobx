@@ -67,4 +67,11 @@
         <function-signature>java.lang.String diffdate(java.util.Date,java.util.Date)</function-signature>
     </function>
 
+    <function>
+        <name>escapeHtml</name>
+        <function-class>org.opencron.server.tag.CronTag</function-class>
+        <function-signature>java.lang.String escapeHtml(java.lang.String)</function-signature>
+    </function>
+
+
 </taglib>

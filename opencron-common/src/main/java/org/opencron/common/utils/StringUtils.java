@@ -269,11 +269,11 @@ public abstract class StringUtils {
      * @param htmlStr
      * @return writer:<a href="mailto:benjobs@qq.com">benjobs</a> 2012.2.1
      */
-    public static String replaceScript(String htmlStr) {
+    public static String escapeJavaScript(String htmlStr) {
         if (htmlStr == null || "".equals(htmlStr)) {
             return "";
         }
-        String regEx_script = "<script[^>]*?>[\\s\\S]*?<\\/script>"; // 定义script的正则表达式
+        String regEx_script = "<script[^>]*?>[\\s\\S]*?</script>"; // 定义script的正则表达式
         Pattern p_script = Pattern.compile(regEx_script,
                 Pattern.CASE_INSENSITIVE);
         Matcher m_script = p_script.matcher(htmlStr);
@@ -287,7 +287,7 @@ public abstract class StringUtils {
      * @param htmlStr
      * @return writer:<a href="mailto:benjobs@qq.com">benjobs</a> 2012.2.1
      */
-    public static String replaceHtml(String htmlStr) {
+    public static String escapeHtml(String htmlStr) {
         if (htmlStr == null || "".equals(htmlStr)) {
             return "";
         }
@@ -310,6 +310,37 @@ public abstract class StringUtils {
         htmlStr = m_html.replaceAll(""); // 过滤html标签
 
         return htmlStr.trim(); // 返回文本字符串
+    }
+
+    public static String htmlEncode(String source) {
+        if (source == null) {
+            return "";
+        }
+        StringBuffer buffer = new StringBuffer();
+        for (int i = 0; i < source.length(); i++) {
+            char c = source.charAt(i);
+            switch (c) {
+                case '<':
+                    buffer.append("&lt;");
+                    break;
+                case '>':
+                    buffer.append("&gt;");
+                    break;
+                case '&':
+                    buffer.append("&amp;");
+                    break;
+                case '"':
+                    buffer.append("&quot;");
+                    break;
+                case 10:
+                case 13:
+                    break;
+                default:
+                    buffer.append(c);
+            }
+        }
+        return buffer.toString();
+
     }
 
     public static String HtmlToTextGb2312(String inputString) {

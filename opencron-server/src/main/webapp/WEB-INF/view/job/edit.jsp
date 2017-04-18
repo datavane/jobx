@@ -379,7 +379,7 @@
                                 '<input type="hidden" name="child.agentId" value="' + $("#agentId1").val() + '">' +
                                 '<input type="hidden" name="child.redo" value="'+$("input[type='radio'][name='redo1']:checked").val()+'">'+
                                 '<input type="hidden" name="child.runCount" value="' + $("#runCount1").val() + '">' +
-                                '<input type="hidden" name="child.command" value="' + $("#command1").val() + '">' +
+                                '<input type="hidden" name="child.command" value="' + encode($("#command1").val()) + '">' +
                                 '<input type="hidden" name="child.timeout" value="' + $("#timeout1").val() + '">' +
                                 '<input type="hidden" name="child.comment" value="' + $("#comment1").val() + '">'
                             '</li>';
@@ -390,6 +390,11 @@
                                 elem = $(elem);
                                 var inputName = elem.attr("name").replace("child.","");
                                 elem.val($("#"+inputName+"1").val());
+
+                                if (elem.attr("name") == "child.command1"){
+                                    elem.val(decode($("#command1").val()));
+                                }
+
                             })
                             $("#name_"+id).html(jobName);
                         }
@@ -443,6 +448,17 @@
                 $(node).parent().slideUp(300,function(){this.remove()});
             });
         }
+
+
+        function encode(text){
+            return  $.base64.encode(text);
+        }
+
+
+        function decode(text){
+            return  $.base64.decode(text);
+        }
+
 
     </script>
 

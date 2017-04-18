@@ -47,7 +47,7 @@ import static org.opencron.common.utils.CommonUtils.notEmpty;
  */
 @Controller
 @RequestMapping("/user")
-public class UserController extends BaseController {
+public class UserController  extends BaseController{
 
     @Autowired
     private UserService userService;

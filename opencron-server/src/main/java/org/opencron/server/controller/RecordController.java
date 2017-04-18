@@ -40,7 +40,7 @@ import static org.opencron.common.utils.CommonUtils.notEmpty;
 
 @Controller
 @RequestMapping("/record")
-public class RecordController extends BaseController {
+public class RecordController  extends BaseController{
 
     @Autowired
     private RecordService recordService;
