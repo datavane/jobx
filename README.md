@@ -39,9 +39,6 @@ http://www.oracle.com/technetwork/java/javase/overview/index.html
 Tomcat server 7.0 or greater
 https://tomcat.apache.org
 
-Nginx 1.3 or greater
-http://nginx.org
-
 Browser 
 IE10+
    
