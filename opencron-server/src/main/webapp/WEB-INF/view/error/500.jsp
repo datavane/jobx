@@ -46,8 +46,8 @@
             $(".fa-wechat").click(function () {
                 swal({
                     title: "",
-                    text: "请添加微信[wolfboys]反馈您的问题",
-                    type: "warning",
+                    imageUrl:"${contextPath}/img/wechat_qr.jpg",
+                    text: "请扫描二维码,添加作者微信反馈您的问题",
                     showCancelButton: false,
                     closeOnConfirm: false,
                     confirmButtonText: "好的"
