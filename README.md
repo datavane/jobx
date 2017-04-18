@@ -93,7 +93,7 @@ IE10+
 ```
 1):下载已经编译好的opencron-server-${version}.war包
 
-2):更改项目的mysql连接信息和memcached连接,mysql和memcached配置在config.properties里，更改即可:
+2):更改项目的mysql连接信息,mysql的配置在config.properties里，更改即可:
 如:
 --mysql
 jdbc.driver=com.mysql.jdbc.Driver
