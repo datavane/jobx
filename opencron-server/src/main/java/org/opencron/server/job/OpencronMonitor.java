@@ -51,7 +51,6 @@ public class OpencronMonitor implements Serializable{
 
     private final Logger logger = LoggerFactory.getLogger(OpencronMonitor.class);
 
-
     public static int port;
 
     private volatile boolean running = false;

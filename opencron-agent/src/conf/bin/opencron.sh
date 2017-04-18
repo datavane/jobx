@@ -230,8 +230,11 @@ case "$1" in
                 -P|--port)
                     OPENCRON_PORT=$2;
                     shift 2;;
-                -p|--password)
+                -p|--pass)
                     OPENCRON_PASSWORD=$2;
+                    shift 2;;
+                -s|--server)
+                    OPENCRON_SERVER=$3;
                     shift 2;;
                 --) break ;;
                 *)
@@ -300,6 +303,7 @@ case "$1" in
         -Djava.io.tmpdir="$OPENCRON_TMPDIR" \
         -Dopencron.port="$OPENCRON_PORT" \
         -Dopencron.password="$OPENCRON_PASSWORD" \
+        -Dopencron.server="$OPENCRON_SERVER" \
         org.opencron.agent.Bootstrap start \
         >> "$OPENCRON_OUT" 2>&1 "&";
 
