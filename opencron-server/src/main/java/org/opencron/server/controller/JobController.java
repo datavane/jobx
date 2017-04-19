@@ -116,6 +116,7 @@ public class JobController  extends BaseController{
     @RequestMapping(value = "/save")
     public String save(HttpSession session,Job job, HttpServletRequest request) throws SchedulerException {
         job.setCommand( DigestUtils.passBase64(job.getCommand()));
+        job.setStatus(true);//Job有效
         if (job.getJobId()!=null) {
             Job job1 = jobService.getJob(job.getJobId());
             if (!jobService.checkJobOwner(session,job1.getUserId())) return "redirect:/job/view?csrf="+ OpencronTools.getCSRF(session);
@@ -130,7 +131,6 @@ public class JobController  extends BaseController{
             job.setUserId( OpencronTools.getUserId(session) );
             job.setUpdateTime(new Date());
             job.setLastChild(false);
-            job.setStatus(true);//Job有效
             job = jobService.addOrUpdate(job);
         } else { //流程任务
             Map<String, String[]> map = request.getParameterMap();
@@ -145,25 +145,20 @@ public class JobController  extends BaseController{
             List<Job> chindren = new ArrayList<Job>(0);
             for (int i = 0; i < jobName.length; i++) {
                 Job chind = new Job();
-
                 if (CommonUtils.notEmpty(jobId[i])) {
                     //子任务修改的..
                     Long jobid = Long.parseLong((String) jobId[i]);
                     chind = jobService.getJob(jobid);
                 }
-
                 /**
                  * 新增并行和串行,子任务和最顶层的父任务一样
                  */
                 chind.setRunModel(job.getRunModel());
-                chind.setJobName(StringUtils.escapeHtml( (String)jobName[i]) );
+                chind.setJobName(StringUtils.htmlEncode( (String)jobName[i]) );
                 chind.setAgentId(Long.parseLong((String) agentId[i]));
-
-                String cmd = DigestUtils.passBase64((String) command[i]);
-                chind.setCommand(cmd);
-
+                chind.setCommand(DigestUtils.passBase64((String) command[i]));
                 chind.setCronExp(job.getCronExp());
-                chind.setComment(StringUtils.escapeHtml( (String) comment[i]) );
+                chind.setComment(StringUtils.htmlEncode( (String) comment[i]) );
                 chind.setTimeout(Integer.parseInt((String) timeout[i]));
                 chind.setRedo(Integer.parseInt((String) redo[i]));
                 chind.setStatus(true);

@@ -414,7 +414,7 @@
                             $("#"+id).find("input").each(function(index,element) {
 
                                 if ($(element).attr("name") == "child.jobName"){
-                                    $(element).attr("value",escapeHtml(jobName));
+                                    $(element).attr("value",jobName);
                                 }
 
                                 if ($(element).attr("name") == "child.redo"){
@@ -437,7 +437,7 @@
                                 }
 
                                 if ($(element).attr("name") == "child.comment"){
-                                    $(element).attr("value",escapeHtml($("#comment1").val()));
+                                    $(element).attr("value",$("#comment1").val());
                                 }
                             });
 

@@ -24,6 +24,7 @@ package org.opencron.server.tag;
 
 import org.opencron.common.utils.DateUtils;
 import org.opencron.common.utils.CommonUtils;
+import org.opencron.common.utils.DigestUtils;
 import org.opencron.common.utils.StringUtils;
 
 import java.text.SimpleDateFormat;
@@ -68,6 +69,15 @@ public class CronTag {
 
     public static String escapeHtml(String html){
         return StringUtils.htmlEncode(html);
+    }
+
+
+    public static String toBase64(String html){
+        return DigestUtils.toBase64(html);
+    }
+
+    public static String passBase64(String html){
+        return DigestUtils.passBase64(html);
     }
 
     public static String diffdate(Date date1, Date date2) {

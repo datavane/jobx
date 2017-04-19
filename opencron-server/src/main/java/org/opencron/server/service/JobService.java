@@ -253,7 +253,6 @@ public class JobService {
             job1.setFlowId(job1.getJobId());//flowId
             addOrUpdate(job1);
             job.setJobId(job1.getJobId());
-
         }
 
         for (int i=0;i<children.size();i++) {
