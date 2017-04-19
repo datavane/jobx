@@ -165,6 +165,8 @@ if [ -z "$OPENCRON_TMPDIR" ] ; then
   OPENCRON_TMPDIR="$OPENCRON_BASE"/temp
 fi
 
+shutdownPort
+
 # Add on extra jar files to CLASSPATH
 if [ ! -z "$CLASSPATH" ] ; then
   CLASSPATH="$CLASSPATH":
@@ -175,6 +177,9 @@ OPENCRON_PIDDIR="/var/run";
    mkdir $OPENCRON_PIDDIR;
  fi
 OPENCRON_PID="$OPENCRON_PIDDIR/opencron.pid";
+
+#shutdownPort for shutdown socket...
+OPENCRON_SHUTDOWNPORT=15707
 
 #opencron version
 OPENCRON_VERSION="1.0-RELEASE"
@@ -306,6 +311,7 @@ case "$1" in
         -Dopencron.port="$OPENCRON_PORT" \
         -Dopencron.password="$OPENCRON_PASSWORD" \
         -Dopencron.server="$OPENCRON_SERVER" \
+        -Dopencron.shutdown="$OPENCRON_SHUTDOWNPORT" \
         org.opencron.agent.Bootstrap start \
         >> "$OPENCRON_OUT" 2>&1 "&";
 
@@ -356,7 +362,8 @@ case "$1" in
 
           eval "\"$RUNJAVA\"" \
             -classpath "\"$CLASSPATH\"" \
-            -Dopencron.home="\"$OPENCRON_HOME\"" \
+            -Dopencron.home="$OPENCRON_HOME" \
+            -Dopencron.shutdown="$OPENCRON_SHUTDOWNPORT" \
              org.opencron.agent.Bootstrap stop
 
           # stop failed. Shutdown port disabled? Try a normal kill.

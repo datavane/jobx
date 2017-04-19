@@ -83,11 +83,6 @@ public class Bootstrap implements Serializable {
      */
     private static Bootstrap daemon;
 
-    /**
-     * Thread that currently is inside our await() method.
-     */
-    private volatile Thread awaitThread = null;
-
 
     private volatile boolean stopAwait = false;
 
@@ -210,9 +205,9 @@ public class Bootstrap implements Serializable {
         if (port == -2) {
             return;
         }
+
         if (port == -1) {
             try {
-                awaitThread = Thread.currentThread();
                 while (!stopAwait) {
                     try {
                         Thread.sleep(10000);
@@ -221,21 +216,20 @@ public class Bootstrap implements Serializable {
                     }
                 }
             } finally {
-                awaitThread = null;
             }
             return;
         }
 
+        Integer shutdownPort = Integer.valueOf(System.getProperty("opencron.shutdown"));
         // Set up a server socket to wait on
         try {
-            awaitSocket = new ServerSocket(AgentProperties.getInt("opencron.shutdown"));
+            awaitSocket = new ServerSocket(shutdownPort);
         } catch (IOException e) {
-            logger.error("[opencron] agent .await: create[{}] ", AgentProperties.getInt("opencron.shutdown"), e);
+            logger.error("[opencron] agent .await: create[{}] ", shutdownPort, e);
             return;
         }
 
         try {
-            awaitThread = Thread.currentThread();
             // Loop waiting for a connection and a valid command
             while (!stopAwait) {
                 ServerSocket serverSocket = awaitSocket;
@@ -306,7 +300,6 @@ public class Bootstrap implements Serializable {
             }
         } finally {
             ServerSocket serverSocket = awaitSocket;
-            awaitThread = null;
             awaitSocket = null;
             // Close the server socket and return
             if (serverSocket != null) {
@@ -325,11 +318,11 @@ public class Bootstrap implements Serializable {
      * @throws Exception
      */
 
-    private void shutdown() throws Exception {
+    public void shutdown() throws Exception {
         /**
          * connect to startup socket and send stop command。。。。。。
          */
-        Socket socket = new Socket("localhost", AgentProperties.getInt("opencron.shutdown"));
+        Socket socket = new Socket("localhost",Integer.valueOf(System.getProperty("opencron.shutdown")));
         OutputStream os = socket.getOutputStream();
         PrintWriter pw = new PrintWriter(os);
         InputStream is = socket.getInputStream();

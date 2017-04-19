@@ -14,7 +14,6 @@ public final class Globals {
      * port
      */
     public static String OPENCRON_PORT = System.getProperty("opencron.port");
-
     /**
      * password
      */
@@ -30,13 +29,6 @@ public final class Globals {
      */
 
     public static File OPENCRON_PASSWORD_FILE = new File(System.getProperty(OPENCRON_HOME) + File.separator + ".password");
-
-    /**
-     *
-     * conf file
-     */
-
-    public static File OPENCRON_CONF_FILE = new File(System.getProperty(OPENCRON_HOME) + File.separator + "/conf/opencron.properties");
 
     /**
      * monitor file
