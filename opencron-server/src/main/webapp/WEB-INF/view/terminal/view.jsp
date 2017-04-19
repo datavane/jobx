@@ -122,7 +122,7 @@
                 success: function (json) {
                     $("#sshid").val(id);
                     $("#sshuser").val(json.user);
-                    $("#sshname").val(json.name);
+                    $("#sshname").val(unEscapeHtml(json.name));
                     $("#sshport").val(json.port);
                     $("#sshhost").val(json.host).attr("readonly","readonly");
                     $("#sshuser")[0].focus();

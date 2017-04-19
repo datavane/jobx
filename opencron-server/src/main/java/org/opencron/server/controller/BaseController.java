@@ -49,10 +49,9 @@ public abstract class BaseController {
                 setValue(null);
             } else {
                 String value = text;
-                value = StringUtils.escapeHtml(value);
+                value = StringUtils.htmlEncode(value);
                 setValue(value);
             }
-
         }
 
         @Override

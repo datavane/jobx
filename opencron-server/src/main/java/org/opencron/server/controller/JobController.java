@@ -27,6 +27,7 @@ import com.alibaba.fastjson.JSON;
 import org.opencron.common.job.Opencron;
 import org.opencron.common.job.Opencron.ExecType;
 import org.opencron.common.utils.DigestUtils;
+import org.opencron.common.utils.StringUtils;
 import org.opencron.server.domain.Job;
 import org.opencron.server.job.OpencronTools;
 import org.opencron.server.service.*;
@@ -155,14 +156,14 @@ public class JobController  extends BaseController{
                  * 新增并行和串行,子任务和最顶层的父任务一样
                  */
                 chind.setRunModel(job.getRunModel());
-                chind.setJobName((String) jobName[i]);
+                chind.setJobName(StringUtils.escapeHtml( (String)jobName[i]) );
                 chind.setAgentId(Long.parseLong((String) agentId[i]));
 
                 String cmd = DigestUtils.passBase64((String) command[i]);
                 chind.setCommand(cmd);
 
                 chind.setCronExp(job.getCronExp());
-                chind.setComment((String) comment[i]);
+                chind.setComment(StringUtils.escapeHtml( (String) comment[i]) );
                 chind.setTimeout(Integer.parseInt((String) timeout[i]));
                 chind.setRedo(Integer.parseInt((String) redo[i]));
                 chind.setStatus(true);

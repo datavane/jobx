@@ -53,4 +53,25 @@ var opencron = {
         var reg = /^[1-9]\d{5,11}$/;
         return reg.test(qq);
     }
+};
+
+function encode(text){
+    return  $.base64.encode(text);
+}
+
+function decode(text){
+    return  $.base64.decode(text);
+}
+
+function escapeHtml(text) {
+    if(text){
+        return text.replace("<","&lt;").replace(">","&gt;");
+    }
+}
+
+function unEscapeHtml(text) {
+    if(text){
+        console.log(text);
+        return text.replace(/&lt;/g,"<").replace(/&gt;/g,">").replace(/&amp;/g,"").replace(/&quot;/g,"");
+    }
 }

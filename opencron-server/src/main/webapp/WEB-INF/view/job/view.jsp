@@ -28,8 +28,7 @@
                 url:"${contextPath}/job/canrun",
                 data:{"id":id},
                 success:function(data){
-                    if ( !eval("("+data+")") ){
-
+                    if ( !eval("("+data+")") ) {
                         $.ajax({
                             headers:{"csrf":"${csrf}"},
                             type:"POST",
@@ -42,7 +41,7 @@
                                     $("#checkcronExp").html("");
                                     $("#id").val(obj.jobId);
                                     $("#magentId").val(obj.agentId);
-                                    $("#jobName").val(escapeHtml(obj.jobName));
+                                    $("#jobName").val(unEscapeHtml(obj.jobName));
                                     $("#agent").val(obj.agentName+"   "+obj.ip);
                                     $("#cronExp").val(obj.cronExp);
                                     $("#cmd").val(obj.command);
@@ -108,7 +107,7 @@
                                     }
                                     $("#mobiles").val(obj.mobiles);
                                     $("#email").val(obj.emailAddress);
-                                    $("#comment").val(obj.comment);
+                                    $("#comment").val(unEscapeHtml(obj.comment));
                                     $("#timeout").val(obj.timeout);
                                     $('#jobModal').modal('show');
                                     return;
@@ -601,21 +600,6 @@
                 }
             });
         }
-
-        function encode(text){
-            return  $.base64.encode(text);
-        }
-
-        function decode(text){
-            return  $.base64.decode(text);
-        }
-
-        function escapeHtml(text) {
-            if(text){
-                return text.replace("<","&lt;").replace(">","&gt;");
-            }
-        }
-
     </script>
 </head>
 

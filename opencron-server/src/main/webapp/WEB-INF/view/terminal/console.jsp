@@ -110,7 +110,7 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-       document.title = '${name}';
+       document.title = unEscapeHtml('${name}');
         opencronTerm =  new OpencronTerm('${token}','${csrf}','${theme}');
         //去掉a点击时的虚线框
         $(".container").find("a").focus(function () {

@@ -175,7 +175,6 @@
                                         var cmd = $("#command").val();
                                         $("#command").val(encode(cmd));
                                         $("#job").submit();
-                                        $("#command").val(cmd);
                                         return false;
                                     }else {
                                         alert("时间规则语法错误!");
@@ -191,7 +190,6 @@
                             var cmd = $("#command").val();
                             $("#command").val(encode(cmd));
                             $("#job").submit();
-                            $("#command").val(cmd);
                             return false;
                         }
                         return false;
@@ -400,15 +398,15 @@
                         //添加
                         if ( $("#subTitle").attr("action")=="add" ) {
                             var timestamp = Date.parse(new Date());
-                            var addHtml = "<li id='"+timestamp+"' ><span onclick='showSubJob(\""+timestamp+"\")'><a data-toggle='modal' href='#jobModal' title='编辑'><i class='glyphicon glyphicon-pencil'></i>&nbsp;&nbsp;<span id='name_"+timestamp+"'>"+jobName+"</span></a></span><span class='delSubJob' onclick='removeSubJob(this)'><a href='#' title='删除'><i class='glyphicon glyphicon-trash'></i></a></span>" +
+                            var addHtml = "<li id='"+timestamp+"' ><span onclick='showSubJob(\""+timestamp+"\")'><a data-toggle='modal' href='#jobModal' title='编辑'><i class='glyphicon glyphicon-pencil'></i>&nbsp;&nbsp;<span id='name_"+timestamp+"'>"+escapeHtml(jobName)+"</span></a></span><span class='delSubJob' onclick='removeSubJob(this)'><a href='#' title='删除'><i class='glyphicon glyphicon-trash'></i></a></span>" +
                                     "<input type='hidden' name='child.jobId' value=''>"+
-                                    "<input type='hidden' name='child.jobName' value='"+jobName+"'>"+
+                                    "<input type='hidden' name='child.jobName' value='"+escapeHtml(jobName)+"'>"+
                                     "<input type='hidden' name='child.agentId' value='"+$("#agentId1").val()+"'>"+
                                     "<input type='hidden' name='child.command' value='"+ encode($("#command1").val())+"'>"+
                                     "<input type='hidden' name='child.redo' value='"+$('#itemRedo').val()+"'>"+
                                     "<input type='hidden' name='child.runCount' value='"+$("#runCount1").val()+"'>"+
                                     "<input type='hidden' name='child.timeout' value='"+$("#timeout1").val()+"'>"+
-                                    "<input type='hidden' name='child.comment' value='"+$("#comment1").val()+"'>"
+                                    "<input type='hidden' name='child.comment' value='"+escapeHtml($("#comment1").val())+"'>"
                             "</li>";
                             $("#subJobDiv").append($(addHtml));
                         }else if ( $("#subTitle").attr("action") == "edit" ) {//编辑
@@ -416,7 +414,7 @@
                             $("#"+id).find("input").each(function(index,element) {
 
                                 if ($(element).attr("name") == "child.jobName"){
-                                    $(element).attr("value",jobName);
+                                    $(element).attr("value",escapeHtml(jobName));
                                 }
 
                                 if ($(element).attr("name") == "child.redo"){
@@ -431,7 +429,7 @@
                                     $(element).attr("value",$("#agentId1").val());
                                 }
                                 if ($(element).attr("name") == "child.command"){
-                                    $(element).attr("value", decode($("#command1").val()));
+                                    $(element).attr("value", encode($("#command1").val()));
                                 }
 
                                 if ($(element).attr("name") == "child.timeout"){
@@ -439,11 +437,11 @@
                                 }
 
                                 if ($(element).attr("name") == "child.comment"){
-                                    $(element).attr("value",$("#comment1").val());
+                                    $(element).attr("value",escapeHtml($("#comment1").val()));
                                 }
                             });
 
-                            $("#name_"+id).html(jobName);
+                            $("#name_"+id).html(escapeHtml(jobName));
 
                         }
                         closeSubJob();
@@ -464,7 +462,7 @@
             $("#"+id).find("input").each(function(index,element) {
 
                 if ($(element).attr("name") == "child.jobName"){
-                    $("#jobName1").val($(element).val());
+                    $("#jobName1").val(unEscapeHtml($(element).val()));
                 }
                 if ($(element).attr("name") == "child.agentId"){
                     $("#agentId1").val($(element).val());
@@ -485,7 +483,7 @@
                 }
 
                 if ($(element).attr("name") == "child.comment"){
-                    $("#comment1").val($(element).val());
+                    $("#comment1").val(unEscapeHtml($(element).val()));
                 }
             });
         }
@@ -513,16 +511,6 @@
                 $("#redo1").parent().removeClass("checked");
                 $("#redo1").parent().attr("aria-checked",false);
             }
-        }
-
-
-        function encode(text){
-            return  $.base64.encode(text);
-        }
-
-
-        function decode(text){
-            return  $.base64.decode(text);
         }
 
     </script>

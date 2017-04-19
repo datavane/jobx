@@ -449,17 +449,6 @@
             });
         }
 
-
-        function encode(text){
-            return  $.base64.encode(text);
-        }
-
-
-        function decode(text){
-            return  $.base64.decode(text);
-        }
-
-
     </script>
 
 </head>

@@ -205,7 +205,7 @@ public class SecurityHandlerInterceptor extends HandlerInterceptorAdapter {
 
         private String cleanXSS(String value) {
             if (value==null) return null;
-            return StringUtils.escapeHtml(value);
+            return StringUtils.htmlEncode(value);
         }
     }
 

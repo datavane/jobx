@@ -329,7 +329,7 @@
                     if (data == "success") {
                         $('#agentModal').modal('hide');
                         alertMsg("修改成功");
-                        $("#name_" + id).html(name);
+                        $("#name_" + id).html(escapeHtml(name));
                         $("#port_" + id).html(port);
                         if (warning == "0") {
                             $("#warning_" + id).html('<span class="label label-default" style="color: red;font-weight:bold">&nbsp;&nbsp;否&nbsp;&nbsp;</span>');
