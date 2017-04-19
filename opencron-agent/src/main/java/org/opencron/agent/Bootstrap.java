@@ -143,7 +143,7 @@ public class Bootstrap implements Serializable {
      *
      * @throws Exception
      */
-    public void init() throws Exception {
+    private void init() throws Exception {
         port = Integer.valueOf(Integer.parseInt(Globals.OPENCRON_PORT));
         String inputPwd = Globals.OPENCRON_PASSWORD;
         if (notEmpty(inputPwd)) {
@@ -160,7 +160,7 @@ public class Bootstrap implements Serializable {
         }
     }
 
-    public void start() throws Exception {
+    private void start() throws Exception {
         try {
             TServerSocket serverTransport = new TServerSocket(port);
             AgentProcessor agentProcessor = new AgentProcessor(password);
@@ -318,7 +318,7 @@ public class Bootstrap implements Serializable {
      * @throws Exception
      */
 
-    public void shutdown() throws Exception {
+    private void shutdown() throws Exception {
         /**
          * connect to startup socket and send stop command。。。。。。
          */
