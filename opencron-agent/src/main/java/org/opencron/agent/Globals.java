@@ -21,6 +21,11 @@ public final class Globals {
     public static String OPENCRON_PASSWORD = System.getProperty("opencron.password");
 
     /**
+     * pid
+     */
+    public static File OPENCRON_PID_FILE = new File(System.getProperty("opencron.pid"));
+
+    /**
      * password file
      */
 
@@ -32,12 +37,6 @@ public final class Globals {
      */
 
     public static File OPENCRON_CONF_FILE = new File(System.getProperty(OPENCRON_HOME) + File.separator + "/conf/opencron.properties");
-
-    /**
-     * pid
-     */
-    public static File OPENCRON_PID_FILE = new File(System.getProperty(OPENCRON_HOME) + File.separator + "opencron.pid");
-
 
     /**
      * monitor file
