@@ -77,7 +77,7 @@ IE10+
 参数说明:
 -P (大写的p)为agent启动的端口，选填，如果不输入默认启动端口是1577
 -p (小写的p)为当前agent的连接密码,选填，如果不输入默认连接该机器的密码是opencron
-启动完后会看到有一个opencron.pid，这个文件记录了当前agent进程的pid.更多详细的启动，运行日志请查看logs/opencron.out
+更多详细的启动信息请查看logs/opencron.out
 
 4)停止opencron-agent 进入opencron-agent/bin 执行：
 > cd opencron-agent/bin
