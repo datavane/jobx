@@ -170,14 +170,13 @@ if [ ! -z "$CLASSPATH" ] ; then
   CLASSPATH="$CLASSPATH":
 fi
 
-if [ ! -z "$OPENCRON_PIDDIR" ] ; then
-    OPENCRON_PIDDIR="/var/run";
-    if [ ! -x "$OPENCRON_PIDDIR" ] ; then
-      mkdir $OPENCRON_PIDDIR;
-    fi
-    OPENCRON_PID="$OPENCRON_PIDDIR/opencron.pid";
+if [ -z "$OPENCRON_PID" ] ; then
+  if [ ! -x "$OPENCRON_PIDDIR" ] ; then
+    OPENCRON_PIDDIR = "/var/run";
+    mkdir $OPENCRON_PIDDIR;
+  fi
+  OPENCRON_PID="$OPENCRON_PIDDIR/opencron.pid";
 fi
-
 
 #opencron version
 OPENCRON_VERSION="1.0-RELEASE"
