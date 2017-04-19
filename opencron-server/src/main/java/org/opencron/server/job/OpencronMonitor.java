@@ -57,7 +57,7 @@ public class OpencronMonitor implements Serializable{
 
     private ConcurrentHashMap<Class, ObjectAction> actionMapping = new ConcurrentHashMap<Class, ObjectAction>();
 
-    private Map<Agent, Long> connStatus = new ConcurrentHashMap<Agent, Long>(0);
+    private Map<Agent, Long> successConnStatus = new ConcurrentHashMap<Agent, Long>(0);
 
     private Map<String, Agent> agentMap = new ConcurrentHashMap<String, Agent>(0);
 
@@ -91,7 +91,7 @@ public class OpencronMonitor implements Serializable{
                 Agent agent = agentService.getByHost(rev.toString());
                 agentMap.put(ip, agent);
             }
-            connStatus.put(agentMap.get(ip), System.currentTimeMillis());
+            successConnStatus.put(agentMap.get(ip), System.currentTimeMillis());
         }
     }
 
@@ -107,14 +107,28 @@ public class OpencronMonitor implements Serializable{
             @Override
             public void run() {
                 List<Agent> agents = agentService.getAll();
-                if (agents.size() != connStatus.size()) {
+                if (agents.size() != successConnStatus.size()) {
                     for (Agent agent : agents) {
-                        if (connStatus.get(agent) == null) {
-                            executeService.ping(agent);
+                        if (successConnStatus.get(agent) == null) {
+                            boolean ping = executeService.ping(agent);
+                            //ping失败...
+                            if(!ping) {
+                                if (CommonUtils.isEmpty(agent.getFailTime()) || new Date().getTime() - agent.getFailTime().getTime() >= configService.getSysConfig().getSpaceTime() * 60 * 1000) {
+                                    noticeService.notice(agent);
+                                    //记录本次任务失败的时间
+                                    agent.setFailTime(new Date());
+                                    agent.setStatus(false);
+                                    agentService.addOrUpdate(agent);
+                                }else if (agent.getStatus()) {
+                                    agent.setStatus(false);
+                                    agentService.addOrUpdate(agent);
+                                }
+                            }
                         }
                     }
                 }
-                for (Map.Entry<Agent, Long> entry : connStatus.entrySet()) {
+
+                for (Map.Entry<Agent, Long> entry : successConnStatus.entrySet()) {
                     long lastAliveTime = entry.getValue();
                     Agent agent = entry.getKey();
                     //已经失联的状态,再次通知连接
@@ -192,7 +206,7 @@ public class OpencronMonitor implements Serializable{
                         action = action == null ? new DefaultObjectAction() : action;
                         action.doAction(obj);
                     } else {
-                        Thread.sleep(5);
+                        Thread.sleep(10);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
