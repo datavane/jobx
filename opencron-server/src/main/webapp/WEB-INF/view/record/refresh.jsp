@@ -27,8 +27,8 @@
             <c:if test="${r.execType eq 2}"><span class="label label-warning">&nbsp;&nbsp;重&nbsp;跑&nbsp;&nbsp;</span></c:if>
             <c:if test="${r.execType eq 3}"><span class="label label-default" style="color: green;font-weight:bold">&nbsp;&nbsp;现&nbsp;场&nbsp;&nbsp;</span></c:if>
         </td>
-        <td title="${r.command}">
-            <div class="opencron_command">${r.command}</div>
+        <td title="${cron:escapeHtml(r.command)}">
+            <div class="opencron_command">${cron:escapeHtml(r.command)}</div>
         </td>
 
         <td><fmt:formatDate value="${r.startTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>

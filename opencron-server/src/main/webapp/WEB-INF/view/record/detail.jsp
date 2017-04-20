@@ -37,7 +37,7 @@
                     <c:if test="${!empty record.jobName}"><a href="${contextPath}/job/detail?id=${record.jobId}&csrf=${csrf}">${record.jobName}</a></c:if>
                 </td>
                 <td><i class="glyphicon glyphicon-th-large"></i>&nbsp;执行命令</td>
-                <td>${record.command}</td>
+                <td>${cron:escapeHtml(record.command)}</td>
             </tr>
 
             <tr>
