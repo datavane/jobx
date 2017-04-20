@@ -110,7 +110,7 @@
                         url: "${contextPath}/notice/unread",
                         dataType: "html",
                         success: function (data) {
-                            $("#msgList").html(escapeHtml(data));
+                            $("#msgList").html(data);
                         }
                     });
                 }else {

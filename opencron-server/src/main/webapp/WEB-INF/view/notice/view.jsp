@@ -92,7 +92,7 @@
                     </center></td>
                     <td>${log.agentName}</td>
                     <td title="${log.receiver}">${cron:substr(log.receiver,0,20,"...")}</td>
-                    <td title="${log.message}">${cron:substr(log.message,0,60,"...")}</td>
+                    <td title="${cron:escapeHtml(log.message)}">${cron:escapeHtml(cron:substr(log.message,0,60,"..."))}</td>
                     <td>${log.sendTime}</td>
                     <td>
                         <center>

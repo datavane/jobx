@@ -70,7 +70,7 @@
             <tr>
                 <td colspan="2">
                     <i  style="font-Size:15px;" class="glyphicons glyphicons-eye-open"></i>&nbsp;&nbsp;<strong>&nbsp;信&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;息</strong></p>
-                    <pre id="pre" style="font-size:11px;color:#FFF;border: none;background: none;white-space: pre-wrap;word-wrap: break-word;">${log.message}</pre>
+                    <pre id="pre" style="font-size:11px;color:#FFF;border: none;background: none;white-space: pre-wrap;word-wrap: break-word;">${cron:escapeHtml(log.message)}</pre>
                 </td>
             </tr>
             </tbody>
