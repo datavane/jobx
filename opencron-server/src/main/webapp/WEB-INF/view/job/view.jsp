@@ -600,6 +600,45 @@
                 }
             });
         }
+
+        function remove(id) {
+            swal({
+                title: "",
+                text: "确定要删除该作业吗？",
+                type: "warning",
+                showCancelButton: true,
+                closeOnConfirm: false,
+                confirmButtonText: "删除"
+            }, function() {
+                $.ajax({
+                    headers:{"csrf":"${csrf}"},
+                    type:"POST",
+                    url:"${contextPath}/job/checkDelete",
+                    data:{"id":id},
+                    success:function (data) {
+                        if(data == "error"){
+                            alert("该作业不存在,删除失败!")
+                        }else if (data == "no"){
+                            alert("该作业正在运行中,删除失败!")
+                        }else {
+                            $.ajax({
+                                headers:{"csrf":"${csrf}"},
+                                type:"POST",
+                                url:"${contextPath}/job/delete",
+                                data:{"id":id},
+                                success:function () {
+                                    alertMsg("删除作业成功");
+                                    location.reload();
+                                },
+                                error:function () {
+                                    alert("删除作业失败!")
+                                }
+                            });
+                        }
+                    }
+                });
+            });
+        }
     </script>
 </head>
 
@@ -755,11 +794,14 @@
                                     </a>
                                 </c:if>
                                 &nbsp;&nbsp;
-                                    <span id="execButton_${r.jobId}">
-                                        <a href="#" title="执行" onclick="executeJob('${r.jobId}')">
-                                           <i aria-hidden="true" class="fa fa-play-circle"></i>
-                                        </a>&nbsp;&nbsp;
-                                    </span>
+                                <span id="execButton_${r.jobId}">
+                                    <a href="#" title="执行" onclick="executeJob('${r.jobId}')">
+                                       <i aria-hidden="true" class="fa fa-play-circle"></i>
+                                    </a>&nbsp;&nbsp;
+                                </span>
+                                <a href="#" onclick="remove('${r.jobId}')" title="删除">
+                                    <i aria-hidden="true" class="fa fa-close"></i>
+                                </a>&nbsp;&nbsp;
                                 <a href="${contextPath}/job/detail?id=${r.jobId}&csrf=${csrf}" title="查看详情">
                                     <i class="glyphicon glyphicon-eye-open"></i>
                                 </a>

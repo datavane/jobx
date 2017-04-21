@@ -166,33 +166,18 @@ public class AgentService {
             return "error";
         }
 
-        //检查该执行器是否有任务正在执行(单一任务)
-        String sql = "SELECT COUNT(1) FROM T_RECORD WHERE agentId=? and status=? and groupId is null";
-        Long count = queryDao.getCountBySql(sql, id,Opencron.RunStatus.RUNNING.getStatus());
-        if (count>0) {
-            return "no";
-        }
-
-        //检查该机器是否有流程任务正在执行
-        sql = "SELECT COUNT(1) FROM T_JOB AS J INNER JOIN ( "
-               + "SELECT A.flowId FROM T_JOB AS A INNER JOIN T_AGENT AS B "
-               + "ON A.agentId = B.agentId "
-               + "WHERE B.agentId=? "
-               + "AND A.jobType=? "
-               + "GROUP BY A.flowId "
-               + ") AS G "
-               + "ON J.flowId = G.flowId "
-               + "INNER JOIN T_RECORD AS R "
-               + "ON J.jobId = R.jobId "
-               + "AND R.`status`=?";
-        count = queryDao.getCountBySql(sql, id,Opencron.JobType.FLOW.getCode(), Opencron.RunStatus.RUNNING.getStatus());
-
-        return count>0?"no":"yes";
+        //检查该执行器是否定义的有任务
+        String sql = "SELECT COUNT(1) FROM T_AGENT AS G INNER JOIN T_JOB AS J ON G.agentId = J.agentId WHERE G.agentId=?";
+        return queryDao.getCountBySql(sql, id)>0?"no":"yes";
     }
 
     public synchronized void delete(Long id) {
         Agent agent = getAgent(id);
         queryDao.delete(agent);
+        /**
+         * 同步缓存...
+         */
+        flushAgent();
     }
 
     public String checkhost(Long id, String host) {

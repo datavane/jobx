@@ -210,6 +210,38 @@ public class JobService {
         return (queryDao.getCountBySql(sql, agentId,name)) > 0L ? "no" : "yes";
     }
 
+    public String checkDelete(Long id) {
+        Job job = getJob(id);
+        if (job == null) {
+            return "error";
+        }
+
+        //该任务是否正在执行中?
+        String sql = "SELECT COUNT(1) FROM T_RECORD WHERE jobId = ? AND `status`=?";
+        Long count = queryDao.getCountBySql(sql, id,RunStatus.RUNNING.getStatus());
+        if (count>0) {
+            return "no";
+        }
+
+        //流程任务则检查任务流是否在运行中...
+        if (job.getJobType() == JobType.FLOW.getCode()) {
+            sql = "SELECT COUNT(1) FROM T_RECORD AS R INNER JOIN (" +
+                    " SELECT J.jobId FROM T_JOB AS J INNER JOIN T_JOB AS F" +
+                    " ON J.flowId = F.flowId" +
+                    " WHERE f.jobId = ?" +
+                    " ) AS J" +
+                    " on R.jobId = J.jobId" +
+                    " and R.status=?";
+            count =  queryDao.getCountBySql(sql, id,RunStatus.RUNNING.getStatus());
+            if (count>0) {
+                return "no";
+            }
+        }
+
+        return "yes";
+    }
+
+
     @Transactional(readOnly = false)
     public int delete(Long jobId) {
         int count = queryDao.createSQLQuery("UPDATE T_JOB SET status=0 WHERE jobId = " + jobId).executeUpdate();

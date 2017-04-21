@@ -103,6 +103,18 @@ public class JobController  extends BaseController{
         WebUtils.writeHtml(response, result);
     }
 
+    @RequestMapping("/checkDelete")
+    public void checkDelete(HttpServletResponse response, Long id) {
+        String result = jobService.checkDelete(id);
+        WebUtils.writeHtml(response, result);
+    }
+
+    @RequestMapping("/delete")
+    public void delete(HttpServletResponse response, Long id) {
+        jobService.delete(id);
+        WebUtils.writeHtml(response, "success");
+    }
+
     @RequestMapping("/addpage")
     public String addpage(HttpSession session,Model model, Long id) {
         if (notEmpty(id)) {

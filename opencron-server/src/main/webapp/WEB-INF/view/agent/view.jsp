@@ -404,20 +404,20 @@
                 $.ajax({
                     headers:{"csrf":"${csrf}"},
                     type:"POST",
-                    url:"${contextPath}/job/checkDelete",
+                    url:"${contextPath}/agent/checkDelete",
                     data:{"id":id},
                     success:function (data) {
                         if(data == "error"){
                             alert("该执行器不存在,删除失败!")
                         }else if (data == "no"){
-                            alert("该执行器尚有作业正在运行中,删除失败!")
+                            alert("删除失败!该执行器上定义了作业,请先删除作业再尝试删除")
                         }else {
                             $.ajax({
                                 headers:{"csrf":"${csrf}"},
                                 type:"POST",
-                                url:"${contextPath}/job/delete",
+                                url:"${contextPath}/agent/delete",
                                 data:{"id":id},
-                                success:function (data) {
+                                success:function () {
                                     alertMsg("删除执行器成功");
                                     location.reload();
                                 },
