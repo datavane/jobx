@@ -126,6 +126,9 @@ public class RecordController  extends BaseController{
     @RequestMapping("/detail")
     public String showDetail(Model model, Long id) {
         RecordVo recordVo = recordService.getDetailById(id);
+        if (recordVo == null) {
+            return "/error/404";
+        }
         model.addAttribute("record", recordVo);
         return "/record/detail";
     }

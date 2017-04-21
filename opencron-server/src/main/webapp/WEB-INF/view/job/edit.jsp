@@ -305,7 +305,7 @@
         }
 
         function codeCommand() {
-            $("#command").val(encode($("#command").val()));
+            $("#command").val(toBase64($("#command").val()));
         }
 
         function addSubJob(){
@@ -384,7 +384,7 @@
                                 '<input type="hidden" name="child.agentId" value="' + $("#agentId1").val() + '">' +
                                 '<input type="hidden" name="child.redo" value="'+$("input[type='radio'][name='redo1']:checked").val()+'">'+
                                 '<input type="hidden" name="child.runCount" value="' + $("#runCount1").val() + '">' +
-                                '<input type="hidden" name="child.command" value="' + encode($("#command1").val()) + '">' +
+                                '<input type="hidden" name="child.command" value="' + toBase64($("#command1").val()) + '">' +
                                 '<input type="hidden" name="child.timeout" value="' + $("#timeout1").val() + '">' +
                                 '<input type="hidden" name="child.comment" value="' + escapeHtml($("#comment1").val()) + '">' +
                             '</li>';
@@ -405,7 +405,7 @@
                                 }
 
                                 if (elem.attr("name") == "child.command") {
-                                    elem.val(encode($("#command1").val()));
+                                    elem.val(toBase64($("#command1").val()));
                                 }
                             });
 
@@ -448,7 +448,7 @@
                 }
                 if ($(elem).attr("name") == "child.command") {
                     try {
-                        $("#command1").val(decode(elem.val()));
+                        $("#command1").val(passBase64(elem.val()));
                     }catch (e) {
                     }
                 }

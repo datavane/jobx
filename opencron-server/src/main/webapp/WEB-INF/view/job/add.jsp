@@ -173,7 +173,7 @@
                                 success:function(data){
                                     if (data == "success"){
                                         var cmd = $("#command").val();
-                                        $("#command").val(encode(cmd));
+                                        $("#command").val(toBase64(cmd));
                                         $("#job").submit();
                                         return false;
                                     }else {
@@ -188,7 +188,7 @@
                             return false;
                         }else {
                             var cmd = $("#command").val();
-                            $("#command").val(encode(cmd));
+                            $("#command").val(toBase64(cmd));
                             $("#job").submit();
                             return false;
                         }
@@ -402,7 +402,7 @@
                                     "<input type='hidden' name='child.jobId' value=''>"+
                                     "<input type='hidden' name='child.jobName' value='"+escapeHtml(jobName)+"'>"+
                                     "<input type='hidden' name='child.agentId' value='"+$("#agentId1").val()+"'>"+
-                                    "<input type='hidden' name='child.command' value='"+ encode($("#command1").val())+"'>"+
+                                    "<input type='hidden' name='child.command' value='"+ toBase64($("#command1").val())+"'>"+
                                     "<input type='hidden' name='child.redo' value='"+$('#itemRedo').val()+"'>"+
                                     "<input type='hidden' name='child.runCount' value='"+$("#runCount1").val()+"'>"+
                                     "<input type='hidden' name='child.timeout' value='"+$("#timeout1").val()+"'>"+
@@ -429,7 +429,7 @@
                                     $(element).attr("value",$("#agentId1").val());
                                 }
                                 if ($(element).attr("name") == "child.command"){
-                                    $(element).attr("value", encode($("#command1").val()));
+                                    $(element).attr("value", toBase64($("#command1").val()));
                                 }
 
                                 if ($(element).attr("name") == "child.timeout"){
@@ -468,7 +468,7 @@
                     $("#agentId1").val($(element).val());
                 }
                 if ($(element).attr("name") == "child.command"){
-                    $("#command1").val(decode($(element).val()));
+                    $("#command1").val(passBase64($(element).val()));
                 }
                 if ($(element).attr("name") == "child.redo") {
                     itemRedo($("#itemRedo").val()||$(element).val());

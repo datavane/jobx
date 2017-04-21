@@ -27,6 +27,7 @@ import org.opencron.common.job.Response;
 import org.opencron.common.utils.*;
 import org.opencron.server.domain.Agent;
 import org.opencron.server.domain.Job;
+import org.opencron.server.domain.Log;
 import org.opencron.server.domain.User;
 import org.opencron.server.job.OpencronTools;
 import org.opencron.server.service.*;
@@ -238,7 +239,7 @@ public class HomeController  extends BaseController{
         String successFormat = "{\"result\":\"%s\",\"state\":200}";
         String errorFormat = "{\"message\":\"%s\",\"state\":500}";
 
-        Cropper cropper = JSON.parseObject( data, Cropper.class);
+        Cropper cropper = JSON.parseObject( DigestUtils.passBase64(data), Cropper.class);
 
         //检查后缀
         if (!".BMP,.JPG,.JPEG,.PNG,.GIF".contains(extensionName.toUpperCase())) {
@@ -334,8 +335,12 @@ public class HomeController  extends BaseController{
 
     @RequestMapping("/notice/detail")
     public String detail(Model model, Long logId) {
+        Log log = homeService.getLogDetail(logId);
+        if (log == null) {
+            return "/error/404";
+        }
         model.addAttribute("sender", configService.getSysConfig().getSenderEmail());
-        model.addAttribute("log", homeService.getLogDetail(logId));
+        model.addAttribute("log", log);
         homeService.updateAfterRead(logId);
         return "notice/detail";
     }

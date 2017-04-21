@@ -213,7 +213,7 @@
                             '"rotate":' + e.rotate + '}'
                         ].join();
 
-                        _this.$avatarData.val(json);
+                        _this.$avatarData.val(toBase64(json));
                     }
                 });
 

@@ -178,6 +178,9 @@ public class JobService {
         String sql = "SELECT T.*,D.name AS agentName,D.port,D.ip,D.password,U.username AS operateUname " +
                 " FROM T_JOB AS T LEFT JOIN T_AGENT AS D ON T.agentId = D.agentId LEFT JOIN T_USER AS U ON T.userId = U.userId WHERE T.jobId =?";
         JobVo job = queryDao.sqlUniqueQuery(JobVo.class, sql, id);
+        if (job==null) {
+            return null;
+        }
         queryJobMore(Arrays.asList(job));
         return job;
     }

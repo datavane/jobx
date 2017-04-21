@@ -392,6 +392,45 @@
             });
         }
 
+        function remove(id) {
+            swal({
+                title: "",
+                text: "确定要删除这个执行器吗？",
+                type: "warning",
+                showCancelButton: true,
+                closeOnConfirm: false,
+                confirmButtonText: "删除"
+            }, function() {
+                $.ajax({
+                    headers:{"csrf":"${csrf}"},
+                    type:"POST",
+                    url:"${contextPath}/job/checkDelete",
+                    data:{"id":id},
+                    success:function (data) {
+                        if(data == "error"){
+                            alert("该执行器不存在,删除失败!")
+                        }else if (data == "no"){
+                            alert("该执行器尚有作业正在运行中,删除失败!")
+                        }else {
+                            $.ajax({
+                                headers:{"csrf":"${csrf}"},
+                                type:"POST",
+                                url:"${contextPath}/job/delete",
+                                data:{"id":id},
+                                success:function (data) {
+                                    alertMsg("删除执行器成功");
+                                    location.reload();
+                                },
+                                error:function () {
+                                    alert("删除执行器失败!")
+                                }
+                            });
+                        }
+                    }
+                });
+            });
+        }
+
         function savePwd() {
             var id = $("#agentId").val();
             if (!id) {
@@ -654,6 +693,9 @@
                                     </a>&nbsp;&nbsp;
                                     <a href="#" onclick="editPwd('${w.agentId}')" title="修改密码">
                                         <i aria-hidden="true" class="fa fa-lock"></i>
+                                    </a>&nbsp;&nbsp;
+                                    <a href="#" onclick="remove('${w.agentId}')" title="删除">
+                                        <i aria-hidden="true" class="fa fa-close"></i>
                                     </a>&nbsp;&nbsp;
                                 </c:if>
                                 <a href="${contextPath}/agent/detail?id=${w.agentId}&csrf=${csrf}" title="查看详情">

@@ -24,6 +24,7 @@ package org.opencron.server.controller;
 import java.util.*;
 
 import com.alibaba.fastjson.JSON;
+import org.apache.http.HttpResponse;
 import org.opencron.common.job.Opencron;
 import org.opencron.common.job.Opencron.ExecType;
 import org.opencron.common.utils.DigestUtils;
@@ -190,6 +191,9 @@ public class JobController  extends BaseController{
     @RequestMapping("/editsingle")
     public void editSingleJob(HttpSession session,HttpServletResponse response, Long id) {
         JobVo job = jobService.getJobVoById(id);
+        if (job==null) {
+            WebUtils.writeJson(response,"404");
+        }
         if (!jobService.checkJobOwner(session,job.getUserId()))return;
         WebUtils.writeJson(response, JSON.toJSONString(job));
     }
@@ -197,6 +201,9 @@ public class JobController  extends BaseController{
     @RequestMapping("/editflow")
     public String editFlowJob(HttpSession session,Model model, Long id) {
         JobVo job = jobService.getJobVoById(id);
+        if (job == null) {
+            return "/error/404";
+        }
         if (!jobService.checkJobOwner(session,job.getUserId()))return "redirect:/job/view?csrf="+ OpencronTools.getCSRF(session);
         model.addAttribute("job", job);
         List<Agent> agents = agentService.getOwnerAgents(session);
@@ -281,8 +288,11 @@ public class JobController  extends BaseController{
     }
 
     @RequestMapping("/detail")
-    public String showDetail(HttpSession session,Model model,Long id) {
+    public String showDetail(HttpSession session,Model model, Long id) {
         JobVo jobVo = jobService.getJobVoById(id);
+        if(jobVo == null){
+            return "/error/404";
+        }
         if (!jobService.checkJobOwner(session,jobVo.getUserId())) return "redirect:/job/view?csrf="+ OpencronTools.getCSRF(session);
         model.addAttribute("job", jobVo);
         return "/job/detail";

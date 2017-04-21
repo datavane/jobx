@@ -60,6 +60,13 @@ public abstract class WebUtils {
         write(response, json);
     }
 
+    public static void write404(HttpServletResponse response) {
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("application/json");
+        response.setStatus(404);
+        write(response, "{status:404}");
+    }
+
     private static void write(HttpServletResponse response, String content) {
         PrintWriter writer = null;
         try {

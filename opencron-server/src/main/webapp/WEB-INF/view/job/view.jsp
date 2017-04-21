@@ -247,7 +247,7 @@
                 "cronType":cronType,
                 "cronExp":cronExp,
                 "agentId":agentId,
-                "command": encode(command),
+                "command": toBase64(command),
                 "timeout":timeout,
                 "execType":execType,
                 "jobName":jobName,
@@ -326,7 +326,7 @@
                                     alertMsg("修改成功");
 
                                     $("#jobName_"+job.jobId).html(escapeHtml(job.jobName));
-                                    $("#command_"+job.jobId).html(escapeHtml(decode(job.command)));
+                                    $("#command_"+job.jobId).html(escapeHtml(passBase64(job.command)));
                                     $("#cronType_"+job.jobId).html(job.cronType == "0" ? "crontab" : "quartz");
                                     $("#cronExp_"+job.jobId).html(escapeHtml(job.cronExp));
                                     if (job.execType == "0"){
@@ -579,7 +579,7 @@
                 url:"${contextPath}/job/editcmd",
                 data:{
                     "jobId":jobId,
-                    "command":encode(command)
+                    "command":toBase64(command)
                 },
                 success:function(data){
                     if (data == "success"){

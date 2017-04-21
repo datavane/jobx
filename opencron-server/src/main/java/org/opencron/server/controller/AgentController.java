@@ -64,6 +64,17 @@ public class AgentController extends BaseController{
         WebUtils.writeHtml(response, result);
     }
 
+    @RequestMapping("/checkDelete")
+    public void checkDelete(HttpServletResponse response, Long id) {
+        String result = agentService.checkDelete(id);
+        WebUtils.writeHtml(response, result);
+    }
+
+    @RequestMapping("/delete")
+    public void delete(HttpServletResponse response, Long id) {
+        agentService.delete(id);
+        WebUtils.writeHtml(response, "success");
+    }
 
     @RequestMapping("/checkhost")
     public void checkhost(HttpServletResponse response, Long id,String ip) {
@@ -101,6 +112,9 @@ public class AgentController extends BaseController{
     @RequestMapping("/editpage")
     public void editPage(HttpServletResponse response,Long id) {
         Agent agent = agentService.getAgent(id);
+        if (agent==null) {
+            WebUtils.write404(response);
+        }
         WebUtils.writeJson(response, JSON.toJSONString(agent));
     }
 
@@ -141,6 +155,9 @@ public class AgentController extends BaseController{
     @RequestMapping("/detail")
     public String showDetail(Model model, Long id) {
         Agent agent = agentService.getAgent(id);
+        if (agent == null) {
+            return "/error/404";
+        }
         model.addAttribute("agent", agent);
         return "/agent/detail";
     }

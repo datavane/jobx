@@ -64,6 +64,9 @@ public class UserController  extends BaseController{
     @RequestMapping("/detail")
     public String detail(Long userId,Model model) {
         User user = userService.queryUserById(userId);
+        if (user == null) {
+            return "/error/404";
+        }
         model.addAttribute("u", user);
         return "/user/detail";
     }
