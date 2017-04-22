@@ -63,6 +63,9 @@ public class JobService {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private SchedulerService schedulerService;
+
     private Logger logger = LoggerFactory.getLogger(JobService.class);
 
     public Job getJob(Long jobId) {
@@ -302,6 +305,11 @@ public class JobService {
                 }
             }
             queryDao.createSQLQuery(sql).executeUpdate();
+            try {
+                schedulerService.syncJobTigger(jobId, null);
+            } catch (SchedulerException e) {
+                e.printStackTrace();
+            }
             flushJob();
         }
     }

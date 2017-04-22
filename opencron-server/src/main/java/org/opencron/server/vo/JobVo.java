@@ -86,6 +86,8 @@ public class JobVo implements Serializable {
 
     private String csrf;
 
+    private Boolean deleted;
+
     public JobVo(){}
 
     public JobVo(Long userId, String command, Agent agent) {
@@ -341,5 +343,13 @@ public class JobVo implements Serializable {
 
     public void setCsrf(String csrf) {
         this.csrf = csrf;
+    }
+
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
     }
 }
