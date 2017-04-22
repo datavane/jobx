@@ -97,6 +97,13 @@ public class JobController  extends BaseController{
         return "/job/view";
     }
 
+    /**
+     * 同一台执行器上不能有重复名字的job
+     * @param response
+     * @param jobId
+     * @param agentId
+     * @param name
+     */
     @RequestMapping("/checkname")
     public void checkName(HttpServletResponse response, Long jobId, Long agentId, String name) {
         String result = jobService.checkName(jobId, agentId, name);
@@ -155,36 +162,36 @@ public class JobController  extends BaseController{
             Object[] runCount = map.get("child.runCount");
             Object[] timeout = map.get("child.timeout");
             Object[] comment = map.get("child.comment");
-            List<Job> chindren = new ArrayList<Job>(0);
+            List<Job> children = new ArrayList<Job>(0);
             for (int i = 0; i < jobName.length; i++) {
-                Job chind = new Job();
+                Job child = new Job();
                 if (CommonUtils.notEmpty(jobId[i])) {
                     //子任务修改的..
                     Long jobid = Long.parseLong((String) jobId[i]);
-                    chind = jobService.getJob(jobid);
+                    child = jobService.getJob(jobid);
                 }
                 /**
                  * 新增并行和串行,子任务和最顶层的父任务一样
                  */
-                chind.setRunModel(job.getRunModel());
-                chind.setJobName(StringUtils.htmlEncode( (String)jobName[i]) );
-                chind.setAgentId(Long.parseLong((String) agentId[i]));
-                chind.setCommand(DigestUtils.passBase64((String) command[i]));
-                chind.setCronExp(job.getCronExp());
-                chind.setComment(StringUtils.htmlEncode( (String) comment[i]) );
-                chind.setTimeout(Integer.parseInt((String) timeout[i]));
-                chind.setRedo(Integer.parseInt((String) redo[i]));
-                chind.setDeleted(false);
-                if (chind.getRedo() == 0) {
-                    chind.setRunCount(null);
+                child.setRunModel(job.getRunModel());
+                child.setJobName(StringUtils.htmlEncode( (String)jobName[i]) );
+                child.setAgentId(Long.parseLong((String) agentId[i]));
+                child.setCommand(DigestUtils.passBase64((String) command[i]));
+                child.setCronExp(job.getCronExp());
+                child.setComment(StringUtils.htmlEncode( (String) comment[i]) );
+                child.setTimeout(Integer.parseInt((String) timeout[i]));
+                child.setRedo(Integer.parseInt((String) redo[i]));
+                child.setDeleted(false);
+                if (child.getRedo() == 0) {
+                    child.setRunCount(null);
                 } else {
-                    chind.setRunCount(Integer.parseInt((String) runCount[i]));
+                    child.setRunCount(Integer.parseInt((String) runCount[i]));
                 }
-                chindren.add(chind);
+                children.add(child);
             }
 
             //流程任务必须有子任务,没有的话不保存
-            if (CommonUtils.isEmpty(chindren)) {
+            if (CommonUtils.isEmpty(children)) {
                 return "redirect:/job/view?csrf="+ OpencronTools.getCSRF(session);
             }
 
@@ -192,7 +199,7 @@ public class JobController  extends BaseController{
                 job.setUserId( OpencronTools.getUserId(session));
             }
 
-            jobService.saveFlowJob(job, chindren);
+            jobService.saveFlowJob(job, children);
         }
 
         schedulerService.syncJobTigger(job.getJobId(),executeService);

@@ -157,7 +157,8 @@
                 type:"POST",
                 url:"${contextPath}/job/checkname",
                 data:{
-                    "name":jobName
+                    "name":jobName,
+                    "agentId":$("#agentId").val()
                 },
                 success:function(data){
                     if (data == "yes"){
@@ -257,7 +258,8 @@
                     type:"POST",
                     url:"${contextPath}/job/checkname",
                     data:{
-                        "name":$("#jobName").val()
+                        "name":$("#jobName").val(),
+                        "agentId":$("#agentId").val()
                     },
                     success:function(data){
                         if (data == "yes"){
@@ -388,7 +390,7 @@
                 url:"${contextPath}/job/checkname",
                 data:{
                     "name":jobName,
-                    "agentId":$("#agentId1").val()
+                    "agentId":$("#agentId").val()
                 },
                 success:function(data){
                     if (data == "no"){

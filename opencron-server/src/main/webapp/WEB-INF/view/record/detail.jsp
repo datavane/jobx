@@ -96,7 +96,7 @@
             <tr>
                 <td colspan="4">
                     <i class="glyphicon glyphicon-envelope"></i>&nbsp;<strong>返回信息</strong></p>
-                    <pre id="pre" style="font-size:11px;color:#FFF;border: none;background: none;white-space: pre-wrap;word-wrap: break-word;">${cron:escapeHtml(record.message)}</pre>
+                    <pre id="pre" style="font-size:11px;color:#FFF;border: none;background: none;white-space: pre-wrap;word-wrap: break-word;">${record.message}</pre>
                 </td>
             </tr>
             </tbody>
