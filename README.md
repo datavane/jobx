@@ -47,23 +47,23 @@ IE10+
  opencron分为两个opencron-server端和opencron-agent端，opencron-server端即为一个web可视化的中央管理调度平台,opencron-agent为要管理的任务的机器,每个要纳入中央统一管理的机器都必须安装opencron-agent, opencron-agent在要管理的服务器中安装执行完后，可以直接在opencron-server添加当前的机器.
 
 
-## Opencron-agent 安装步骤:
+## opencron-agent 安装步骤:
 ```
 1·)下载编译好的opencron-agent-${version}.tar.gz包
 
 2)部署agent，将opencron-agent-${version}.tar.gz包拷贝到要管理任务的目标服务器,解包,会看到以下目录
 ---bin/
-|  startup.sh         #agent的启动脚本,调用的是opencron.sh来完成
-|  shutdown.sh        #agent停止脚本，调用的是opencron.sh来完成
+|  startup.sh          #agent的启动脚本,调用的是opencron.sh来完成
+|  shutdown.sh         #agent停止脚本，调用的是opencron.sh来完成
 |  opencron.sh         #agent控制启动|停止的脚本
-|  monitor.sh         #实时监控获取数据需要的脚本,由系统调度
-|  kill.sh            #kill任务时需要的脚本,由系统调度
+|  monitor.sh          #实时监控获取数据需要的脚本,由系统调度
+|  kill.sh             #kill任务时需要的脚本,由系统调度
 ---conf/
-| log4j.properties    #log4j配置文件
+| log4j.properties     #log4j配置文件
 ---lib/
-| *.jar               #agent运行需要的jar文件
+| *.jar                #agent运行需要的jar文件
 ---temp/
-| *.sh                #用于存放项目生成的零时文件的目录
+| *.sh                 #用于存放项目生成的零时文件的目录
 ---logs
 | opencron.out         #项目启动会产生的Log文件
 
@@ -85,7 +85,7 @@ IE10+
 
 ```
   
-## Opencron-server 部署步骤:
+## opencron-server 部署步骤:
 
 ```
 1):下载已经编译好的opencron-server-${version}.war包
@@ -100,11 +100,20 @@ jdbc.password=${password}
 
 3)发布到tomcat或者其他的web服务器启动即可.第一次会自动创建表,默认初始用户名opencron,密码opencron,第一次登陆会提示修改密码.
 
-4):进入到opencron的管理端第一件要做的事情就是添加要管理的执行器.在菜单的第二栏点击"执行器管理"->添加执行器,执行器ip，就是上面你部署的opencron-agent的机器ip，端口号是要连接的opencron-agent的启动端口，密码也是opencron-agent端的连接密码,输入ip,端口和密码后点击"检查通信",如果成功则server和agnet端已经成功通信，server可以管理agent了,添加保持即可.如果连接失败，
-可能有一下即可原因:
-1):agent端启动失败,检查logs,查看详情
-2):检查agent端口是否开放(如很多云服务器得开放端口才能访问)
+4):进入到opencron的管理端第一件要做的事情就是添加要管理的执行器.在菜单的第二栏点击"执行器管理"->添加执行器,执行器ip，就是上面你部署的opencron-agent的机器ip，端口号是要连接的opencron-agent的启动端口，密码也是opencron-agent端的连接密码,输入ip,端口和密码后点击"检查通信",如果成功则server和agnet端已经成功通信，server可以管理agent了,添加保持即可.如果连接失败，先检查agent端启动是否成功,查看logs中的详情
 ```  
+
+## 注意事项:
+```
+1):如果自行编译项目的,有可能agent端的脚步执行失败,这时请更改agent/bin下所有的脚步的字符集
+   a) vim *.sh
+   b) :set ff=unix 保存退出即可
+
+2):如果脚步字符编码是unix是还是启动失败,请给启动脚本添加权限 chmod 777 bin/*
+   
+3):如果agent已经成功启动server还是连接不上,请检查agent端口是否开放(如很多云服务器得开放端口才能访问)
+
+```
 
 更多问题请加入opencron交流群156429713,欢迎大家加入
     
