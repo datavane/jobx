@@ -91,7 +91,12 @@ public class UserController extends BaseController {
                 && !OpencronTools.getUserId(session).equals(id)) {
             return "redirect:/user/detail?csrf=" + OpencronTools.getCSRF(session);
         }
-        model.addAttribute("u", userService.queryUserById(id));
+
+        User user = userService.queryUserById(id);
+        if (user == null) {
+            return "/error/404";
+        }
+        model.addAttribute("u", user);
         model.addAttribute("role", userService.getRoleGroup());
         model.addAttribute("agents", agentService.getAll());
         return "/user/edit";
