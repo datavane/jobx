@@ -113,7 +113,7 @@ jdbc.password=${password}
    a) vim *.sh
    b) :set ff=unix 保存退出即可
 
-2):如果脚本字符编码是unix是还是启动失败,请给启动脚本添加权限 chmod 777 bin/*
+2):如果脚本字符编码已经是unix,还是启动失败,请尝试给启动脚本添加权限 chmod 777 bin/*
    
 3):如果agent已经成功启动server还是连接不上,请检查agent端口是否开放(如很多云服务器得开放端口才能访问)
 
