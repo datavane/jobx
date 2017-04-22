@@ -32,6 +32,7 @@ import org.opencron.common.utils.Digests;
 import org.opencron.common.utils.Encodes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.io.IOException;
@@ -42,6 +43,7 @@ import java.util.List;
  * Created by ChenHui on 2016/2/18.
  */
 @Service
+@Transactional
 public class UserService {
 
     @Autowired

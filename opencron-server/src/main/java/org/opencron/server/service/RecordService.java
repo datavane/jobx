@@ -32,6 +32,7 @@ import org.opencron.server.vo.ChartVo;
 import org.opencron.server.vo.RecordVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -39,6 +40,7 @@ import java.util.List;
 import static org.opencron.common.utils.CommonUtils.notEmpty;
 
 @Service
+@Transactional
 public class RecordService {
 
     @Autowired
@@ -257,7 +259,8 @@ public class RecordService {
         return queryDao.sqlUniqueQuery(ChartVo.class, sql);
     }
 
-    public void flowJobDone(Record record) {
+    @Transactional
+    public synchronized void flowJobDone(Record record) {
         String sql = "UPDATE T_RECORD SET status=? WHERE groupId=?";
         queryDao.createSQLQuery(sql, Opencron.RunStatus.DONE.getStatus(), record.getGroupId()).executeUpdate();
     }
@@ -281,6 +284,7 @@ public class RecordService {
         return queryDao.getCountBySql(sql, 1, execType.getStatus());
     }
 
+    @Transactional
     public void deleteRecordBetweenTime(String startTime, String endTime) {
         if (notEmpty(startTime, endTime)) {
             String sql = "DELETE FROM T_RECORD WHERE DATE_FORMAT(startTime,'%Y-%m-%d') BETWEEN ? AND ?";

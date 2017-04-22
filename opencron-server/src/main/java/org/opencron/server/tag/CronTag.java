@@ -72,12 +72,12 @@ public class CronTag {
     }
 
 
-    public static String toBase64(String html){
-        return DigestUtils.toBase64(html);
+    public static String toBase64(String text){
+        return DigestUtils.toBase64(text);
     }
 
-    public static String passBase64(String html){
-        return DigestUtils.passBase64(html);
+    public static String passBase64(String text){
+        return DigestUtils.passBase64(text);
     }
 
     public static String diffdate(Date date1, Date date2) {

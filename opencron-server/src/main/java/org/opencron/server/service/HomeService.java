@@ -34,6 +34,7 @@ import org.opencron.server.tag.PageBean;
 import org.opencron.server.vo.LogVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -47,6 +48,7 @@ import static org.opencron.common.utils.CommonUtils.notEmpty;
  * Created by ChenHui on 2016/2/17.
  */
 @Service
+@Transactional
 public class HomeService {
 
     @Autowired
@@ -127,7 +129,7 @@ public class HomeService {
         return queryDao.getCountBySql(sql);
     }
 
-
+    
     public void saveLog(Log log) {
         queryDao.save(log);
     }
@@ -136,6 +138,7 @@ public class HomeService {
         return queryDao.get(Log.class, logId);
     }
 
+    
     public void updateAfterRead(Long logId) {
         String sql = "UPDATE T_LOG SET isRead = 1 WHERE logId = ? and Type = ?";
         queryDao.createSQLQuery(sql, logId, Opencron.MsgType.WEBSITE.getValue()).executeUpdate();

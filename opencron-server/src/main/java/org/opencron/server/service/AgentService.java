@@ -37,6 +37,7 @@ import org.opencron.server.vo.JobVo;
 import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
 
@@ -44,6 +45,7 @@ import static org.opencron.common.utils.CommonUtils.isEmpty;
 import static org.opencron.common.utils.CommonUtils.notEmpty;
 
 @Service
+@Transactional
 public class AgentService {
 
     @Autowired
@@ -108,6 +110,9 @@ public class AgentService {
         List<User> users = queryDao.sqlQuery(User.class,sql,agent.getAgentId());
         return isEmpty(users)? Collections.<User>emptyList():users;
     }
+
+
+    
     public void addOrUpdate(Agent agent) {
         /**
          * 修改过agent
@@ -168,6 +173,7 @@ public class AgentService {
         return queryDao.getCountBySql(sql, id)>0?"no":"yes";
     }
 
+    
     public void delete(Long id) {
         queryDao.createSQLQuery("UPDATE T_AGENT SET deleted=1 WHERE agentId = " + id).executeUpdate();
         flushAgent();
@@ -181,6 +187,7 @@ public class AgentService {
         return (queryDao.getCountBySql(sql, host)) > 0L ? "no" : "yes";
     }
 
+    
     public String editPwd(Long id, String pwd0, String pwd1, String pwd2) {
         Agent agent = this.getAgent(id);
         String password = DigestUtils.md5Hex(pwd0);

@@ -44,12 +44,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
 
 import static org.opencron.common.utils.CommonUtils.notEmpty;
 
 @Service
+@Transactional
 public class JobService {
 
     @Autowired
@@ -202,6 +204,7 @@ public class JobService {
         return Collections.emptyList();
     }
 
+    
     public Job addOrUpdate(Job job) {
         Job saveJob = (Job) queryDao.save(job);
         flushJob();
@@ -280,12 +283,30 @@ public class JobService {
         return "yes";
     }
 
-
+    
     public void delete(Long jobId) {
-        queryDao.createSQLQuery("UPDATE T_JOB SET deleted=1 WHERE jobId = " + jobId).executeUpdate();
-        flushJob();
+        Job job = getJob(jobId);
+        if (job != null) {
+            //单一任务,直接执行删除
+            String sql = "UPDATE T_JOB SET deleted=1 WHERE ";
+            if (job.getJobType().equals(JobType.SINGLETON.getCode())) {
+                sql += " jobId=" + jobId;
+            }
+            if (job.getJobType().equals(JobType.FLOW.getCode())) {
+                if (job.getFlowNum() == 0) {
+                    //顶层流程任务,则删除一组
+                    sql += " flowId=" + job.getFlowId();
+                } else {
+                    //其中一个子流程任务,则删除单个
+                    sql += " jobId=" + jobId;
+                }
+            }
+            queryDao.createSQLQuery(sql).executeUpdate();
+            flushJob();
+        }
     }
 
+    
     public void saveFlowJob(Job job, List<Job> children) throws SchedulerException {
         job.setLastChild(false);
         job.setUpdateTime(new Date());

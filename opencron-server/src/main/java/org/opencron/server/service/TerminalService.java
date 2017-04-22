@@ -33,6 +33,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
@@ -79,6 +80,7 @@ import static org.opencron.server.job.OpencronTools.SSH_SESSION_ID;
  */
 
 @Service
+@Transactional
 public class TerminalService {
 
     private static Logger logger = LoggerFactory.getLogger(TerminalService.class);
