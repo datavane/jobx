@@ -26,7 +26,6 @@ import org.opencron.server.service.*;
 import org.opencron.common.job.Opencron;
 import org.opencron.common.utils.CommonUtils;
 import org.opencron.server.domain.Record;
-import org.opencron.server.domain.Agent;
 import org.opencron.server.vo.JobVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -101,7 +100,7 @@ public class OpencronTask implements InitializingBean {
 
     private void clearCache() {
         OpencronTools.CACHE.remove(OpencronTools.CACHED_AGENT_ID);
-        OpencronTools.CACHE.remove(OpencronTools.CACHED_CRONTAB_JOB);
+        OpencronTools.CACHE.remove(OpencronTools.CACHED_JOB_ID);
     }
 
 

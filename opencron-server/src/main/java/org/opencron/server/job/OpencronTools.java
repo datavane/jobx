@@ -38,7 +38,7 @@ public final class OpencronTools {
 
     public static final String CACHED_AGENT_ID = "opencron_agent";
 
-    public static final String CACHED_CRONTAB_JOB = "opencron_cron_job";
+    public static final String CACHED_JOB_ID = "opencron_job";
 
     public static final String LOGIN_USER = "opencron_user";
 

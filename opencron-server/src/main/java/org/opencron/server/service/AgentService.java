@@ -62,7 +62,7 @@ public class AgentService {
     private UserService userService;
 
     public List<Agent> getAgentByConnType(Opencron.ConnType connType) {
-        return queryDao.sqlQuery(Agent.class,"SELECT * FROM T_AGENT WHERE status = 1 AND proxy = "+connType.getType());
+        return queryDao.sqlQuery(Agent.class,"SELECT * FROM T_AGENT WHERE deleted=0 AND status = 1 AND proxy = "+connType.getType());
     }
 
     public List<Agent> getAll() {
@@ -73,12 +73,12 @@ public class AgentService {
        return OpencronTools.CACHE.get(OpencronTools.CACHED_AGENT_ID,List.class);
     }
 
-    private void flushAgent(){
-        OpencronTools.CACHE.put(OpencronTools.CACHED_AGENT_ID,queryDao.getAll(Agent.class));
+    private synchronized void flushAgent() {
+        OpencronTools.CACHE.put(OpencronTools.CACHED_AGENT_ID,queryDao.createSQLQuery("SELECT * FROM T_AGENT WHERE deleted=0").list());
     }
 
     public List<Agent> getOwnerAgentByStatus(HttpSession session,int status){
-        String sql = "SELECT * FROM T_AGENT WHERE status=?";
+        String sql = "SELECT * FROM T_AGENT WHERE deleted=0 AND status=?";
         if (!OpencronTools.isPermission(session)) {
             User user = OpencronTools.getUser(session);
             sql += " AND agentId in ("+user.getAgentIds()+")";
@@ -87,10 +87,10 @@ public class AgentService {
     }
 
     public PageBean getOwnerAgent(HttpSession session,PageBean pageBean) {
-        String sql = "SELECT * FROM T_AGENT";
+        String sql = "SELECT * FROM T_AGENT WHERE deleted=0 ";
         if (!OpencronTools.isPermission(session)) {
             User user = OpencronTools.getUser(session);
-            sql += " WHERE agentId IN ("+user.getAgentIds()+")";
+            sql += " AND agentId IN ("+user.getAgentIds()+")";
         }
         pageBean.verifyOrderBy("name","name","ip","port");
         sql += " ORDER By "+ pageBean.getOrderBy() + " " + pageBean.getOrder();
@@ -101,14 +101,14 @@ public class AgentService {
     public Agent getAgent(Long id) {
         Agent agent =  queryDao.get(Agent.class, id);
         if (agent!=null) {
-            agent.setUsers(getAgentUsers(agent.getAgentId()));
+            agent.setUsers(getAgentUsers(agent));
         }
         return agent;
     }
 
-    private List<User> getAgentUsers(Long agentId){
+    private List<User> getAgentUsers(Agent agent){
         String sql = "SELECT * FROM T_USER WHERE FIND_IN_SET(?,AGENTIDS)";
-        List<User> users = queryDao.sqlQuery(User.class,sql,agentId);
+        List<User> users = queryDao.sqlQuery(User.class,sql,agent.getAgentId());
         return isEmpty(users)? Collections.<User>emptyList():users;
     }
     public void addOrUpdate(Agent agent) {
@@ -153,7 +153,7 @@ public class AgentService {
     }
 
     public String checkName(Long id, String name) {
-        String sql = "SELECT COUNT(1) FROM T_AGENT WHERE name=? ";
+        String sql = "SELECT COUNT(1) FROM T_AGENT WHERE deleted=0 AND name=? ";
         if (notEmpty(id)) {
             sql += " AND agentId != " + id;
         }
@@ -162,26 +162,22 @@ public class AgentService {
 
     public String checkDelete(Long id) {
         Agent agent = getAgent(id);
-        if (agent==null) {
+        if (agent == null) {
             return "error";
         }
 
         //检查该执行器是否定义的有任务
-        String sql = "SELECT COUNT(1) FROM T_AGENT AS G INNER JOIN T_JOB AS J ON G.agentId = J.agentId WHERE G.agentId=?";
+        String sql = "SELECT COUNT(1) FROM T_AGENT AS G INNER JOIN T_JOB AS J ON G.agentId = J.agentId WHERE G.agentId=? AND J.deleted=0";
         return queryDao.getCountBySql(sql, id)>0?"no":"yes";
     }
 
-    public synchronized void delete(Long id) {
-        Agent agent = getAgent(id);
-        queryDao.delete(agent);
-        /**
-         * 同步缓存...
-         */
+    public void delete(Long id) {
+        queryDao.createSQLQuery("UPDATE T_AGENT SET deleted=1 WHERE agentId = " + id).executeUpdate();
         flushAgent();
     }
 
     public String checkhost(Long id, String host) {
-        String sql = "SELECT COUNT(1) FROM T_AGENT WHERE ip=? ";
+        String sql = "SELECT COUNT(1) FROM T_AGENT WHERE deleted=0 AND ip=? ";
         if (notEmpty(id)) {
             sql += " AND agentId != " + id;
         }
@@ -211,21 +207,20 @@ public class AgentService {
         }
     }
 
-
     public List<Agent> getOwnerAgents(HttpSession session) {
-        String sql = "SELECT * FROM T_AGENT ";
+        String sql = "SELECT * FROM T_AGENT WHERE deleted=0 ";
         if (!OpencronTools.isPermission(session)) {
             User user = OpencronTools.getUser(session);
-            sql += " WHERE agentId IN ("+user.getAgentIds()+")";
+            sql += " AND agentId IN ("+user.getAgentIds()+")";
         }
         return queryDao.sqlQuery(Agent.class,sql);
     }
 
     public Agent getByHost(String host) {
-        String sql = "SELECT * FROM T_AGENT WHERE ip=?";
+        String sql = "SELECT * FROM T_AGENT WHERE deleted=0 AND ip=?";
         Agent agent = queryDao.sqlUniqueQuery(Agent.class,sql,host);
         if (agent!=null) {
-            agent.setUsers(getAgentUsers(agent.getAgentId()));
+            agent.setUsers(getAgentUsers(agent));
         }
         return agent;
     }

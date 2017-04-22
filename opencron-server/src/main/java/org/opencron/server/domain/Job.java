@@ -67,7 +67,7 @@ public class Job implements Serializable {
     @Column(columnDefinition="TEXT")
     private String emailAddress;
 
-    private Boolean status;//是否有效
+    private Boolean deleted;//是否删除
 
     //运行超时的截止时间
     private Integer timeout;
@@ -241,12 +241,12 @@ public class Job implements Serializable {
         this.timeout = timeout;
     }
 
-    public Boolean getStatus() {
-        return status;
+    public Boolean getDeleted() {
+        return deleted;
     }
 
-    public void setStatus(Boolean status) {
-        this.status = status;
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
     }
 
     @Override
@@ -272,7 +272,7 @@ public class Job implements Serializable {
                 ", warning=" + warning +
                 ", mobiles='" + mobiles + '\'' +
                 ", emailAddress='" + emailAddress + '\'' +
-                ", status=" + status +
+                ", deleted=" + deleted +
                 ", timeout=" + timeout +
                 '}';
     }

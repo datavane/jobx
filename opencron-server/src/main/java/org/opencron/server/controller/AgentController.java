@@ -104,6 +104,7 @@ public class AgentController extends BaseController{
 
         agent.setPassword(DigestUtils.md5Hex(agent.getPassword()));
         agent.setStatus(true);
+        agent.setDeleted(false);
         agent.setUpdateTime(new Date());
         agentService.addOrUpdate(agent);
         return "redirect:/agent/view?csrf="+ OpencronTools.getCSRF(session);

@@ -129,7 +129,7 @@ public class JobController  extends BaseController{
     @RequestMapping(value = "/save")
     public String save(HttpSession session,Job job, HttpServletRequest request) throws SchedulerException {
         job.setCommand( DigestUtils.passBase64(job.getCommand()));
-        job.setStatus(true);//Job有效
+        job.setDeleted(false);
         if (job.getJobId()!=null) {
             Job job1 = jobService.getJob(job.getJobId());
             if (!jobService.checkJobOwner(session,job1.getUserId())) return "redirect:/job/view?csrf="+ OpencronTools.getCSRF(session);
@@ -174,7 +174,7 @@ public class JobController  extends BaseController{
                 chind.setComment(StringUtils.htmlEncode( (String) comment[i]) );
                 chind.setTimeout(Integer.parseInt((String) timeout[i]));
                 chind.setRedo(Integer.parseInt((String) redo[i]));
-                chind.setStatus(true);
+                chind.setDeleted(false);
                 if (chind.getRedo() == 0) {
                     chind.setRunCount(null);
                 } else {

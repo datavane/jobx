@@ -87,13 +87,13 @@ public class RecordService {
         for (RecordVo parentRecord : parentRecords) {
             String sql = "SELECT R.recordId,R.jobId,R.jobType,R.startTime,R.endTime,R.execType,R.status,R.redoCount,R.command,R.success,T.jobName,D.name AS agentName,D.password,D.ip,T.cronExp,U.userName AS operateUname FROM T_RECORD R INNER JOIN T_JOB T ON R.jobId = T.jobId LEFT JOIN T_AGENT D ON T.agentId = D.agentId LEFT JOIN T_USER AS U ON T.userId = U.userId WHERE R.parentId = ? ORDER BY R.startTime ASC ";
             //单一任务有重跑记录的，查出后并把最后一条重跑记录的执行结果记作整个任务的成功、失败状态
-            if (parentRecord.getJobType() == 0 && parentRecord.getRedoCount() > 0) {
+            if (parentRecord.getJobType() == Opencron.JobType.FLOW.getCode() && parentRecord.getRedoCount() > 0) {
                 List<RecordVo> records = queryDao.sqlQuery(RecordVo.class, sql, parentRecord.getRecordId());
                 parentRecord.setSuccess(records.get(records.size() - 1).getSuccess());
                 parentRecord.setChildRecord(records);
             }
             //流程任务，先查出父任务的重跑记录，再查出各个子任务，最后查询子任务的重跑记录，并以最后一条记录的执行结果记作整个流程任务的成功、失败状态
-            if (parentRecord.getJobType() == 1) {
+            if (parentRecord.getJobType() == Opencron.JobType.FLOW.getCode()) {
                 if (parentRecord.getRedoCount() != 0) {
                     List<RecordVo> records = queryDao.sqlQuery(RecordVo.class, sql, parentRecord.getRecordId());
                     //流程任务不能保证子任务也有记录，先给父任务一个成功、失败状态
@@ -132,7 +132,6 @@ public class RecordService {
     public RecordVo getDetailById(Long id) {
         return queryDao.sqlUniqueQuery(RecordVo.class, "SELECT R.recordId,R.jobType,R.jobId,R.startTime,R.endTime,R.execType,R.returnCode,R.message,R.redoCount,R.command,R.success,T.jobName,T.agentId,D.name AS agentName,D.password,D.ip,T.cronExp,T.userId,U.userName AS operateUname FROM T_RECORD R LEFT JOIN T_JOB T ON R.jobId = T.jobId LEFT JOIN T_AGENT D ON R.agentId = D.agentId LEFT JOIN T_USER AS U ON R.userId = U.userId WHERE R.recordId = ?", id);
     }
-
 
     public Record save(Record record) {
         return (Record) queryDao.save(record);

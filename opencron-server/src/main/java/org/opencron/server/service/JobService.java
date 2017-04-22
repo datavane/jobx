@@ -73,14 +73,14 @@ public class JobService {
      * @return
      */
     public List<JobVo> getJobVo(ExecType execType, CronType cronType) {
-        String sql = "SELECT T.*,D.name AS agentName,D.port,D.ip,D.password FROM T_JOB T LEFT JOIN T_AGENT D ON T.agentId = D.agentId WHERE IFNULL(T.flowNum,0)=0 AND cronType=? AND execType = ? AND T.status=1";
+        String sql = "SELECT T.*,D.name AS agentName,D.port,D.ip,D.password FROM T_JOB T LEFT JOIN T_AGENT D ON T.agentId = D.agentId WHERE IFNULL(T.flowNum,0)=0 AND cronType=? AND execType = ? AND T.deleted=0";
         List<JobVo> jobs = queryDao.sqlQuery(JobVo.class, sql, cronType.getType(), execType.getStatus());
         queryJobMore(jobs);
         return jobs;
     }
 
     public List<JobVo> getJobVoByAgentId(Agent agent, ExecType execType, CronType cronType) {
-        String sql = "SELECT T.*,D.name AS agentName,D.port,D.ip,D.password FROM T_JOB T INNER JOIN T_AGENT D ON T.agentId = D.agentId WHERE IFNULL(T.flowNum,0)=0 AND cronType=? AND execType = ? AND T.status=1 AND D.agentId=? ";
+        String sql = "SELECT T.*,D.name AS agentName,D.port,D.ip,D.password FROM T_JOB T INNER JOIN T_AGENT D ON T.agentId = D.agentId WHERE IFNULL(T.flowNum,0)=0 AND cronType=? AND execType = ? AND T.deleted=0 AND D.agentId=? ";
         List<JobVo> jobs = queryDao.sqlQuery(JobVo.class, sql, cronType.getType(), execType.getStatus(),agent.getAgentId());
         queryJobMore(jobs);
         return jobs;
@@ -97,7 +97,7 @@ public class JobService {
     }
 
     public List<Job> getJobsByJobType(HttpSession session,JobType jobType){
-        String sql = "SELECT * FROM T_JOB WHERE status=1 AND jobType=?";
+        String sql = "SELECT * FROM T_JOB WHERE deleted=0 AND jobType=?";
         if (JobType.FLOW.equals(jobType)) {
             sql +=" AND flowNum=0";
         }
@@ -113,13 +113,21 @@ public class JobService {
         return getJobVo(Opencron.ExecType.AUTO, Opencron.CronType.CRONTAB);
     }
 
-    private void flushOpencron(){
-        OpencronTools.CACHE.put(OpencronTools.CACHED_CRONTAB_JOB,getJobVo(Opencron.ExecType.AUTO, Opencron.CronType.CRONTAB));
+    public List<Job> getAll() {
+        List<Job> jobs = OpencronTools.CACHE.get(OpencronTools.CACHED_JOB_ID,List.class);
+        if (CommonUtils.isEmpty(jobs)) {
+            flushJob();
+        }
+        return OpencronTools.CACHE.get(OpencronTools.CACHED_JOB_ID,List.class);
+    }
+
+    private synchronized void flushJob(){
+        OpencronTools.CACHE.put(OpencronTools.CACHED_JOB_ID,queryDao.getAll(Job.class));
     }
 
     public PageBean<JobVo> getJobVos(HttpSession session,PageBean pageBean, JobVo job) {
         String sql = "SELECT T.*,D.name AS agentName,D.port,D.ip,D.password,U.userName AS operateUname " +
-                " FROM T_JOB AS T LEFT JOIN T_AGENT AS D ON T.agentId = D.agentId LEFT JOIN T_USER AS U ON T.userId = U.userId WHERE IFNULL(flowNum,0)=0 AND T.status=1 ";
+                " FROM T_JOB AS T LEFT JOIN T_AGENT AS D ON T.agentId = D.agentId LEFT JOIN T_USER AS U ON T.userId = U.userId WHERE IFNULL(flowNum,0)=0 AND T.deleted=0 ";
         if (job != null) {
             if (notEmpty(job.getAgentId())) {
                 sql += " AND T.agentId=" + job.getAgentId();
@@ -155,7 +163,7 @@ public class JobService {
         if (job.getJobType().equals(JobType.FLOW.getCode())) {
             String sql = "SELECT T.*,D.name AS agentName,D.port,D.ip,D.password,U.userName AS operateUname" +
                     " FROM T_JOB AS T LEFT JOIN T_AGENT AS D ON T.agentId = D.agentId LEFT JOIN T_USER AS U " +
-                    " ON T.userId = U.userId WHERE T.status=1 AND T.flowId = ? AND T.flowNum>0 ORDER BY T.flowNum ASC";
+                    " ON T.userId = U.userId WHERE T.deleted=0 AND T.flowId = ? AND T.flowNum>0 ORDER BY T.flowNum ASC";
             List<JobVo> childJobs = queryDao.sqlQuery(JobVo.class, sql, job.getFlowId());
             if (CommonUtils.notEmpty(childJobs)) {
                 for(JobVo jobVo:childJobs){
@@ -170,7 +178,7 @@ public class JobService {
 
     public Job addOrUpdate(Job job) {
         Job saveJob = (Job)queryDao.save(job);
-        flushOpencron();
+        flushJob();
         return saveJob;
     }
 
@@ -192,10 +200,6 @@ public class JobService {
         }
     }
 
-    public List<Job> getAll() {
-        return queryDao.getAll(Job.class);
-    }
-
     public List<JobVo> getJobByAgentId(Long agentId) {
         String sql = "SELECT T.*,D.name AS agentName,D.port,D.ip,D.password,U.userName AS operateUname " +
                 " FROM T_JOB T LEFT JOIN T_USER U ON T.userId = U.userId LEFT JOIN T_AGENT D ON T.agentId = D.agentId WHERE T.agentId =?";
@@ -203,7 +207,7 @@ public class JobService {
     }
 
     public String checkName(Long jobId,Long agentId, String name) {
-        String sql = "SELECT COUNT(1) FROM T_JOB WHERE agentId=? AND status=1 AND jobName=? ";
+        String sql = "SELECT COUNT(1) FROM T_JOB WHERE agentId=? AND deleted=0 AND jobName=? ";
         if (notEmpty(jobId)) {
             sql += " AND jobId != " + jobId + " AND flowId != " + jobId;
         }
@@ -243,10 +247,9 @@ public class JobService {
 
 
     @Transactional(readOnly = false)
-    public int delete(Long jobId) {
-        int count = queryDao.createSQLQuery("UPDATE T_JOB SET status=0 WHERE jobId = " + jobId).executeUpdate();
-        flushOpencron();
-        return count;
+    public void delete(Long jobId) {
+        queryDao.createSQLQuery("UPDATE T_JOB SET deleted=1 WHERE jobId = " + jobId).executeUpdate();
+        flushJob();
     }
 
     @Transactional(readOnly = false)

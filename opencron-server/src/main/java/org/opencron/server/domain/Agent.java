@@ -53,6 +53,7 @@ public class Agent implements Serializable {
     private String emailAddress;
     private String mobiles;
     private Boolean status;
+    private Boolean deleted;//是否删除
     private Date failTime;
     private String comment;
     private Date updateTime;
@@ -188,6 +189,14 @@ public class Agent implements Serializable {
         this.proxy = proxy;
     }
 
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -224,11 +233,13 @@ public class Agent implements Serializable {
                 ", emailAddress='" + emailAddress + '\'' +
                 ", mobiles='" + mobiles + '\'' +
                 ", status=" + status +
+                ", deleted=" + deleted +
                 ", failTime=" + failTime +
                 ", comment='" + comment + '\'' +
                 ", updateTime=" + updateTime +
                 ", proxy=" + proxy +
                 ", taskCount=" + taskCount +
+                ", users=" + users +
                 '}';
     }
 }
