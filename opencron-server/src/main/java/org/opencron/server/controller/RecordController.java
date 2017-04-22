@@ -40,7 +40,7 @@ import static org.opencron.common.utils.CommonUtils.notEmpty;
 
 @Controller
 @RequestMapping("/record")
-public class RecordController  extends BaseController{
+public class RecordController extends BaseController {
 
     @Autowired
     private RecordService recordService;
@@ -56,13 +56,14 @@ public class RecordController  extends BaseController{
 
     /**
      * 查询已完成任务列表
+     *
      * @param pageBean
      * @param recordVo
      * @param model
      * @return
      */
     @RequestMapping("/done")
-    public String queryDone(HttpSession session,PageBean pageBean, RecordVo recordVo, String queryTime, Model model) {
+    public String queryDone(HttpSession session, PageBean pageBean, RecordVo recordVo, String queryTime, Model model) {
 
         model.addAttribute("agents", agentService.getOwnerAgents(session));
 
@@ -89,13 +90,13 @@ public class RecordController  extends BaseController{
         if (notEmpty(recordVo.getExecType())) {
             model.addAttribute("execType", recordVo.getExecType());
         }
-        recordService.query(session,pageBean, recordVo, queryTime, true);
+        recordService.query(session, pageBean, recordVo, queryTime, true);
 
         return "/record/done";
     }
 
     @RequestMapping("/running")
-    public String queryRunning(HttpSession session,HttpServletRequest request, PageBean pageBean, RecordVo recordVo, String queryTime, Model model) {
+    public String queryRunning(HttpSession session, HttpServletRequest request, PageBean pageBean, RecordVo recordVo, String queryTime, Model model) {
 
         model.addAttribute("agents", agentService.getOwnerAgents(session));
 
@@ -115,7 +116,7 @@ public class RecordController  extends BaseController{
         if (notEmpty(recordVo.getExecType())) {
             model.addAttribute("execType", recordVo.getExecType());
         }
-        recordService.query(session,pageBean, recordVo, queryTime, false);
+        recordService.query(session, pageBean, recordVo, queryTime, false);
 
         if (request.getParameter("refresh") != null) {
             return "/record/refresh";
@@ -134,16 +135,16 @@ public class RecordController  extends BaseController{
     }
 
     @RequestMapping("/kill")
-    public void kill(HttpSession session,HttpServletResponse response, Long recordId) {
+    public void kill(HttpSession session, HttpServletResponse response, Long recordId) {
         Record record = recordService.get(recordId);
-        if (Opencron.RunStatus.RERUNNING.getStatus().equals(record.getStatus())){
+        if (Opencron.RunStatus.RERUNNING.getStatus().equals(record.getStatus())) {
             //父记录临时改为停止中
             record.setStatus(Opencron.RunStatus.STOPPING.getStatus());
             recordService.save(record);
             //得到当前正在重跑的子记录
             record = recordService.getReRunningSubJob(recordId);
         }
-        if (!jobService.checkJobOwner(session,record.getUserId()))return;
+        if (!jobService.checkJobOwner(session, record.getUserId())) return;
         Boolean flag = executeService.killJob(record);
         WebUtils.writeHtml(response, flag.toString());
     }

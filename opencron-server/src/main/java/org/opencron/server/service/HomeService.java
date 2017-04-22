@@ -34,7 +34,6 @@ import org.opencron.server.tag.PageBean;
 import org.opencron.server.vo.LogVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -71,12 +70,12 @@ public class HomeService {
             }
 
             String singlelogin = PropertyPlaceholder.get("opencron.singlelogin");
-            if (singlelogin!=null && singlelogin.trim().equalsIgnoreCase("true")) {
+            if (singlelogin != null && singlelogin.trim().equalsIgnoreCase("true")) {
                 Boolean logined = SingleLoginListener.logined(user);
                 if (logined) {
                     HttpSession session = SingleLoginListener.getLoginedSession(user.getUserId());
-                    if (session!=null) {
-                        session.setAttribute("loginMsg","你的账号在其他地方登录,请重新登录");
+                    if (session != null) {
+                        session.setAttribute("loginMsg", "你的账号在其他地方登录,请重新登录");
                     }
                     //拿到已经登录的session,将其踢下线
                     SingleLoginListener.removeUserSession(user.getUserId());
@@ -85,15 +84,18 @@ public class HomeService {
                 }
                 SingleLoginListener.addUserSession(httpSession);
             }
-            OpencronTools.logined(request,user);
+            OpencronTools.logined(request, user);
             return 200;
         } else {
             return 500;
         }
     }
 
-    public PageBean<LogVo> getLog(HttpSession session,PageBean pageBean, Long agentId, String sendTime) {
-        String sql = "SELECT L.*,W.name AS agentName FROM T_LOG L LEFT JOIN T_AGENT W ON L.agentId = W.agentId WHERE 1=1 ";
+    public PageBean<LogVo> getLog(HttpSession session, PageBean pageBean, Long agentId, String sendTime) {
+        String sql = "SELECT L.*,W.name AS agentName FROM T_LOG AS L " +
+                "LEFT JOIN T_AGENT AS W " +
+                "ON L.agentId = W.agentId " +
+                "WHERE 1=1 ";
         if (notEmpty(agentId)) {
             sql += " AND L.agentId = " + agentId;
         }
@@ -109,18 +111,18 @@ public class HomeService {
     }
 
     public List<LogVo> getUnReadMessage(HttpSession session) {
-        String sql = "SELECT * FROM T_LOG L WHERE isRead=0 AND type=2 ";
+        String sql = "SELECT * FROM T_LOG WHERE isRead=0 AND type=2 ";
         if (!OpencronTools.isPermission(session)) {
-            sql += " and L.userId = " + OpencronTools.getUserId(session);
+            sql += " and userId = " + OpencronTools.getUserId(session);
         }
-        sql += " ORDER BY L.sendTime DESC LIMIT 5";
-        return queryDao.sqlQuery(LogVo.class,sql);
+        sql += " ORDER BY sendTime DESC LIMIT 5";
+        return queryDao.sqlQuery(LogVo.class, sql);
     }
 
     public Long getUnReadCount(HttpSession session) {
-        String sql = "SELECT COUNT(1) FROM T_LOG L WHERE isRead=0 AND type=2 ";
+        String sql = "SELECT COUNT(1) FROM T_LOG WHERE isRead=0 AND type=2 ";
         if (!OpencronTools.isPermission(session)) {
-            sql += " and L.userId = " + OpencronTools.getUserId(session);
+            sql += " and userId = " + OpencronTools.getUserId(session);
         }
         return queryDao.getCountBySql(sql);
     }
@@ -131,15 +133,13 @@ public class HomeService {
     }
 
     public Log getLogDetail(Long logId) {
-        return queryDao.get(Log.class,logId);
+        return queryDao.get(Log.class, logId);
     }
 
-    @Transactional(readOnly = false)
     public void updateAfterRead(Long logId) {
         String sql = "UPDATE T_LOG SET isRead = 1 WHERE logId = ? and Type = ?";
-        queryDao.createSQLQuery(sql,logId, Opencron.MsgType.WEBSITE.getValue()).executeUpdate();
+        queryDao.createSQLQuery(sql, logId, Opencron.MsgType.WEBSITE.getValue()).executeUpdate();
     }
-
 
 
 }

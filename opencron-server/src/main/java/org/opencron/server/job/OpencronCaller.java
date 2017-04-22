@@ -40,10 +40,9 @@ import org.springframework.stereotype.Component;
 import java.lang.reflect.Method;
 
 /**
- *
  * agent OpencronCaller
  *
- * @author  <a href="mailto:benjobs@qq.com">B e n</a>
+ * @author <a href="mailto:benjobs@qq.com">B e n</a>
  * @version 1.0
  * @date 2016-03-27
  */
@@ -54,16 +53,16 @@ public class OpencronCaller {
     @Autowired
     private AgentService agentService;
 
-    public Response call(Request request,Agent agent) throws Exception {
+    public Response call(Request request, Agent agent) throws Exception {
 
         //代理...
         if (agent.getProxy() == Opencron.ConnType.PROXY.getType()) {
             ParamsMap proxyParams = new ParamsMap();
             proxyParams.put(
-                    "proxyHost",request.getHostName(),
-                    "proxyPort",request.getPort(),
-                    "proxyAction",request.getAction().name(),
-                    "proxyPassword",request.getPassword()
+                    "proxyHost", request.getHostName(),
+                    "proxyPort", request.getPort(),
+                    "proxyAction", request.getAction().name(),
+                    "proxyPassword", request.getPassword()
             );
 
             if (CommonUtils.notEmpty(request.getParams())) {
@@ -83,25 +82,25 @@ public class OpencronCaller {
          * ping的超时设置为5毫秒,其他默认
          */
         if (request.getAction().equals(Action.PING)) {
-            transport = new TSocket(request.getHostName(),request.getPort(),1000*10);
-        }else {
-            transport = new TSocket(request.getHostName(),request.getPort());
+            transport = new TSocket(request.getHostName(), request.getPort(), 1000 * 10);
+        } else {
+            transport = new TSocket(request.getHostName(), request.getPort());
         }
         TProtocol protocol = new TBinaryProtocol(transport);
         Opencron.Client client = new Opencron.Client(protocol);
         transport.open();
 
         Response response = null;
-        for(Method method:client.getClass().getMethods()){
+        for (Method method : client.getClass().getMethods()) {
             if (method.getName().equalsIgnoreCase(request.getAction().name())) {
                 response = (Response) method.invoke(client, request);
                 break;
             }
         }
 
-       transport.flush();
-       transport.close();
-       return response;
-   }
+        transport.flush();
+        transport.close();
+        return response;
+    }
 
 }

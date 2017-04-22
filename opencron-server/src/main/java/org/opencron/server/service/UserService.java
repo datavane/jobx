@@ -32,7 +32,6 @@ import org.opencron.common.utils.Digests;
 import org.opencron.common.utils.Encodes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.io.IOException;
@@ -79,9 +78,8 @@ public class UserService {
         queryDao.save(user);
     }
 
-    @Transactional(readOnly = false)
     public User uploadimg(File file, Long userId) throws IOException {
-        return uploadDao.uploadimg(file,userId);
+        return uploadDao.uploadimg(file, userId);
     }
 
     public User queryUserById(Long id) {

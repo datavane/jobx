@@ -60,27 +60,27 @@ public final class OpencronTools {
 
     private static Logger logger = LoggerFactory.getLogger(OpencronTools.class);
 
-    public static boolean isPermission(HttpSession session){
+    public static boolean isPermission(HttpSession session) {
         Object obj = session.getAttribute(PERMISSION);
-        if (obj==null) {
+        if (obj == null) {
             return false;
         }
         return (Boolean) obj;
     }
 
-    public static void logined(HttpServletRequest request,User user){
+    public static void logined(HttpServletRequest request, User user) {
         HttpSession session = request.getSession();
-        session.setAttribute(HTTP_SESSION_ID,session.getId());
-        session.setAttribute(LOGIN_USER,user);
-        session.setAttribute(LOGIN_USER_ID,user.getUserId());
+        session.setAttribute(HTTP_SESSION_ID, session.getId());
+        session.setAttribute(LOGIN_USER, user);
+        session.setAttribute(LOGIN_USER_ID, user.getUserId());
         session.setAttribute(CONTEXT_PATH_NAME, WebUtils.getWebUrlPath(request));
     }
 
-    public static User getUser(HttpSession session){
-        return (User)session.getAttribute(LOGIN_USER);
+    public static User getUser(HttpSession session) {
+        return (User) session.getAttribute(LOGIN_USER);
     }
 
-    public static Long getUserId(HttpSession session){
+    public static Long getUserId(HttpSession session) {
         return (Long) session.getAttribute(LOGIN_USER_ID);
     }
 
@@ -111,14 +111,14 @@ public final class OpencronTools {
 
     public static String getCSRF(HttpServletRequest request) {
         String csrf = request.getHeader(CSRF_NAME);
-        if (csrf==null) {
+        if (csrf == null) {
             csrf = request.getParameter(CSRF_NAME);
         }
         return csrf;
     }
 
     public static void setSshSessionId(HttpSession session, String sshSessionId) {
-        session.setAttribute(SSH_SESSION_ID,sshSessionId);
+        session.setAttribute(SSH_SESSION_ID, sshSessionId);
     }
 
     public static String getResourceId() {
@@ -130,21 +130,21 @@ public final class OpencronTools {
 
     public static class CACHE {
 
-        private static Map<String,Object> cache = new ConcurrentHashMap<String,Object>(0);
+        private static Map<String, Object> cache = new ConcurrentHashMap<String, Object>(0);
 
-        public static Object get(String key){
+        public static Object get(String key) {
             return cache.get(key);
         }
 
-        public static <T>T get(String key,Class<T> clazz){
+        public static <T> T get(String key, Class<T> clazz) {
             return (T) cache.get(key);
         }
 
-        public static void put(String key,Object value){
-            cache.put(key,value);
+        public static void put(String key, Object value) {
+            cache.put(key, value);
         }
 
-        public static Object remove(String key){
+        public static Object remove(String key) {
             return cache.remove(key);
         }
 
@@ -213,11 +213,11 @@ public final class OpencronTools {
 
         private static String getKeyPath() {
             if (KEY_PATH == null) {
-                KEY_PATH = System.getProperties().getProperty("user.home")+File.separator+".opencron";
+                KEY_PATH = System.getProperties().getProperty("user.home") + File.separator + ".opencron";
                 // 从config.properties配置都读取用户手动设置的keypath的位置,配置文件里默认没有,不建议用户指定
                 // 如果指定了位置可能会导致之前所有已可ssh登录的机器无法登陆,需要再次输入用户名密码
                 String path = PropertyPlaceholder.get("opencron.keypath");
-                if (path!=null) {
+                if (path != null) {
                     KEY_PATH = path;
                 }
             }
@@ -225,7 +225,7 @@ public final class OpencronTools {
         }
 
         private static String getPrivateKeyPath() {
-            PRIVATE_KEY_PATH = getKeyPath() + File.separator+ "id_rsa";
+            PRIVATE_KEY_PATH = getKeyPath() + File.separator + "id_rsa";
             return PRIVATE_KEY_PATH;
         }
 

@@ -47,7 +47,7 @@ import static org.opencron.common.utils.CommonUtils.notEmpty;
  */
 @Controller
 @RequestMapping("/user")
-public class UserController  extends BaseController{
+public class UserController extends BaseController {
 
     @Autowired
     private UserService userService;
@@ -62,7 +62,7 @@ public class UserController  extends BaseController{
     }
 
     @RequestMapping("/detail")
-    public String detail(Long userId,Model model) {
+    public String detail(Long userId, Model model) {
         User user = userService.queryUserById(userId);
         if (user == null) {
             return "/error/404";
@@ -86,10 +86,10 @@ public class UserController  extends BaseController{
     }
 
     @RequestMapping("/editpage")
-    public String editPage(HttpSession session,Model model, Long id) {
+    public String editPage(HttpSession session, Model model, Long id) {
         if (!OpencronTools.isPermission(session)
-                && !OpencronTools.getUserId(session).equals(id)){
-            return "redirect:/user/detail?csrf="+ OpencronTools.getCSRF(session);
+                && !OpencronTools.getUserId(session).equals(id)) {
+            return "redirect:/user/detail?csrf=" + OpencronTools.getCSRF(session);
         }
         model.addAttribute("u", userService.queryUserById(id));
         model.addAttribute("role", userService.getRoleGroup());
@@ -110,7 +110,7 @@ public class UserController  extends BaseController{
         user1.setQq(user.getQq());
         user1.setModifyTime(new Date());
         userService.updateUser(user1);
-        return "redirect:/user/view?csrf="+ OpencronTools.getCSRF(session);
+        return "redirect:/user/view?csrf=" + OpencronTools.getCSRF(session);
     }
 
     @RequestMapping("/pwdpage")

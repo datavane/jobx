@@ -44,6 +44,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
+
 import static org.opencron.common.job.Opencron.*;
 
 @Service
@@ -69,9 +70,9 @@ public class ExecuteService implements Job {
     @Autowired
     private UserService userService;
 
-    private Map<Long,Integer> reExecuteThreadMap = new HashMap<Long, Integer>(0);
+    private Map<Long, Integer> reExecuteThreadMap = new HashMap<Long, Integer>(0);
 
-    private static final String PACKETTOOBIG_ERROR  = "在向MySQL数据库插入数据量过多,需要设定max_allowed_packet";
+    private static final String PACKETTOOBIG_ERROR = "在向MySQL数据库插入数据量过多,需要设定max_allowed_packet";
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
@@ -80,7 +81,7 @@ public class ExecuteService implements Job {
         try {
             ExecuteService executeService = (ExecuteService) jobExecutionContext.getJobDetail().getJobDataMap().get("jobBean");
             boolean success = executeService.executeJob(jobVo);
-            this.loggerInfo("[opencron] job:{} at {}:{},execute:{}",jobVo, success?"successful":"failed");
+            this.loggerInfo("[opencron] job:{} at {}:{},execute:{}", jobVo, success ? "successful" : "failed");
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
         }
@@ -94,7 +95,7 @@ public class ExecuteService implements Job {
         JobType jobType = JobType.getJobType(job.getJobType());
         switch (jobType) {
             case SINGLETON:
-                return executeSingleJob(job,job.getUserId());//单一任务
+                return executeSingleJob(job, job.getUserId());//单一任务
             case FLOW:
                 return executeFlowJob(job);//流程任务
             default:
@@ -107,7 +108,7 @@ public class ExecuteService implements Job {
      */
     private boolean executeSingleJob(JobVo job, Long userId) {
 
-        if (!checkJobPermission(job.getAgentId(),userId))return false;
+        if (!checkJobPermission(job.getAgentId(), userId)) return false;
 
         Record record = new Record(job);
         record.setJobType(JobType.SINGLETON.getCode());//单一任务
@@ -120,20 +121,20 @@ public class ExecuteService implements Job {
             recordService.save(record);
             if (!response.isSuccess()) {
                 //当前的单一任务只运行一次未设置重跑.
-                if (job.getRedo()==0 || job.getRunCount()==0) {
-                    noticeService.notice(job,null);
+                if (job.getRedo() == 0 || job.getRunCount() == 0) {
+                    noticeService.notice(job, null);
                 }
                 this.loggerInfo("execute failed:jobName:{} at ip:{},port:{},info:{}", job, record.getMessage());
                 return false;
-            }else {
+            } else {
                 this.loggerInfo("execute successful:jobName:{} at ip:{},port:{}", job, null);
             }
-        } catch (PacketTooBigException e){
-            noticeService.notice(job,PACKETTOOBIG_ERROR);
+        } catch (PacketTooBigException e) {
+            noticeService.notice(job, PACKETTOOBIG_ERROR);
             this.loggerError("execute failed:jobName:%s at ip:%s,port:%d,info:%s", job, PACKETTOOBIG_ERROR, e);
-        }catch (Exception e) {
-            if (job.getRedo()==0 || job.getRunCount()==0) {
-                noticeService.notice(job,null);
+        } catch (Exception e) {
+            if (job.getRedo() == 0 || job.getRunCount() == 0) {
+                noticeService.notice(job, null);
             }
             this.loggerError("execute failed:jobName:%s at ip:%s,port:%d,info:%s", job, e.getMessage(), e);
         }
@@ -144,9 +145,9 @@ public class ExecuteService implements Job {
      * 流程任务 按流程任务处理方式区分
      */
     private boolean executeFlowJob(JobVo job) {
-        if (!checkJobPermission(job.getAgentId(),job.getUserId()))return false;
+        if (!checkJobPermission(job.getAgentId(), job.getUserId())) return false;
 
-        final long groupId = System.nanoTime()+Math.abs(new Random().nextInt());//分配一个流程组Id
+        final long groupId = System.nanoTime() + Math.abs(new Random().nextInt());//分配一个流程组Id
         final Queue<JobVo> jobQueue = new LinkedBlockingQueue<JobVo>();
         jobQueue.add(job);
         jobQueue.addAll(job.getChildren());
@@ -197,7 +198,7 @@ public class ExecuteService implements Job {
         try {
             jobThread.join();
         } catch (InterruptedException e) {
-            logger.error("[opencron] job rumModel with SAMETIME error:{}",e.getMessage());
+            logger.error("[opencron] job rumModel with SAMETIME error:{}", e.getMessage());
         }
         return !result.contains(false);
     }
@@ -224,9 +225,9 @@ public class ExecuteService implements Job {
             if (!result.isSuccess()) {
                 recordService.save(record);
                 //被kill,直接退出
-                if ( StatusCode.KILL.getValue().equals(result.getExitCode()) ) {
+                if (StatusCode.KILL.getValue().equals(result.getExitCode())) {
                     recordService.flowJobDone(record);
-                }else {
+                } else {
                     success = false;
                 }
                 return false;
@@ -245,10 +246,10 @@ public class ExecuteService implements Job {
         } catch (PingException e) {
             recordService.flowJobDone(record);//通信失败,流程任务挂起.
             return false;
-        }catch (Exception e) {
+        } catch (Exception e) {
             if (e instanceof PacketTooBigException) {
-                record.setMessage(this.loggerError("execute failed(flow job):jobName:%s at ip:%s,port:%d,info:", job,PACKETTOOBIG_ERROR, e));
-            }else {
+                record.setMessage(this.loggerError("execute failed(flow job):jobName:%s at ip:%s,port:%d,info:", job, PACKETTOOBIG_ERROR, e));
+            } else {
                 record.setMessage(this.loggerError("execute failed(flow job):jobName:%s at ip:%s,port:%d,info:%s", job, e.getMessage(), e));
             }
             record.setSuccess(ResultStatus.FAILED.getStatus());//程序调用失败
@@ -271,11 +272,11 @@ public class ExecuteService implements Job {
 
                     //重跑到截止次数还是失败,则发送通知,记录最终运行结果
                     if (!flag) {
-                        noticeService.notice(job,null);
+                        noticeService.notice(job, null);
                         recordService.flowJobDone(record);
                     }
                 } else {
-                    noticeService.notice(job,null);
+                    noticeService.notice(job, null);
                     recordService.flowJobDone(record);
                 }
             }
@@ -290,7 +291,7 @@ public class ExecuteService implements Job {
         final Queue<JobVo> jobQueue = new LinkedBlockingQueue<JobVo>();
 
         String[] arrayIds = agentIds.split(";");
-        for (String agentId:arrayIds) {
+        for (String agentId : arrayIds) {
             Agent agent = agentService.getAgent(Long.parseLong(agentId));
             JobVo jobVo = new JobVo(userId, command, agent);
             jobQueue.add(jobVo);
@@ -303,7 +304,7 @@ public class ExecuteService implements Job {
                     //如果批量现场执行(则启动多线程,所有任务同时执行)
                     Thread thread = new Thread(new Runnable() {
                         public void run() {
-                            executeSingleJob(jobVo,userId);
+                            executeSingleJob(jobVo, userId);
                         }
                     });
                     thread.start();
@@ -318,10 +319,10 @@ public class ExecuteService implements Job {
      */
     public boolean reExecuteJob(final Record parentRecord, JobVo job, JobType jobType) {
 
-        if (parentRecord.getRedoCount().equals(reExecuteThreadMap.get(parentRecord.getRecordId()))){
+        if (parentRecord.getRedoCount().equals(reExecuteThreadMap.get(parentRecord.getRecordId()))) {
             return false;
-        }else {
-            reExecuteThreadMap.put(parentRecord.getRecordId(),parentRecord.getRedoCount());
+        } else {
+            reExecuteThreadMap.put(parentRecord.getRecordId(), parentRecord.getRedoCount());
         }
 
         parentRecord.setStatus(RunStatus.RERUNNING.getStatus());
@@ -354,7 +355,7 @@ public class ExecuteService implements Job {
             } else {
                 //已经重跑到最后一次了,还是失败了,则认为整个重跑任务失败,发送通知
                 if (parentRecord.getRunCount().equals(parentRecord.getRedoCount())) {
-                    noticeService.notice(job,null);
+                    noticeService.notice(job, null);
                 }
                 parentRecord.setStatus(RunStatus.RERUNUNDONE.getStatus());
             }
@@ -364,7 +365,7 @@ public class ExecuteService implements Job {
                 noticeService.notice(job, PACKETTOOBIG_ERROR);
                 errorExec(record, this.loggerError("execute failed:jobName:%s at ip:%s,port:%d,info:%s", job, PACKETTOOBIG_ERROR, e));
             }
-            noticeService.notice(job,e.getMessage());
+            noticeService.notice(job, e.getMessage());
             errorExec(record, this.loggerError("execute failed:jobName:%s at ip:%s,port:%d,info:%s", job, e.getMessage(), e));
 
         } finally {
@@ -375,10 +376,10 @@ public class ExecuteService implements Job {
             try {
                 recordService.save(record);
                 recordService.save(parentRecord);
-            }catch (Exception e) {
+            } catch (Exception e) {
                 if (e instanceof PacketTooBigException) {
-                    record.setMessage(this.loggerError("execute failed(flow job):jobName:%s at ip:%s,port:%d,info:"+PACKETTOOBIG_ERROR, job, e.getMessage(), e));
-                }else {
+                    record.setMessage(this.loggerError("execute failed(flow job):jobName:%s at ip:%s,port:%d,info:" + PACKETTOOBIG_ERROR, job, e.getMessage(), e));
+                } else {
                     record.setMessage(this.loggerError("execute failed(flow job):jobName:%s at ip:%s,port:%d,info:%s", job, e.getMessage(), e));
                 }
             }
@@ -425,11 +426,11 @@ public class ExecuteService implements Job {
                                 loggerInfo("killed successful :jobName:{} at ip:{},port:{},pid:{}", job, cord.getPid());
                             } catch (Exception e) {
                                 if (e instanceof PacketTooBigException) {
-                                    noticeService.notice(job,PACKETTOOBIG_ERROR);
-                                    loggerError("killed error:jobName:%s at ip:%s,port:%d,pid:%s", job, cord.getPid()+" failed info: "+PACKETTOOBIG_ERROR, e);
+                                    noticeService.notice(job, PACKETTOOBIG_ERROR);
+                                    loggerError("killed error:jobName:%s at ip:%s,port:%d,pid:%s", job, cord.getPid() + " failed info: " + PACKETTOOBIG_ERROR, e);
                                 }
-                                noticeService.notice(job,null);
-                                loggerError("killed error:jobName:%s at ip:%s,port:%d,pid:%s", job, cord.getPid()+" failed info: "+e.getMessage(), e);
+                                noticeService.notice(job, null);
+                                loggerError("killed error:jobName:%s at ip:%s,port:%d,pid:%s", job, cord.getPid() + " failed info: " + e.getMessage(), e);
                                 result.add(false);
                             }
                         }
@@ -444,7 +445,7 @@ public class ExecuteService implements Job {
         try {
             jobThread.join();
         } catch (InterruptedException e) {
-            logger.error("[opencron] kill job with error:{}",e.getMessage());
+            logger.error("[opencron] kill job with error:{}", e.getMessage());
         }
         return !result.contains(false);
     }
@@ -455,7 +456,7 @@ public class ExecuteService implements Job {
      */
     private Response responseToRecord(final JobVo job, final Record record) throws Exception {
         Response response = opencronCaller.call(Request.request(job.getIp(), job.getPort(), Action.EXECUTE, job.getPassword())
-                .putParam("command", job.getCommand()).putParam("pid", record.getPid()).putParam("timeout",job.getTimeout()+"") , job.getAgent());
+                .putParam("command", job.getCommand()).putParam("pid", record.getPid()).putParam("timeout", job.getTimeout() + ""), job.getAgent());
         logger.info("[opencron]:execute response:{}", response.toString());
         record.setReturnCode(response.getExitCode());
         record.setMessage(response.getMessage());
@@ -464,10 +465,10 @@ public class ExecuteService implements Job {
         if (StatusCode.KILL.getValue().equals(response.getExitCode())) {
             record.setStatus(RunStatus.STOPED.getStatus());
             record.setSuccess(ResultStatus.KILLED.getStatus());//被kill任务失败
-        }else if(StatusCode.TIME_OUT.getValue().equals(response.getExitCode())){
+        } else if (StatusCode.TIME_OUT.getValue().equals(response.getExitCode())) {
             record.setStatus(RunStatus.STOPED.getStatus());
             record.setSuccess(ResultStatus.TIMEOUT.getStatus());//超时...
-        }else {
+        } else {
             record.setStatus(RunStatus.DONE.getStatus());
         }
 
@@ -510,7 +511,7 @@ public class ExecuteService implements Job {
 
     public boolean ping(Agent agent) {
         try {
-            Response response = opencronCaller.call(Request.request(agent.getIp(), agent.getPort(), Action.PING, agent.getPassword()).putParam("serverPort", OpencronMonitor.port+""),agent);
+            Response response = opencronCaller.call(Request.request(agent.getIp(), agent.getPort(), Action.PING, agent.getPassword()).putParam("serverPort", OpencronMonitor.port + ""), agent);
             return response.isSuccess();
         } catch (Exception e) {
             logger.error("[opencron]ping failed,host:{},port:{}", agent.getIp(), agent.getPort());
@@ -525,7 +526,7 @@ public class ExecuteService implements Job {
         boolean ping = false;
         try {
             Response response = opencronCaller.call(Request.request(agent.getIp(), agent.getPort(), Action.PASSWORD, agent.getPassword())
-                    .putParam("newPassword", newPassword),agent);
+                    .putParam("newPassword", newPassword), agent);
             ping = response.isSuccess();
         } catch (Exception e) {
             e.printStackTrace();
@@ -539,34 +540,34 @@ public class ExecuteService implements Job {
     public Response monitor(Agent agent) throws Exception {
         return opencronCaller.call(
                 Request.request(agent.getIp(), agent.getPort(), Action.MONITOR, agent.getPassword())
-                        .setParams( ParamsMap.instance().fill("connType",ConnType.getByType(agent.getProxy()).getName()) ), agent);
+                        .setParams(ParamsMap.instance().fill("connType", ConnType.getByType(agent.getProxy()).getName())), agent);
     }
 
     /**
      * 校验任务执行权限
      */
-    private boolean checkJobPermission(Long jobAgentId, Long userId){
-        if (userId==null) return false;
+    private boolean checkJobPermission(Long jobAgentId, Long userId) {
+        if (userId == null) return false;
         User user = userService.getUserById(userId);
         //超级管理员拥有所有执行器的权限
-        if (user!=null&&user.getRoleId()==999) return true;
+        if (user != null && user.getRoleId() == 999) return true;
         String agentIds = userService.getUserById(userId).getAgentIds();
-        agentIds = ","+agentIds+",";
-        String thisAgentId = ","+jobAgentId+",";
+        agentIds = "," + agentIds + ",";
+        String thisAgentId = "," + jobAgentId + ",";
         return agentIds.contains(thisAgentId);
     }
 
-    private void loggerInfo(String str,JobVo job,String message){
-        if (message != null){
+    private void loggerInfo(String str, JobVo job, String message) {
+        if (message != null) {
             logger.info(str, job.getJobName(), job.getIp(), job.getPort(), message);
-        }else {
+        } else {
             logger.info(str, job.getJobName(), job.getIp(), job.getPort());
         }
     }
 
-    private String loggerError(String str,JobVo job,String message,Exception e){
+    private String loggerError(String str, JobVo job, String message, Exception e) {
         String errorInfo = String.format(str, job.getJobName(), job.getIp(), job.getPort(), message);
-        logger.error(errorInfo,e);
+        logger.error(errorInfo, e);
         return errorInfo;
     }
 }

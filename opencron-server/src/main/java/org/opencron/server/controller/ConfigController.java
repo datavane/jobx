@@ -37,7 +37,7 @@ import javax.servlet.http.HttpSession;
  */
 @Controller
 @RequestMapping("config")
-public class ConfigController  extends BaseController{
+public class ConfigController extends BaseController {
 
     @Autowired
     private ConfigService configService;
@@ -63,11 +63,11 @@ public class ConfigController  extends BaseController{
         config.setTemplate(config.getTemplate());
         config.setSendUrl(config.getSendUrl());
         configService.update(config);
-        return "redirect:/config/view?csrf="+ OpencronTools.getCSRF(session);
+        return "redirect:/config/view?csrf=" + OpencronTools.getCSRF(session);
     }
 
     @RequestMapping("/clear")
-    public void clearRecord(String startTime,String endTime) {
+    public void clearRecord(String startTime, String endTime) {
         recordService.deleteRecordBetweenTime(startTime, endTime);
     }
 

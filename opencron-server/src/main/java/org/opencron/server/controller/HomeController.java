@@ -59,7 +59,7 @@ import static org.opencron.common.utils.CommonUtils.notEmpty;
  * Created by ChenHui on 2016/2/17.
  */
 @Controller
-public class HomeController  extends BaseController{
+public class HomeController extends BaseController {
 
     @Autowired
     private HomeService homeService;
@@ -86,13 +86,13 @@ public class HomeController  extends BaseController{
     private Logger logger = LoggerFactory.getLogger(getClass());
 
     @RequestMapping("/home")
-    public String index(HttpSession session,Model model) {
+    public String index(HttpSession session, Model model) {
 
         /**
          * agent...
          */
-        List<Agent> success = agentService.getOwnerAgentByStatus(session,1);
-        List<Agent> failed = agentService.getOwnerAgentByStatus(session,0);
+        List<Agent> success = agentService.getOwnerAgentByStatus(session, 1);
+        List<Agent> failed = agentService.getOwnerAgentByStatus(session, 0);
         model.addAttribute("success", success.size());
         model.addAttribute("failed", failed.size());
 
@@ -102,8 +102,8 @@ public class HomeController  extends BaseController{
         /**
          * job
          */
-        List<Job> singleton = jobService.getJobsByJobType(session,Opencron.JobType.SINGLETON);
-        List<Job> flow = jobService.getJobsByJobType(session,Opencron.JobType.FLOW);
+        List<Job> singleton = jobService.getJobsByJobType(session, Opencron.JobType.SINGLETON);
+        List<Job> flow = jobService.getJobsByJobType(session, Opencron.JobType.FLOW);
 
         model.addAttribute("singleton", singleton.size());
         model.addAttribute("flow", flow.size());
@@ -112,8 +112,8 @@ public class HomeController  extends BaseController{
         /**
          * 成功作业,自动执行
          */
-        Long successAutoRecord = recordService.getRecords(session,1, Opencron.ExecType.AUTO);
-        Long successOperRecord = recordService.getRecords(session,1, Opencron.ExecType.OPERATOR);
+        Long successAutoRecord = recordService.getRecords(session, 1, Opencron.ExecType.AUTO);
+        Long successOperRecord = recordService.getRecords(session, 1, Opencron.ExecType.OPERATOR);
 
         model.addAttribute("successAutoRecord", successAutoRecord);
         model.addAttribute("successOperRecord", successOperRecord);
@@ -122,8 +122,8 @@ public class HomeController  extends BaseController{
         /**
          * 失败作业
          */
-        Long failedAutoRecord = recordService.getRecords(session,0, Opencron.ExecType.AUTO);
-        Long failedOperRecord = recordService.getRecords(session,0, Opencron.ExecType.OPERATOR);
+        Long failedAutoRecord = recordService.getRecords(session, 0, Opencron.ExecType.AUTO);
+        Long failedOperRecord = recordService.getRecords(session, 0, Opencron.ExecType.OPERATOR);
         model.addAttribute("failedAutoRecord", failedAutoRecord);
         model.addAttribute("failedOperRecord", failedOperRecord);
         model.addAttribute("failedRecord", failedAutoRecord + failedOperRecord);
@@ -135,7 +135,7 @@ public class HomeController  extends BaseController{
     }
 
     @RequestMapping("/record")
-    public void record(HttpSession session,HttpServletResponse response, String startTime, String endTime) {
+    public void record(HttpSession session, HttpServletResponse response, String startTime, String endTime) {
         if (isEmpty(startTime)) {
             startTime = DateUtils.getCurrDayPrevDay(7);
         }
@@ -143,7 +143,7 @@ public class HomeController  extends BaseController{
             endTime = DateUtils.formatSimpleDate(new Date());
         }
         //成功失败折线图数据
-        List<ChartVo> voList = recordService.getRecord(session,startTime, endTime);
+        List<ChartVo> voList = recordService.getRecord(session, startTime, endTime);
         if (isEmpty(voList)) {
             WebUtils.writeJson(response, "null");
         } else {
@@ -152,7 +152,7 @@ public class HomeController  extends BaseController{
     }
 
     @RequestMapping("/progress")
-    public void progress(HttpSession session,HttpServletResponse response) {
+    public void progress(HttpSession session, HttpServletResponse response) {
         //成功失败折线图数据
         ChartVo chartVo = recordService.getAsProgress(session);
         if (isEmpty(chartVo)) {
@@ -182,7 +182,7 @@ public class HomeController  extends BaseController{
     }
 
     @RequestMapping("/login")
-    public void login(HttpSession session,HttpServletRequest request, HttpServletResponse response, HttpSession httpSession, @RequestParam String username, @RequestParam String password) throws Exception {
+    public void login(HttpSession session, HttpServletRequest request, HttpServletResponse response, HttpSession httpSession, @RequestParam String username, @RequestParam String password) throws Exception {
 
         //用户信息验证
         int status = homeService.checkLogin(request, username, password);
@@ -194,7 +194,7 @@ public class HomeController  extends BaseController{
         if (status == 200) {
             //登陆成功了则生成csrf...
             String csrf = OpencronTools.getCSRF(session);
-            logger.info("[opencron]login seccussful,generate csrf:{}",csrf);
+            logger.info("[opencron]login seccussful,generate csrf:{}", csrf);
 
             User user = OpencronTools.getUser(session);
             //提示用户更改默认密码
@@ -205,7 +205,7 @@ public class HomeController  extends BaseController{
             String format = "{\"status\":\"%s\",\"%s\":\"%s\",\"%s\":\"%s\"}";
 
             if (user.getUserName().equals("opencron") && user.getPassword().equals(hashPass)) {
-                WebUtils.writeJson(response, String.format(format, "edit", "userId", user.getUserId(),"csrf",csrf));
+                WebUtils.writeJson(response, String.format(format, "edit", "userId", user.getUserId(), "csrf", csrf));
                 return;
             }
 
@@ -215,7 +215,7 @@ public class HomeController  extends BaseController{
                 IOUtils.writeFile(new File(path), user.getHeaderpic().getBinaryStream());
                 user.setHeaderPath(WebUtils.getWebUrlPath(request) + "/upload/" + name);
             }
-            WebUtils.writeJson(response, String.format(format, "success", "url", "/home?csrf="+csrf,"csrf",csrf));
+            WebUtils.writeJson(response, String.format(format, "success", "url", "/home?csrf=" + csrf, "csrf", csrf));
             return;
         }
     }
@@ -228,10 +228,10 @@ public class HomeController  extends BaseController{
     }
 
     @RequestMapping("/headpic/upload")
-    public void upload(@RequestParam(value = "file", required = false) MultipartFile file,Long userId, String data, HttpServletRequest request, HttpSession httpSession, HttpServletResponse response) throws Exception {
+    public void upload(@RequestParam(value = "file", required = false) MultipartFile file, Long userId, String data, HttpServletRequest request, HttpSession httpSession, HttpServletResponse response) throws Exception {
 
         String extensionName = null;
-        if (file != null)  {
+        if (file != null) {
             extensionName = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
             extensionName = extensionName.replaceAll("\\?\\d+$", "");
         }
@@ -239,7 +239,7 @@ public class HomeController  extends BaseController{
         String successFormat = "{\"result\":\"%s\",\"state\":200}";
         String errorFormat = "{\"message\":\"%s\",\"state\":500}";
 
-        Cropper cropper = JSON.parseObject( DigestUtils.passBase64(data), Cropper.class);
+        Cropper cropper = JSON.parseObject(DigestUtils.passBase64(data), Cropper.class);
 
         //检查后缀
         if (!".BMP,.JPG,.JPEG,.PNG,.GIF".contains(extensionName.toUpperCase())) {
@@ -281,7 +281,7 @@ public class HomeController  extends BaseController{
             }
 
             //旋转并且裁剪
-            ImageUtils.instance(picFile).rotate(cropper.getRotate()).clip(cropper.getX(),cropper.getY(),cropper.getWidth(),cropper.getHeight()).build();
+            ImageUtils.instance(picFile).rotate(cropper.getRotate()).clip(cropper.getX(), cropper.getY(), cropper.getWidth(), cropper.getHeight()).build();
 
             //保存入库.....
             userService.uploadimg(picFile, userId);
@@ -303,7 +303,7 @@ public class HomeController  extends BaseController{
 
 
     @RequestMapping("/notice/view")
-    public String log(HttpSession session,Model model, PageBean pageBean, Long agentId, String sendTime) {
+    public String log(HttpSession session, Model model, PageBean pageBean, Long agentId, String sendTime) {
         model.addAttribute("agents", agentService.getOwnerAgents(session));
         if (notEmpty(agentId)) {
             model.addAttribute("agentId", agentId);
@@ -311,24 +311,25 @@ public class HomeController  extends BaseController{
         if (notEmpty(sendTime)) {
             model.addAttribute("sendTime", sendTime);
         }
-        homeService.getLog(session,pageBean, agentId, sendTime);
+        homeService.getLog(session, pageBean, agentId, sendTime);
         return "notice/view";
     }
 
 
     @RequestMapping("/notice/uncount")
-    public void uncount(HttpSession session,HttpServletResponse response) {
+    public void uncount(HttpSession session, HttpServletResponse response) {
         Long count = homeService.getUnReadCount(session);
         WebUtils.writeHtml(response, count.toString());
     }
 
     /**
      * 未读取的站类信
+     *
      * @param model
      * @return
      */
     @RequestMapping("/notice/unread")
-    public String nuread(HttpSession session,Model model) {
+    public String nuread(HttpSession session, Model model) {
         model.addAttribute("message", homeService.getUnReadMessage(session));
         return "notice/info";
     }

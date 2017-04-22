@@ -43,18 +43,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/agent")
-public class AgentController extends BaseController{
+public class AgentController extends BaseController {
 
     @Autowired
     private AgentService agentService;
 
     @RequestMapping("/view")
-    public String queryAllAgent(HttpSession session,HttpServletRequest request, Model model, PageBean pageBean) {
-        agentService.getOwnerAgent(session,pageBean);
+    public String queryAllAgent(HttpSession session, HttpServletRequest request, Model model, PageBean pageBean) {
+        agentService.getOwnerAgent(session, pageBean);
         if (request.getParameter("refresh") != null) {
             return "/agent/refresh";
         }
-        model.addAttribute("connAgents",agentService.getAgentByConnType(Opencron.ConnType.CONN));
+        model.addAttribute("connAgents", agentService.getAgentByConnType(Opencron.ConnType.CONN));
         return "/agent/view";
     }
 
@@ -77,7 +77,7 @@ public class AgentController extends BaseController{
     }
 
     @RequestMapping("/checkhost")
-    public void checkhost(HttpServletResponse response, Long id,String ip) {
+    public void checkhost(HttpServletResponse response, Long id, String ip) {
         String result = agentService.checkhost(id, ip);
         WebUtils.writeHtml(response, result);
     }
@@ -86,7 +86,7 @@ public class AgentController extends BaseController{
     @RequestMapping("/addpage")
     public String addPage(Model model) {
         List<Agent> agentList = agentService.getAgentByConnType(Opencron.ConnType.CONN);
-        model.addAttribute("connAgents",agentList);
+        model.addAttribute("connAgents", agentList);
         return "/agent/add";
     }
 
@@ -107,13 +107,13 @@ public class AgentController extends BaseController{
         agent.setDeleted(false);
         agent.setUpdateTime(new Date());
         agentService.addOrUpdate(agent);
-        return "redirect:/agent/view?csrf="+ OpencronTools.getCSRF(session);
+        return "redirect:/agent/view?csrf=" + OpencronTools.getCSRF(session);
     }
 
     @RequestMapping("/editpage")
-    public void editPage(HttpServletResponse response,Long id) {
+    public void editPage(HttpServletResponse response, Long id) {
         Agent agent = agentService.getAgent(id);
-        if (agent==null) {
+        if (agent == null) {
             WebUtils.write404(response);
         }
         WebUtils.writeJson(response, JSON.toJSONString(agent));
@@ -126,7 +126,7 @@ public class AgentController extends BaseController{
         agent1.setProxy(agent.getProxy());
         if (Opencron.ConnType.CONN.getType().equals(agent.getProxy())) {
             agent1.setProxyAgent(null);
-        }else {
+        } else {
             agent1.setProxyAgent(agent.getProxyAgent());
         }
         agent1.setPort(agent.getPort());
@@ -142,13 +142,13 @@ public class AgentController extends BaseController{
     }
 
     @RequestMapping("/pwdpage")
-    public void pwdPage(HttpServletResponse response,Long id) {
+    public void pwdPage(HttpServletResponse response, Long id) {
         Agent agent = agentService.getAgent(id);
         WebUtils.writeJson(response, JSON.toJSONString(agent));
     }
 
     @RequestMapping("/editpwd")
-    public void editPwd(HttpServletResponse response,Long id, String pwd0, String pwd1, String pwd2) {
+    public void editPwd(HttpServletResponse response, Long id, String pwd0, String pwd1, String pwd2) {
         String result = agentService.editPwd(id, pwd0, pwd1, pwd2);
         WebUtils.writeHtml(response, result);
     }

@@ -52,13 +52,13 @@ import static org.opencron.server.service.TerminalService.*;
  */
 @Controller
 @RequestMapping("/terminal")
-public class TerminalController  extends BaseController{
+public class TerminalController extends BaseController {
 
     @Autowired
     private TerminalService termService;
 
     @RequestMapping("/ssh")
-    public void ssh(HttpSession session,HttpServletResponse response, Terminal terminal) throws Exception {
+    public void ssh(HttpSession session, HttpServletResponse response, Terminal terminal) throws Exception {
         User user = OpencronTools.getUser(session);
 
         String json = "{status:'%s',url:'%s'}";
@@ -69,18 +69,18 @@ public class TerminalController  extends BaseController{
         if (authStatus.equals(Terminal.AuthStatus.SUCCESS)) {
             String token = CommonUtils.uuid();
             terminal.setUser(user);
-            TerminalContext.put(token,terminal);
-            OpencronTools.setSshSessionId(session,token);
-            WebUtils.writeJson(response, String.format(json,"success","/terminal/open?token="+token+"&csrf="+OpencronTools.getCSRF(session)));
-        }else {
+            TerminalContext.put(token, terminal);
+            OpencronTools.setSshSessionId(session, token);
+            WebUtils.writeJson(response, String.format(json, "success", "/terminal/open?token=" + token + "&csrf=" + OpencronTools.getCSRF(session)));
+        } else {
             //重新输入密码进行认证...
-            WebUtils.writeJson(response, String.format(json,authStatus.status,"null"));
+            WebUtils.writeJson(response, String.format(json, authStatus.status, "null"));
             return;
         }
     }
 
     @RequestMapping("/ssh2")
-    public String ssh2(HttpSession session,Terminal terminal) throws Exception {
+    public String ssh2(HttpSession session, Terminal terminal) throws Exception {
         User user = OpencronTools.getUser(session);
 
         terminal = termService.getById(terminal.getId());
@@ -89,142 +89,142 @@ public class TerminalController  extends BaseController{
         if (authStatus.equals(Terminal.AuthStatus.SUCCESS)) {
             String token = CommonUtils.uuid();
             terminal.setUser(user);
-            TerminalContext.put(token,terminal);
-            OpencronTools.setSshSessionId(session,token);
-            return "redirect:/terminal/open?token="+token+"&csrf="+ OpencronTools.getCSRF(session);
-        }else {
+            TerminalContext.put(token, terminal);
+            OpencronTools.setSshSessionId(session, token);
+            return "redirect:/terminal/open?token=" + token + "&csrf=" + OpencronTools.getCSRF(session);
+        } else {
             //重新输入密码进行认证...
-            return "redirect:/terminal/open?id="+terminal.getId()+"&csrf="+ OpencronTools.getCSRF(session);
+            return "redirect:/terminal/open?id=" + terminal.getId() + "&csrf=" + OpencronTools.getCSRF(session);
         }
 
     }
 
     @RequestMapping("/detail")
-    public void detail(HttpServletResponse response,Terminal terminal) throws Exception {
+    public void detail(HttpServletResponse response, Terminal terminal) throws Exception {
         terminal = termService.getById(terminal.getId());
         WebUtils.writeJson(response, JSON.toJSONString(terminal));
     }
 
     @RequestMapping("/exists")
-    public void exists(HttpSession session,HttpServletResponse response,Terminal terminal) throws Exception {
+    public void exists(HttpSession session, HttpServletResponse response, Terminal terminal) throws Exception {
         User user = OpencronTools.getUser(session);
-        boolean exists = termService.exists( user.getUserId(),terminal.getHost());
-        WebUtils.writeHtml(response,exists?"true":"false");
+        boolean exists = termService.exists(user.getUserId(), terminal.getHost());
+        WebUtils.writeHtml(response, exists ? "true" : "false");
     }
 
     @RequestMapping("/view")
-    public String view(HttpSession session,PageBean pageBean,Model model ) throws Exception {
+    public String view(HttpSession session, PageBean pageBean, Model model) throws Exception {
         pageBean = termService.getPageBeanByUser(pageBean, OpencronTools.getUserId(session));
-        model.addAttribute("pageBean",pageBean);
+        model.addAttribute("pageBean", pageBean);
         return "/terminal/view";
     }
 
     @RequestMapping("/open")
-    public String open(HttpServletRequest request,String token,Long id) throws Exception {
+    public String open(HttpServletRequest request, String token, Long id) throws Exception {
         //登陆失败
-        if (token==null && id!=null) {
+        if (token == null && id != null) {
             Terminal terminal = termService.getById(id);
-            request.setAttribute("terminal",terminal);
+            request.setAttribute("terminal", terminal);
             return "/terminal/error";
         }
         Terminal terminal = TerminalContext.get(token);
-        if (terminal!=null) {
-            request.setAttribute("name",terminal.getName()+"("+terminal.getHost()+")");
-            request.setAttribute("token",token);
-            request.setAttribute("theme",terminal.getTheme());
+        if (terminal != null) {
+            request.setAttribute("name", terminal.getName() + "(" + terminal.getHost() + ")");
+            request.setAttribute("token", token);
+            request.setAttribute("theme", terminal.getTheme());
             List<Terminal> terminas = termService.getListByUser(terminal.getUser());
-            request.setAttribute("terms",terminas);
+            request.setAttribute("terms", terminas);
             return "/terminal/console";
         }
         return "/terminal/error";
     }
 
     @RequestMapping("/reopen")
-    public String reopen(HttpSession session,String token ) throws Exception {
+    public String reopen(HttpSession session, String token) throws Exception {
         Terminal terminal = (Terminal) OpencronTools.CACHE.get(token);
-        if (terminal!=null) {
+        if (terminal != null) {
             token = CommonUtils.uuid();
-            TerminalContext.put(token,terminal);
-            session.setAttribute(OpencronTools.SSH_SESSION_ID,token);
-            return "redirect:/terminal/open?token="+token+"&csrf="+ OpencronTools.getCSRF(session);
+            TerminalContext.put(token, terminal);
+            session.setAttribute(OpencronTools.SSH_SESSION_ID, token);
+            return "redirect:/terminal/open?token=" + token + "&csrf=" + OpencronTools.getCSRF(session);
         }
         return "/terminal/error";
     }
 
     @RequestMapping("/resize")
-    public void resize(HttpServletResponse response, String token,Integer cols,Integer rows,Integer width,Integer height) throws Exception {
+    public void resize(HttpServletResponse response, String token, Integer cols, Integer rows, Integer width, Integer height) throws Exception {
         TerminalClient terminalClient = TerminalSession.get(token);
-        if (terminalClient!=null) {
-            terminalClient.resize(cols,rows,width,height);
+        if (terminalClient != null) {
+            terminalClient.resize(cols, rows, width, height);
         }
-        WebUtils.writeHtml(response,"");
+        WebUtils.writeHtml(response, "");
     }
 
     @RequestMapping("/sendAll")
-    public void sendAll(String token,String cmd) throws Exception {
-        cmd =  URLDecoder.decode(cmd,"UTF-8");
+    public void sendAll(String token, String cmd) throws Exception {
+        cmd = URLDecoder.decode(cmd, "UTF-8");
         TerminalClient terminalClient = TerminalSession.get(token);
-        if (terminalClient!=null) {
+        if (terminalClient != null) {
             List<TerminalClient> terminalClients = TerminalSession.findClient(terminalClient.getHttpSessionId());
-            for (TerminalClient client:terminalClients) {
+            for (TerminalClient client : terminalClients) {
                 client.write(cmd);
             }
         }
     }
 
     @RequestMapping("/theme")
-    public void theme(HttpServletResponse response, String token,String theme) throws Exception {
+    public void theme(HttpServletResponse response, String token, String theme) throws Exception {
         TerminalClient terminalClient = TerminalSession.get(token);
-        if (terminalClient!=null) {
-            termService.theme(terminalClient.getTerminal(),theme);
+        if (terminalClient != null) {
+            termService.theme(terminalClient.getTerminal(), theme);
         }
-        WebUtils.writeHtml(response,"");
+        WebUtils.writeHtml(response, "");
     }
 
     @RequestMapping("/upload")
-    public void upload(HttpSession httpSession,HttpServletResponse response, String token,@RequestParam(value = "file", required = false) MultipartFile[] file,String path) {
+    public void upload(HttpSession httpSession, HttpServletResponse response, String token, @RequestParam(value = "file", required = false) MultipartFile[] file, String path) {
         TerminalClient terminalClient = TerminalSession.get(token);
         boolean success = true;
-        if (terminalClient!=null) {
-            for(MultipartFile ifile : file){
+        if (terminalClient != null) {
+            for (MultipartFile ifile : file) {
                 String tmpPath = httpSession.getServletContext().getRealPath("/") + "upload" + File.separator;
                 File tempFile = new File(tmpPath, ifile.getOriginalFilename());
                 try {
                     ifile.transferTo(tempFile);
                     if (CommonUtils.isEmpty(path)) {
                         path = ".";
-                    }else {
+                    } else {
                         if (path.endsWith("/")) {
                             path = path.substring(0, path.lastIndexOf("/"));
                         }
                     }
-                    terminalClient.upload(tempFile.getAbsolutePath(),path+"/"+ifile.getOriginalFilename(),ifile.getSize());
+                    terminalClient.upload(tempFile.getAbsolutePath(), path + "/" + ifile.getOriginalFilename(), ifile.getSize());
                     tempFile.delete();
-                }catch (Exception e) {
+                } catch (Exception e) {
                     success = false;
                 }
             }
         }
-        WebUtils.writeJson(response,String.format("{\"success\":\"%s\"}",success?"true":"false"));
+        WebUtils.writeJson(response, String.format("{\"success\":\"%s\"}", success ? "true" : "false"));
     }
 
 
     @RequestMapping("/save")
-    public void save(HttpSession session,HttpServletResponse response, Terminal term) throws Exception {
+    public void save(HttpSession session, HttpServletResponse response, Terminal term) throws Exception {
         Terminal.AuthStatus authStatus = termService.auth(term);
         if (authStatus.equals(Terminal.AuthStatus.SUCCESS)) {
             User user = OpencronTools.getUser(session);
             term.setUserId(user.getUserId());
             termService.saveOrUpdate(term);
         }
-        WebUtils.writeHtml(response,authStatus.status);
+        WebUtils.writeHtml(response, authStatus.status);
     }
 
 
     @RequestMapping("/del")
-    public void del(HttpSession session,HttpServletResponse response, Terminal term) throws Exception {
-        String message = termService.delete(session,term.getId());
-        WebUtils.writeHtml(response,message);
+    public void del(HttpSession session, HttpServletResponse response, Terminal term) throws Exception {
+        String message = termService.delete(session, term.getId());
+        WebUtils.writeHtml(response, message);
     }
 
 }

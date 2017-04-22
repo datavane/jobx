@@ -58,9 +58,6 @@ public class AgentService {
     @Autowired
     private SchedulerService schedulerService;
 
-    @Autowired
-    private UserService userService;
-
     public List<Agent> getAgentByConnType(Opencron.ConnType connType) {
         return queryDao.sqlQuery(Agent.class,"SELECT * FROM T_AGENT WHERE deleted=0 AND status = 1 AND proxy = "+connType.getType());
     }
@@ -74,7 +71,7 @@ public class AgentService {
     }
 
     private synchronized void flushAgent() {
-        OpencronTools.CACHE.put(OpencronTools.CACHED_AGENT_ID,queryDao.createSQLQuery("SELECT * FROM T_AGENT WHERE deleted=0").list());
+        OpencronTools.CACHE.put(OpencronTools.CACHED_AGENT_ID,queryDao.sqlQuery(Agent.class,"SELECT * FROM T_AGENT WHERE deleted=0"));
     }
 
     public List<Agent> getOwnerAgentByStatus(HttpSession session,int status){
@@ -184,7 +181,6 @@ public class AgentService {
         return (queryDao.getCountBySql(sql, host)) > 0L ? "no" : "yes";
     }
 
-
     public String editPwd(Long id, String pwd0, String pwd1, String pwd2) {
         Agent agent = this.getAgent(id);
         String password = DigestUtils.md5Hex(pwd0);
@@ -224,6 +220,4 @@ public class AgentService {
         }
         return agent;
     }
-
-
 }

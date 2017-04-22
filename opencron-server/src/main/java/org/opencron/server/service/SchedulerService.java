@@ -68,8 +68,8 @@ public final class SchedulerService {
     }
 
     public void put(List<JobVo> jobs, Job jobBean) throws SchedulerException {
-        for(JobVo jobVo:jobs){
-            put(jobVo,jobBean);
+        for (JobVo jobVo : jobs) {
+            put(jobVo, jobBean);
         }
     }
 
@@ -100,13 +100,13 @@ public final class SchedulerService {
     }
 
     public void startQuartz() throws SchedulerException {
-        if (quartzScheduler!=null && !quartzScheduler.isStarted()) {
+        if (quartzScheduler != null && !quartzScheduler.isStarted()) {
             quartzScheduler.start();
         }
     }
 
     public void shutdown() throws SchedulerException {
-        if (quartzScheduler!=null && !quartzScheduler.isShutdown()) {
+        if (quartzScheduler != null && !quartzScheduler.isShutdown()) {
             quartzScheduler.shutdown();
         }
     }
@@ -138,7 +138,7 @@ public final class SchedulerService {
     }
 
 
-    public void syncJobTigger(Long jobId,ExecuteService executeService) throws SchedulerException {
+    public void syncJobTigger(Long jobId, ExecuteService executeService) throws SchedulerException {
         JobVo job = jobService.getJobVoById(jobId);
         job.setAgent(agentService.getAgent(job.getAgentId()));
 
@@ -149,13 +149,13 @@ public final class SchedulerService {
         remove(job.getJobId());
 
         //自动执行
-        if ( Opencron.ExecType.AUTO.getStatus().equals(job.getExecType()) ){
-            if (Opencron.CronType.QUARTZ.getType().equals(job.getCronType())){
+        if (Opencron.ExecType.AUTO.getStatus().equals(job.getExecType())) {
+            if (Opencron.CronType.QUARTZ.getType().equals(job.getCronType())) {
                 /**
                  * 将作业加到quartz任务计划
                  */
                 put(job, executeService);
-            }else {
+            } else {
                 /**
                  * 将作业加到crontab任务计划
                  */
@@ -170,7 +170,7 @@ public final class SchedulerService {
         List<JobVo> jobs = jobService.getJobVo(Opencron.ExecType.AUTO, Opencron.CronType.QUARTZ);
         for (JobVo job : jobs) {
             try {
-                put(job,jobExecutor);
+                put(job, jobExecutor);
             } catch (SchedulerException e) {
                 e.printStackTrace();
             }

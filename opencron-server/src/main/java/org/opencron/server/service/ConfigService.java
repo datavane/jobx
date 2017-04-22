@@ -52,7 +52,7 @@ public class ConfigService {
 
     public void initDataBase() {
         long count = queryDao.getCountBySql("SELECT COUNT(1) FROM T_CONFIG");
-        if (count==0) {
+        if (count == 0) {
 
             Session session = queryDao.getSessionFactory().openSession();
             session.getTransaction().begin();

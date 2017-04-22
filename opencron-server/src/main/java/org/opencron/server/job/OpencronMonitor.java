@@ -47,7 +47,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 
 @Component
-public class OpencronMonitor implements Serializable{
+public class OpencronMonitor implements Serializable {
 
     private final Logger logger = LoggerFactory.getLogger(OpencronMonitor.class);
 
@@ -112,14 +112,14 @@ public class OpencronMonitor implements Serializable{
                         if (successConnStatus.get(agent) == null) {
                             boolean ping = executeService.ping(agent);
                             //ping失败...
-                            if(!ping) {
+                            if (!ping) {
                                 if (CommonUtils.isEmpty(agent.getFailTime()) || new Date().getTime() - agent.getFailTime().getTime() >= configService.getSysConfig().getSpaceTime() * 60 * 1000) {
                                     noticeService.notice(agent);
                                     //记录本次任务失败的时间
                                     agent.setFailTime(new Date());
                                     agent.setStatus(false);
                                     agentService.addOrUpdate(agent);
-                                }else if (agent.getStatus()) {
+                                } else if (agent.getStatus()) {
                                     agent.setStatus(false);
                                     agentService.addOrUpdate(agent);
                                 }

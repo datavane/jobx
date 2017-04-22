@@ -17,8 +17,6 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
- *
  */
 
 package org.opencron.server.handler;
@@ -62,7 +60,7 @@ public class SingleLoginListener implements HttpSessionListener {
      */
     public static List<HttpSession> getUserSessions() {
         List<HttpSession> list = new ArrayList<HttpSession>();
-        for(Map.Entry<String,HttpSession> entry: singleLoginSessionMap.entrySet()) {
+        for (Map.Entry<String, HttpSession> entry : singleLoginSessionMap.entrySet()) {
             HttpSession session = entry.getValue();
             list.add(session);
         }
@@ -74,7 +72,7 @@ public class SingleLoginListener implements HttpSessionListener {
      */
     public static Map<Long, String> getSessionIds() {
         Map<Long, String> map = new HashMap<Long, String>();
-        for(Map.Entry<String,HttpSession> entry: singleLoginSessionMap.entrySet()){
+        for (Map.Entry<String, HttpSession> entry : singleLoginSessionMap.entrySet()) {
             String sessionId = entry.getKey();
             HttpSession session = entry.getValue();
             User user = (User) session.getAttribute(OpencronTools.LOGIN_USER);
@@ -120,11 +118,11 @@ public class SingleLoginListener implements HttpSessionListener {
     }
 
     public synchronized static boolean logined(User user) {
-        for(Map.Entry<String,HttpSession> entry: singleLoginSessionMap.entrySet()){
+        for (Map.Entry<String, HttpSession> entry : singleLoginSessionMap.entrySet()) {
             HttpSession session = entry.getValue();
             User sessionuser = (User) session.getAttribute(OpencronTools.LOGIN_USER);
             if (sessionuser != null) {
-                if (sessionuser.getUserId().equals(user.getUserId())){
+                if (sessionuser.getUserId().equals(user.getUserId())) {
                     return true;
                 }
             }
@@ -141,8 +139,8 @@ public class SingleLoginListener implements HttpSessionListener {
 
     public static HttpSession getLoginedSession(Long userId) {
         String sessionId = getSessionIds().get(userId);
-        if (sessionId!=null) {
-           return getSingleLoginSessionMap().get(sessionId);
+        if (sessionId != null) {
+            return getSingleLoginSessionMap().get(sessionId);
         }
         return null;
     }
