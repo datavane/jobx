@@ -410,7 +410,7 @@
                         if(data == "error"){
                             alert("该执行器不存在,删除失败!")
                         }else if (data == "no"){
-                            alert("删除失败!该执行器上定义了作业,请先删除作业再尝试删除")
+                            alert("该执行器上定义了作业,请先删除作业再尝试删除")
                         }else {
                             $.ajax({
                                 headers:{"csrf":"${csrf}"},
