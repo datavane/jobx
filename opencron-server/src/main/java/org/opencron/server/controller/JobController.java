@@ -119,8 +119,13 @@ public class JobController extends BaseController {
 
     @RequestMapping("/delete")
     public void delete(HttpServletResponse response, Long id) {
-        jobService.delete(id);
-        WebUtils.writeHtml(response, "success");
+        try {
+            jobService.delete(id);
+            WebUtils.writeHtml(response, "success");
+        } catch (SchedulerException e) {
+            WebUtils.writeHtml(response, "failure");
+            e.printStackTrace();
+        }
     }
 
     @RequestMapping("/addpage")

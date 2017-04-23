@@ -141,7 +141,7 @@ public class JobService {
     }
 
     private synchronized void flushJob() {
-        OpencronTools.CACHE.put(OpencronTools.CACHED_JOB_ID, queryDao.getAll(Job.class));
+        OpencronTools.CACHE.put(OpencronTools.CACHED_JOB_ID, queryDao.sqlQuery(Job.class,"SELECT * FROM T_JOB WHERE deleted=0"));
     }
 
     public PageBean<JobVo> getJobVos(HttpSession session, PageBean pageBean, JobVo job) {
@@ -286,8 +286,9 @@ public class JobService {
         return "yes";
     }
 
-    
-    public void delete(Long jobId) {
+
+    @Transactional(rollbackFor = Exception.class)
+    public void delete(Long jobId) throws SchedulerException {
         Job job = getJob(jobId);
         if (job != null) {
             //单一任务,直接执行删除
@@ -305,11 +306,7 @@ public class JobService {
                 }
             }
             queryDao.createSQLQuery(sql).executeUpdate();
-            try {
-                schedulerService.syncJobTigger(jobId, null);
-            } catch (SchedulerException e) {
-                e.printStackTrace();
-            }
+            schedulerService.syncJobTigger(jobId, null);
             flushJob();
         }
     }
