@@ -141,7 +141,7 @@ public class JobService {
     }
 
     private synchronized void flushJob() {
-        OpencronTools.CACHE.put(OpencronTools.CACHED_JOB_ID, queryDao.sqlQuery(Job.class,"SELECT * FROM T_JOB WHERE deleted=0"));
+        OpencronTools.CACHE.put(OpencronTools.CACHED_JOB_ID, queryDao.sqlQuery(Job.class, "SELECT * FROM T_JOB WHERE deleted=0"));
     }
 
     public PageBean<JobVo> getJobVos(HttpSession session, PageBean pageBean, JobVo job) {
@@ -207,7 +207,7 @@ public class JobService {
         return Collections.emptyList();
     }
 
-    
+
     public Job addOrUpdate(Job job) {
         Job saveJob = (Job) queryDao.save(job);
         flushJob();
@@ -247,12 +247,12 @@ public class JobService {
         return queryDao.sqlQuery(JobVo.class, sql, agentId);
     }
 
-    public String checkName(Long jobId, Long agentId, String name) {
+    public boolean existsName(Long jobId, Long agentId, String name) {
         String sql = "SELECT COUNT(1) FROM T_JOB WHERE agentId=? AND deleted=0 AND jobName=? ";
         if (notEmpty(jobId)) {
             sql += " AND jobId != " + jobId + " AND flowId != " + jobId;
         }
-        return (queryDao.getCountBySql(sql, agentId, name)) > 0L ? "no" : "yes";
+        return (queryDao.getCountBySql(sql, agentId, name)) > 0L;
     }
 
     public String checkDelete(Long id) {
@@ -265,7 +265,7 @@ public class JobService {
         String sql = "SELECT COUNT(1) FROM T_RECORD WHERE jobId = ? AND `status`=?";
         Long count = queryDao.getCountBySql(sql, id, RunStatus.RUNNING.getStatus());
         if (count > 0) {
-            return "no";
+            return "false";
         }
 
         //流程任务则检查任务流是否在运行中...
@@ -279,11 +279,11 @@ public class JobService {
                     " and R.status=?";
             count = queryDao.getCountBySql(sql, id, RunStatus.RUNNING.getStatus());
             if (count > 0) {
-                return "no";
+                return "false";
             }
         }
 
-        return "yes";
+        return "true";
     }
 
 
@@ -311,7 +311,7 @@ public class JobService {
         }
     }
 
-    
+
     public void saveFlowJob(Job job, List<Job> children) throws SchedulerException {
         job.setLastChild(false);
         job.setUpdateTime(new Date());

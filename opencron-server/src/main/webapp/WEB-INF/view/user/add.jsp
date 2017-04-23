@@ -73,7 +73,7 @@
                     "name":name
                 },
                 success:function(data){
-                    if (data == "yes"){
+                    if (data == "true"){
                         $("#user").submit();
                         return false;
                     }else {
@@ -103,7 +103,7 @@
                         "name":$("#name").val()
                     },
                     success:function(data){
-                        if (data == "yes"){
+                        if (data == "true"){
                             $("#checkname").html("<font color='green'>" + '<i class="glyphicon glyphicon-ok-sign"></i>&nbsp;用户名可用' + "</font>");
                             return false;
                         }else {

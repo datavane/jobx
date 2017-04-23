@@ -75,7 +75,7 @@
             },
             success:function(data){
 
-                if (data == "yes"){
+                if (data == "true"){
                     $.ajax({
                         headers:{"csrf":"${csrf}"},
                         type:"POST",
@@ -84,7 +84,7 @@
                             "name":name
                         },
                         success:function(data){
-                            if (data == "yes"){
+                            if (data == "true"){
                                 $.ajax({
                                     headers:{"csrf":"${csrf}"},
                                     type:"POST",
@@ -97,7 +97,7 @@
                                         "password":calcMD5(password)
                                     },
                                     success:function(data){
-                                        if (data == "success"){
+                                        if (data == "true"){
                                             $("#agent").submit();
                                             return;
                                         }else {
@@ -176,7 +176,7 @@
                 "password":calcMD5(password)
             },
             success:function(data){
-                if (data == "success"){
+                if (data == "true"){
                     $("#pingResult").html("<font color='green'>" + '<i class="glyphicon glyphicon-ok-sign"></i>&nbsp;通信正常' + "</font>");
                     return;
                 }else {
@@ -212,7 +212,7 @@
                             "ip":$("#ip").val()
                         },
                         success:function(data){
-                            if (data == "yes"){
+                            if (data == "true"){
                                 $("#checkIp").html("<font color='green'>" + '<i class="glyphicon glyphicon-ok-sign"></i>&nbsp;执行器IP可用' + "</font>");
                                 return false;
                             }else {
@@ -242,7 +242,7 @@
                     "name":$("#name").val()
                 },
                 success:function(data){
-                    if (data == "yes"){
+                    if (data == "true"){
                         $("#checkName").html("<font color='green'>" + '<i class="glyphicon glyphicon-ok-sign"></i>&nbsp;执行器名可用' + "</font>");
                         return false;
                     }else {

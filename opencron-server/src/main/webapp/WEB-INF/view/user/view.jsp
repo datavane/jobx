@@ -77,7 +77,7 @@
                     "pwd2":calcMD5(pwd2)
                 },
                 success:function(data){
-                    if (data == "success"){
+                    if (data == "true"){
                         $('#pwdModal').modal('hide');
                         alertMsg("修改成功");
                         return false;

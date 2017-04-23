@@ -438,7 +438,7 @@
                     "pwd2":calcMD5(pwd2)
                 },
                 success:function(data){
-                    if (data == "success"){
+                    if (data == "true"){
                         $('#pwdModal').modal('hide');
                         alertMsg("修改成功,请重新登录");
                         $("#btnLogin").prop("disabled",false);

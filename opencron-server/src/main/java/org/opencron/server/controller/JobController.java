@@ -24,7 +24,6 @@ package org.opencron.server.controller;
 import java.util.*;
 
 import com.alibaba.fastjson.JSON;
-import org.apache.http.HttpResponse;
 import org.opencron.common.job.Opencron;
 import org.opencron.common.job.Opencron.ExecType;
 import org.opencron.common.utils.DigestUtils;
@@ -107,8 +106,8 @@ public class JobController extends BaseController {
      */
     @RequestMapping("/checkname")
     public void checkName(HttpServletResponse response, Long jobId, Long agentId, String name) {
-        String result = jobService.checkName(jobId, agentId, name);
-        WebUtils.writeHtml(response, result);
+        boolean result = jobService.existsName(jobId, agentId, name);
+        WebUtils.writeHtml(response, result ? "false" : "true");
     }
 
     @RequestMapping("/checkDelete")
@@ -121,9 +120,9 @@ public class JobController extends BaseController {
     public void delete(HttpServletResponse response, Long id) {
         try {
             jobService.delete(id);
-            WebUtils.writeHtml(response, "success");
+            WebUtils.writeHtml(response, "true");
         } catch (SchedulerException e) {
-            WebUtils.writeHtml(response, "failure");
+            WebUtils.writeHtml(response, "false");
             e.printStackTrace();
         }
     }
@@ -259,7 +258,7 @@ public class JobController extends BaseController {
         jober.setUpdateTime(new Date());
         jobService.addOrUpdate(jober);
         schedulerService.syncJobTigger(jober.getJobId(), executeService);
-        WebUtils.writeHtml(response, "success");
+        WebUtils.writeHtml(response, "true");
     }
 
     @RequestMapping("/editcmd")
@@ -271,7 +270,7 @@ public class JobController extends BaseController {
         jober.setUpdateTime(new Date());
         jobService.addOrUpdate(jober);
         schedulerService.syncJobTigger(Opencron.JobType.FLOW.getCode().equals(jober.getJobType()) ? jober.getFlowId() : jober.getJobId(), executeService);
-        WebUtils.writeHtml(response, "success");
+        WebUtils.writeHtml(response, "true");
     }
 
     @RequestMapping("/canrun")

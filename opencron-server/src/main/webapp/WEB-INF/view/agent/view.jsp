@@ -96,7 +96,7 @@
                         "name": $("#name").val()
                     },
                     success: function (data) {
-                        if (data == "yes") {
+                        if (data == "true") {
                             $("#checkName").html("<font color='green'>" + '<i class="glyphicon glyphicon-ok-sign"></i>&nbsp;执行器名可用' + "</font>");
                             return false;
                         } else {
@@ -267,7 +267,7 @@
                     "name": name
                 },
                 success: function (data) {
-                    if (data == "yes") {
+                    if (data == "true") {
                         if (status == 1) {
                             $.ajax({
                                 headers:{"csrf":"${csrf}"},
@@ -282,7 +282,7 @@
                                     "password": password
                                 },
                                 success: function (data) {
-                                    if (data == "success") {
+                                    if (data == "true") {
                                         canSave(proxy, id, name, port, warning, mobiles, email);
                                         return false;
                                     } else {
@@ -326,7 +326,7 @@
                     "comment":$("#comment").val()
                 },
                 success: function (data) {
-                    if (data == "success") {
+                    if (data == "true") {
                         $('#agentModal').modal('hide');
                         alertMsg("修改成功");
                         $("#name_" + id).html(escapeHtml(name));
@@ -409,7 +409,7 @@
                     success:function (data) {
                         if(data == "error"){
                             alert("该执行器不存在,删除失败!")
-                        }else if (data == "no"){
+                        }else if (data == "false"){
                             alert("该执行器上定义了作业,请先删除作业再尝试删除")
                         }else {
                             $.ajax({
@@ -467,12 +467,12 @@
                     "pwd2": pwd2
                 },
                 success: function (data) {
-                    if (data == "success") {
+                    if (data == "true") {
                         $('#pwdModal').modal('hide');
                         alertMsg("修改成功");
                         return false;
                     }
-                    if (data == "failure") {
+                    if (data == "false") {
                         alert("Client密码存在异常!");
                         return false;
                     }
@@ -538,7 +538,7 @@
                     "password": password
                 },
                 success: function (data) {
-                    if (data == "success") {
+                    if (data == "true") {
                         $("#pingResult").html("<font color='green'>" + '<i class="glyphicon glyphicon-ok-sign"></i>&nbsp;通信正常' + "</font>");
                         return;
                     } else {

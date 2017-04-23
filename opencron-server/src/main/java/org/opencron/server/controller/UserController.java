@@ -132,7 +132,7 @@ public class UserController extends BaseController {
 
     @RequestMapping("/checkname")
     public void checkName(HttpServletResponse response, String name) {
-        String result = userService.checkName(name);
-        WebUtils.writeHtml(response, result);
+        boolean result = userService.existsName(name);
+        WebUtils.writeHtml(response, result ? "false" : "true");
     }
 }

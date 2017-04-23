@@ -161,7 +161,7 @@
                     "agentId":$("#agentId").val()
                 },
                 success:function(data){
-                    if (data == "yes"){
+                    if (data == "true"){
                         if (execType == 0 && cronExp){
                             $.ajax({
                                 headers:{"csrf":"${csrf}"},
@@ -172,7 +172,7 @@
                                     "cronExp":cronExp
                                 },
                                 success:function(data){
-                                    if (data == "success"){
+                                    if (data == "true"){
                                         var cmd = $("#command").val();
                                         $("#command").val(toBase64(cmd));
                                         $("#job").submit();
@@ -262,7 +262,7 @@
                         "agentId":$("#agentId").val()
                     },
                     success:function(data){
-                        if (data == "yes"){
+                        if (data == "true"){
                             $("#checkJobName").html("<font color='green'>" + '<i class="glyphicon glyphicon-ok-sign"></i>&nbsp;作业名可用' + "</font>");
                             return false;
                         }else {
@@ -303,7 +303,7 @@
                         "cronExp":cronExp
                     },
                     success:function(data){
-                        if (data == "success"){
+                        if (data == "true"){
                             $("#checkcronExp").html("<font color='green'>" + '<i class="glyphicon glyphicon-ok-sign"></i>&nbsp;语法正确' + "</font>");
                             return;
                         }else {
@@ -393,7 +393,7 @@
                     "agentId":$("#agentId").val()
                 },
                 success:function(data){
-                    if (data == "no"){
+                    if (data == "false"){
                         alert("作业名已存在!");
                         return false;
                     }else {

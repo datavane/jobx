@@ -160,7 +160,7 @@ public class TerminalService {
             return "error";
         }
         queryDao.createSQLQuery("DELETE FROM T_TERMINAL WHERE id=?", term.getId()).executeUpdate();
-        return "success";
+        return "true";
     }
 
     public void login(Terminal terminal) {

@@ -289,7 +289,7 @@
                         "cronExp": cronExp
                     },
                     success: function (data) {
-                        if (data == "success") {
+                        if (data == "true") {
                             doSave(jobObj);
                         } else {
                             alert("时间规则语法错误!");
@@ -316,7 +316,7 @@
                 },
                 success: function (data) {
 
-                    if (data == "yes") {
+                    if (data == "true") {
                         $.ajax({
                             headers: {"csrf": "${csrf}"},
                             type: "POST",
@@ -338,7 +338,7 @@
                                 "timeout": job.timeout
                             },
                             success: function (data) {
-                                if (data == "success") {
+                                if (data == "true") {
                                     $('#jobModal').modal('hide');
                                     alertMsg("修改成功");
 
@@ -432,7 +432,7 @@
                         "name": $("#jobName").val()
                     },
                     success: function (data) {
-                        if (data == "yes") {
+                        if (data == "true") {
                             $("#checkJobName").html("<font color='green'>" + '<i class="glyphicon glyphicon-ok-sign"></i>&nbsp;作业名称可用' + "</font>");
                             return false;
                         } else {
@@ -467,7 +467,7 @@
                         "cronExp": cronExp
                     },
                     success: function (data) {
-                        if (data == "success") {
+                        if (data == "true") {
                             $("#checkcronExp").html("<font color='green'>" + '<i class="glyphicon glyphicon-ok-sign"></i>&nbsp;语法正确' + "</font>");
                             return;
                         } else {
@@ -610,7 +610,7 @@
                     "command": toBase64(command)
                 },
                 success: function (data) {
-                    if (data == "success") {
+                    if (data == "true") {
                         $('#cmdModal').modal('hide');
                         alertMsg("修改成功");
                         $("#command_" + jobId).attr("title", command);
@@ -646,7 +646,7 @@
                     success: function (data) {
                         if (data == "error") {
                             alert("该作业不存在,删除失败!")
-                        } else if (data == "no") {
+                        } else if (data == "false") {
                             alert("该作业正在运行中,删除失败!")
                         } else {
                             $.ajax({
@@ -655,7 +655,7 @@
                                 url: "${contextPath}/job/delete",
                                 data: {"id": id},
                                 success: function (data) {
-                                    if (data == "success") {
+                                    if (data == "true") {
                                         alertMsg("删除作业成功");
                                         location.reload();
                                     } else {

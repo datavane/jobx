@@ -63,9 +63,9 @@ public class UserService {
     }
 
     public void addUser(User user) {
-        String saltstr = CommonUtils.uuid(16);
-        user.setSalt(saltstr);
-        byte[] salt = Encodes.decodeHex(saltstr);
+        String salter = CommonUtils.uuid(16);
+        user.setSalt(salter);
+        byte[] salt = Encodes.decodeHex(salter);
         String saltPassword = Encodes.encodeHex(Digests.sha1(user.getPassword().getBytes(), salt, 1024));
         user.setPassword(saltPassword);
         user.setCreateTime(new Date());
@@ -99,7 +99,7 @@ public class UserService {
                 byte[] hashPwd = Digests.sha1(pwd1.getBytes(), salt, 1024);
                 user.setPassword(Encodes.encodeHex(hashPwd));
                 queryDao.save(user);
-                return "success";
+                return "true";
             } else {
                 return "two";
             }
@@ -108,9 +108,9 @@ public class UserService {
         }
     }
 
-    public String checkName(String name) {
+    public boolean existsName(String name) {
         String sql = "SELECT COUNT(1) FROM T_USER WHERE userName=?";
-        return (queryDao.getCountBySql(sql, name)) > 0L ? "no" : "yes";
+        return (queryDao.getCountBySql(sql, name)) > 0L;
     }
 
 

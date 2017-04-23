@@ -148,7 +148,7 @@
                     data: "id="+id,
                     dataType: "html",
                     success: function (message) {
-                        if (message == "success") {
+                        if (message == "true") {
                             alertMsg("删除成功!")
                             $("#tr_" + id).remove();
                         }else {
@@ -263,7 +263,7 @@
                                 success: function (status) {
                                     $("#sshModal").modal("hide");
                                     $("#sshform")[0].reset();
-                                    if (status == "success") {
+                                    if (status == "true") {
                                         alertMsg("恭喜你添加终端成功!");
                                         location.reload();
                                     } else {
@@ -294,13 +294,13 @@
                         $("#sshModal").modal("hide");
                         $("#sshform")[0].reset();
                         if(action == "login") {
-                            if (status == "success") {
+                            if (status == "true") {
                                 ssh($("#sshid").val(), 0);
                             }else {
                                 alert("用户名密码错误,登陆终端失败!");
                             }
                         }else {
-                            if (status == "success") {
+                            if (status == "true") {
                                 alertMsg("恭喜你修改终端成功!");
                                 location.reload();
                             } else {

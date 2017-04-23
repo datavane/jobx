@@ -60,8 +60,8 @@ public class AgentController extends BaseController {
 
     @RequestMapping("/checkname")
     public void checkName(HttpServletResponse response, Long id, String name) {
-        String result = agentService.checkName(id, name);
-        WebUtils.writeHtml(response, result);
+        boolean exists = agentService.existsName(id, name);
+        WebUtils.writeHtml(response, exists ? "false" : "true");
     }
 
     @RequestMapping("/checkDelete")
@@ -73,13 +73,13 @@ public class AgentController extends BaseController {
     @RequestMapping("/delete")
     public void delete(HttpServletResponse response, Long id) {
         agentService.delete(id);
-        WebUtils.writeHtml(response, "success");
+        WebUtils.writeHtml(response, "true");
     }
 
     @RequestMapping("/checkhost")
     public void checkhost(HttpServletResponse response, Long id, String ip) {
-        String result = agentService.checkhost(id, ip);
-        WebUtils.writeHtml(response, result);
+        boolean exists = agentService.existshost(id, ip);
+        WebUtils.writeHtml(response, exists ? "false" : "true");
     }
 
 
@@ -138,7 +138,7 @@ public class AgentController extends BaseController {
         agent1.setComment(agent.getComment());
         agent1.setUpdateTime(new Date());
         agentService.addOrUpdate(agent1);
-        WebUtils.writeHtml(response, "success");
+        WebUtils.writeHtml(response, "true");
     }
 
     @RequestMapping("/pwdpage")

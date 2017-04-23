@@ -53,12 +53,12 @@ public class VerifyController extends BaseController {
         boolean pass = false;
         if (cronType == 0) pass = SchedulingPattern.validate(cronExp);
         if (cronType == 1) pass = CronExpression.isValidExpression(cronExp);
-        WebUtils.writeHtml(response, pass ? "success" : "failure");
+        WebUtils.writeHtml(response, pass ? "true" : "false");
     }
 
     @RequestMapping("/ping")
     public void validatePing(int proxy, Long proxyId, String ip, Integer port, String password, HttpServletResponse response) {
-        String pass = "failure";
+        String pass = "false";
         Agent agent = new Agent();
         agent.setProxy(proxy);
         agent.setIp(ip);
@@ -70,7 +70,7 @@ public class VerifyController extends BaseController {
             if (proxyId != null) {
                 Agent proxyAgent = agentService.getAgent(proxyId);
                 if (proxyAgent == null) {
-                    WebUtils.writeHtml(response, "failure");
+                    WebUtils.writeHtml(response, "false");
                     return;
                 }
                 agent.setProxyAgent(proxyId);
@@ -82,7 +82,7 @@ public class VerifyController extends BaseController {
         if (!ping) {
             logger.error(String.format("validate ip:%s,port:%s cannot ping!", agent.getIp(), port));
         } else {
-            pass = "success";
+            pass = "true";
         }
         WebUtils.writeHtml(response, pass);
     }
