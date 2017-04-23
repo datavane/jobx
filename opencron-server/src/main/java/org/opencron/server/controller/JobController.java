@@ -240,36 +240,36 @@ public class JobController extends BaseController {
 
     @RequestMapping("/edit")
     public void edit(HttpSession session, HttpServletResponse response, Job job) throws SchedulerException {
-        Job jober = jobService.getJob(job.getJobId());
-        if (!jobService.checkJobOwner(session, jober.getUserId())) return;
-        jober.setExecType(job.getExecType());
-        jober.setCronType(job.getCronType());
-        jober.setCommand(DigestUtils.passBase64(job.getCommand()));
-        jober.setJobName(job.getJobName());
-        jober.setRedo(job.getRedo());
-        jober.setRunCount(job.getRunCount());
-        jober.setWarning(job.getWarning());
-        jober.setTimeout(job.getTimeout());
-        if (jober.getWarning()) {
-            jober.setMobiles(job.getMobiles());
-            jober.setEmailAddress(job.getEmailAddress());
+        Job dbJob = jobService.getJob(job.getJobId());
+        if (!jobService.checkJobOwner(session, dbJob.getUserId())) return;
+        dbJob.setExecType(job.getExecType());
+        dbJob.setCronType(job.getCronType());
+        dbJob.setCommand(DigestUtils.passBase64(job.getCommand()));
+        dbJob.setJobName(job.getJobName());
+        dbJob.setRedo(job.getRedo());
+        dbJob.setRunCount(job.getRunCount());
+        dbJob.setWarning(job.getWarning());
+        dbJob.setTimeout(job.getTimeout());
+        if (dbJob.getWarning()) {
+            dbJob.setMobiles(job.getMobiles());
+            dbJob.setEmailAddress(job.getEmailAddress());
         }
-        jober.setComment(job.getComment());
-        jober.setUpdateTime(new Date());
-        jobService.addOrUpdate(jober);
-        schedulerService.syncJobTigger(jober.getJobId(), executeService);
+        dbJob.setComment(job.getComment());
+        dbJob.setUpdateTime(new Date());
+        jobService.addOrUpdate(dbJob);
+        schedulerService.syncJobTigger(dbJob.getJobId(), executeService);
         WebUtils.writeHtml(response, "true");
     }
 
     @RequestMapping("/editcmd")
     public void editCmd(HttpSession session, HttpServletResponse response, Long jobId, String command) throws SchedulerException {
         command = DigestUtils.passBase64(command);
-        Job jober = jobService.getJob(jobId);
-        if (!jobService.checkJobOwner(session, jober.getUserId())) return;
-        jober.setCommand(command);
-        jober.setUpdateTime(new Date());
-        jobService.addOrUpdate(jober);
-        schedulerService.syncJobTigger(Opencron.JobType.FLOW.getCode().equals(jober.getJobType()) ? jober.getFlowId() : jober.getJobId(), executeService);
+        Job dbJob = jobService.getJob(jobId);
+        if (!jobService.checkJobOwner(session, dbJob.getUserId())) return;
+        dbJob.setCommand(command);
+        dbJob.setUpdateTime(new Date());
+        jobService.addOrUpdate(dbJob);
+        schedulerService.syncJobTigger(Opencron.JobType.FLOW.getCode().equals(dbJob.getJobType()) ? dbJob.getFlowId() : dbJob.getJobId(), executeService);
         WebUtils.writeHtml(response, "true");
     }
 
