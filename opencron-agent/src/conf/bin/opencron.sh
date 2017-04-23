@@ -182,7 +182,7 @@ OPENCRON_PID="$OPENCRON_PIDDIR/opencron.pid";
 OPENCRON_SHUTDOWNPORT=15707
 
 #opencron version
-OPENCRON_VERSION="1.0-RELEASE"
+OPENCRON_VERSION="1.0.1-RELEASE"
 
 # Add bootstrap.jar to classpath
 # bootstrap can be over-ridden per instance
