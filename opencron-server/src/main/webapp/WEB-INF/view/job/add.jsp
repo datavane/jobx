@@ -173,7 +173,7 @@
                                 },
                                 success:function(data){
                                     if (data == "true"){
-                                        var cmd = $("#command").val();
+                                        var cmd = $("#commandInput").val();
                                         $("#command").val(toBase64(cmd));
                                         $("#job").submit();
                                         return false;
@@ -188,7 +188,7 @@
                             });
                             return false;
                         }else {
-                            var cmd = $("#command").val();
+                            var cmd = $("#commandInput").val();
                             $("#command").val(toBase64(cmd));
                             $("#job").submit();
                             return false;
@@ -544,6 +544,7 @@
         <div class="tile p-15 textured">
             <form class="form-horizontal" role="form" id="job" action="${contextPath}/job/save" method="post"></br>
                 <input type="hidden" name="csrf" value="${csrf}">
+                <input type="hidden" name="command" id="command">
                 <div class="form-group">
                     <label for="agentId" class="col-lab control-label"><i class="glyphicon glyphicon-leaf"></i>&nbsp;&nbsp;执&nbsp;&nbsp;行&nbsp;&nbsp;器：</label>
                     <div class="col-md-10">
@@ -598,9 +599,9 @@
                 </div><br>
 
                 <div class="form-group">
-                    <label for="command" class="col-lab control-label"><i class="glyphicon glyphicon-th-large"></i>&nbsp;&nbsp;执行命令：</label>
+                    <label for="commandInput" class="col-lab control-label"><i class="glyphicon glyphicon-th-large"></i>&nbsp;&nbsp;执行命令：</label>
                     <div class="col-md-10">
-                        <textarea class="form-control input-sm" id="command" name="command" style="height:80px;"></textarea>
+                        <textarea class="form-control input-sm" id="commandInput" style="height:80px;"></textarea>
                         <span class="tips"><b>*&nbsp;</b>请采用unix/linux的shell支持的命令</span>
                     </div>
                 </div><br>
