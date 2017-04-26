@@ -244,6 +244,7 @@ public class JobController extends BaseController {
         if (!jobService.checkJobOwner(session, dbJob.getUserId())) return;
         dbJob.setExecType(job.getExecType());
         dbJob.setCronType(job.getCronType());
+        dbJob.setCronExp(job.getCronExp());
         dbJob.setCommand(DigestUtils.passBase64(job.getCommand()));
         dbJob.setJobName(job.getJobName());
         dbJob.setRedo(job.getRedo());
