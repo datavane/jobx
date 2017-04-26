@@ -20,9 +20,6 @@
 #
 # Environment Variable Prerequisites
 #
-#   Do not set the variables in this script. Instead put them into a script
-#   setenv.sh in OPENCRON_BASE/bin to keep your customizations separate.
-#
 #   OPENCRON_HOME   May point at your opencron "build" directory.
 #
 #   OPENCRON_BASE   (Optional) Base directory for resolving dynamic portions
@@ -92,16 +89,6 @@ PRGDIR=`dirname "$PRG"`
 
 # Copy OPENCRON_BASE from OPENCRON_HOME if not already set
 [ -z "$OPENCRON_BASE" ] && OPENCRON_BASE="$OPENCRON_HOME"
-
-# Ensure that any user defined CLASSPATH variables are not used on startup,
-# but allow them to be specified in setenv.sh, in rare case when it is needed.
-CLASSPATH=
-
-if [ -r "$OPENCRON_BASE/bin/setenv.sh" ]; then
-  . "$OPENCRON_BASE/bin/setenv.sh"
-elif [ -r "$OPENCRON_HOME/bin/setenv.sh" ]; then
-  . "$OPENCRON_HOME/bin/setenv.sh"
-fi
 
 # For Cygwin, ensure paths are in UNIX format before anything is touched
 if $cygwin; then
@@ -240,9 +227,6 @@ case "$1" in
                 -p|--pass)
                     OPENCRON_PASSWORD=$2;
                     shift 2;;
-                -s|--server)
-                    OPENCRON_SERVER=$3;
-                    shift 2;;
                 --) break ;;
                 *)
                     echo "usage {-P\${port}|-p\${pasword}}"
@@ -310,7 +294,6 @@ case "$1" in
         -Djava.io.tmpdir="$OPENCRON_TMPDIR" \
         -Dopencron.port="$OPENCRON_PORT" \
         -Dopencron.password="$OPENCRON_PASSWORD" \
-        -Dopencron.server="$OPENCRON_SERVER" \
         -Dopencron.shutdown="$OPENCRON_SHUTDOWNPORT" \
         org.opencron.agent.Bootstrap start \
         >> "$OPENCRON_OUT" 2>&1 "&";
