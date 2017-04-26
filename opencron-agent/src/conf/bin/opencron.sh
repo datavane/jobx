@@ -222,7 +222,7 @@ case "$1" in
         do
             case "$1" in
                 -P|--port)
-                    OPENCRON_PORT=$2;
+                    OPENCRON_PORT=$1;
                     shift 2;;
                 -p|--pass)
                     OPENCRON_PASSWORD=$2;
