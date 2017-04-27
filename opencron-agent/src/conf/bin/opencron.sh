@@ -175,7 +175,7 @@ CLASSPATH="$CLASSPATH""$OPENCRON_BASE"/lib/opencron-agent-${OPENCRON_VERSION}.ja
 if [ -r "$OPENCRON_BASE/lib/opencron-agent-${OPENCRON_VERSION}.jar" ] ; then
   CLASSPATH=$CLASSPATH:$OPENCRON_BASE/lib/opencron-agent-${OPENCRON_VERSION}.jar
 else
-   CLASSPATH=$CLASSPATH:$OPENCRON_BASE/lib/opencron-agent-${OPENCRON_VERSION}.jar
+  CLASSPATH=$CLASSPATH:$OPENCRON_BASE/lib/opencron-agent-${OPENCRON_VERSION}.jar
 fi
 
 # Bugzilla 37848: When no TTY is available, don't output to console
