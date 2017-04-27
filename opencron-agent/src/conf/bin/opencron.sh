@@ -152,13 +152,6 @@ if [ -z "$OPENCRON_TMPDIR" ] ; then
   OPENCRON_TMPDIR="$OPENCRON_BASE"/temp
 fi
 
-shutdownPort
-
-# Add on extra jar files to CLASSPATH
-if [ ! -z "$CLASSPATH" ] ; then
-  CLASSPATH="$CLASSPATH":
-fi
-
 OPENCRON_PIDDIR="/var/run";
  if [ ! -x "$OPENCRON_PIDDIR" ] ; then
    mkdir $OPENCRON_PIDDIR;
@@ -171,12 +164,18 @@ OPENCRON_SHUTDOWNPORT=15707
 #opencron version
 OPENCRON_VERSION="1.0.1-RELEASE"
 
+# Add on extra jar files to CLASSPATH
+if [ ! -z "$CLASSPATH" ] ; then
+  CLASSPATH="$CLASSPATH":
+fi
+CLASSPATH="$CLASSPATH""$OPENCRON_BASE"/lib/opencron-agent-${OPENCRON_VERSION}.jar
+
 # Add bootstrap.jar to classpath
 # bootstrap can be over-ridden per instance
 if [ -r "$OPENCRON_BASE/lib/opencron-agent-${OPENCRON_VERSION}.jar" ] ; then
-  CLASSPATH=$CLASSPATH$OPENCRON_BASE/lib/opencron-agent-${OPENCRON_VERSION}.jar
+  CLASSPATH=$CLASSPATH:$OPENCRON_BASE/lib/opencron-agent-${OPENCRON_VERSION}.jar
 else
-   CLASSPATH=$CLASSPATH$OPENCRON_BASE/lib/opencron-agent-${OPENCRON_VERSION}.jar
+   CLASSPATH=$CLASSPATH:$OPENCRON_BASE/lib/opencron-agent-${OPENCRON_VERSION}.jar
 fi
 
 # Bugzilla 37848: When no TTY is available, don't output to console

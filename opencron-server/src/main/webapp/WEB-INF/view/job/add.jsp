@@ -91,7 +91,7 @@
                 return false;
             }
 
-            if (!$("#command").val()){
+            if (!$("#commandInput").val()){
                 alert("请填写执行命令!");
                 return false;
             }
