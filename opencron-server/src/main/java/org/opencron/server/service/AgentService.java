@@ -192,10 +192,11 @@ public class AgentService {
         if (password.equals(agent.getPassword())) {
             if (pwd1.equals(pwd2)) {
                 pwd1 = DigestUtils.md5Hex(pwd1);
-                agent.setPassword(pwd1);
                 Boolean flag = executeService.password(agent, pwd1);
                 if (flag) {
+                    agent.setPassword(pwd1);
                     this.addOrUpdate(agent);
+                    flushAgent();
                     return "true";
                 } else {
                     return "false";

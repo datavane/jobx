@@ -467,21 +467,22 @@
                     "pwd2": pwd2
                 },
                 success: function (data) {
-                    if (data == "true") {
+                    if ( data == "true" ) {
                         $('#pwdModal').modal('hide');
+                        $('#password').val(pwd0);
                         alertMsg("修改成功");
                         return false;
                     }
                     if (data == "false") {
-                        alert("Client密码存在异常!");
+                        alert("本次要修改的执行器连接密码错误!");
                         return false;
                     }
                     if (data == "one") {
-                        $("#oldpwd").html("<font color='red'>" + '<i class="glyphicon glyphicon-remove-sign"></i>&nbsp;密码不正确' + "</font>");
+                        $("#oldpwd").html("<font color='red'>" + '<i class="glyphicon glyphicon-remove-sign"></i>&nbsp;原密码不正确' + "</font>");
                         return false;
                     }
                     if (data == "two") {
-                        $("#checkpwd").html("<font color='red'>" + '<i class="glyphicon glyphicon-remove-sign"></i>&nbsp;密码不一致' + "</font>");
+                        $("#checkpwd").html("<font color='red'>" + '<i class="glyphicon glyphicon-remove-sign"></i>&nbsp;两次密码不一致' + "</font>");
                         return false;
                     }
 
