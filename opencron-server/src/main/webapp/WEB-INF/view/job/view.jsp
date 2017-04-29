@@ -814,14 +814,14 @@
                     </td>
                     <td>
                         <center>
-                        <c:if test="${r.jobType eq 0}">单一作业</c:if>
-                        <c:if test="${r.jobType eq 1}">流程作业</c:if>
+                            <c:if test="${r.jobType eq 0}">单一作业</c:if>
+                            <c:if test="${r.jobType eq 1}">流程作业</c:if>
                         </center>
                     </td>
                     <td id="execType_${r.jobId}">
                         <center>
-                        <c:if test="${r.execType eq 1}"><font color="red">手动</font></c:if>
-                        <c:if test="${r.execType eq 0}"><font color="green">自动</font></c:if>
+                            <c:if test="${r.execType eq 1}"><font color="red">手动</font></c:if>
+                            <c:if test="${r.execType eq 0}"><font color="green">自动</font></c:if>
                         </center>
                     </td>
                     <td id="cronType_${r.jobId}">
@@ -908,10 +908,18 @@
                                     </a>
                                 </div>
                             </td>
-                            <td><center>流程作业</center></td>
-                            <td><div class="none">--</div></td>
-                            <td><div class="none">--</div></td>
-                            <td><div class="none">--</div></td>
+                            <td>
+                                <center>流程作业</center>
+                            </td>
+                            <td>
+                                <div class="none">--</div>
+                            </td>
+                            <td>
+                                <div class="none">--</div>
+                            </td>
+                            <td>
+                                <div class="none">--</div>
+                            </td>
                             <td>
                                 <center>
                                     <div class="visible-md visible-lg hidden-sm hidden-xs action-buttons">
@@ -1074,7 +1082,6 @@
                 <div class="modal-body">
                     <form class="form-horizontal" role="form" id="cmdform">
                         <input type="hidden" id="cmdId">
-
                         <div class="form-group">
                             <label for="command" class="col-lab control-label"
                                    title="请采用unix/linux的shell支持的命令">执行命令：</label>
@@ -1083,7 +1090,6 @@
                                           style="height: 120px;"></textarea>&nbsp;
                             </div>
                         </div>
-
                     </form>
                 </div>
                 <div class="modal-footer">
