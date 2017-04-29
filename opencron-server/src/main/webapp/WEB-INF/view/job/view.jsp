@@ -911,7 +911,7 @@
                             <td><center>流程作业</center></td>
                             <td><div class="none">--</div></td>
                             <td><div class="none">--</div></td>
-                            <td> <div class="none">--</div></td>
+                            <td><div class="none">--</div></td>
                             <td>
                                 <center>
                                     <div class="visible-md visible-lg hidden-sm hidden-xs action-buttons">
