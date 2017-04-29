@@ -908,7 +908,7 @@
                                     </a>
                                 </div>
                             </td>
-                            <td>流程作业</td>
+                            <td><center>流程作业</center></td>
                             <td><div class="none">--</div></td>
                             <td><div class="none">--</div></td>
                             <td> <div class="none">--</div></td>
