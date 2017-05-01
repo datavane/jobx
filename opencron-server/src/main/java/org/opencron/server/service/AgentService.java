@@ -186,10 +186,16 @@ public class AgentService {
     }
 
 
-    public String editPwd(Long id, String pwd0, String pwd1, String pwd2) {
+    public String editPwd(Long id, Boolean type, String pwd0, String pwd1, String pwd2) {
         Agent agent = this.getAgent(id);
-        String password = DigestUtils.md5Hex(pwd0);
-        if (password.equals(agent.getPassword())) {
+        boolean verify;
+        if (type) {//直接输入的密钥
+            agent.setPassword(pwd0);
+            verify = executeService.ping(agent);
+        } else {//密码...
+            verify = DigestUtils.md5Hex(pwd0).equals(agent.getPassword());
+        }
+        if (verify) {
             if (pwd1.equals(pwd2)) {
                 pwd1 = DigestUtils.md5Hex(pwd1);
                 Boolean flag = executeService.password(agent, pwd1);

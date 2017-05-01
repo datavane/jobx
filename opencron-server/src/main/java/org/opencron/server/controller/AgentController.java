@@ -30,6 +30,7 @@ import javax.servlet.http.HttpSession;
 import com.alibaba.fastjson.JSON;
 import org.opencron.common.job.Opencron;
 import org.opencron.server.job.OpencronTools;
+import org.opencron.server.service.ExecuteService;
 import org.opencron.server.tag.PageBean;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.opencron.common.utils.WebUtils;
@@ -47,6 +48,9 @@ public class AgentController extends BaseController {
 
     @Autowired
     private AgentService agentService;
+
+    @Autowired
+    private ExecuteService executeService;
 
     @RequestMapping("/view")
     public String queryAllAgent(HttpSession session, HttpServletRequest request, Model model, PageBean pageBean) {
@@ -148,8 +152,8 @@ public class AgentController extends BaseController {
     }
 
     @RequestMapping("/editpwd")
-    public void editPwd(HttpServletResponse response, Long id, String pwd0, String pwd1, String pwd2) {
-        String result = agentService.editPwd(id, pwd0, pwd1, pwd2);
+    public void editPwd(HttpServletResponse response,Boolean type, Long id, String pwd0, String pwd1, String pwd2) {
+        String result = agentService.editPwd(id,type,pwd0, pwd1, pwd2);
         WebUtils.writeHtml(response, result);
     }
 
@@ -167,5 +171,17 @@ public class AgentController extends BaseController {
     public void getConnAgents(HttpServletResponse response) {
         List<Agent> agents = agentService.getAgentByConnType(Opencron.ConnType.CONN);
         WebUtils.writeJson(response, JSON.toJSONString(agents));
+    }
+
+    @RequestMapping("/path")
+    public void getPath(HttpServletResponse response,Long agentId) {
+        Agent agent = agentService.getAgent(agentId);
+        String path = executeService.path(agent);
+        String json = "{status:%d,path:'%s'}";
+        if (path == null) {//密钥错误
+            WebUtils.writeJson(response,String.format(json,500,""));
+        }else {
+            WebUtils.writeJson(response,String.format(json,200,path));
+        }
     }
 }

@@ -2,11 +2,13 @@ namespace java org.opencron.common.job
 
 enum Action {
     PING,
+    PATH,
+    MONITOR,
     EXECUTE,
     PASSWORD,
     KILL,
-    MONITOR,
-    PROXY
+    PROXY,
+    RESTART
 }
 
 struct Request {
@@ -29,9 +31,11 @@ struct Response {
 
 service Opencron {
  Response ping(1:Request request),
+ Response path(1:Request request),
+ Response monitor(1:Request request)
  Response execute(1:Request request),
  Response password(1:Request request),
  Response kill(1:Request request),
- Response monitor(1:Request request)
- Response proxy(1:Request request)
+ Response proxy(1:Request request),
+ Response restart(1:Request request)
 }
