@@ -98,7 +98,7 @@ public class AgentProcessor implements Opencron.Iface {
         return Response.response(request).setSuccess(true).setExitCode(Opencron.StatusCode.SUCCESS_EXIT.getValue()).end();
     }
 
-    //@Override
+    @Override
     public Response path(Request request) throws TException {
         //返回密码文件的路径...
         return Response.response(request).setSuccess(true)
@@ -389,19 +389,16 @@ public class AgentProcessor implements Opencron.Iface {
         return response;
     }
 
-    public Response restart(Request request) throws TException, InterruptedException {
-        if (!this.password.equalsIgnoreCase(request.getPassword())) {
-            return errorPasswordResponse(request);
-        }
+    /**
+     *重启前先检查密码,密码不正确返回Response,密码正确则直接执行重启
+     * @param request
+     * @return
+     * @throws TException
+     * @throws InterruptedException
+     */
+    @Override
+    public void restart(Request request) throws TException {
 
-        Response response = Response.response(request);
-        response.setSuccess(true).setExitCode(Opencron.StatusCode.SUCCESS_EXIT.getValue()).end();
-
-        /**
-         * to do restart....
-         */
-
-        return response;
     }
 
     private Response errorPasswordResponse(Request request) {

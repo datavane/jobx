@@ -521,7 +521,7 @@ public class ExecuteService implements Job {
 
     public String path(Agent agent) {
         try {
-            Response response = opencronCaller.call(Request.request(agent.getIp(), agent.getPort(), Action.PATH,agent.getPassword()), agent);
+            Response response = opencronCaller.call(Request.request(agent.getIp(), agent.getPort(), Action.PATH,null), agent);
             return response.getMessage();
         } catch (Exception e) {
             logger.error("[opencron]ping failed,host:{},port:{}", agent.getIp(), agent.getPort());

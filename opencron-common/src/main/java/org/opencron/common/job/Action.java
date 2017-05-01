@@ -22,7 +22,6 @@
 
 package org.opencron.common.job;
 
-
 public enum Action implements org.apache.thrift.TEnum {
   PING(0),
   PATH(1),
@@ -30,8 +29,8 @@ public enum Action implements org.apache.thrift.TEnum {
   EXECUTE(3),
   PASSWORD(4),
   KILL(5),
-  PROXY(6);
-
+  PROXY(6),
+  RESTART(7);
 
   private final int value;
 
@@ -66,6 +65,8 @@ public enum Action implements org.apache.thrift.TEnum {
         return KILL;
       case 6:
         return PROXY;
+      case 7:
+        return RESTART;
       default:
         return null;
     }
