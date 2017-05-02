@@ -111,8 +111,10 @@ public class OpencronMonitor implements Serializable {
                     for (Agent agent : agents) {
                         if (successConnStatus.get(agent) == null) {
                             boolean ping = executeService.ping(agent);
-                            //ping失败...
-                            if (!ping) {
+                            if (ping) {
+                                agent.setStatus(true);
+                                agentService.addOrUpdate(agent);
+                            }else {
                                 if (CommonUtils.isEmpty(agent.getFailTime()) || new Date().getTime() - agent.getFailTime().getTime() >= configService.getSysConfig().getSpaceTime() * 60 * 1000) {
                                     noticeService.notice(agent);
                                     //记录本次任务失败的时间

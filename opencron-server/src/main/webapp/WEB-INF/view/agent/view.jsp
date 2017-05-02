@@ -586,7 +586,7 @@
                 type: "POST",
                 url: "${contextPath}/agent/path",
                 data: { "agentId": id },
-                dataType:"JSON",
+                dataType:"html",
                 success:function(result) {
                     if(result) {
                         $("#pwdPath").text("more " + result);
@@ -600,6 +600,8 @@
                 }
             });
         }
+
+
 
     </script>
 
@@ -910,7 +912,7 @@
                     <center>
                         <button type="button" class="btn btn-sm" onclick="savePwd()">保存</button>
                         &nbsp;&nbsp;
-                        <button type="button" class="btn btn-sm" data-dismiss="modal">关闭</button>
+                        <button type="button" class="btn btn-sm"  onclick="inputPwd()" data-dismiss="modal">关闭</button>
                     </center>
                 </div>
             </div>
