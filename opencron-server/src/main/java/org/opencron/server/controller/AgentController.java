@@ -177,11 +177,6 @@ public class AgentController extends BaseController {
     public void getPath(HttpServletResponse response,Long agentId) {
         Agent agent = agentService.getAgent(agentId);
         String path = executeService.path(agent);
-        String json = "{status:%d,path:'%s'}";
-        if (path == null) {//密钥错误
-            WebUtils.writeJson(response,String.format(json,500,""));
-        }else {
-            WebUtils.writeJson(response,String.format(json,200,path));
-        }
+        WebUtils.writeHtml(response,path==null?"":path+"/.password");
     }
 }

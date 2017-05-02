@@ -8,7 +8,7 @@ public final class Globals {
     /**
      * Name of the system property containing
      */
-    public static final String OPENCRON_HOME = "opencron.home";
+    public static final String OPENCRON_HOME = System.getProperty("opencron.home");
 
     /**
      * port
@@ -28,17 +28,17 @@ public final class Globals {
      * password file
      */
 
-    public static File OPENCRON_PASSWORD_FILE = new File(System.getProperty(OPENCRON_HOME) + File.separator + ".password");
+    public static File OPENCRON_PASSWORD_FILE = new File(OPENCRON_HOME + File.separator + ".password");
 
     /**
      * monitor file
      */
-    public static File OPENCRON_MONITOR_SHELL = new File(System.getProperty(OPENCRON_HOME) + "/bin/monitor.sh");
+    public static File OPENCRON_MONITOR_SHELL = new File(OPENCRON_HOME + "/bin/monitor.sh");
 
     /**
      * kill file
      */
-    public static File OPENCRON_KILL_SHELL = new File(System.getProperty(OPENCRON_HOME) + "/bin/kill.sh");
+    public static File OPENCRON_KILL_SHELL = new File(OPENCRON_HOME + "/bin/kill.sh");
 
 
     public static String OPENCRON_SOCKET_ADDRESS;

@@ -103,7 +103,7 @@ public class AgentProcessor implements Opencron.Iface {
         //返回密码文件的路径...
         return Response.response(request).setSuccess(true)
                 .setExitCode(Opencron.StatusCode.SUCCESS_EXIT.getValue())
-                .setMessage(Globals.OPENCRON_PASSWORD_FILE.getAbsolutePath())
+                .setMessage(Globals.OPENCRON_HOME)
                 .end();
     }
 

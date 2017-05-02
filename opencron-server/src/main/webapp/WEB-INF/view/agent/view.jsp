@@ -475,7 +475,7 @@
                         alertMsg("修改成功");
                         return false;
                     }
-                    if (data == "false") {
+                    if (data == "false") {//原密码正确,但是连接失败...
                         ++window.errorAgentPwd;
                         if (window.errorAgentPwd>=3){
                             inputSrcPwd(id);
@@ -484,10 +484,14 @@
                         }
                         return false;
                     }
-                    if (data == "one") {
-                        if (window.errorAgentPwd>=3){
+                    if (data == "one") {//原密码错误
+                        if (window.errorAgentPwd!=undefined && window.errorAgentPwd>=3){
                             $("#oldpwd").html("<font color='red'>" + '<i class="glyphicon glyphicon-remove-sign"></i>&nbsp;执行器密钥不正确链接失败,请检查重新输入' + "</font>");
                         }else{
+                            ++window.errorAgentPwd;
+                            if (window.errorAgentPwd>=3) {
+                                inputSrcPwd(id);
+                            }
                             $("#oldpwd").html("<font color='red'>" + '<i class="glyphicon glyphicon-remove-sign"></i>&nbsp;原密码不正确' + "</font>");
                         }
                         return false;
@@ -582,9 +586,10 @@
                 type: "POST",
                 url: "${contextPath}/agent/path",
                 data: { "agentId": id },
-                success:function(data) {
-                    if(data.status == 200){
-                        $("#pwdPath").text("more " + data.path());
+                dataType:"JSON",
+                success:function(result) {
+                    if(result) {
+                        $("#pwdPath").text("more " + result);
                         $("#oldpwd").html('');
                         $("#pwdlable").html('<i class="glyphicon glyphicon-lock"></i>&nbsp;&nbsp;密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;钥：');
                         $("#pwd0").attr("placeholder","请输入密钥").val('');
