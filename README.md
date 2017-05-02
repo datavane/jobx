@@ -49,7 +49,8 @@ IE10+
 
 ## opencron-agent 安装步骤:
 ```
-1·)下载编译好的opencron-agent-${version}.tar.gz包
+
+1·)下载编译好的opencron-agent-${version}.tar.gz包(如未提供编译好的包,请自行下载源码用maven编辑即可)
 
 2)部署agent，将opencron-agent-${version}.tar.gz包拷贝到要管理任务的目标服务器,解包,会看到以下目录
 ---bin/

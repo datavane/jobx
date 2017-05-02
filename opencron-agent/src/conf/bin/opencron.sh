@@ -162,7 +162,7 @@ OPENCRON_PID="$OPENCRON_PIDDIR/opencron.pid";
 OPENCRON_SHUTDOWNPORT=15707
 
 #opencron version
-OPENCRON_VERSION="1.0.1-RELEASE"
+OPENCRON_VERSION="1.1.0-RELEASE"
 
 # Add on extra jar files to CLASSPATH
 if [ ! -z "$CLASSPATH" ] ; then

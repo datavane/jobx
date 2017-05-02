@@ -113,7 +113,7 @@
 
             $("#pwd0").blur(function () {
                 if (!$("#pwd0").val()) {
-                    $("#oldpwd").html("<font color='red'>" + '<i class="glyphicon glyphicon-remove-sign"></i>&nbsp;请输入原密码' + "</font>");
+                    $("#oldpwd").html("<font color='red'>" + '<i class="glyphicon glyphicon-remove-sign"></i>&nbsp;请输入'+(window.errorAgentPwd>=3?"密钥":"原密码")+"</font>");
                 }
             });
 
@@ -382,6 +382,7 @@
                         $("#oldpwd").html("");
                         $("#checkpwd").html("");
                         $("#agentId").val(obj.agentId);
+                        window.errorAgentPwd = 0;
                         $("#pwdModal").modal("show");
                         return;
                     }
@@ -439,7 +440,7 @@
             }
             var pwd0 = $("#pwd0").val();
             if (!pwd0) {
-                alert("请填原密码!");
+                $("#oldpwd").html("<font color='red'>" + '<i class="glyphicon glyphicon-remove-sign"></i>&nbsp;请输入'+(window.errorAgentPwd>=3?"密钥":"原密码")+"</font>");
                 return false;
             }
             var pwd1 = $("#pwd1").val();
@@ -462,26 +463,37 @@
                 url: "${contextPath}/agent/editpwd",
                 data: {
                     "id": id,
+                    "type":window.errorAgentPwd>=3,
                     "pwd0": pwd0,
                     "pwd1": pwd1,
                     "pwd2": pwd2
                 },
                 success: function (data) {
-                    if (data == "true") {
+                    if ( data == "true" ) {
                         $('#pwdModal').modal('hide');
+                        $('#password').val(pwd0);
                         alertMsg("修改成功");
                         return false;
                     }
                     if (data == "false") {
-                        alert("Client密码存在异常!");
+                        ++window.errorAgentPwd;
+                        if (window.errorAgentPwd>=3){
+                            inputSrcPwd(id);
+                        }else {
+                            alert("执行器原密码无效连接失败!");
+                        }
                         return false;
                     }
                     if (data == "one") {
-                        $("#oldpwd").html("<font color='red'>" + '<i class="glyphicon glyphicon-remove-sign"></i>&nbsp;密码不正确' + "</font>");
+                        if (window.errorAgentPwd>=3){
+                            $("#oldpwd").html("<font color='red'>" + '<i class="glyphicon glyphicon-remove-sign"></i>&nbsp;执行器密钥不正确链接失败,请检查重新输入' + "</font>");
+                        }else{
+                            $("#oldpwd").html("<font color='red'>" + '<i class="glyphicon glyphicon-remove-sign"></i>&nbsp;原密码不正确' + "</font>");
+                        }
                         return false;
                     }
                     if (data == "two") {
-                        $("#checkpwd").html("<font color='red'>" + '<i class="glyphicon glyphicon-remove-sign"></i>&nbsp;密码不一致' + "</font>");
+                        $("#checkpwd").html("<font color='red'>" + '<i class="glyphicon glyphicon-remove-sign"></i>&nbsp;两次密码不一致' + "</font>");
                         return false;
                     }
 
@@ -554,6 +566,34 @@
 
         function sortPage(field) {
             location.href="${contextPath}/agent/view?pageNo=${pageBean.pageNo}&pageSize=${pageBean.pageSize}&orderBy="+field+"&order="+("${pageBean.order}"=="asc"?"desc":"asc")+"&csrf=${csrf}";
+        }
+
+        function inputPwd() {
+            window.errorAgentPwd=0;
+            $("#pwdlable").html('<i class="glyphicon glyphicon-lock"></i>&nbsp;&nbsp;原&nbsp;&nbsp;密&nbsp;&nbsp;码：');
+            $("#pwd0").attr("placeholder","请输入原密码").val('');
+            $("#oldpwd").html('');
+            $("#pwdReset").hide();
+        }
+
+        function inputSrcPwd(id) {
+            $.ajax({
+                headers:{"csrf":"${csrf}"},
+                type: "POST",
+                url: "${contextPath}/agent/path",
+                data: { "agentId": id },
+                success:function(data) {
+                    if(data.status == 200){
+                        $("#pwdPath").text("more " + data.path());
+                        $("#oldpwd").html('');
+                        $("#pwdlable").html('<i class="glyphicon glyphicon-lock"></i>&nbsp;&nbsp;密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;钥：');
+                        $("#pwd0").attr("placeholder","请输入密钥").val('');
+                        $("#pwdReset").show().val('');
+                    }else {
+                        alert("错误! 请确保执行器端服务已经启动");
+                    }
+                }
+            });
         }
 
     </script>
@@ -835,8 +875,12 @@
                 <div class="modal-body">
                     <form class="form-horizontal" role="form" id="pwdform">
                         <input type="hidden" id="agentId">
+                        <label id="pwdReset" style="display: none;text-align: left;color:red;margin-left: 95px;padding-bottom: 10px;" for="pwd0" class="col-lab control-label">
+                            您已经连续三次输入无效的密码,请进入执行器下,执行下面的命令,复制该值到密钥输入框,或者重新输入<a href="#"  onclick="inputPwd();" style="color: dodgerblue">原密码</a>
+                            <br/><span id="pwdPath"></span>
+                        </label>
                         <div class="form-group" style="margin-bottom: 4px;">
-                            <label for="pwd0" class="col-lab control-label"><i class="glyphicon glyphicon-lock"></i>&nbsp;&nbsp;原&nbsp;&nbsp;密&nbsp;&nbsp;码：</label>
+                            <label for="pwd0" id="pwdlable" class="col-lab control-label"><i class="glyphicon glyphicon-lock"></i>&nbsp;&nbsp;原&nbsp;&nbsp;密&nbsp;&nbsp;码：</label>
                             <div class="col-md-9">
                                 <input type="password" class="form-control " id="pwd0" placeholder="请输入原密码">&nbsp;&nbsp;<label
                                     id="oldpwd"></label>

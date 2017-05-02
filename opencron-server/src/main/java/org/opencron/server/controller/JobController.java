@@ -183,7 +183,7 @@ public class JobController extends BaseController {
                 child.setJobName(StringUtils.htmlEncode((String) jobName[i]));
                 child.setAgentId(Long.parseLong((String) agentId[i]));
                 child.setCommand(DigestUtils.passBase64((String) command[i]));
-                child.setCronExp(job.getCronExp());
+                child.setJobType(Opencron.JobType.FLOW.getCode());
                 child.setComment(StringUtils.htmlEncode((String) comment[i]));
                 child.setTimeout(Integer.parseInt((String) timeout[i]));
                 child.setRedo(Integer.parseInt((String) redo[i]));

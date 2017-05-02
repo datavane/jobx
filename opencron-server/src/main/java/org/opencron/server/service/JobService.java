@@ -360,7 +360,6 @@ public class JobService {
              */
             child.setFlowId(job.getJobId());
             child.setUserId(job.getUserId());
-            child.setExecType(job.getExecType());
             child.setUpdateTime(new Date());
             child.setJobType(JobType.FLOW.getCode());
             child.setFlowNum(i + 1);

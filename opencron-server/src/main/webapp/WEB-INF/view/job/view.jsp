@@ -15,6 +15,10 @@
             text-overflow: ellipsis;
             white-space: nowrap;
         }
+
+        .none {
+            text-align: center;
+        }
     </style>
 
     <script type="text/javascript">
@@ -344,13 +348,17 @@
 
                                     $("#jobName_" + job.jobId).html(escapeHtml(job.jobName));
                                     $("#command_" + job.jobId).html(escapeHtml(passBase64(job.command)));
-                                    $("#cronType_" + job.jobId).html(job.cronType == "0" ? "crontab" : "quartz");
-                                    $("#cronExp_" + job.jobId).html(escapeHtml(job.cronExp));
+
                                     if (job.execType == "0") {
-                                        $("#execType_" + job.jobId).html('<font color="green">自动</font>');
+                                        $("#execType_" + job.jobId).html('<center><font color="green">自动</font></center>');
+                                        $("#cronType_" + job.jobId).html(job.cronType == "0" ? '<img width="70px" src="${contextPath}/img/crontab_ico.png">' : '<img width="70px" src="${contextPath}/img/quartz_ico.png">');
+                                        $("#cronExp_" + job.jobId).html(escapeHtml(job.cronExp));
                                     } else {
-                                        $("#execType_" + job.jobId).html('<font color="red">手动</font>');
+                                        $("#execType_" + job.jobId).html('<center><font color="red">手动</font></center>');
+                                        $("#cronType_" + job.jobId).html('<center><div class="none">--</div></center>');
+                                        $("#cronExp_" + job.jobId).html('<center><div class="none">--</div></center>');
                                     }
+
                                     if (job.redo == "0") {
                                         $("#redo_" + job.jobId).html('<font color="green">否</font>');
                                     } else {
@@ -758,10 +766,10 @@
                 <th>执行器</th>
                 <th>作业人</th>
                 <th>执行命令</th>
-                <th>规则类型</th>
                 <th>作业类型</th>
-                <th>时间规则</th>
                 <th>运行模式</th>
+                <th>规则类型</th>
+                <th>时间规则</th>
                 <th>
                     <center>
                         <i class="icon-time bigger-110 hidden-480"></i>
@@ -804,18 +812,43 @@
                             </a>
                         </div>
                     </td>
-                    <td id="cronType_${r.jobId}">
-                        <c:if test="${r.cronType eq 0}">crontab</c:if>
-                        <c:if test="${r.cronType eq 1}">quartz</c:if>
-                    </td>
                     <td>
-                        <c:if test="${r.jobType eq 0}">单一作业</c:if>
-                        <c:if test="${r.jobType eq 1}">流程作业</c:if>
+                        <center>
+                            <c:if test="${r.jobType eq 0}">单一作业</c:if>
+                            <c:if test="${r.jobType eq 1}">流程作业</c:if>
+                        </center>
                     </td>
-                    <td id="cronExp_${r.jobId}">${r.cronExp}</td>
                     <td id="execType_${r.jobId}">
-                        <c:if test="${r.execType eq 1}"><font color="red">手动</font></c:if>
-                        <c:if test="${r.execType eq 0}"><font color="green">自动</font></c:if>
+                        <center>
+                            <c:if test="${r.execType eq 1}"><font color="red">手动</font></c:if>
+                            <c:if test="${r.execType eq 0}"><font color="green">自动</font></c:if>
+                        </center>
+                    </td>
+                    <td id="cronType_${r.jobId}">
+                        <c:choose>
+                            <c:when test="${r.execType eq 1}">
+                                <div class="none">--</div>
+                            </c:when>
+                            <c:otherwise>
+                                <c:if test="${r.cronType eq 0}">
+                                    <img width="70px" src="${contextPath}/img/crontab_ico.png">
+                                </c:if>
+                                <c:if test="${r.cronType eq 1}">
+                                    <img width="70px" src="${contextPath}/img/quartz_ico.png">
+                                </c:if>
+                            </c:otherwise>
+                        </c:choose>
+                    </td>
+
+                    <td id="cronExp_${r.jobId}">
+                        <c:choose>
+                            <c:when test="${r.execType eq 1}">
+                                <div class="none">--</div>
+                            </c:when>
+                            <c:otherwise>
+                                ${r.cronExp}
+                            </c:otherwise>
+                        </c:choose>
                     </td>
                     <td>
                         <center>
@@ -876,16 +909,17 @@
                                 </div>
                             </td>
                             <td>
-                                <c:if test="${c.cronType eq 0}">crontab</c:if>
-                                <c:if test="${c.cronType eq 1}">quartz</c:if>
+                                <center>流程作业</center>
                             </td>
-                            <td>流程作业</td>
-                            <td>${c.cronExp}</td>
                             <td>
-                                <c:if test="${c.execType eq 1}"><font color="red">手动</font></c:if>
-                                <c:if test="${c.execType eq 0}"><font color="green">自动</font></c:if>
+                                <div class="none">--</div>
                             </td>
-
+                            <td>
+                                <div class="none">--</div>
+                            </td>
+                            <td>
+                                <div class="none">--</div>
+                            </td>
                             <td>
                                 <center>
                                     <div class="visible-md visible-lg hidden-sm hidden-xs action-buttons">
@@ -1048,7 +1082,6 @@
                 <div class="modal-body">
                     <form class="form-horizontal" role="form" id="cmdform">
                         <input type="hidden" id="cmdId">
-
                         <div class="form-group">
                             <label for="command" class="col-lab control-label"
                                    title="请采用unix/linux的shell支持的命令">执行命令：</label>
@@ -1057,7 +1090,6 @@
                                           style="height: 120px;"></textarea>&nbsp;
                             </div>
                         </div>
-
                     </form>
                 </div>
                 <div class="modal-footer">

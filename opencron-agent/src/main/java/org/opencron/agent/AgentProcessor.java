@@ -99,6 +99,16 @@ public class AgentProcessor implements Opencron.Iface {
     }
 
     @Override
+    public Response path(Request request) throws TException {
+        //返回密码文件的路径...
+        return Response.response(request).setSuccess(true)
+                .setExitCode(Opencron.StatusCode.SUCCESS_EXIT.getValue())
+                .setMessage(Globals.OPENCRON_PASSWORD_FILE.getAbsolutePath())
+                .end();
+    }
+
+
+    @Override
     public Response monitor(Request request) throws TException {
         Opencron.ConnType connType = Opencron.ConnType.getByName(request.getParams().get("connType"));
         Response response = Response.response(request);
@@ -131,59 +141,6 @@ public class AgentProcessor implements Opencron.Iface {
             default:
                 return null;
         }
-    }
-
-    @Override
-    public Response proxy(Request request) throws TException {
-        String proxyHost = request.getParams().get("proxyHost");
-        String proxyPort = request.getParams().get("proxyPort");
-        String proxyAction = request.getParams().get("proxyAction");
-        String proxyPassword = request.getParams().get("proxyPassword");
-
-        //其他参数....
-        String proxyParams = request.getParams().get("proxyParams");
-        Map<String, String> params = new HashMap<String, String>(0);
-        if (CommonUtils.notEmpty(proxyParams)) {
-            params = (Map<String, String>) JSON.parse(proxyParams);
-        }
-
-        Request proxyReq = Request.request(proxyHost, toInt(proxyPort), Action.findByName(proxyAction), proxyPassword).setParams(params);
-
-        logger.info("[opencron]proxy params:{}", proxyReq.toString());
-
-        TTransport transport;
-        /**
-         * ping的超时设置为5毫秒,其他默认
-         */
-        if (proxyReq.getAction().equals(Action.PING)) {
-            proxyReq.getParams().put("proxy","true");
-            transport = new TSocket(proxyReq.getHostName(), proxyReq.getPort(), 1000 * 5);
-        } else {
-            transport = new TSocket(proxyReq.getHostName(), proxyReq.getPort());
-        }
-        TProtocol protocol = new TBinaryProtocol(transport);
-        Opencron.Client client = new Opencron.Client(protocol);
-        transport.open();
-
-        Response response = null;
-        for (Method method : client.getClass().getMethods()) {
-            if (method.getName().equalsIgnoreCase(proxyReq.getAction().name())) {
-                try {
-                    response = (Response) method.invoke(client, proxyReq);
-                } catch (Exception e) {
-                    //proxy 执行失败,返回失败信息
-                    response = Response.response(request);
-                    response.setExitCode(Opencron.StatusCode.ERROR_EXIT.getValue())
-                            .setMessage("[opencron]:proxy error:"+e.getLocalizedMessage())
-                            .setSuccess(false)
-                            .end();
-                }
-                break;
-            }
-        }
-        transport.flush();
-        transport.close();
-        return response;
     }
 
     @Override
@@ -377,6 +334,71 @@ public class AgentProcessor implements Opencron.Iface {
 
         logger.info("[opencron]:kill result:{}" + response);
         return response;
+    }
+
+    @Override
+    public Response proxy(Request request) throws TException {
+        String proxyHost = request.getParams().get("proxyHost");
+        String proxyPort = request.getParams().get("proxyPort");
+        String proxyAction = request.getParams().get("proxyAction");
+        String proxyPassword = request.getParams().get("proxyPassword");
+
+        //其他参数....
+        String proxyParams = request.getParams().get("proxyParams");
+        Map<String, String> params = new HashMap<String, String>(0);
+        if (CommonUtils.notEmpty(proxyParams)) {
+            params = (Map<String, String>) JSON.parse(proxyParams);
+        }
+
+        Request proxyReq = Request.request(proxyHost, toInt(proxyPort), Action.findByName(proxyAction), proxyPassword).setParams(params);
+
+        logger.info("[opencron]proxy params:{}", proxyReq.toString());
+
+        TTransport transport;
+        /**
+         * ping的超时设置为5毫秒,其他默认
+         */
+        if (proxyReq.getAction().equals(Action.PING)) {
+            proxyReq.getParams().put("proxy","true");
+            transport = new TSocket(proxyReq.getHostName(), proxyReq.getPort(), 1000 * 5);
+        } else {
+            transport = new TSocket(proxyReq.getHostName(), proxyReq.getPort());
+        }
+        TProtocol protocol = new TBinaryProtocol(transport);
+        Opencron.Client client = new Opencron.Client(protocol);
+        transport.open();
+
+        Response response = null;
+        for (Method method : client.getClass().getMethods()) {
+            if (method.getName().equalsIgnoreCase(proxyReq.getAction().name())) {
+                try {
+                    response = (Response) method.invoke(client, proxyReq);
+                } catch (Exception e) {
+                    //proxy 执行失败,返回失败信息
+                    response = Response.response(request);
+                    response.setExitCode(Opencron.StatusCode.ERROR_EXIT.getValue())
+                            .setMessage("[opencron]:proxy error:"+e.getLocalizedMessage())
+                            .setSuccess(false)
+                            .end();
+                }
+                break;
+            }
+        }
+        transport.flush();
+        transport.close();
+        return response;
+    }
+
+    /**
+     *重启前先检查密码,密码不正确返回Response,密码正确则直接执行重启
+     * @param request
+     * @return
+     * @throws TException
+     * @throws InterruptedException
+     */
+    @Override
+    public void restart(Request request) throws TException {
+
     }
 
     private Response errorPasswordResponse(Request request) {
