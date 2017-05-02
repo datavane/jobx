@@ -22,24 +22,8 @@
 
 package org.opencron.common.job;
 
-import org.apache.thrift.*;
-import org.apache.thrift.async.*;
-import org.apache.thrift.meta_data.FieldMetaData;
-import org.apache.thrift.meta_data.StructMetaData;
-import org.apache.thrift.protocol.*;
-import org.apache.thrift.scheme.IScheme;
-import org.apache.thrift.scheme.SchemeFactory;
-import org.apache.thrift.scheme.StandardScheme;
-import org.apache.thrift.scheme.TupleScheme;
-import org.apache.thrift.server.AbstractNonblockingServer;
-import org.apache.thrift.transport.*;
-
 import javax.annotation.Generated;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.*;
 
 /**
  * @author <a href="mailto:benjobs@qq.com">benjobs@qq.com</a>
@@ -449,218 +433,218 @@ public class Opencron implements Serializable {
 
     public interface Iface {
 
-        public Response ping(Request request) throws TException;
+        public Response ping(Request request) throws org.apache.thrift.TException;
 
-        public Response path(Request request) throws TException;
+        public Response path(Request request) throws org.apache.thrift.TException;
 
-        public Response monitor(Request request) throws TException;
+        public Response monitor(Request request) throws org.apache.thrift.TException;
 
-        public Response execute(Request request) throws TException;
+        public Response execute(Request request) throws org.apache.thrift.TException;
 
-        public Response password(Request request) throws TException;
+        public Response password(Request request) throws org.apache.thrift.TException;
 
-        public Response kill(Request request) throws TException;
+        public Response kill(Request request) throws org.apache.thrift.TException;
 
-        public Response proxy(Request request) throws TException;
+        public Response proxy(Request request) throws org.apache.thrift.TException;
 
-        public void restart(Request request) throws TException;
+        public void restart(Request request) throws org.apache.thrift.TException;
 
     }
 
     public interface AsyncIface {
 
-        public void ping(Request request, AsyncMethodCallback<Response> resultHandler) throws TException;
+        public void ping(Request request, org.apache.thrift.async.AsyncMethodCallback<Response> resultHandler) throws org.apache.thrift.TException;
 
-        public void path(Request request, AsyncMethodCallback<Response> resultHandler) throws TException;
+        public void path(Request request, org.apache.thrift.async.AsyncMethodCallback<Response> resultHandler) throws org.apache.thrift.TException;
 
-        public void monitor(Request request, AsyncMethodCallback<Response> resultHandler) throws TException;
+        public void monitor(Request request, org.apache.thrift.async.AsyncMethodCallback<Response> resultHandler) throws org.apache.thrift.TException;
 
-        public void execute(Request request, AsyncMethodCallback<Response> resultHandler) throws TException;
+        public void execute(Request request, org.apache.thrift.async.AsyncMethodCallback<Response> resultHandler) throws org.apache.thrift.TException;
 
-        public void password(Request request, AsyncMethodCallback<Response> resultHandler) throws TException;
+        public void password(Request request, org.apache.thrift.async.AsyncMethodCallback<Response> resultHandler) throws org.apache.thrift.TException;
 
-        public void kill(Request request, AsyncMethodCallback<Response> resultHandler) throws TException;
+        public void kill(Request request, org.apache.thrift.async.AsyncMethodCallback<Response> resultHandler) throws org.apache.thrift.TException;
 
-        public void proxy(Request request, AsyncMethodCallback<Response> resultHandler) throws TException;
+        public void proxy(Request request, org.apache.thrift.async.AsyncMethodCallback<Response> resultHandler) throws org.apache.thrift.TException;
 
-        public void restart(Request request, AsyncMethodCallback<Void> resultHandler) throws TException;
+        public void restart(Request request, org.apache.thrift.async.AsyncMethodCallback<Void> resultHandler) throws org.apache.thrift.TException;
 
     }
 
-    public static class Client extends TServiceClient implements Iface {
-        public static class Factory implements TServiceClientFactory<Client> {
+    public static class Client extends org.apache.thrift.TServiceClient implements Iface {
+        public static class Factory implements org.apache.thrift.TServiceClientFactory<Client> {
             public Factory() {
             }
 
-            public Client getClient(TProtocol prot) {
+            public Client getClient(org.apache.thrift.protocol.TProtocol prot) {
                 return new Client(prot);
             }
 
-            public Client getClient(TProtocol iprot, TProtocol oprot) {
+            public Client getClient(org.apache.thrift.protocol.TProtocol iprot, org.apache.thrift.protocol.TProtocol oprot) {
                 return new Client(iprot, oprot);
             }
         }
 
-        public Client(TProtocol prot) {
+        public Client(org.apache.thrift.protocol.TProtocol prot) {
             super(prot, prot);
         }
 
-        public Client(TProtocol iprot, TProtocol oprot) {
+        public Client(org.apache.thrift.protocol.TProtocol iprot, org.apache.thrift.protocol.TProtocol oprot) {
             super(iprot, oprot);
         }
 
-        public Response ping(Request request) throws TException {
+        public Response ping(Request request) throws org.apache.thrift.TException {
             send_ping(request);
             return recv_ping();
         }
 
-        public void send_ping(Request request) throws TException {
+        public void send_ping(Request request) throws org.apache.thrift.TException {
             ping_args args = new ping_args();
             args.setRequest(request);
             sendBase("ping", args);
         }
 
-        public Response recv_ping() throws TException {
+        public Response recv_ping() throws org.apache.thrift.TException {
             ping_result result = new ping_result();
             receiveBase(result, "ping");
             if (result.isSetSuccess()) {
                 return result.success;
             }
-            throw new TApplicationException(TApplicationException.MISSING_RESULT, "ping failed: unknown result");
+            throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "ping failed: unknown result");
         }
 
-        public Response path(Request request) throws TException {
+        public Response path(Request request) throws org.apache.thrift.TException {
             send_path(request);
             return recv_path();
         }
 
-        public void send_path(Request request) throws TException {
+        public void send_path(Request request) throws org.apache.thrift.TException {
             path_args args = new path_args();
             args.setRequest(request);
             sendBase("path", args);
         }
 
-        public Response recv_path() throws TException {
+        public Response recv_path() throws org.apache.thrift.TException {
             path_result result = new path_result();
             receiveBase(result, "path");
             if (result.isSetSuccess()) {
                 return result.success;
             }
-            throw new TApplicationException(TApplicationException.MISSING_RESULT, "path failed: unknown result");
+            throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "path failed: unknown result");
         }
 
-        public Response monitor(Request request) throws TException {
+        public Response monitor(Request request) throws org.apache.thrift.TException {
             send_monitor(request);
             return recv_monitor();
         }
 
-        public void send_monitor(Request request) throws TException {
+        public void send_monitor(Request request) throws org.apache.thrift.TException {
             monitor_args args = new monitor_args();
             args.setRequest(request);
             sendBase("monitor", args);
         }
 
-        public Response recv_monitor() throws TException {
+        public Response recv_monitor() throws org.apache.thrift.TException {
             monitor_result result = new monitor_result();
             receiveBase(result, "monitor");
             if (result.isSetSuccess()) {
                 return result.success;
             }
-            throw new TApplicationException(TApplicationException.MISSING_RESULT, "monitor failed: unknown result");
+            throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "monitor failed: unknown result");
         }
 
-        public Response execute(Request request) throws TException {
+        public Response execute(Request request) throws org.apache.thrift.TException {
             send_execute(request);
             return recv_execute();
         }
 
-        public void send_execute(Request request) throws TException {
+        public void send_execute(Request request) throws org.apache.thrift.TException {
             execute_args args = new execute_args();
             args.setRequest(request);
             sendBase("execute", args);
         }
 
-        public Response recv_execute() throws TException {
+        public Response recv_execute() throws org.apache.thrift.TException {
             execute_result result = new execute_result();
             receiveBase(result, "execute");
             if (result.isSetSuccess()) {
                 return result.success;
             }
-            throw new TApplicationException(TApplicationException.MISSING_RESULT, "execute failed: unknown result");
+            throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "execute failed: unknown result");
         }
 
-        public Response password(Request request) throws TException {
+        public Response password(Request request) throws org.apache.thrift.TException {
             send_password(request);
             return recv_password();
         }
 
-        public void send_password(Request request) throws TException {
+        public void send_password(Request request) throws org.apache.thrift.TException {
             password_args args = new password_args();
             args.setRequest(request);
             sendBase("password", args);
         }
 
-        public Response recv_password() throws TException {
+        public Response recv_password() throws org.apache.thrift.TException {
             password_result result = new password_result();
             receiveBase(result, "password");
             if (result.isSetSuccess()) {
                 return result.success;
             }
-            throw new TApplicationException(TApplicationException.MISSING_RESULT, "password failed: unknown result");
+            throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "password failed: unknown result");
         }
 
-        public Response kill(Request request) throws TException {
+        public Response kill(Request request) throws org.apache.thrift.TException {
             send_kill(request);
             return recv_kill();
         }
 
-        public void send_kill(Request request) throws TException {
+        public void send_kill(Request request) throws org.apache.thrift.TException {
             kill_args args = new kill_args();
             args.setRequest(request);
             sendBase("kill", args);
         }
 
-        public Response recv_kill() throws TException {
+        public Response recv_kill() throws org.apache.thrift.TException {
             kill_result result = new kill_result();
             receiveBase(result, "kill");
             if (result.isSetSuccess()) {
                 return result.success;
             }
-            throw new TApplicationException(TApplicationException.MISSING_RESULT, "kill failed: unknown result");
+            throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "kill failed: unknown result");
         }
 
-        public Response proxy(Request request) throws TException {
+        public Response proxy(Request request) throws org.apache.thrift.TException {
             send_proxy(request);
             return recv_proxy();
         }
 
-        public void send_proxy(Request request) throws TException {
+        public void send_proxy(Request request) throws org.apache.thrift.TException {
             proxy_args args = new proxy_args();
             args.setRequest(request);
             sendBase("proxy", args);
         }
 
-        public Response recv_proxy() throws TException {
+        public Response recv_proxy() throws org.apache.thrift.TException {
             proxy_result result = new proxy_result();
             receiveBase(result, "proxy");
             if (result.isSetSuccess()) {
                 return result.success;
             }
-            throw new TApplicationException(TApplicationException.MISSING_RESULT, "proxy failed: unknown result");
+            throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "proxy failed: unknown result");
         }
 
-        public void restart(Request request) throws TException {
+        public void restart(Request request) throws org.apache.thrift.TException {
             send_restart(request);
             recv_restart();
         }
 
-        public void send_restart(Request request) throws TException {
+        public void send_restart(Request request) throws org.apache.thrift.TException {
             restart_args args = new restart_args();
             args.setRequest(request);
             sendBase("restart", args);
         }
 
-        public void recv_restart() throws TException {
+        public void recv_restart() throws org.apache.thrift.TException {
             restart_result result = new restart_result();
             receiveBase(result, "restart");
             return;
@@ -668,303 +652,303 @@ public class Opencron implements Serializable {
 
     }
 
-    public static class AsyncClient extends TAsyncClient implements AsyncIface {
-        public static class Factory implements TAsyncClientFactory<AsyncClient> {
-            private TAsyncClientManager clientManager;
-            private TProtocolFactory protocolFactory;
+    public static class AsyncClient extends org.apache.thrift.async.TAsyncClient implements AsyncIface {
+        public static class Factory implements org.apache.thrift.async.TAsyncClientFactory<AsyncClient> {
+            private org.apache.thrift.async.TAsyncClientManager clientManager;
+            private org.apache.thrift.protocol.TProtocolFactory protocolFactory;
 
-            public Factory(TAsyncClientManager clientManager, TProtocolFactory protocolFactory) {
+            public Factory(org.apache.thrift.async.TAsyncClientManager clientManager, org.apache.thrift.protocol.TProtocolFactory protocolFactory) {
                 this.clientManager = clientManager;
                 this.protocolFactory = protocolFactory;
             }
 
-            public AsyncClient getAsyncClient(TNonblockingTransport transport) {
+            public AsyncClient getAsyncClient(org.apache.thrift.transport.TNonblockingTransport transport) {
                 return new AsyncClient(protocolFactory, clientManager, transport);
             }
         }
 
-        public AsyncClient(TProtocolFactory protocolFactory, TAsyncClientManager clientManager, TNonblockingTransport transport) {
+        public AsyncClient(org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.async.TAsyncClientManager clientManager, org.apache.thrift.transport.TNonblockingTransport transport) {
             super(protocolFactory, clientManager, transport);
         }
 
-        public void ping(Request request, AsyncMethodCallback<Response> resultHandler) throws TException {
+        public void ping(Request request, org.apache.thrift.async.AsyncMethodCallback<Response> resultHandler) throws org.apache.thrift.TException {
             checkReady();
             ping_call method_call = new ping_call(request, resultHandler, this, ___protocolFactory, ___transport);
             this.___currentMethod = method_call;
             ___manager.call(method_call);
         }
 
-        public static class ping_call extends TAsyncMethodCall<Response> {
+        public static class ping_call extends org.apache.thrift.async.TAsyncMethodCall<Response> {
             private Request request;
 
-            public ping_call(Request request, AsyncMethodCallback<Response> resultHandler, TAsyncClient client, TProtocolFactory protocolFactory, TNonblockingTransport transport) throws TException {
+            public ping_call(Request request, org.apache.thrift.async.AsyncMethodCallback<Response> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
                 super(client, protocolFactory, transport, resultHandler, false);
                 this.request = request;
             }
 
-            public void write_args(TProtocol prot) throws TException {
-                prot.writeMessageBegin(new TMessage("ping", TMessageType.CALL, 0));
+            public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
+                prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("ping", org.apache.thrift.protocol.TMessageType.CALL, 0));
                 ping_args args = new ping_args();
                 args.setRequest(request);
                 args.write(prot);
                 prot.writeMessageEnd();
             }
 
-            public Response getResult() throws TException {
-                if (getState() != TAsyncMethodCall.State.RESPONSE_READ) {
-                    throw new IllegalStateException("Method call not finished!");
+            public Response getResult() throws org.apache.thrift.TException {
+                if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
+                    throw new java.lang.IllegalStateException("Method call not finished!");
                 }
-                TMemoryInputTransport memoryTransport = new TMemoryInputTransport(getFrameBuffer().array());
-                TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
+                org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
+                org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
                 return (new Client(prot)).recv_ping();
             }
         }
 
-        public void path(Request request, AsyncMethodCallback<Response> resultHandler) throws TException {
+        public void path(Request request, org.apache.thrift.async.AsyncMethodCallback<Response> resultHandler) throws org.apache.thrift.TException {
             checkReady();
             path_call method_call = new path_call(request, resultHandler, this, ___protocolFactory, ___transport);
             this.___currentMethod = method_call;
             ___manager.call(method_call);
         }
 
-        public static class path_call extends TAsyncMethodCall<Response> {
+        public static class path_call extends org.apache.thrift.async.TAsyncMethodCall<Response> {
             private Request request;
 
-            public path_call(Request request, AsyncMethodCallback<Response> resultHandler, TAsyncClient client, TProtocolFactory protocolFactory, TNonblockingTransport transport) throws TException {
+            public path_call(Request request, org.apache.thrift.async.AsyncMethodCallback<Response> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
                 super(client, protocolFactory, transport, resultHandler, false);
                 this.request = request;
             }
 
-            public void write_args(TProtocol prot) throws TException {
-                prot.writeMessageBegin(new TMessage("path", TMessageType.CALL, 0));
+            public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
+                prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("path", org.apache.thrift.protocol.TMessageType.CALL, 0));
                 path_args args = new path_args();
                 args.setRequest(request);
                 args.write(prot);
                 prot.writeMessageEnd();
             }
 
-            public Response getResult() throws TException {
-                if (getState() != TAsyncMethodCall.State.RESPONSE_READ) {
-                    throw new IllegalStateException("Method call not finished!");
+            public Response getResult() throws org.apache.thrift.TException {
+                if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
+                    throw new java.lang.IllegalStateException("Method call not finished!");
                 }
-                TMemoryInputTransport memoryTransport = new TMemoryInputTransport(getFrameBuffer().array());
-                TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
+                org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
+                org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
                 return (new Client(prot)).recv_path();
             }
         }
 
-        public void monitor(Request request, AsyncMethodCallback<Response> resultHandler) throws TException {
+        public void monitor(Request request, org.apache.thrift.async.AsyncMethodCallback<Response> resultHandler) throws org.apache.thrift.TException {
             checkReady();
             monitor_call method_call = new monitor_call(request, resultHandler, this, ___protocolFactory, ___transport);
             this.___currentMethod = method_call;
             ___manager.call(method_call);
         }
 
-        public static class monitor_call extends TAsyncMethodCall<Response> {
+        public static class monitor_call extends org.apache.thrift.async.TAsyncMethodCall<Response> {
             private Request request;
 
-            public monitor_call(Request request, AsyncMethodCallback<Response> resultHandler, TAsyncClient client, TProtocolFactory protocolFactory, TNonblockingTransport transport) throws TException {
+            public monitor_call(Request request, org.apache.thrift.async.AsyncMethodCallback<Response> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
                 super(client, protocolFactory, transport, resultHandler, false);
                 this.request = request;
             }
 
-            public void write_args(TProtocol prot) throws TException {
-                prot.writeMessageBegin(new TMessage("monitor", TMessageType.CALL, 0));
+            public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
+                prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("monitor", org.apache.thrift.protocol.TMessageType.CALL, 0));
                 monitor_args args = new monitor_args();
                 args.setRequest(request);
                 args.write(prot);
                 prot.writeMessageEnd();
             }
 
-            public Response getResult() throws TException {
-                if (getState() != TAsyncMethodCall.State.RESPONSE_READ) {
-                    throw new IllegalStateException("Method call not finished!");
+            public Response getResult() throws org.apache.thrift.TException {
+                if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
+                    throw new java.lang.IllegalStateException("Method call not finished!");
                 }
-                TMemoryInputTransport memoryTransport = new TMemoryInputTransport(getFrameBuffer().array());
-                TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
+                org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
+                org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
                 return (new Client(prot)).recv_monitor();
             }
         }
 
-        public void execute(Request request, AsyncMethodCallback<Response> resultHandler) throws TException {
+        public void execute(Request request, org.apache.thrift.async.AsyncMethodCallback<Response> resultHandler) throws org.apache.thrift.TException {
             checkReady();
             execute_call method_call = new execute_call(request, resultHandler, this, ___protocolFactory, ___transport);
             this.___currentMethod = method_call;
             ___manager.call(method_call);
         }
 
-        public static class execute_call extends TAsyncMethodCall<Response> {
+        public static class execute_call extends org.apache.thrift.async.TAsyncMethodCall<Response> {
             private Request request;
 
-            public execute_call(Request request, AsyncMethodCallback<Response> resultHandler, TAsyncClient client, TProtocolFactory protocolFactory, TNonblockingTransport transport) throws TException {
+            public execute_call(Request request, org.apache.thrift.async.AsyncMethodCallback<Response> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
                 super(client, protocolFactory, transport, resultHandler, false);
                 this.request = request;
             }
 
-            public void write_args(TProtocol prot) throws TException {
-                prot.writeMessageBegin(new TMessage("execute", TMessageType.CALL, 0));
+            public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
+                prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("execute", org.apache.thrift.protocol.TMessageType.CALL, 0));
                 execute_args args = new execute_args();
                 args.setRequest(request);
                 args.write(prot);
                 prot.writeMessageEnd();
             }
 
-            public Response getResult() throws TException {
-                if (getState() != TAsyncMethodCall.State.RESPONSE_READ) {
-                    throw new IllegalStateException("Method call not finished!");
+            public Response getResult() throws org.apache.thrift.TException {
+                if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
+                    throw new java.lang.IllegalStateException("Method call not finished!");
                 }
-                TMemoryInputTransport memoryTransport = new TMemoryInputTransport(getFrameBuffer().array());
-                TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
+                org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
+                org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
                 return (new Client(prot)).recv_execute();
             }
         }
 
-        public void password(Request request, AsyncMethodCallback<Response> resultHandler) throws TException {
+        public void password(Request request, org.apache.thrift.async.AsyncMethodCallback<Response> resultHandler) throws org.apache.thrift.TException {
             checkReady();
             password_call method_call = new password_call(request, resultHandler, this, ___protocolFactory, ___transport);
             this.___currentMethod = method_call;
             ___manager.call(method_call);
         }
 
-        public static class password_call extends TAsyncMethodCall<Response> {
+        public static class password_call extends org.apache.thrift.async.TAsyncMethodCall<Response> {
             private Request request;
 
-            public password_call(Request request, AsyncMethodCallback<Response> resultHandler, TAsyncClient client, TProtocolFactory protocolFactory, TNonblockingTransport transport) throws TException {
+            public password_call(Request request, org.apache.thrift.async.AsyncMethodCallback<Response> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
                 super(client, protocolFactory, transport, resultHandler, false);
                 this.request = request;
             }
 
-            public void write_args(TProtocol prot) throws TException {
-                prot.writeMessageBegin(new TMessage("password", TMessageType.CALL, 0));
+            public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
+                prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("password", org.apache.thrift.protocol.TMessageType.CALL, 0));
                 password_args args = new password_args();
                 args.setRequest(request);
                 args.write(prot);
                 prot.writeMessageEnd();
             }
 
-            public Response getResult() throws TException {
-                if (getState() != TAsyncMethodCall.State.RESPONSE_READ) {
-                    throw new IllegalStateException("Method call not finished!");
+            public Response getResult() throws org.apache.thrift.TException {
+                if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
+                    throw new java.lang.IllegalStateException("Method call not finished!");
                 }
-                TMemoryInputTransport memoryTransport = new TMemoryInputTransport(getFrameBuffer().array());
-                TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
+                org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
+                org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
                 return (new Client(prot)).recv_password();
             }
         }
 
-        public void kill(Request request, AsyncMethodCallback<Response> resultHandler) throws TException {
+        public void kill(Request request, org.apache.thrift.async.AsyncMethodCallback<Response> resultHandler) throws org.apache.thrift.TException {
             checkReady();
             kill_call method_call = new kill_call(request, resultHandler, this, ___protocolFactory, ___transport);
             this.___currentMethod = method_call;
             ___manager.call(method_call);
         }
 
-        public static class kill_call extends TAsyncMethodCall<Response> {
+        public static class kill_call extends org.apache.thrift.async.TAsyncMethodCall<Response> {
             private Request request;
 
-            public kill_call(Request request, AsyncMethodCallback<Response> resultHandler, TAsyncClient client, TProtocolFactory protocolFactory, TNonblockingTransport transport) throws TException {
+            public kill_call(Request request, org.apache.thrift.async.AsyncMethodCallback<Response> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
                 super(client, protocolFactory, transport, resultHandler, false);
                 this.request = request;
             }
 
-            public void write_args(TProtocol prot) throws TException {
-                prot.writeMessageBegin(new TMessage("kill", TMessageType.CALL, 0));
+            public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
+                prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("kill", org.apache.thrift.protocol.TMessageType.CALL, 0));
                 kill_args args = new kill_args();
                 args.setRequest(request);
                 args.write(prot);
                 prot.writeMessageEnd();
             }
 
-            public Response getResult() throws TException {
-                if (getState() != TAsyncMethodCall.State.RESPONSE_READ) {
-                    throw new IllegalStateException("Method call not finished!");
+            public Response getResult() throws org.apache.thrift.TException {
+                if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
+                    throw new java.lang.IllegalStateException("Method call not finished!");
                 }
-                TMemoryInputTransport memoryTransport = new TMemoryInputTransport(getFrameBuffer().array());
-                TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
+                org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
+                org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
                 return (new Client(prot)).recv_kill();
             }
         }
 
-        public void proxy(Request request, AsyncMethodCallback<Response> resultHandler) throws TException {
+        public void proxy(Request request, org.apache.thrift.async.AsyncMethodCallback<Response> resultHandler) throws org.apache.thrift.TException {
             checkReady();
             proxy_call method_call = new proxy_call(request, resultHandler, this, ___protocolFactory, ___transport);
             this.___currentMethod = method_call;
             ___manager.call(method_call);
         }
 
-        public static class proxy_call extends TAsyncMethodCall<Response> {
+        public static class proxy_call extends org.apache.thrift.async.TAsyncMethodCall<Response> {
             private Request request;
 
-            public proxy_call(Request request, AsyncMethodCallback<Response> resultHandler, TAsyncClient client, TProtocolFactory protocolFactory, TNonblockingTransport transport) throws TException {
+            public proxy_call(Request request, org.apache.thrift.async.AsyncMethodCallback<Response> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
                 super(client, protocolFactory, transport, resultHandler, false);
                 this.request = request;
             }
 
-            public void write_args(TProtocol prot) throws TException {
-                prot.writeMessageBegin(new TMessage("proxy", TMessageType.CALL, 0));
+            public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
+                prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("proxy", org.apache.thrift.protocol.TMessageType.CALL, 0));
                 proxy_args args = new proxy_args();
                 args.setRequest(request);
                 args.write(prot);
                 prot.writeMessageEnd();
             }
 
-            public Response getResult() throws TException {
-                if (getState() != TAsyncMethodCall.State.RESPONSE_READ) {
-                    throw new IllegalStateException("Method call not finished!");
+            public Response getResult() throws org.apache.thrift.TException {
+                if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
+                    throw new java.lang.IllegalStateException("Method call not finished!");
                 }
-                TMemoryInputTransport memoryTransport = new TMemoryInputTransport(getFrameBuffer().array());
-                TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
+                org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
+                org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
                 return (new Client(prot)).recv_proxy();
             }
         }
 
-        public void restart(Request request, AsyncMethodCallback<Void> resultHandler) throws TException {
+        public void restart(Request request, org.apache.thrift.async.AsyncMethodCallback<Void> resultHandler) throws org.apache.thrift.TException {
             checkReady();
             restart_call method_call = new restart_call(request, resultHandler, this, ___protocolFactory, ___transport);
             this.___currentMethod = method_call;
             ___manager.call(method_call);
         }
 
-        public static class restart_call extends TAsyncMethodCall<Void> {
+        public static class restart_call extends org.apache.thrift.async.TAsyncMethodCall<Void> {
             private Request request;
 
-            public restart_call(Request request, AsyncMethodCallback<Void> resultHandler, TAsyncClient client, TProtocolFactory protocolFactory, TNonblockingTransport transport) throws TException {
+            public restart_call(Request request, org.apache.thrift.async.AsyncMethodCallback<Void> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
                 super(client, protocolFactory, transport, resultHandler, false);
                 this.request = request;
             }
 
-            public void write_args(TProtocol prot) throws TException {
-                prot.writeMessageBegin(new TMessage("restart", TMessageType.CALL, 0));
+            public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
+                prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("restart", org.apache.thrift.protocol.TMessageType.CALL, 0));
                 restart_args args = new restart_args();
                 args.setRequest(request);
                 args.write(prot);
                 prot.writeMessageEnd();
             }
 
-            public Void getResult() throws TException {
-                if (getState() != TAsyncMethodCall.State.RESPONSE_READ) {
-                    throw new IllegalStateException("Method call not finished!");
+            public Void getResult() throws org.apache.thrift.TException {
+                if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
+                    throw new java.lang.IllegalStateException("Method call not finished!");
                 }
-                TMemoryInputTransport memoryTransport = new TMemoryInputTransport(getFrameBuffer().array());
-                TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
+                org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
+                org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
                 return null;
             }
         }
 
     }
 
-    public static class Processor<I extends Iface> extends TBaseProcessor<I> implements org.apache.thrift.TProcessor {
+    public static class Processor<I extends Iface> extends org.apache.thrift.TBaseProcessor<I> implements org.apache.thrift.TProcessor {
         private static final org.slf4j.Logger _LOGGER = org.slf4j.LoggerFactory.getLogger(Processor.class.getName());
 
         public Processor(I iface) {
-            super(iface, getProcessMap(new HashMap<String, ProcessFunction<I, ? extends TBase>>()));
+            super(iface, getProcessMap(new java.util.HashMap<java.lang.String, org.apache.thrift.ProcessFunction<I, ? extends org.apache.thrift.TBase>>()));
         }
 
-        protected Processor(I iface, Map<String, ProcessFunction<I, ? extends TBase>> processMap) {
+        protected Processor(I iface, java.util.Map<java.lang.String, org.apache.thrift.ProcessFunction<I, ? extends org.apache.thrift.TBase>> processMap) {
             super(iface, getProcessMap(processMap));
         }
 
-        private static <I extends Iface> Map<String, ProcessFunction<I, ? extends TBase>> getProcessMap(Map<String, ProcessFunction<I, ? extends TBase>> processMap) {
+        private static <I extends Iface> java.util.Map<java.lang.String, org.apache.thrift.ProcessFunction<I, ? extends org.apache.thrift.TBase>> getProcessMap(java.util.Map<java.lang.String, org.apache.thrift.ProcessFunction<I, ? extends org.apache.thrift.TBase>> processMap) {
             processMap.put("ping", new ping());
             processMap.put("path", new path());
             processMap.put("monitor", new monitor());
@@ -976,7 +960,7 @@ public class Opencron implements Serializable {
             return processMap;
         }
 
-        public static class ping<I extends Iface> extends ProcessFunction<I, ping_args> {
+        public static class ping<I extends Iface> extends org.apache.thrift.ProcessFunction<I, ping_args> {
             public ping() {
                 super("ping");
             }
@@ -993,14 +977,14 @@ public class Opencron implements Serializable {
                 return false;
             }
 
-            public ping_result getResult(I iface, ping_args args) throws TException {
+            public ping_result getResult(I iface, ping_args args) throws org.apache.thrift.TException {
                 ping_result result = new ping_result();
                 result.success = iface.ping(args.request);
                 return result;
             }
         }
 
-        public static class path<I extends Iface> extends ProcessFunction<I, path_args> {
+        public static class path<I extends Iface> extends org.apache.thrift.ProcessFunction<I, path_args> {
             public path() {
                 super("path");
             }
@@ -1017,14 +1001,14 @@ public class Opencron implements Serializable {
                 return false;
             }
 
-            public path_result getResult(I iface, path_args args) throws TException {
+            public path_result getResult(I iface, path_args args) throws org.apache.thrift.TException {
                 path_result result = new path_result();
                 result.success = iface.path(args.request);
                 return result;
             }
         }
 
-        public static class monitor<I extends Iface> extends ProcessFunction<I, monitor_args> {
+        public static class monitor<I extends Iface> extends org.apache.thrift.ProcessFunction<I, monitor_args> {
             public monitor() {
                 super("monitor");
             }
@@ -1041,14 +1025,14 @@ public class Opencron implements Serializable {
                 return false;
             }
 
-            public monitor_result getResult(I iface, monitor_args args) throws TException {
+            public monitor_result getResult(I iface, monitor_args args) throws org.apache.thrift.TException {
                 monitor_result result = new monitor_result();
                 result.success = iface.monitor(args.request);
                 return result;
             }
         }
 
-        public static class execute<I extends Iface> extends ProcessFunction<I, execute_args> {
+        public static class execute<I extends Iface> extends org.apache.thrift.ProcessFunction<I, execute_args> {
             public execute() {
                 super("execute");
             }
@@ -1065,14 +1049,14 @@ public class Opencron implements Serializable {
                 return false;
             }
 
-            public execute_result getResult(I iface, execute_args args) throws TException {
+            public execute_result getResult(I iface, execute_args args) throws org.apache.thrift.TException {
                 execute_result result = new execute_result();
                 result.success = iface.execute(args.request);
                 return result;
             }
         }
 
-        public static class password<I extends Iface> extends ProcessFunction<I, password_args> {
+        public static class password<I extends Iface> extends org.apache.thrift.ProcessFunction<I, password_args> {
             public password() {
                 super("password");
             }
@@ -1089,14 +1073,14 @@ public class Opencron implements Serializable {
                 return false;
             }
 
-            public password_result getResult(I iface, password_args args) throws TException {
+            public password_result getResult(I iface, password_args args) throws org.apache.thrift.TException {
                 password_result result = new password_result();
                 result.success = iface.password(args.request);
                 return result;
             }
         }
 
-        public static class kill<I extends Iface> extends ProcessFunction<I, kill_args> {
+        public static class kill<I extends Iface> extends org.apache.thrift.ProcessFunction<I, kill_args> {
             public kill() {
                 super("kill");
             }
@@ -1113,14 +1097,14 @@ public class Opencron implements Serializable {
                 return false;
             }
 
-            public kill_result getResult(I iface, kill_args args) throws TException {
+            public kill_result getResult(I iface, kill_args args) throws org.apache.thrift.TException {
                 kill_result result = new kill_result();
                 result.success = iface.kill(args.request);
                 return result;
             }
         }
 
-        public static class proxy<I extends Iface> extends ProcessFunction<I, proxy_args> {
+        public static class proxy<I extends Iface> extends org.apache.thrift.ProcessFunction<I, proxy_args> {
             public proxy() {
                 super("proxy");
             }
@@ -1137,14 +1121,14 @@ public class Opencron implements Serializable {
                 return false;
             }
 
-            public proxy_result getResult(I iface, proxy_args args) throws TException {
+            public proxy_result getResult(I iface, proxy_args args) throws org.apache.thrift.TException {
                 proxy_result result = new proxy_result();
                 result.success = iface.proxy(args.request);
                 return result;
             }
         }
 
-        public static class restart<I extends Iface> extends ProcessFunction<I, restart_args> {
+        public static class restart<I extends Iface> extends org.apache.thrift.ProcessFunction<I, restart_args> {
             public restart() {
                 super("restart");
             }
@@ -1161,7 +1145,7 @@ public class Opencron implements Serializable {
                 return false;
             }
 
-            public restart_result getResult(I iface, restart_args args) throws TException {
+            public restart_result getResult(I iface, restart_args args) throws org.apache.thrift.TException {
                 restart_result result = new restart_result();
                 iface.restart(args.request);
                 return result;
@@ -1170,18 +1154,18 @@ public class Opencron implements Serializable {
 
     }
 
-    public static class AsyncProcessor<I extends AsyncIface> extends TBaseAsyncProcessor<I> {
+    public static class AsyncProcessor<I extends AsyncIface> extends org.apache.thrift.TBaseAsyncProcessor<I> {
         private static final org.slf4j.Logger _LOGGER = org.slf4j.LoggerFactory.getLogger(AsyncProcessor.class.getName());
 
         public AsyncProcessor(I iface) {
-            super(iface, getProcessMap(new HashMap<String, AsyncProcessFunction<I, ? extends TBase, ?>>()));
+            super(iface, getProcessMap(new java.util.HashMap<java.lang.String, org.apache.thrift.AsyncProcessFunction<I, ? extends org.apache.thrift.TBase, ?>>()));
         }
 
-        protected AsyncProcessor(I iface, Map<String, AsyncProcessFunction<I, ? extends TBase, ?>> processMap) {
+        protected AsyncProcessor(I iface, java.util.Map<java.lang.String, org.apache.thrift.AsyncProcessFunction<I, ? extends org.apache.thrift.TBase, ?>> processMap) {
             super(iface, getProcessMap(processMap));
         }
 
-        private static <I extends AsyncIface> Map<String, AsyncProcessFunction<I, ? extends TBase, ?>> getProcessMap(Map<String, AsyncProcessFunction<I, ? extends TBase, ?>> processMap) {
+        private static <I extends AsyncIface> java.util.Map<java.lang.String, org.apache.thrift.AsyncProcessFunction<I, ? extends org.apache.thrift.TBase, ?>> getProcessMap(java.util.Map<java.lang.String, org.apache.thrift.AsyncProcessFunction<I, ? extends org.apache.thrift.TBase, ?>> processMap) {
             processMap.put("ping", new ping());
             processMap.put("path", new path());
             processMap.put("monitor", new monitor());
@@ -1193,7 +1177,7 @@ public class Opencron implements Serializable {
             return processMap;
         }
 
-        public static class ping<I extends AsyncIface> extends AsyncProcessFunction<I, ping_args, Response> {
+        public static class ping<I extends AsyncIface> extends org.apache.thrift.AsyncProcessFunction<I, ping_args, Response> {
             public ping() {
                 super("ping");
             }
@@ -1202,43 +1186,43 @@ public class Opencron implements Serializable {
                 return new ping_args();
             }
 
-            public AsyncMethodCallback<Response> getResultHandler(final AbstractNonblockingServer.AsyncFrameBuffer fb, final int seqid) {
-                final AsyncProcessFunction fcall = this;
-                return new AsyncMethodCallback<Response>() {
+            public org.apache.thrift.async.AsyncMethodCallback<Response> getResultHandler(final org.apache.thrift.server.AbstractNonblockingServer.AsyncFrameBuffer fb, final int seqid) {
+                final org.apache.thrift.AsyncProcessFunction fcall = this;
+                return new org.apache.thrift.async.AsyncMethodCallback<Response>() {
                     public void onComplete(Response o) {
                         ping_result result = new ping_result();
                         result.success = o;
                         try {
-                            fcall.sendResponse(fb, result, TMessageType.REPLY, seqid);
-                        } catch (TTransportException e) {
+                            fcall.sendResponse(fb, result, org.apache.thrift.protocol.TMessageType.REPLY, seqid);
+                        } catch (org.apache.thrift.transport.TTransportException e) {
                             _LOGGER.error("TTransportException writing to internal frame buffer", e);
                             fb.close();
-                        } catch (Exception e) {
+                        } catch (java.lang.Exception e) {
                             _LOGGER.error("Exception writing to internal frame buffer", e);
                             onError(e);
                         }
                     }
 
-                    public void onError(Exception e) {
-                        byte msgType = TMessageType.REPLY;
-                        TSerializable msg;
+                    public void onError(java.lang.Exception e) {
+                        byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
+                        org.apache.thrift.TSerializable msg;
                         ping_result result = new ping_result();
-                        if (e instanceof TTransportException) {
+                        if (e instanceof org.apache.thrift.transport.TTransportException) {
                             _LOGGER.error("TTransportException inside handler", e);
                             fb.close();
                             return;
-                        } else if (e instanceof TApplicationException) {
+                        } else if (e instanceof org.apache.thrift.TApplicationException) {
                             _LOGGER.error("TApplicationException inside handler", e);
-                            msgType = TMessageType.EXCEPTION;
-                            msg = (TApplicationException) e;
+                            msgType = org.apache.thrift.protocol.TMessageType.EXCEPTION;
+                            msg = (org.apache.thrift.TApplicationException) e;
                         } else {
                             _LOGGER.error("Exception inside handler", e);
-                            msgType = TMessageType.EXCEPTION;
-                            msg = new TApplicationException(TApplicationException.INTERNAL_ERROR, e.getMessage());
+                            msgType = org.apache.thrift.protocol.TMessageType.EXCEPTION;
+                            msg = new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.INTERNAL_ERROR, e.getMessage());
                         }
                         try {
                             fcall.sendResponse(fb, msg, msgType, seqid);
-                        } catch (Exception ex) {
+                        } catch (java.lang.Exception ex) {
                             _LOGGER.error("Exception writing to internal frame buffer", ex);
                             fb.close();
                         }
@@ -1250,12 +1234,12 @@ public class Opencron implements Serializable {
                 return false;
             }
 
-            public void start(I iface, ping_args args, AsyncMethodCallback<Response> resultHandler) throws TException {
+            public void start(I iface, ping_args args, org.apache.thrift.async.AsyncMethodCallback<Response> resultHandler) throws org.apache.thrift.TException {
                 iface.ping(args.request, resultHandler);
             }
         }
 
-        public static class path<I extends AsyncIface> extends AsyncProcessFunction<I, path_args, Response> {
+        public static class path<I extends AsyncIface> extends org.apache.thrift.AsyncProcessFunction<I, path_args, Response> {
             public path() {
                 super("path");
             }
@@ -1264,43 +1248,43 @@ public class Opencron implements Serializable {
                 return new path_args();
             }
 
-            public AsyncMethodCallback<Response> getResultHandler(final AbstractNonblockingServer.AsyncFrameBuffer fb, final int seqid) {
-                final AsyncProcessFunction fcall = this;
-                return new AsyncMethodCallback<Response>() {
+            public org.apache.thrift.async.AsyncMethodCallback<Response> getResultHandler(final org.apache.thrift.server.AbstractNonblockingServer.AsyncFrameBuffer fb, final int seqid) {
+                final org.apache.thrift.AsyncProcessFunction fcall = this;
+                return new org.apache.thrift.async.AsyncMethodCallback<Response>() {
                     public void onComplete(Response o) {
                         path_result result = new path_result();
                         result.success = o;
                         try {
-                            fcall.sendResponse(fb, result, TMessageType.REPLY, seqid);
-                        } catch (TTransportException e) {
+                            fcall.sendResponse(fb, result, org.apache.thrift.protocol.TMessageType.REPLY, seqid);
+                        } catch (org.apache.thrift.transport.TTransportException e) {
                             _LOGGER.error("TTransportException writing to internal frame buffer", e);
                             fb.close();
-                        } catch (Exception e) {
+                        } catch (java.lang.Exception e) {
                             _LOGGER.error("Exception writing to internal frame buffer", e);
                             onError(e);
                         }
                     }
 
-                    public void onError(Exception e) {
-                        byte msgType = TMessageType.REPLY;
-                        TSerializable msg;
+                    public void onError(java.lang.Exception e) {
+                        byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
+                        org.apache.thrift.TSerializable msg;
                         path_result result = new path_result();
-                        if (e instanceof TTransportException) {
+                        if (e instanceof org.apache.thrift.transport.TTransportException) {
                             _LOGGER.error("TTransportException inside handler", e);
                             fb.close();
                             return;
-                        } else if (e instanceof TApplicationException) {
+                        } else if (e instanceof org.apache.thrift.TApplicationException) {
                             _LOGGER.error("TApplicationException inside handler", e);
-                            msgType = TMessageType.EXCEPTION;
-                            msg = (TApplicationException) e;
+                            msgType = org.apache.thrift.protocol.TMessageType.EXCEPTION;
+                            msg = (org.apache.thrift.TApplicationException) e;
                         } else {
                             _LOGGER.error("Exception inside handler", e);
-                            msgType = TMessageType.EXCEPTION;
-                            msg = new TApplicationException(TApplicationException.INTERNAL_ERROR, e.getMessage());
+                            msgType = org.apache.thrift.protocol.TMessageType.EXCEPTION;
+                            msg = new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.INTERNAL_ERROR, e.getMessage());
                         }
                         try {
                             fcall.sendResponse(fb, msg, msgType, seqid);
-                        } catch (Exception ex) {
+                        } catch (java.lang.Exception ex) {
                             _LOGGER.error("Exception writing to internal frame buffer", ex);
                             fb.close();
                         }
@@ -1312,12 +1296,12 @@ public class Opencron implements Serializable {
                 return false;
             }
 
-            public void start(I iface, path_args args, AsyncMethodCallback<Response> resultHandler) throws TException {
+            public void start(I iface, path_args args, org.apache.thrift.async.AsyncMethodCallback<Response> resultHandler) throws org.apache.thrift.TException {
                 iface.path(args.request, resultHandler);
             }
         }
 
-        public static class monitor<I extends AsyncIface> extends AsyncProcessFunction<I, monitor_args, Response> {
+        public static class monitor<I extends AsyncIface> extends org.apache.thrift.AsyncProcessFunction<I, monitor_args, Response> {
             public monitor() {
                 super("monitor");
             }
@@ -1326,43 +1310,43 @@ public class Opencron implements Serializable {
                 return new monitor_args();
             }
 
-            public AsyncMethodCallback<Response> getResultHandler(final AbstractNonblockingServer.AsyncFrameBuffer fb, final int seqid) {
-                final AsyncProcessFunction fcall = this;
-                return new AsyncMethodCallback<Response>() {
+            public org.apache.thrift.async.AsyncMethodCallback<Response> getResultHandler(final org.apache.thrift.server.AbstractNonblockingServer.AsyncFrameBuffer fb, final int seqid) {
+                final org.apache.thrift.AsyncProcessFunction fcall = this;
+                return new org.apache.thrift.async.AsyncMethodCallback<Response>() {
                     public void onComplete(Response o) {
                         monitor_result result = new monitor_result();
                         result.success = o;
                         try {
-                            fcall.sendResponse(fb, result, TMessageType.REPLY, seqid);
-                        } catch (TTransportException e) {
+                            fcall.sendResponse(fb, result, org.apache.thrift.protocol.TMessageType.REPLY, seqid);
+                        } catch (org.apache.thrift.transport.TTransportException e) {
                             _LOGGER.error("TTransportException writing to internal frame buffer", e);
                             fb.close();
-                        } catch (Exception e) {
+                        } catch (java.lang.Exception e) {
                             _LOGGER.error("Exception writing to internal frame buffer", e);
                             onError(e);
                         }
                     }
 
-                    public void onError(Exception e) {
-                        byte msgType = TMessageType.REPLY;
-                        TSerializable msg;
+                    public void onError(java.lang.Exception e) {
+                        byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
+                        org.apache.thrift.TSerializable msg;
                         monitor_result result = new monitor_result();
-                        if (e instanceof TTransportException) {
+                        if (e instanceof org.apache.thrift.transport.TTransportException) {
                             _LOGGER.error("TTransportException inside handler", e);
                             fb.close();
                             return;
-                        } else if (e instanceof TApplicationException) {
+                        } else if (e instanceof org.apache.thrift.TApplicationException) {
                             _LOGGER.error("TApplicationException inside handler", e);
-                            msgType = TMessageType.EXCEPTION;
-                            msg = (TApplicationException) e;
+                            msgType = org.apache.thrift.protocol.TMessageType.EXCEPTION;
+                            msg = (org.apache.thrift.TApplicationException) e;
                         } else {
                             _LOGGER.error("Exception inside handler", e);
-                            msgType = TMessageType.EXCEPTION;
-                            msg = new TApplicationException(TApplicationException.INTERNAL_ERROR, e.getMessage());
+                            msgType = org.apache.thrift.protocol.TMessageType.EXCEPTION;
+                            msg = new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.INTERNAL_ERROR, e.getMessage());
                         }
                         try {
                             fcall.sendResponse(fb, msg, msgType, seqid);
-                        } catch (Exception ex) {
+                        } catch (java.lang.Exception ex) {
                             _LOGGER.error("Exception writing to internal frame buffer", ex);
                             fb.close();
                         }
@@ -1374,12 +1358,12 @@ public class Opencron implements Serializable {
                 return false;
             }
 
-            public void start(I iface, monitor_args args, AsyncMethodCallback<Response> resultHandler) throws TException {
+            public void start(I iface, monitor_args args, org.apache.thrift.async.AsyncMethodCallback<Response> resultHandler) throws org.apache.thrift.TException {
                 iface.monitor(args.request, resultHandler);
             }
         }
 
-        public static class execute<I extends AsyncIface> extends AsyncProcessFunction<I, execute_args, Response> {
+        public static class execute<I extends AsyncIface> extends org.apache.thrift.AsyncProcessFunction<I, execute_args, Response> {
             public execute() {
                 super("execute");
             }
@@ -1388,43 +1372,43 @@ public class Opencron implements Serializable {
                 return new execute_args();
             }
 
-            public AsyncMethodCallback<Response> getResultHandler(final AbstractNonblockingServer.AsyncFrameBuffer fb, final int seqid) {
-                final AsyncProcessFunction fcall = this;
-                return new AsyncMethodCallback<Response>() {
+            public org.apache.thrift.async.AsyncMethodCallback<Response> getResultHandler(final org.apache.thrift.server.AbstractNonblockingServer.AsyncFrameBuffer fb, final int seqid) {
+                final org.apache.thrift.AsyncProcessFunction fcall = this;
+                return new org.apache.thrift.async.AsyncMethodCallback<Response>() {
                     public void onComplete(Response o) {
                         execute_result result = new execute_result();
                         result.success = o;
                         try {
-                            fcall.sendResponse(fb, result, TMessageType.REPLY, seqid);
-                        } catch (TTransportException e) {
+                            fcall.sendResponse(fb, result, org.apache.thrift.protocol.TMessageType.REPLY, seqid);
+                        } catch (org.apache.thrift.transport.TTransportException e) {
                             _LOGGER.error("TTransportException writing to internal frame buffer", e);
                             fb.close();
-                        } catch (Exception e) {
+                        } catch (java.lang.Exception e) {
                             _LOGGER.error("Exception writing to internal frame buffer", e);
                             onError(e);
                         }
                     }
 
-                    public void onError(Exception e) {
-                        byte msgType = TMessageType.REPLY;
-                        TSerializable msg;
+                    public void onError(java.lang.Exception e) {
+                        byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
+                        org.apache.thrift.TSerializable msg;
                         execute_result result = new execute_result();
-                        if (e instanceof TTransportException) {
+                        if (e instanceof org.apache.thrift.transport.TTransportException) {
                             _LOGGER.error("TTransportException inside handler", e);
                             fb.close();
                             return;
-                        } else if (e instanceof TApplicationException) {
+                        } else if (e instanceof org.apache.thrift.TApplicationException) {
                             _LOGGER.error("TApplicationException inside handler", e);
-                            msgType = TMessageType.EXCEPTION;
-                            msg = (TApplicationException) e;
+                            msgType = org.apache.thrift.protocol.TMessageType.EXCEPTION;
+                            msg = (org.apache.thrift.TApplicationException) e;
                         } else {
                             _LOGGER.error("Exception inside handler", e);
-                            msgType = TMessageType.EXCEPTION;
-                            msg = new TApplicationException(TApplicationException.INTERNAL_ERROR, e.getMessage());
+                            msgType = org.apache.thrift.protocol.TMessageType.EXCEPTION;
+                            msg = new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.INTERNAL_ERROR, e.getMessage());
                         }
                         try {
                             fcall.sendResponse(fb, msg, msgType, seqid);
-                        } catch (Exception ex) {
+                        } catch (java.lang.Exception ex) {
                             _LOGGER.error("Exception writing to internal frame buffer", ex);
                             fb.close();
                         }
@@ -1436,12 +1420,12 @@ public class Opencron implements Serializable {
                 return false;
             }
 
-            public void start(I iface, execute_args args, AsyncMethodCallback<Response> resultHandler) throws TException {
+            public void start(I iface, execute_args args, org.apache.thrift.async.AsyncMethodCallback<Response> resultHandler) throws org.apache.thrift.TException {
                 iface.execute(args.request, resultHandler);
             }
         }
 
-        public static class password<I extends AsyncIface> extends AsyncProcessFunction<I, password_args, Response> {
+        public static class password<I extends AsyncIface> extends org.apache.thrift.AsyncProcessFunction<I, password_args, Response> {
             public password() {
                 super("password");
             }
@@ -1450,43 +1434,43 @@ public class Opencron implements Serializable {
                 return new password_args();
             }
 
-            public AsyncMethodCallback<Response> getResultHandler(final AbstractNonblockingServer.AsyncFrameBuffer fb, final int seqid) {
-                final AsyncProcessFunction fcall = this;
-                return new AsyncMethodCallback<Response>() {
+            public org.apache.thrift.async.AsyncMethodCallback<Response> getResultHandler(final org.apache.thrift.server.AbstractNonblockingServer.AsyncFrameBuffer fb, final int seqid) {
+                final org.apache.thrift.AsyncProcessFunction fcall = this;
+                return new org.apache.thrift.async.AsyncMethodCallback<Response>() {
                     public void onComplete(Response o) {
                         password_result result = new password_result();
                         result.success = o;
                         try {
-                            fcall.sendResponse(fb, result, TMessageType.REPLY, seqid);
-                        } catch (TTransportException e) {
+                            fcall.sendResponse(fb, result, org.apache.thrift.protocol.TMessageType.REPLY, seqid);
+                        } catch (org.apache.thrift.transport.TTransportException e) {
                             _LOGGER.error("TTransportException writing to internal frame buffer", e);
                             fb.close();
-                        } catch (Exception e) {
+                        } catch (java.lang.Exception e) {
                             _LOGGER.error("Exception writing to internal frame buffer", e);
                             onError(e);
                         }
                     }
 
-                    public void onError(Exception e) {
-                        byte msgType = TMessageType.REPLY;
-                        TSerializable msg;
+                    public void onError(java.lang.Exception e) {
+                        byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
+                        org.apache.thrift.TSerializable msg;
                         password_result result = new password_result();
-                        if (e instanceof TTransportException) {
+                        if (e instanceof org.apache.thrift.transport.TTransportException) {
                             _LOGGER.error("TTransportException inside handler", e);
                             fb.close();
                             return;
-                        } else if (e instanceof TApplicationException) {
+                        } else if (e instanceof org.apache.thrift.TApplicationException) {
                             _LOGGER.error("TApplicationException inside handler", e);
-                            msgType = TMessageType.EXCEPTION;
-                            msg = (TApplicationException) e;
+                            msgType = org.apache.thrift.protocol.TMessageType.EXCEPTION;
+                            msg = (org.apache.thrift.TApplicationException) e;
                         } else {
                             _LOGGER.error("Exception inside handler", e);
-                            msgType = TMessageType.EXCEPTION;
-                            msg = new TApplicationException(TApplicationException.INTERNAL_ERROR, e.getMessage());
+                            msgType = org.apache.thrift.protocol.TMessageType.EXCEPTION;
+                            msg = new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.INTERNAL_ERROR, e.getMessage());
                         }
                         try {
                             fcall.sendResponse(fb, msg, msgType, seqid);
-                        } catch (Exception ex) {
+                        } catch (java.lang.Exception ex) {
                             _LOGGER.error("Exception writing to internal frame buffer", ex);
                             fb.close();
                         }
@@ -1498,12 +1482,12 @@ public class Opencron implements Serializable {
                 return false;
             }
 
-            public void start(I iface, password_args args, AsyncMethodCallback<Response> resultHandler) throws TException {
+            public void start(I iface, password_args args, org.apache.thrift.async.AsyncMethodCallback<Response> resultHandler) throws org.apache.thrift.TException {
                 iface.password(args.request, resultHandler);
             }
         }
 
-        public static class kill<I extends AsyncIface> extends AsyncProcessFunction<I, kill_args, Response> {
+        public static class kill<I extends AsyncIface> extends org.apache.thrift.AsyncProcessFunction<I, kill_args, Response> {
             public kill() {
                 super("kill");
             }
@@ -1512,43 +1496,43 @@ public class Opencron implements Serializable {
                 return new kill_args();
             }
 
-            public AsyncMethodCallback<Response> getResultHandler(final AbstractNonblockingServer.AsyncFrameBuffer fb, final int seqid) {
-                final AsyncProcessFunction fcall = this;
-                return new AsyncMethodCallback<Response>() {
+            public org.apache.thrift.async.AsyncMethodCallback<Response> getResultHandler(final org.apache.thrift.server.AbstractNonblockingServer.AsyncFrameBuffer fb, final int seqid) {
+                final org.apache.thrift.AsyncProcessFunction fcall = this;
+                return new org.apache.thrift.async.AsyncMethodCallback<Response>() {
                     public void onComplete(Response o) {
                         kill_result result = new kill_result();
                         result.success = o;
                         try {
-                            fcall.sendResponse(fb, result, TMessageType.REPLY, seqid);
-                        } catch (TTransportException e) {
+                            fcall.sendResponse(fb, result, org.apache.thrift.protocol.TMessageType.REPLY, seqid);
+                        } catch (org.apache.thrift.transport.TTransportException e) {
                             _LOGGER.error("TTransportException writing to internal frame buffer", e);
                             fb.close();
-                        } catch (Exception e) {
+                        } catch (java.lang.Exception e) {
                             _LOGGER.error("Exception writing to internal frame buffer", e);
                             onError(e);
                         }
                     }
 
-                    public void onError(Exception e) {
-                        byte msgType = TMessageType.REPLY;
-                        TSerializable msg;
+                    public void onError(java.lang.Exception e) {
+                        byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
+                        org.apache.thrift.TSerializable msg;
                         kill_result result = new kill_result();
-                        if (e instanceof TTransportException) {
+                        if (e instanceof org.apache.thrift.transport.TTransportException) {
                             _LOGGER.error("TTransportException inside handler", e);
                             fb.close();
                             return;
-                        } else if (e instanceof TApplicationException) {
+                        } else if (e instanceof org.apache.thrift.TApplicationException) {
                             _LOGGER.error("TApplicationException inside handler", e);
-                            msgType = TMessageType.EXCEPTION;
-                            msg = (TApplicationException) e;
+                            msgType = org.apache.thrift.protocol.TMessageType.EXCEPTION;
+                            msg = (org.apache.thrift.TApplicationException) e;
                         } else {
                             _LOGGER.error("Exception inside handler", e);
-                            msgType = TMessageType.EXCEPTION;
-                            msg = new TApplicationException(TApplicationException.INTERNAL_ERROR, e.getMessage());
+                            msgType = org.apache.thrift.protocol.TMessageType.EXCEPTION;
+                            msg = new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.INTERNAL_ERROR, e.getMessage());
                         }
                         try {
                             fcall.sendResponse(fb, msg, msgType, seqid);
-                        } catch (Exception ex) {
+                        } catch (java.lang.Exception ex) {
                             _LOGGER.error("Exception writing to internal frame buffer", ex);
                             fb.close();
                         }
@@ -1560,12 +1544,12 @@ public class Opencron implements Serializable {
                 return false;
             }
 
-            public void start(I iface, kill_args args, AsyncMethodCallback<Response> resultHandler) throws TException {
+            public void start(I iface, kill_args args, org.apache.thrift.async.AsyncMethodCallback<Response> resultHandler) throws org.apache.thrift.TException {
                 iface.kill(args.request, resultHandler);
             }
         }
 
-        public static class proxy<I extends AsyncIface> extends AsyncProcessFunction<I, proxy_args, Response> {
+        public static class proxy<I extends AsyncIface> extends org.apache.thrift.AsyncProcessFunction<I, proxy_args, Response> {
             public proxy() {
                 super("proxy");
             }
@@ -1574,43 +1558,43 @@ public class Opencron implements Serializable {
                 return new proxy_args();
             }
 
-            public AsyncMethodCallback<Response> getResultHandler(final AbstractNonblockingServer.AsyncFrameBuffer fb, final int seqid) {
-                final AsyncProcessFunction fcall = this;
-                return new AsyncMethodCallback<Response>() {
+            public org.apache.thrift.async.AsyncMethodCallback<Response> getResultHandler(final org.apache.thrift.server.AbstractNonblockingServer.AsyncFrameBuffer fb, final int seqid) {
+                final org.apache.thrift.AsyncProcessFunction fcall = this;
+                return new org.apache.thrift.async.AsyncMethodCallback<Response>() {
                     public void onComplete(Response o) {
                         proxy_result result = new proxy_result();
                         result.success = o;
                         try {
-                            fcall.sendResponse(fb, result, TMessageType.REPLY, seqid);
-                        } catch (TTransportException e) {
+                            fcall.sendResponse(fb, result, org.apache.thrift.protocol.TMessageType.REPLY, seqid);
+                        } catch (org.apache.thrift.transport.TTransportException e) {
                             _LOGGER.error("TTransportException writing to internal frame buffer", e);
                             fb.close();
-                        } catch (Exception e) {
+                        } catch (java.lang.Exception e) {
                             _LOGGER.error("Exception writing to internal frame buffer", e);
                             onError(e);
                         }
                     }
 
-                    public void onError(Exception e) {
-                        byte msgType = TMessageType.REPLY;
-                        TSerializable msg;
+                    public void onError(java.lang.Exception e) {
+                        byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
+                        org.apache.thrift.TSerializable msg;
                         proxy_result result = new proxy_result();
-                        if (e instanceof TTransportException) {
+                        if (e instanceof org.apache.thrift.transport.TTransportException) {
                             _LOGGER.error("TTransportException inside handler", e);
                             fb.close();
                             return;
-                        } else if (e instanceof TApplicationException) {
+                        } else if (e instanceof org.apache.thrift.TApplicationException) {
                             _LOGGER.error("TApplicationException inside handler", e);
-                            msgType = TMessageType.EXCEPTION;
-                            msg = (TApplicationException) e;
+                            msgType = org.apache.thrift.protocol.TMessageType.EXCEPTION;
+                            msg = (org.apache.thrift.TApplicationException) e;
                         } else {
                             _LOGGER.error("Exception inside handler", e);
-                            msgType = TMessageType.EXCEPTION;
-                            msg = new TApplicationException(TApplicationException.INTERNAL_ERROR, e.getMessage());
+                            msgType = org.apache.thrift.protocol.TMessageType.EXCEPTION;
+                            msg = new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.INTERNAL_ERROR, e.getMessage());
                         }
                         try {
                             fcall.sendResponse(fb, msg, msgType, seqid);
-                        } catch (Exception ex) {
+                        } catch (java.lang.Exception ex) {
                             _LOGGER.error("Exception writing to internal frame buffer", ex);
                             fb.close();
                         }
@@ -1622,12 +1606,12 @@ public class Opencron implements Serializable {
                 return false;
             }
 
-            public void start(I iface, proxy_args args, AsyncMethodCallback<Response> resultHandler) throws TException {
+            public void start(I iface, proxy_args args, org.apache.thrift.async.AsyncMethodCallback<Response> resultHandler) throws org.apache.thrift.TException {
                 iface.proxy(args.request, resultHandler);
             }
         }
 
-        public static class restart<I extends AsyncIface> extends AsyncProcessFunction<I, restart_args, Void> {
+        public static class restart<I extends AsyncIface> extends org.apache.thrift.AsyncProcessFunction<I, restart_args, Void> {
             public restart() {
                 super("restart");
             }
@@ -1636,42 +1620,42 @@ public class Opencron implements Serializable {
                 return new restart_args();
             }
 
-            public AsyncMethodCallback<Void> getResultHandler(final AbstractNonblockingServer.AsyncFrameBuffer fb, final int seqid) {
-                final AsyncProcessFunction fcall = this;
-                return new AsyncMethodCallback<Void>() {
+            public org.apache.thrift.async.AsyncMethodCallback<Void> getResultHandler(final org.apache.thrift.server.AbstractNonblockingServer.AsyncFrameBuffer fb, final int seqid) {
+                final org.apache.thrift.AsyncProcessFunction fcall = this;
+                return new org.apache.thrift.async.AsyncMethodCallback<Void>() {
                     public void onComplete(Void o) {
                         restart_result result = new restart_result();
                         try {
-                            fcall.sendResponse(fb, result, TMessageType.REPLY, seqid);
-                        } catch (TTransportException e) {
+                            fcall.sendResponse(fb, result, org.apache.thrift.protocol.TMessageType.REPLY, seqid);
+                        } catch (org.apache.thrift.transport.TTransportException e) {
                             _LOGGER.error("TTransportException writing to internal frame buffer", e);
                             fb.close();
-                        } catch (Exception e) {
+                        } catch (java.lang.Exception e) {
                             _LOGGER.error("Exception writing to internal frame buffer", e);
                             onError(e);
                         }
                     }
 
-                    public void onError(Exception e) {
-                        byte msgType = TMessageType.REPLY;
-                        TSerializable msg;
+                    public void onError(java.lang.Exception e) {
+                        byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
+                        org.apache.thrift.TSerializable msg;
                         restart_result result = new restart_result();
-                        if (e instanceof TTransportException) {
+                        if (e instanceof org.apache.thrift.transport.TTransportException) {
                             _LOGGER.error("TTransportException inside handler", e);
                             fb.close();
                             return;
-                        } else if (e instanceof TApplicationException) {
+                        } else if (e instanceof org.apache.thrift.TApplicationException) {
                             _LOGGER.error("TApplicationException inside handler", e);
-                            msgType = TMessageType.EXCEPTION;
-                            msg = (TApplicationException) e;
+                            msgType = org.apache.thrift.protocol.TMessageType.EXCEPTION;
+                            msg = (org.apache.thrift.TApplicationException) e;
                         } else {
                             _LOGGER.error("Exception inside handler", e);
-                            msgType = TMessageType.EXCEPTION;
-                            msg = new TApplicationException(TApplicationException.INTERNAL_ERROR, e.getMessage());
+                            msgType = org.apache.thrift.protocol.TMessageType.EXCEPTION;
+                            msg = new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.INTERNAL_ERROR, e.getMessage());
                         }
                         try {
                             fcall.sendResponse(fb, msg, msgType, seqid);
-                        } catch (Exception ex) {
+                        } catch (java.lang.Exception ex) {
                             _LOGGER.error("Exception writing to internal frame buffer", ex);
                             fb.close();
                         }
@@ -1683,33 +1667,33 @@ public class Opencron implements Serializable {
                 return false;
             }
 
-            public void start(I iface, restart_args args, AsyncMethodCallback<Void> resultHandler) throws TException {
+            public void start(I iface, restart_args args, org.apache.thrift.async.AsyncMethodCallback<Void> resultHandler) throws org.apache.thrift.TException {
                 iface.restart(args.request, resultHandler);
             }
         }
 
     }
 
-    public static class ping_args implements TBase<ping_args, ping_args._Fields>, Serializable, Cloneable, Comparable<ping_args> {
-        private static final TStruct STRUCT_DESC = new TStruct("ping_args");
+    public static class ping_args implements org.apache.thrift.TBase<ping_args, ping_args._Fields>, java.io.Serializable, Cloneable, Comparable<ping_args> {
+        private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("ping_args");
 
-        private static final TField REQUEST_FIELD_DESC = new TField("request", TType.STRUCT, (short) 1);
+        private static final org.apache.thrift.protocol.TField REQUEST_FIELD_DESC = new org.apache.thrift.protocol.TField("request", org.apache.thrift.protocol.TType.STRUCT, (short) 1);
 
-        private static final SchemeFactory STANDARD_SCHEME_FACTORY = new ping_argsStandardSchemeFactory();
-        private static final SchemeFactory TUPLE_SCHEME_FACTORY = new ping_argsTupleSchemeFactory();
+        private static final org.apache.thrift.scheme.SchemeFactory STANDARD_SCHEME_FACTORY = new ping_argsStandardSchemeFactory();
+        private static final org.apache.thrift.scheme.SchemeFactory TUPLE_SCHEME_FACTORY = new ping_argsTupleSchemeFactory();
 
         public Request request; // required
 
         /**
          * The set of fields this struct contains, along with convenience methods for finding and manipulating them.
          */
-        public enum _Fields implements TFieldIdEnum {
+        public enum _Fields implements org.apache.thrift.TFieldIdEnum {
             REQUEST((short) 1, "request");
 
-            private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+            private static final java.util.Map<java.lang.String, _Fields> byName = new java.util.HashMap<java.lang.String, _Fields>();
 
             static {
-                for (_Fields field : EnumSet.allOf(_Fields.class)) {
+                for (_Fields field : java.util.EnumSet.allOf(_Fields.class)) {
                     byName.put(field.getFieldName(), field);
                 }
             }
@@ -1733,21 +1717,21 @@ public class Opencron implements Serializable {
             public static _Fields findByThriftIdOrThrow(int fieldId) {
                 _Fields fields = findByThriftId(fieldId);
                 if (fields == null)
-                    throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+                    throw new java.lang.IllegalArgumentException("Field " + fieldId + " doesn't exist!");
                 return fields;
             }
 
             /**
              * Find the _Fields constant that matches name, or null if its not found.
              */
-            public static _Fields findByName(String name) {
+            public static _Fields findByName(java.lang.String name) {
                 return byName.get(name);
             }
 
             private final short _thriftId;
-            private final String _fieldName;
+            private final java.lang.String _fieldName;
 
-            _Fields(short thriftId, String fieldName) {
+            _Fields(short thriftId, java.lang.String fieldName) {
                 _thriftId = thriftId;
                 _fieldName = fieldName;
             }
@@ -1756,20 +1740,20 @@ public class Opencron implements Serializable {
                 return _thriftId;
             }
 
-            public String getFieldName() {
+            public java.lang.String getFieldName() {
                 return _fieldName;
             }
         }
 
         // isset id assignments
-        public static final Map<_Fields, FieldMetaData> metaDataMap;
+        public static final java.util.Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
 
         static {
-            Map<_Fields, FieldMetaData> tmpMap = new EnumMap<_Fields, FieldMetaData>(_Fields.class);
-            tmpMap.put(_Fields.REQUEST, new FieldMetaData("request", TFieldRequirementType.DEFAULT,
-                    new StructMetaData(TType.STRUCT, Request.class)));
-            metaDataMap = Collections.unmodifiableMap(tmpMap);
-            FieldMetaData.addStructMetaDataMap(ping_args.class, metaDataMap);
+            java.util.Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new java.util.EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+            tmpMap.put(_Fields.REQUEST, new org.apache.thrift.meta_data.FieldMetaData("request", org.apache.thrift.TFieldRequirementType.DEFAULT,
+                    new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Request.class)));
+            metaDataMap = java.util.Collections.unmodifiableMap(tmpMap);
+            org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(ping_args.class, metaDataMap);
         }
 
         public ping_args() {
@@ -1825,7 +1809,7 @@ public class Opencron implements Serializable {
             }
         }
 
-        public void setFieldValue(_Fields field, Object value) {
+        public void setFieldValue(_Fields field, java.lang.Object value) {
             switch (field) {
                 case REQUEST:
                     if (value == null) {
@@ -1838,13 +1822,13 @@ public class Opencron implements Serializable {
             }
         }
 
-        public Object getFieldValue(_Fields field) {
+        public java.lang.Object getFieldValue(_Fields field) {
             switch (field) {
                 case REQUEST:
                     return getRequest();
 
             }
-            throw new IllegalStateException();
+            throw new java.lang.IllegalStateException();
         }
 
         /**
@@ -1852,18 +1836,18 @@ public class Opencron implements Serializable {
          */
         public boolean isSet(_Fields field) {
             if (field == null) {
-                throw new IllegalArgumentException();
+                throw new java.lang.IllegalArgumentException();
             }
 
             switch (field) {
                 case REQUEST:
                     return isSetRequest();
             }
-            throw new IllegalStateException();
+            throw new java.lang.IllegalStateException();
         }
 
         @Override
-        public boolean equals(Object that) {
+        public boolean equals(java.lang.Object that) {
             if (that == null)
                 return false;
             if (that instanceof ping_args)
@@ -1908,12 +1892,12 @@ public class Opencron implements Serializable {
 
             int lastComparison = 0;
 
-            lastComparison = Boolean.valueOf(isSetRequest()).compareTo(other.isSetRequest());
+            lastComparison = java.lang.Boolean.valueOf(isSetRequest()).compareTo(other.isSetRequest());
             if (lastComparison != 0) {
                 return lastComparison;
             }
             if (isSetRequest()) {
-                lastComparison = TBaseHelper.compareTo(this.request, other.request);
+                lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.request, other.request);
                 if (lastComparison != 0) {
                     return lastComparison;
                 }
@@ -1925,17 +1909,17 @@ public class Opencron implements Serializable {
             return _Fields.findByThriftId(fieldId);
         }
 
-        public void read(TProtocol iprot) throws TException {
+        public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
             scheme(iprot).read(iprot, this);
         }
 
-        public void write(TProtocol oprot) throws TException {
+        public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
             scheme(oprot).write(oprot, this);
         }
 
         @Override
-        public String toString() {
-            StringBuilder sb = new StringBuilder("ping_args(");
+        public java.lang.String toString() {
+            java.lang.StringBuilder sb = new java.lang.StringBuilder("ping_args(");
             boolean first = true;
 
             sb.append("request:");
@@ -1949,7 +1933,7 @@ public class Opencron implements Serializable {
             return sb.toString();
         }
 
-        public void validate() throws TException {
+        public void validate() throws org.apache.thrift.TException {
             // check for required fields
             // check for sub-struct validity
             if (request != null) {
@@ -1957,50 +1941,50 @@ public class Opencron implements Serializable {
             }
         }
 
-        private void writeObject(ObjectOutputStream out) throws IOException {
+        private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
             try {
-                write(new TCompactProtocol(new TIOStreamTransport(out)));
-            } catch (TException te) {
-                throw new IOException(te);
+                write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+            } catch (org.apache.thrift.TException te) {
+                throw new java.io.IOException(te);
             }
         }
 
-        private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, java.lang.ClassNotFoundException {
             try {
-                read(new TCompactProtocol(new TIOStreamTransport(in)));
-            } catch (TException te) {
-                throw new IOException(te);
+                read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+            } catch (org.apache.thrift.TException te) {
+                throw new java.io.IOException(te);
             }
         }
 
-        private static class ping_argsStandardSchemeFactory implements SchemeFactory {
+        private static class ping_argsStandardSchemeFactory implements org.apache.thrift.scheme.SchemeFactory {
             public ping_argsStandardScheme getScheme() {
                 return new ping_argsStandardScheme();
             }
         }
 
-        private static class ping_argsStandardScheme extends StandardScheme<ping_args> {
+        private static class ping_argsStandardScheme extends org.apache.thrift.scheme.StandardScheme<ping_args> {
 
-            public void read(TProtocol iprot, ping_args struct) throws TException {
-                TField schemeField;
+            public void read(org.apache.thrift.protocol.TProtocol iprot, ping_args struct) throws org.apache.thrift.TException {
+                org.apache.thrift.protocol.TField schemeField;
                 iprot.readStructBegin();
                 while (true) {
                     schemeField = iprot.readFieldBegin();
-                    if (schemeField.type == TType.STOP) {
+                    if (schemeField.type == org.apache.thrift.protocol.TType.STOP) {
                         break;
                     }
                     switch (schemeField.id) {
                         case 1: // REQUEST
-                            if (schemeField.type == TType.STRUCT) {
+                            if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
                                 struct.request = new Request();
                                 struct.request.read(iprot);
                                 struct.setRequestIsSet(true);
                             } else {
-                                TProtocolUtil.skip(iprot, schemeField.type);
+                                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
                             }
                             break;
                         default:
-                            TProtocolUtil.skip(iprot, schemeField.type);
+                            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
                     }
                     iprot.readFieldEnd();
                 }
@@ -2010,7 +1994,7 @@ public class Opencron implements Serializable {
                 struct.validate();
             }
 
-            public void write(TProtocol oprot, ping_args struct) throws TException {
+            public void write(org.apache.thrift.protocol.TProtocol oprot, ping_args struct) throws org.apache.thrift.TException {
                 struct.validate();
 
                 oprot.writeStructBegin(STRUCT_DESC);
@@ -2025,18 +2009,18 @@ public class Opencron implements Serializable {
 
         }
 
-        private static class ping_argsTupleSchemeFactory implements SchemeFactory {
+        private static class ping_argsTupleSchemeFactory implements org.apache.thrift.scheme.SchemeFactory {
             public ping_argsTupleScheme getScheme() {
                 return new ping_argsTupleScheme();
             }
         }
 
-        private static class ping_argsTupleScheme extends TupleScheme<ping_args> {
+        private static class ping_argsTupleScheme extends org.apache.thrift.scheme.TupleScheme<ping_args> {
 
             @Override
-            public void write(TProtocol prot, ping_args struct) throws TException {
-                TTupleProtocol oprot = (TTupleProtocol) prot;
-                BitSet optionals = new BitSet();
+            public void write(org.apache.thrift.protocol.TProtocol prot, ping_args struct) throws org.apache.thrift.TException {
+                org.apache.thrift.protocol.TTupleProtocol oprot = (org.apache.thrift.protocol.TTupleProtocol) prot;
+                java.util.BitSet optionals = new java.util.BitSet();
                 if (struct.isSetRequest()) {
                     optionals.set(0);
                 }
@@ -2047,9 +2031,9 @@ public class Opencron implements Serializable {
             }
 
             @Override
-            public void read(TProtocol prot, ping_args struct) throws TException {
-                TTupleProtocol iprot = (TTupleProtocol) prot;
-                BitSet incoming = iprot.readBitSet(1);
+            public void read(org.apache.thrift.protocol.TProtocol prot, ping_args struct) throws org.apache.thrift.TException {
+                org.apache.thrift.protocol.TTupleProtocol iprot = (org.apache.thrift.protocol.TTupleProtocol) prot;
+                java.util.BitSet incoming = iprot.readBitSet(1);
                 if (incoming.get(0)) {
                     struct.request = new Request();
                     struct.request.read(iprot);
@@ -2058,31 +2042,31 @@ public class Opencron implements Serializable {
             }
         }
 
-        private static <S extends IScheme> S scheme(TProtocol proto) {
-            return (StandardScheme.class.equals(proto.getScheme()) ? STANDARD_SCHEME_FACTORY : TUPLE_SCHEME_FACTORY).getScheme();
+        private static <S extends org.apache.thrift.scheme.IScheme> S scheme(org.apache.thrift.protocol.TProtocol proto) {
+            return (org.apache.thrift.scheme.StandardScheme.class.equals(proto.getScheme()) ? STANDARD_SCHEME_FACTORY : TUPLE_SCHEME_FACTORY).getScheme();
         }
     }
 
-    public static class ping_result implements TBase<ping_result, ping_result._Fields>, Serializable, Cloneable, Comparable<ping_result> {
-        private static final TStruct STRUCT_DESC = new TStruct("ping_result");
+    public static class ping_result implements org.apache.thrift.TBase<ping_result, ping_result._Fields>, java.io.Serializable, Cloneable, Comparable<ping_result> {
+        private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("ping_result");
 
-        private static final TField SUCCESS_FIELD_DESC = new TField("success", TType.STRUCT, (short) 0);
+        private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short) 0);
 
-        private static final SchemeFactory STANDARD_SCHEME_FACTORY = new ping_resultStandardSchemeFactory();
-        private static final SchemeFactory TUPLE_SCHEME_FACTORY = new ping_resultTupleSchemeFactory();
+        private static final org.apache.thrift.scheme.SchemeFactory STANDARD_SCHEME_FACTORY = new ping_resultStandardSchemeFactory();
+        private static final org.apache.thrift.scheme.SchemeFactory TUPLE_SCHEME_FACTORY = new ping_resultTupleSchemeFactory();
 
         public Response success; // required
 
         /**
          * The set of fields this struct contains, along with convenience methods for finding and manipulating them.
          */
-        public enum _Fields implements TFieldIdEnum {
+        public enum _Fields implements org.apache.thrift.TFieldIdEnum {
             SUCCESS((short) 0, "success");
 
-            private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+            private static final java.util.Map<java.lang.String, _Fields> byName = new java.util.HashMap<java.lang.String, _Fields>();
 
             static {
-                for (_Fields field : EnumSet.allOf(_Fields.class)) {
+                for (_Fields field : java.util.EnumSet.allOf(_Fields.class)) {
                     byName.put(field.getFieldName(), field);
                 }
             }
@@ -2106,21 +2090,21 @@ public class Opencron implements Serializable {
             public static _Fields findByThriftIdOrThrow(int fieldId) {
                 _Fields fields = findByThriftId(fieldId);
                 if (fields == null)
-                    throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+                    throw new java.lang.IllegalArgumentException("Field " + fieldId + " doesn't exist!");
                 return fields;
             }
 
             /**
              * Find the _Fields constant that matches name, or null if its not found.
              */
-            public static _Fields findByName(String name) {
+            public static _Fields findByName(java.lang.String name) {
                 return byName.get(name);
             }
 
             private final short _thriftId;
-            private final String _fieldName;
+            private final java.lang.String _fieldName;
 
-            _Fields(short thriftId, String fieldName) {
+            _Fields(short thriftId, java.lang.String fieldName) {
                 _thriftId = thriftId;
                 _fieldName = fieldName;
             }
@@ -2129,20 +2113,20 @@ public class Opencron implements Serializable {
                 return _thriftId;
             }
 
-            public String getFieldName() {
+            public java.lang.String getFieldName() {
                 return _fieldName;
             }
         }
 
         // isset id assignments
-        public static final Map<_Fields, FieldMetaData> metaDataMap;
+        public static final java.util.Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
 
         static {
-            Map<_Fields, FieldMetaData> tmpMap = new EnumMap<_Fields, FieldMetaData>(_Fields.class);
-            tmpMap.put(_Fields.SUCCESS, new FieldMetaData("success", TFieldRequirementType.DEFAULT,
-                    new StructMetaData(TType.STRUCT, Response.class)));
-            metaDataMap = Collections.unmodifiableMap(tmpMap);
-            FieldMetaData.addStructMetaDataMap(ping_result.class, metaDataMap);
+            java.util.Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new java.util.EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+            tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT,
+                    new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Response.class)));
+            metaDataMap = java.util.Collections.unmodifiableMap(tmpMap);
+            org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(ping_result.class, metaDataMap);
         }
 
         public ping_result() {
@@ -2198,7 +2182,7 @@ public class Opencron implements Serializable {
             }
         }
 
-        public void setFieldValue(_Fields field, Object value) {
+        public void setFieldValue(_Fields field, java.lang.Object value) {
             switch (field) {
                 case SUCCESS:
                     if (value == null) {
@@ -2211,13 +2195,13 @@ public class Opencron implements Serializable {
             }
         }
 
-        public Object getFieldValue(_Fields field) {
+        public java.lang.Object getFieldValue(_Fields field) {
             switch (field) {
                 case SUCCESS:
                     return getSuccess();
 
             }
-            throw new IllegalStateException();
+            throw new java.lang.IllegalStateException();
         }
 
         /**
@@ -2225,18 +2209,18 @@ public class Opencron implements Serializable {
          */
         public boolean isSet(_Fields field) {
             if (field == null) {
-                throw new IllegalArgumentException();
+                throw new java.lang.IllegalArgumentException();
             }
 
             switch (field) {
                 case SUCCESS:
                     return isSetSuccess();
             }
-            throw new IllegalStateException();
+            throw new java.lang.IllegalStateException();
         }
 
         @Override
-        public boolean equals(Object that) {
+        public boolean equals(java.lang.Object that) {
             if (that == null)
                 return false;
             if (that instanceof ping_result)
@@ -2281,12 +2265,12 @@ public class Opencron implements Serializable {
 
             int lastComparison = 0;
 
-            lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(other.isSetSuccess());
+            lastComparison = java.lang.Boolean.valueOf(isSetSuccess()).compareTo(other.isSetSuccess());
             if (lastComparison != 0) {
                 return lastComparison;
             }
             if (isSetSuccess()) {
-                lastComparison = TBaseHelper.compareTo(this.success, other.success);
+                lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, other.success);
                 if (lastComparison != 0) {
                     return lastComparison;
                 }
@@ -2298,17 +2282,17 @@ public class Opencron implements Serializable {
             return _Fields.findByThriftId(fieldId);
         }
 
-        public void read(TProtocol iprot) throws TException {
+        public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
             scheme(iprot).read(iprot, this);
         }
 
-        public void write(TProtocol oprot) throws TException {
+        public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
             scheme(oprot).write(oprot, this);
         }
 
         @Override
-        public String toString() {
-            StringBuilder sb = new StringBuilder("ping_result(");
+        public java.lang.String toString() {
+            java.lang.StringBuilder sb = new java.lang.StringBuilder("ping_result(");
             boolean first = true;
 
             sb.append("success:");
@@ -2322,7 +2306,7 @@ public class Opencron implements Serializable {
             return sb.toString();
         }
 
-        public void validate() throws TException {
+        public void validate() throws org.apache.thrift.TException {
             // check for required fields
             // check for sub-struct validity
             if (success != null) {
@@ -2330,50 +2314,50 @@ public class Opencron implements Serializable {
             }
         }
 
-        private void writeObject(ObjectOutputStream out) throws IOException {
+        private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
             try {
-                write(new TCompactProtocol(new TIOStreamTransport(out)));
-            } catch (TException te) {
-                throw new IOException(te);
+                write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+            } catch (org.apache.thrift.TException te) {
+                throw new java.io.IOException(te);
             }
         }
 
-        private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, java.lang.ClassNotFoundException {
             try {
-                read(new TCompactProtocol(new TIOStreamTransport(in)));
-            } catch (TException te) {
-                throw new IOException(te);
+                read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+            } catch (org.apache.thrift.TException te) {
+                throw new java.io.IOException(te);
             }
         }
 
-        private static class ping_resultStandardSchemeFactory implements SchemeFactory {
+        private static class ping_resultStandardSchemeFactory implements org.apache.thrift.scheme.SchemeFactory {
             public ping_resultStandardScheme getScheme() {
                 return new ping_resultStandardScheme();
             }
         }
 
-        private static class ping_resultStandardScheme extends StandardScheme<ping_result> {
+        private static class ping_resultStandardScheme extends org.apache.thrift.scheme.StandardScheme<ping_result> {
 
-            public void read(TProtocol iprot, ping_result struct) throws TException {
-                TField schemeField;
+            public void read(org.apache.thrift.protocol.TProtocol iprot, ping_result struct) throws org.apache.thrift.TException {
+                org.apache.thrift.protocol.TField schemeField;
                 iprot.readStructBegin();
                 while (true) {
                     schemeField = iprot.readFieldBegin();
-                    if (schemeField.type == TType.STOP) {
+                    if (schemeField.type == org.apache.thrift.protocol.TType.STOP) {
                         break;
                     }
                     switch (schemeField.id) {
                         case 0: // SUCCESS
-                            if (schemeField.type == TType.STRUCT) {
+                            if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
                                 struct.success = new Response();
                                 struct.success.read(iprot);
                                 struct.setSuccessIsSet(true);
                             } else {
-                                TProtocolUtil.skip(iprot, schemeField.type);
+                                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
                             }
                             break;
                         default:
-                            TProtocolUtil.skip(iprot, schemeField.type);
+                            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
                     }
                     iprot.readFieldEnd();
                 }
@@ -2383,7 +2367,7 @@ public class Opencron implements Serializable {
                 struct.validate();
             }
 
-            public void write(TProtocol oprot, ping_result struct) throws TException {
+            public void write(org.apache.thrift.protocol.TProtocol oprot, ping_result struct) throws org.apache.thrift.TException {
                 struct.validate();
 
                 oprot.writeStructBegin(STRUCT_DESC);
@@ -2398,18 +2382,18 @@ public class Opencron implements Serializable {
 
         }
 
-        private static class ping_resultTupleSchemeFactory implements SchemeFactory {
+        private static class ping_resultTupleSchemeFactory implements org.apache.thrift.scheme.SchemeFactory {
             public ping_resultTupleScheme getScheme() {
                 return new ping_resultTupleScheme();
             }
         }
 
-        private static class ping_resultTupleScheme extends TupleScheme<ping_result> {
+        private static class ping_resultTupleScheme extends org.apache.thrift.scheme.TupleScheme<ping_result> {
 
             @Override
-            public void write(TProtocol prot, ping_result struct) throws TException {
-                TTupleProtocol oprot = (TTupleProtocol) prot;
-                BitSet optionals = new BitSet();
+            public void write(org.apache.thrift.protocol.TProtocol prot, ping_result struct) throws org.apache.thrift.TException {
+                org.apache.thrift.protocol.TTupleProtocol oprot = (org.apache.thrift.protocol.TTupleProtocol) prot;
+                java.util.BitSet optionals = new java.util.BitSet();
                 if (struct.isSetSuccess()) {
                     optionals.set(0);
                 }
@@ -2420,9 +2404,9 @@ public class Opencron implements Serializable {
             }
 
             @Override
-            public void read(TProtocol prot, ping_result struct) throws TException {
-                TTupleProtocol iprot = (TTupleProtocol) prot;
-                BitSet incoming = iprot.readBitSet(1);
+            public void read(org.apache.thrift.protocol.TProtocol prot, ping_result struct) throws org.apache.thrift.TException {
+                org.apache.thrift.protocol.TTupleProtocol iprot = (org.apache.thrift.protocol.TTupleProtocol) prot;
+                java.util.BitSet incoming = iprot.readBitSet(1);
                 if (incoming.get(0)) {
                     struct.success = new Response();
                     struct.success.read(iprot);
@@ -2431,31 +2415,31 @@ public class Opencron implements Serializable {
             }
         }
 
-        private static <S extends IScheme> S scheme(TProtocol proto) {
-            return (StandardScheme.class.equals(proto.getScheme()) ? STANDARD_SCHEME_FACTORY : TUPLE_SCHEME_FACTORY).getScheme();
+        private static <S extends org.apache.thrift.scheme.IScheme> S scheme(org.apache.thrift.protocol.TProtocol proto) {
+            return (org.apache.thrift.scheme.StandardScheme.class.equals(proto.getScheme()) ? STANDARD_SCHEME_FACTORY : TUPLE_SCHEME_FACTORY).getScheme();
         }
     }
 
-    public static class path_args implements TBase<path_args, path_args._Fields>, Serializable, Cloneable, Comparable<path_args> {
-        private static final TStruct STRUCT_DESC = new TStruct("path_args");
+    public static class path_args implements org.apache.thrift.TBase<path_args, path_args._Fields>, java.io.Serializable, Cloneable, Comparable<path_args> {
+        private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("path_args");
 
-        private static final TField REQUEST_FIELD_DESC = new TField("request", TType.STRUCT, (short) 1);
+        private static final org.apache.thrift.protocol.TField REQUEST_FIELD_DESC = new org.apache.thrift.protocol.TField("request", org.apache.thrift.protocol.TType.STRUCT, (short) 1);
 
-        private static final SchemeFactory STANDARD_SCHEME_FACTORY = new path_argsStandardSchemeFactory();
-        private static final SchemeFactory TUPLE_SCHEME_FACTORY = new path_argsTupleSchemeFactory();
+        private static final org.apache.thrift.scheme.SchemeFactory STANDARD_SCHEME_FACTORY = new path_argsStandardSchemeFactory();
+        private static final org.apache.thrift.scheme.SchemeFactory TUPLE_SCHEME_FACTORY = new path_argsTupleSchemeFactory();
 
         public Request request; // required
 
         /**
          * The set of fields this struct contains, along with convenience methods for finding and manipulating them.
          */
-        public enum _Fields implements TFieldIdEnum {
+        public enum _Fields implements org.apache.thrift.TFieldIdEnum {
             REQUEST((short) 1, "request");
 
-            private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+            private static final java.util.Map<java.lang.String, _Fields> byName = new java.util.HashMap<java.lang.String, _Fields>();
 
             static {
-                for (_Fields field : EnumSet.allOf(_Fields.class)) {
+                for (_Fields field : java.util.EnumSet.allOf(_Fields.class)) {
                     byName.put(field.getFieldName(), field);
                 }
             }
@@ -2479,21 +2463,21 @@ public class Opencron implements Serializable {
             public static _Fields findByThriftIdOrThrow(int fieldId) {
                 _Fields fields = findByThriftId(fieldId);
                 if (fields == null)
-                    throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+                    throw new java.lang.IllegalArgumentException("Field " + fieldId + " doesn't exist!");
                 return fields;
             }
 
             /**
              * Find the _Fields constant that matches name, or null if its not found.
              */
-            public static _Fields findByName(String name) {
+            public static _Fields findByName(java.lang.String name) {
                 return byName.get(name);
             }
 
             private final short _thriftId;
-            private final String _fieldName;
+            private final java.lang.String _fieldName;
 
-            _Fields(short thriftId, String fieldName) {
+            _Fields(short thriftId, java.lang.String fieldName) {
                 _thriftId = thriftId;
                 _fieldName = fieldName;
             }
@@ -2502,20 +2486,20 @@ public class Opencron implements Serializable {
                 return _thriftId;
             }
 
-            public String getFieldName() {
+            public java.lang.String getFieldName() {
                 return _fieldName;
             }
         }
 
         // isset id assignments
-        public static final Map<_Fields, FieldMetaData> metaDataMap;
+        public static final java.util.Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
 
         static {
-            Map<_Fields, FieldMetaData> tmpMap = new EnumMap<_Fields, FieldMetaData>(_Fields.class);
-            tmpMap.put(_Fields.REQUEST, new FieldMetaData("request", TFieldRequirementType.DEFAULT,
-                    new StructMetaData(TType.STRUCT, Request.class)));
-            metaDataMap = Collections.unmodifiableMap(tmpMap);
-            FieldMetaData.addStructMetaDataMap(path_args.class, metaDataMap);
+            java.util.Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new java.util.EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+            tmpMap.put(_Fields.REQUEST, new org.apache.thrift.meta_data.FieldMetaData("request", org.apache.thrift.TFieldRequirementType.DEFAULT,
+                    new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Request.class)));
+            metaDataMap = java.util.Collections.unmodifiableMap(tmpMap);
+            org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(path_args.class, metaDataMap);
         }
 
         public path_args() {
@@ -2571,7 +2555,7 @@ public class Opencron implements Serializable {
             }
         }
 
-        public void setFieldValue(_Fields field, Object value) {
+        public void setFieldValue(_Fields field, java.lang.Object value) {
             switch (field) {
                 case REQUEST:
                     if (value == null) {
@@ -2584,13 +2568,13 @@ public class Opencron implements Serializable {
             }
         }
 
-        public Object getFieldValue(_Fields field) {
+        public java.lang.Object getFieldValue(_Fields field) {
             switch (field) {
                 case REQUEST:
                     return getRequest();
 
             }
-            throw new IllegalStateException();
+            throw new java.lang.IllegalStateException();
         }
 
         /**
@@ -2598,18 +2582,18 @@ public class Opencron implements Serializable {
          */
         public boolean isSet(_Fields field) {
             if (field == null) {
-                throw new IllegalArgumentException();
+                throw new java.lang.IllegalArgumentException();
             }
 
             switch (field) {
                 case REQUEST:
                     return isSetRequest();
             }
-            throw new IllegalStateException();
+            throw new java.lang.IllegalStateException();
         }
 
         @Override
-        public boolean equals(Object that) {
+        public boolean equals(java.lang.Object that) {
             if (that == null)
                 return false;
             if (that instanceof path_args)
@@ -2654,12 +2638,12 @@ public class Opencron implements Serializable {
 
             int lastComparison = 0;
 
-            lastComparison = Boolean.valueOf(isSetRequest()).compareTo(other.isSetRequest());
+            lastComparison = java.lang.Boolean.valueOf(isSetRequest()).compareTo(other.isSetRequest());
             if (lastComparison != 0) {
                 return lastComparison;
             }
             if (isSetRequest()) {
-                lastComparison = TBaseHelper.compareTo(this.request, other.request);
+                lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.request, other.request);
                 if (lastComparison != 0) {
                     return lastComparison;
                 }
@@ -2671,17 +2655,17 @@ public class Opencron implements Serializable {
             return _Fields.findByThriftId(fieldId);
         }
 
-        public void read(TProtocol iprot) throws TException {
+        public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
             scheme(iprot).read(iprot, this);
         }
 
-        public void write(TProtocol oprot) throws TException {
+        public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
             scheme(oprot).write(oprot, this);
         }
 
         @Override
-        public String toString() {
-            StringBuilder sb = new StringBuilder("path_args(");
+        public java.lang.String toString() {
+            java.lang.StringBuilder sb = new java.lang.StringBuilder("path_args(");
             boolean first = true;
 
             sb.append("request:");
@@ -2695,7 +2679,7 @@ public class Opencron implements Serializable {
             return sb.toString();
         }
 
-        public void validate() throws TException {
+        public void validate() throws org.apache.thrift.TException {
             // check for required fields
             // check for sub-struct validity
             if (request != null) {
@@ -2703,50 +2687,50 @@ public class Opencron implements Serializable {
             }
         }
 
-        private void writeObject(ObjectOutputStream out) throws IOException {
+        private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
             try {
-                write(new TCompactProtocol(new TIOStreamTransport(out)));
-            } catch (TException te) {
-                throw new IOException(te);
+                write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+            } catch (org.apache.thrift.TException te) {
+                throw new java.io.IOException(te);
             }
         }
 
-        private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, java.lang.ClassNotFoundException {
             try {
-                read(new TCompactProtocol(new TIOStreamTransport(in)));
-            } catch (TException te) {
-                throw new IOException(te);
+                read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+            } catch (org.apache.thrift.TException te) {
+                throw new java.io.IOException(te);
             }
         }
 
-        private static class path_argsStandardSchemeFactory implements SchemeFactory {
+        private static class path_argsStandardSchemeFactory implements org.apache.thrift.scheme.SchemeFactory {
             public path_argsStandardScheme getScheme() {
                 return new path_argsStandardScheme();
             }
         }
 
-        private static class path_argsStandardScheme extends StandardScheme<path_args> {
+        private static class path_argsStandardScheme extends org.apache.thrift.scheme.StandardScheme<path_args> {
 
-            public void read(TProtocol iprot, path_args struct) throws TException {
-                TField schemeField;
+            public void read(org.apache.thrift.protocol.TProtocol iprot, path_args struct) throws org.apache.thrift.TException {
+                org.apache.thrift.protocol.TField schemeField;
                 iprot.readStructBegin();
                 while (true) {
                     schemeField = iprot.readFieldBegin();
-                    if (schemeField.type == TType.STOP) {
+                    if (schemeField.type == org.apache.thrift.protocol.TType.STOP) {
                         break;
                     }
                     switch (schemeField.id) {
                         case 1: // REQUEST
-                            if (schemeField.type == TType.STRUCT) {
+                            if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
                                 struct.request = new Request();
                                 struct.request.read(iprot);
                                 struct.setRequestIsSet(true);
                             } else {
-                                TProtocolUtil.skip(iprot, schemeField.type);
+                                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
                             }
                             break;
                         default:
-                            TProtocolUtil.skip(iprot, schemeField.type);
+                            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
                     }
                     iprot.readFieldEnd();
                 }
@@ -2756,7 +2740,7 @@ public class Opencron implements Serializable {
                 struct.validate();
             }
 
-            public void write(TProtocol oprot, path_args struct) throws TException {
+            public void write(org.apache.thrift.protocol.TProtocol oprot, path_args struct) throws org.apache.thrift.TException {
                 struct.validate();
 
                 oprot.writeStructBegin(STRUCT_DESC);
@@ -2771,18 +2755,18 @@ public class Opencron implements Serializable {
 
         }
 
-        private static class path_argsTupleSchemeFactory implements SchemeFactory {
+        private static class path_argsTupleSchemeFactory implements org.apache.thrift.scheme.SchemeFactory {
             public path_argsTupleScheme getScheme() {
                 return new path_argsTupleScheme();
             }
         }
 
-        private static class path_argsTupleScheme extends TupleScheme<path_args> {
+        private static class path_argsTupleScheme extends org.apache.thrift.scheme.TupleScheme<path_args> {
 
             @Override
-            public void write(TProtocol prot, path_args struct) throws TException {
-                TTupleProtocol oprot = (TTupleProtocol) prot;
-                BitSet optionals = new BitSet();
+            public void write(org.apache.thrift.protocol.TProtocol prot, path_args struct) throws org.apache.thrift.TException {
+                org.apache.thrift.protocol.TTupleProtocol oprot = (org.apache.thrift.protocol.TTupleProtocol) prot;
+                java.util.BitSet optionals = new java.util.BitSet();
                 if (struct.isSetRequest()) {
                     optionals.set(0);
                 }
@@ -2793,9 +2777,9 @@ public class Opencron implements Serializable {
             }
 
             @Override
-            public void read(TProtocol prot, path_args struct) throws TException {
-                TTupleProtocol iprot = (TTupleProtocol) prot;
-                BitSet incoming = iprot.readBitSet(1);
+            public void read(org.apache.thrift.protocol.TProtocol prot, path_args struct) throws org.apache.thrift.TException {
+                org.apache.thrift.protocol.TTupleProtocol iprot = (org.apache.thrift.protocol.TTupleProtocol) prot;
+                java.util.BitSet incoming = iprot.readBitSet(1);
                 if (incoming.get(0)) {
                     struct.request = new Request();
                     struct.request.read(iprot);
@@ -2804,31 +2788,31 @@ public class Opencron implements Serializable {
             }
         }
 
-        private static <S extends IScheme> S scheme(TProtocol proto) {
-            return (StandardScheme.class.equals(proto.getScheme()) ? STANDARD_SCHEME_FACTORY : TUPLE_SCHEME_FACTORY).getScheme();
+        private static <S extends org.apache.thrift.scheme.IScheme> S scheme(org.apache.thrift.protocol.TProtocol proto) {
+            return (org.apache.thrift.scheme.StandardScheme.class.equals(proto.getScheme()) ? STANDARD_SCHEME_FACTORY : TUPLE_SCHEME_FACTORY).getScheme();
         }
     }
 
-    public static class path_result implements TBase<path_result, path_result._Fields>, Serializable, Cloneable, Comparable<path_result> {
-        private static final TStruct STRUCT_DESC = new TStruct("path_result");
+    public static class path_result implements org.apache.thrift.TBase<path_result, path_result._Fields>, java.io.Serializable, Cloneable, Comparable<path_result> {
+        private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("path_result");
 
-        private static final TField SUCCESS_FIELD_DESC = new TField("success", TType.STRUCT, (short) 0);
+        private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short) 0);
 
-        private static final SchemeFactory STANDARD_SCHEME_FACTORY = new path_resultStandardSchemeFactory();
-        private static final SchemeFactory TUPLE_SCHEME_FACTORY = new path_resultTupleSchemeFactory();
+        private static final org.apache.thrift.scheme.SchemeFactory STANDARD_SCHEME_FACTORY = new path_resultStandardSchemeFactory();
+        private static final org.apache.thrift.scheme.SchemeFactory TUPLE_SCHEME_FACTORY = new path_resultTupleSchemeFactory();
 
         public Response success; // required
 
         /**
          * The set of fields this struct contains, along with convenience methods for finding and manipulating them.
          */
-        public enum _Fields implements TFieldIdEnum {
+        public enum _Fields implements org.apache.thrift.TFieldIdEnum {
             SUCCESS((short) 0, "success");
 
-            private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+            private static final java.util.Map<java.lang.String, _Fields> byName = new java.util.HashMap<java.lang.String, _Fields>();
 
             static {
-                for (_Fields field : EnumSet.allOf(_Fields.class)) {
+                for (_Fields field : java.util.EnumSet.allOf(_Fields.class)) {
                     byName.put(field.getFieldName(), field);
                 }
             }
@@ -2852,21 +2836,21 @@ public class Opencron implements Serializable {
             public static _Fields findByThriftIdOrThrow(int fieldId) {
                 _Fields fields = findByThriftId(fieldId);
                 if (fields == null)
-                    throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+                    throw new java.lang.IllegalArgumentException("Field " + fieldId + " doesn't exist!");
                 return fields;
             }
 
             /**
              * Find the _Fields constant that matches name, or null if its not found.
              */
-            public static _Fields findByName(String name) {
+            public static _Fields findByName(java.lang.String name) {
                 return byName.get(name);
             }
 
             private final short _thriftId;
-            private final String _fieldName;
+            private final java.lang.String _fieldName;
 
-            _Fields(short thriftId, String fieldName) {
+            _Fields(short thriftId, java.lang.String fieldName) {
                 _thriftId = thriftId;
                 _fieldName = fieldName;
             }
@@ -2875,20 +2859,20 @@ public class Opencron implements Serializable {
                 return _thriftId;
             }
 
-            public String getFieldName() {
+            public java.lang.String getFieldName() {
                 return _fieldName;
             }
         }
 
         // isset id assignments
-        public static final Map<_Fields, FieldMetaData> metaDataMap;
+        public static final java.util.Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
 
         static {
-            Map<_Fields, FieldMetaData> tmpMap = new EnumMap<_Fields, FieldMetaData>(_Fields.class);
-            tmpMap.put(_Fields.SUCCESS, new FieldMetaData("success", TFieldRequirementType.DEFAULT,
-                    new StructMetaData(TType.STRUCT, Response.class)));
-            metaDataMap = Collections.unmodifiableMap(tmpMap);
-            FieldMetaData.addStructMetaDataMap(path_result.class, metaDataMap);
+            java.util.Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new java.util.EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+            tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT,
+                    new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Response.class)));
+            metaDataMap = java.util.Collections.unmodifiableMap(tmpMap);
+            org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(path_result.class, metaDataMap);
         }
 
         public path_result() {
@@ -2944,7 +2928,7 @@ public class Opencron implements Serializable {
             }
         }
 
-        public void setFieldValue(_Fields field, Object value) {
+        public void setFieldValue(_Fields field, java.lang.Object value) {
             switch (field) {
                 case SUCCESS:
                     if (value == null) {
@@ -2957,13 +2941,13 @@ public class Opencron implements Serializable {
             }
         }
 
-        public Object getFieldValue(_Fields field) {
+        public java.lang.Object getFieldValue(_Fields field) {
             switch (field) {
                 case SUCCESS:
                     return getSuccess();
 
             }
-            throw new IllegalStateException();
+            throw new java.lang.IllegalStateException();
         }
 
         /**
@@ -2971,18 +2955,18 @@ public class Opencron implements Serializable {
          */
         public boolean isSet(_Fields field) {
             if (field == null) {
-                throw new IllegalArgumentException();
+                throw new java.lang.IllegalArgumentException();
             }
 
             switch (field) {
                 case SUCCESS:
                     return isSetSuccess();
             }
-            throw new IllegalStateException();
+            throw new java.lang.IllegalStateException();
         }
 
         @Override
-        public boolean equals(Object that) {
+        public boolean equals(java.lang.Object that) {
             if (that == null)
                 return false;
             if (that instanceof path_result)
@@ -3027,12 +3011,12 @@ public class Opencron implements Serializable {
 
             int lastComparison = 0;
 
-            lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(other.isSetSuccess());
+            lastComparison = java.lang.Boolean.valueOf(isSetSuccess()).compareTo(other.isSetSuccess());
             if (lastComparison != 0) {
                 return lastComparison;
             }
             if (isSetSuccess()) {
-                lastComparison = TBaseHelper.compareTo(this.success, other.success);
+                lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, other.success);
                 if (lastComparison != 0) {
                     return lastComparison;
                 }
@@ -3044,17 +3028,17 @@ public class Opencron implements Serializable {
             return _Fields.findByThriftId(fieldId);
         }
 
-        public void read(TProtocol iprot) throws TException {
+        public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
             scheme(iprot).read(iprot, this);
         }
 
-        public void write(TProtocol oprot) throws TException {
+        public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
             scheme(oprot).write(oprot, this);
         }
 
         @Override
-        public String toString() {
-            StringBuilder sb = new StringBuilder("path_result(");
+        public java.lang.String toString() {
+            java.lang.StringBuilder sb = new java.lang.StringBuilder("path_result(");
             boolean first = true;
 
             sb.append("success:");
@@ -3068,7 +3052,7 @@ public class Opencron implements Serializable {
             return sb.toString();
         }
 
-        public void validate() throws TException {
+        public void validate() throws org.apache.thrift.TException {
             // check for required fields
             // check for sub-struct validity
             if (success != null) {
@@ -3076,50 +3060,50 @@ public class Opencron implements Serializable {
             }
         }
 
-        private void writeObject(ObjectOutputStream out) throws IOException {
+        private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
             try {
-                write(new TCompactProtocol(new TIOStreamTransport(out)));
-            } catch (TException te) {
-                throw new IOException(te);
+                write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+            } catch (org.apache.thrift.TException te) {
+                throw new java.io.IOException(te);
             }
         }
 
-        private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, java.lang.ClassNotFoundException {
             try {
-                read(new TCompactProtocol(new TIOStreamTransport(in)));
-            } catch (TException te) {
-                throw new IOException(te);
+                read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+            } catch (org.apache.thrift.TException te) {
+                throw new java.io.IOException(te);
             }
         }
 
-        private static class path_resultStandardSchemeFactory implements SchemeFactory {
+        private static class path_resultStandardSchemeFactory implements org.apache.thrift.scheme.SchemeFactory {
             public path_resultStandardScheme getScheme() {
                 return new path_resultStandardScheme();
             }
         }
 
-        private static class path_resultStandardScheme extends StandardScheme<path_result> {
+        private static class path_resultStandardScheme extends org.apache.thrift.scheme.StandardScheme<path_result> {
 
-            public void read(TProtocol iprot, path_result struct) throws TException {
-                TField schemeField;
+            public void read(org.apache.thrift.protocol.TProtocol iprot, path_result struct) throws org.apache.thrift.TException {
+                org.apache.thrift.protocol.TField schemeField;
                 iprot.readStructBegin();
                 while (true) {
                     schemeField = iprot.readFieldBegin();
-                    if (schemeField.type == TType.STOP) {
+                    if (schemeField.type == org.apache.thrift.protocol.TType.STOP) {
                         break;
                     }
                     switch (schemeField.id) {
                         case 0: // SUCCESS
-                            if (schemeField.type == TType.STRUCT) {
+                            if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
                                 struct.success = new Response();
                                 struct.success.read(iprot);
                                 struct.setSuccessIsSet(true);
                             } else {
-                                TProtocolUtil.skip(iprot, schemeField.type);
+                                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
                             }
                             break;
                         default:
-                            TProtocolUtil.skip(iprot, schemeField.type);
+                            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
                     }
                     iprot.readFieldEnd();
                 }
@@ -3129,7 +3113,7 @@ public class Opencron implements Serializable {
                 struct.validate();
             }
 
-            public void write(TProtocol oprot, path_result struct) throws TException {
+            public void write(org.apache.thrift.protocol.TProtocol oprot, path_result struct) throws org.apache.thrift.TException {
                 struct.validate();
 
                 oprot.writeStructBegin(STRUCT_DESC);
@@ -3144,18 +3128,18 @@ public class Opencron implements Serializable {
 
         }
 
-        private static class path_resultTupleSchemeFactory implements SchemeFactory {
+        private static class path_resultTupleSchemeFactory implements org.apache.thrift.scheme.SchemeFactory {
             public path_resultTupleScheme getScheme() {
                 return new path_resultTupleScheme();
             }
         }
 
-        private static class path_resultTupleScheme extends TupleScheme<path_result> {
+        private static class path_resultTupleScheme extends org.apache.thrift.scheme.TupleScheme<path_result> {
 
             @Override
-            public void write(TProtocol prot, path_result struct) throws TException {
-                TTupleProtocol oprot = (TTupleProtocol) prot;
-                BitSet optionals = new BitSet();
+            public void write(org.apache.thrift.protocol.TProtocol prot, path_result struct) throws org.apache.thrift.TException {
+                org.apache.thrift.protocol.TTupleProtocol oprot = (org.apache.thrift.protocol.TTupleProtocol) prot;
+                java.util.BitSet optionals = new java.util.BitSet();
                 if (struct.isSetSuccess()) {
                     optionals.set(0);
                 }
@@ -3166,9 +3150,9 @@ public class Opencron implements Serializable {
             }
 
             @Override
-            public void read(TProtocol prot, path_result struct) throws TException {
-                TTupleProtocol iprot = (TTupleProtocol) prot;
-                BitSet incoming = iprot.readBitSet(1);
+            public void read(org.apache.thrift.protocol.TProtocol prot, path_result struct) throws org.apache.thrift.TException {
+                org.apache.thrift.protocol.TTupleProtocol iprot = (org.apache.thrift.protocol.TTupleProtocol) prot;
+                java.util.BitSet incoming = iprot.readBitSet(1);
                 if (incoming.get(0)) {
                     struct.success = new Response();
                     struct.success.read(iprot);
@@ -3177,31 +3161,31 @@ public class Opencron implements Serializable {
             }
         }
 
-        private static <S extends IScheme> S scheme(TProtocol proto) {
-            return (StandardScheme.class.equals(proto.getScheme()) ? STANDARD_SCHEME_FACTORY : TUPLE_SCHEME_FACTORY).getScheme();
+        private static <S extends org.apache.thrift.scheme.IScheme> S scheme(org.apache.thrift.protocol.TProtocol proto) {
+            return (org.apache.thrift.scheme.StandardScheme.class.equals(proto.getScheme()) ? STANDARD_SCHEME_FACTORY : TUPLE_SCHEME_FACTORY).getScheme();
         }
     }
 
-    public static class monitor_args implements TBase<monitor_args, monitor_args._Fields>, Serializable, Cloneable, Comparable<monitor_args> {
-        private static final TStruct STRUCT_DESC = new TStruct("monitor_args");
+    public static class monitor_args implements org.apache.thrift.TBase<monitor_args, monitor_args._Fields>, java.io.Serializable, Cloneable, Comparable<monitor_args> {
+        private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("monitor_args");
 
-        private static final TField REQUEST_FIELD_DESC = new TField("request", TType.STRUCT, (short) 1);
+        private static final org.apache.thrift.protocol.TField REQUEST_FIELD_DESC = new org.apache.thrift.protocol.TField("request", org.apache.thrift.protocol.TType.STRUCT, (short) 1);
 
-        private static final SchemeFactory STANDARD_SCHEME_FACTORY = new monitor_argsStandardSchemeFactory();
-        private static final SchemeFactory TUPLE_SCHEME_FACTORY = new monitor_argsTupleSchemeFactory();
+        private static final org.apache.thrift.scheme.SchemeFactory STANDARD_SCHEME_FACTORY = new monitor_argsStandardSchemeFactory();
+        private static final org.apache.thrift.scheme.SchemeFactory TUPLE_SCHEME_FACTORY = new monitor_argsTupleSchemeFactory();
 
         public Request request; // required
 
         /**
          * The set of fields this struct contains, along with convenience methods for finding and manipulating them.
          */
-        public enum _Fields implements TFieldIdEnum {
+        public enum _Fields implements org.apache.thrift.TFieldIdEnum {
             REQUEST((short) 1, "request");
 
-            private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+            private static final java.util.Map<java.lang.String, _Fields> byName = new java.util.HashMap<java.lang.String, _Fields>();
 
             static {
-                for (_Fields field : EnumSet.allOf(_Fields.class)) {
+                for (_Fields field : java.util.EnumSet.allOf(_Fields.class)) {
                     byName.put(field.getFieldName(), field);
                 }
             }
@@ -3225,21 +3209,21 @@ public class Opencron implements Serializable {
             public static _Fields findByThriftIdOrThrow(int fieldId) {
                 _Fields fields = findByThriftId(fieldId);
                 if (fields == null)
-                    throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+                    throw new java.lang.IllegalArgumentException("Field " + fieldId + " doesn't exist!");
                 return fields;
             }
 
             /**
              * Find the _Fields constant that matches name, or null if its not found.
              */
-            public static _Fields findByName(String name) {
+            public static _Fields findByName(java.lang.String name) {
                 return byName.get(name);
             }
 
             private final short _thriftId;
-            private final String _fieldName;
+            private final java.lang.String _fieldName;
 
-            _Fields(short thriftId, String fieldName) {
+            _Fields(short thriftId, java.lang.String fieldName) {
                 _thriftId = thriftId;
                 _fieldName = fieldName;
             }
@@ -3248,20 +3232,20 @@ public class Opencron implements Serializable {
                 return _thriftId;
             }
 
-            public String getFieldName() {
+            public java.lang.String getFieldName() {
                 return _fieldName;
             }
         }
 
         // isset id assignments
-        public static final Map<_Fields, FieldMetaData> metaDataMap;
+        public static final java.util.Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
 
         static {
-            Map<_Fields, FieldMetaData> tmpMap = new EnumMap<_Fields, FieldMetaData>(_Fields.class);
-            tmpMap.put(_Fields.REQUEST, new FieldMetaData("request", TFieldRequirementType.DEFAULT,
-                    new StructMetaData(TType.STRUCT, Request.class)));
-            metaDataMap = Collections.unmodifiableMap(tmpMap);
-            FieldMetaData.addStructMetaDataMap(monitor_args.class, metaDataMap);
+            java.util.Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new java.util.EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+            tmpMap.put(_Fields.REQUEST, new org.apache.thrift.meta_data.FieldMetaData("request", org.apache.thrift.TFieldRequirementType.DEFAULT,
+                    new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Request.class)));
+            metaDataMap = java.util.Collections.unmodifiableMap(tmpMap);
+            org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(monitor_args.class, metaDataMap);
         }
 
         public monitor_args() {
@@ -3317,7 +3301,7 @@ public class Opencron implements Serializable {
             }
         }
 
-        public void setFieldValue(_Fields field, Object value) {
+        public void setFieldValue(_Fields field, java.lang.Object value) {
             switch (field) {
                 case REQUEST:
                     if (value == null) {
@@ -3330,13 +3314,13 @@ public class Opencron implements Serializable {
             }
         }
 
-        public Object getFieldValue(_Fields field) {
+        public java.lang.Object getFieldValue(_Fields field) {
             switch (field) {
                 case REQUEST:
                     return getRequest();
 
             }
-            throw new IllegalStateException();
+            throw new java.lang.IllegalStateException();
         }
 
         /**
@@ -3344,18 +3328,18 @@ public class Opencron implements Serializable {
          */
         public boolean isSet(_Fields field) {
             if (field == null) {
-                throw new IllegalArgumentException();
+                throw new java.lang.IllegalArgumentException();
             }
 
             switch (field) {
                 case REQUEST:
                     return isSetRequest();
             }
-            throw new IllegalStateException();
+            throw new java.lang.IllegalStateException();
         }
 
         @Override
-        public boolean equals(Object that) {
+        public boolean equals(java.lang.Object that) {
             if (that == null)
                 return false;
             if (that instanceof monitor_args)
@@ -3400,12 +3384,12 @@ public class Opencron implements Serializable {
 
             int lastComparison = 0;
 
-            lastComparison = Boolean.valueOf(isSetRequest()).compareTo(other.isSetRequest());
+            lastComparison = java.lang.Boolean.valueOf(isSetRequest()).compareTo(other.isSetRequest());
             if (lastComparison != 0) {
                 return lastComparison;
             }
             if (isSetRequest()) {
-                lastComparison = TBaseHelper.compareTo(this.request, other.request);
+                lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.request, other.request);
                 if (lastComparison != 0) {
                     return lastComparison;
                 }
@@ -3417,17 +3401,17 @@ public class Opencron implements Serializable {
             return _Fields.findByThriftId(fieldId);
         }
 
-        public void read(TProtocol iprot) throws TException {
+        public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
             scheme(iprot).read(iprot, this);
         }
 
-        public void write(TProtocol oprot) throws TException {
+        public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
             scheme(oprot).write(oprot, this);
         }
 
         @Override
-        public String toString() {
-            StringBuilder sb = new StringBuilder("monitor_args(");
+        public java.lang.String toString() {
+            java.lang.StringBuilder sb = new java.lang.StringBuilder("monitor_args(");
             boolean first = true;
 
             sb.append("request:");
@@ -3441,7 +3425,7 @@ public class Opencron implements Serializable {
             return sb.toString();
         }
 
-        public void validate() throws TException {
+        public void validate() throws org.apache.thrift.TException {
             // check for required fields
             // check for sub-struct validity
             if (request != null) {
@@ -3449,50 +3433,50 @@ public class Opencron implements Serializable {
             }
         }
 
-        private void writeObject(ObjectOutputStream out) throws IOException {
+        private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
             try {
-                write(new TCompactProtocol(new TIOStreamTransport(out)));
-            } catch (TException te) {
-                throw new IOException(te);
+                write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+            } catch (org.apache.thrift.TException te) {
+                throw new java.io.IOException(te);
             }
         }
 
-        private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, java.lang.ClassNotFoundException {
             try {
-                read(new TCompactProtocol(new TIOStreamTransport(in)));
-            } catch (TException te) {
-                throw new IOException(te);
+                read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+            } catch (org.apache.thrift.TException te) {
+                throw new java.io.IOException(te);
             }
         }
 
-        private static class monitor_argsStandardSchemeFactory implements SchemeFactory {
+        private static class monitor_argsStandardSchemeFactory implements org.apache.thrift.scheme.SchemeFactory {
             public monitor_argsStandardScheme getScheme() {
                 return new monitor_argsStandardScheme();
             }
         }
 
-        private static class monitor_argsStandardScheme extends StandardScheme<monitor_args> {
+        private static class monitor_argsStandardScheme extends org.apache.thrift.scheme.StandardScheme<monitor_args> {
 
-            public void read(TProtocol iprot, monitor_args struct) throws TException {
-                TField schemeField;
+            public void read(org.apache.thrift.protocol.TProtocol iprot, monitor_args struct) throws org.apache.thrift.TException {
+                org.apache.thrift.protocol.TField schemeField;
                 iprot.readStructBegin();
                 while (true) {
                     schemeField = iprot.readFieldBegin();
-                    if (schemeField.type == TType.STOP) {
+                    if (schemeField.type == org.apache.thrift.protocol.TType.STOP) {
                         break;
                     }
                     switch (schemeField.id) {
                         case 1: // REQUEST
-                            if (schemeField.type == TType.STRUCT) {
+                            if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
                                 struct.request = new Request();
                                 struct.request.read(iprot);
                                 struct.setRequestIsSet(true);
                             } else {
-                                TProtocolUtil.skip(iprot, schemeField.type);
+                                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
                             }
                             break;
                         default:
-                            TProtocolUtil.skip(iprot, schemeField.type);
+                            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
                     }
                     iprot.readFieldEnd();
                 }
@@ -3502,7 +3486,7 @@ public class Opencron implements Serializable {
                 struct.validate();
             }
 
-            public void write(TProtocol oprot, monitor_args struct) throws TException {
+            public void write(org.apache.thrift.protocol.TProtocol oprot, monitor_args struct) throws org.apache.thrift.TException {
                 struct.validate();
 
                 oprot.writeStructBegin(STRUCT_DESC);
@@ -3517,18 +3501,18 @@ public class Opencron implements Serializable {
 
         }
 
-        private static class monitor_argsTupleSchemeFactory implements SchemeFactory {
+        private static class monitor_argsTupleSchemeFactory implements org.apache.thrift.scheme.SchemeFactory {
             public monitor_argsTupleScheme getScheme() {
                 return new monitor_argsTupleScheme();
             }
         }
 
-        private static class monitor_argsTupleScheme extends TupleScheme<monitor_args> {
+        private static class monitor_argsTupleScheme extends org.apache.thrift.scheme.TupleScheme<monitor_args> {
 
             @Override
-            public void write(TProtocol prot, monitor_args struct) throws TException {
-                TTupleProtocol oprot = (TTupleProtocol) prot;
-                BitSet optionals = new BitSet();
+            public void write(org.apache.thrift.protocol.TProtocol prot, monitor_args struct) throws org.apache.thrift.TException {
+                org.apache.thrift.protocol.TTupleProtocol oprot = (org.apache.thrift.protocol.TTupleProtocol) prot;
+                java.util.BitSet optionals = new java.util.BitSet();
                 if (struct.isSetRequest()) {
                     optionals.set(0);
                 }
@@ -3539,9 +3523,9 @@ public class Opencron implements Serializable {
             }
 
             @Override
-            public void read(TProtocol prot, monitor_args struct) throws TException {
-                TTupleProtocol iprot = (TTupleProtocol) prot;
-                BitSet incoming = iprot.readBitSet(1);
+            public void read(org.apache.thrift.protocol.TProtocol prot, monitor_args struct) throws org.apache.thrift.TException {
+                org.apache.thrift.protocol.TTupleProtocol iprot = (org.apache.thrift.protocol.TTupleProtocol) prot;
+                java.util.BitSet incoming = iprot.readBitSet(1);
                 if (incoming.get(0)) {
                     struct.request = new Request();
                     struct.request.read(iprot);
@@ -3550,31 +3534,31 @@ public class Opencron implements Serializable {
             }
         }
 
-        private static <S extends IScheme> S scheme(TProtocol proto) {
-            return (StandardScheme.class.equals(proto.getScheme()) ? STANDARD_SCHEME_FACTORY : TUPLE_SCHEME_FACTORY).getScheme();
+        private static <S extends org.apache.thrift.scheme.IScheme> S scheme(org.apache.thrift.protocol.TProtocol proto) {
+            return (org.apache.thrift.scheme.StandardScheme.class.equals(proto.getScheme()) ? STANDARD_SCHEME_FACTORY : TUPLE_SCHEME_FACTORY).getScheme();
         }
     }
 
-    public static class monitor_result implements TBase<monitor_result, monitor_result._Fields>, Serializable, Cloneable, Comparable<monitor_result> {
-        private static final TStruct STRUCT_DESC = new TStruct("monitor_result");
+    public static class monitor_result implements org.apache.thrift.TBase<monitor_result, monitor_result._Fields>, java.io.Serializable, Cloneable, Comparable<monitor_result> {
+        private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("monitor_result");
 
-        private static final TField SUCCESS_FIELD_DESC = new TField("success", TType.STRUCT, (short) 0);
+        private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short) 0);
 
-        private static final SchemeFactory STANDARD_SCHEME_FACTORY = new monitor_resultStandardSchemeFactory();
-        private static final SchemeFactory TUPLE_SCHEME_FACTORY = new monitor_resultTupleSchemeFactory();
+        private static final org.apache.thrift.scheme.SchemeFactory STANDARD_SCHEME_FACTORY = new monitor_resultStandardSchemeFactory();
+        private static final org.apache.thrift.scheme.SchemeFactory TUPLE_SCHEME_FACTORY = new monitor_resultTupleSchemeFactory();
 
         public Response success; // required
 
         /**
          * The set of fields this struct contains, along with convenience methods for finding and manipulating them.
          */
-        public enum _Fields implements TFieldIdEnum {
+        public enum _Fields implements org.apache.thrift.TFieldIdEnum {
             SUCCESS((short) 0, "success");
 
-            private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+            private static final java.util.Map<java.lang.String, _Fields> byName = new java.util.HashMap<java.lang.String, _Fields>();
 
             static {
-                for (_Fields field : EnumSet.allOf(_Fields.class)) {
+                for (_Fields field : java.util.EnumSet.allOf(_Fields.class)) {
                     byName.put(field.getFieldName(), field);
                 }
             }
@@ -3598,21 +3582,21 @@ public class Opencron implements Serializable {
             public static _Fields findByThriftIdOrThrow(int fieldId) {
                 _Fields fields = findByThriftId(fieldId);
                 if (fields == null)
-                    throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+                    throw new java.lang.IllegalArgumentException("Field " + fieldId + " doesn't exist!");
                 return fields;
             }
 
             /**
              * Find the _Fields constant that matches name, or null if its not found.
              */
-            public static _Fields findByName(String name) {
+            public static _Fields findByName(java.lang.String name) {
                 return byName.get(name);
             }
 
             private final short _thriftId;
-            private final String _fieldName;
+            private final java.lang.String _fieldName;
 
-            _Fields(short thriftId, String fieldName) {
+            _Fields(short thriftId, java.lang.String fieldName) {
                 _thriftId = thriftId;
                 _fieldName = fieldName;
             }
@@ -3621,20 +3605,20 @@ public class Opencron implements Serializable {
                 return _thriftId;
             }
 
-            public String getFieldName() {
+            public java.lang.String getFieldName() {
                 return _fieldName;
             }
         }
 
         // isset id assignments
-        public static final Map<_Fields, FieldMetaData> metaDataMap;
+        public static final java.util.Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
 
         static {
-            Map<_Fields, FieldMetaData> tmpMap = new EnumMap<_Fields, FieldMetaData>(_Fields.class);
-            tmpMap.put(_Fields.SUCCESS, new FieldMetaData("success", TFieldRequirementType.DEFAULT,
-                    new StructMetaData(TType.STRUCT, Response.class)));
-            metaDataMap = Collections.unmodifiableMap(tmpMap);
-            FieldMetaData.addStructMetaDataMap(monitor_result.class, metaDataMap);
+            java.util.Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new java.util.EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+            tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT,
+                    new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Response.class)));
+            metaDataMap = java.util.Collections.unmodifiableMap(tmpMap);
+            org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(monitor_result.class, metaDataMap);
         }
 
         public monitor_result() {
@@ -3690,7 +3674,7 @@ public class Opencron implements Serializable {
             }
         }
 
-        public void setFieldValue(_Fields field, Object value) {
+        public void setFieldValue(_Fields field, java.lang.Object value) {
             switch (field) {
                 case SUCCESS:
                     if (value == null) {
@@ -3703,13 +3687,13 @@ public class Opencron implements Serializable {
             }
         }
 
-        public Object getFieldValue(_Fields field) {
+        public java.lang.Object getFieldValue(_Fields field) {
             switch (field) {
                 case SUCCESS:
                     return getSuccess();
 
             }
-            throw new IllegalStateException();
+            throw new java.lang.IllegalStateException();
         }
 
         /**
@@ -3717,18 +3701,18 @@ public class Opencron implements Serializable {
          */
         public boolean isSet(_Fields field) {
             if (field == null) {
-                throw new IllegalArgumentException();
+                throw new java.lang.IllegalArgumentException();
             }
 
             switch (field) {
                 case SUCCESS:
                     return isSetSuccess();
             }
-            throw new IllegalStateException();
+            throw new java.lang.IllegalStateException();
         }
 
         @Override
-        public boolean equals(Object that) {
+        public boolean equals(java.lang.Object that) {
             if (that == null)
                 return false;
             if (that instanceof monitor_result)
@@ -3773,12 +3757,12 @@ public class Opencron implements Serializable {
 
             int lastComparison = 0;
 
-            lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(other.isSetSuccess());
+            lastComparison = java.lang.Boolean.valueOf(isSetSuccess()).compareTo(other.isSetSuccess());
             if (lastComparison != 0) {
                 return lastComparison;
             }
             if (isSetSuccess()) {
-                lastComparison = TBaseHelper.compareTo(this.success, other.success);
+                lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, other.success);
                 if (lastComparison != 0) {
                     return lastComparison;
                 }
@@ -3790,17 +3774,17 @@ public class Opencron implements Serializable {
             return _Fields.findByThriftId(fieldId);
         }
 
-        public void read(TProtocol iprot) throws TException {
+        public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
             scheme(iprot).read(iprot, this);
         }
 
-        public void write(TProtocol oprot) throws TException {
+        public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
             scheme(oprot).write(oprot, this);
         }
 
         @Override
-        public String toString() {
-            StringBuilder sb = new StringBuilder("monitor_result(");
+        public java.lang.String toString() {
+            java.lang.StringBuilder sb = new java.lang.StringBuilder("monitor_result(");
             boolean first = true;
 
             sb.append("success:");
@@ -3814,7 +3798,7 @@ public class Opencron implements Serializable {
             return sb.toString();
         }
 
-        public void validate() throws TException {
+        public void validate() throws org.apache.thrift.TException {
             // check for required fields
             // check for sub-struct validity
             if (success != null) {
@@ -3822,50 +3806,50 @@ public class Opencron implements Serializable {
             }
         }
 
-        private void writeObject(ObjectOutputStream out) throws IOException {
+        private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
             try {
-                write(new TCompactProtocol(new TIOStreamTransport(out)));
-            } catch (TException te) {
-                throw new IOException(te);
+                write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+            } catch (org.apache.thrift.TException te) {
+                throw new java.io.IOException(te);
             }
         }
 
-        private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, java.lang.ClassNotFoundException {
             try {
-                read(new TCompactProtocol(new TIOStreamTransport(in)));
-            } catch (TException te) {
-                throw new IOException(te);
+                read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+            } catch (org.apache.thrift.TException te) {
+                throw new java.io.IOException(te);
             }
         }
 
-        private static class monitor_resultStandardSchemeFactory implements SchemeFactory {
+        private static class monitor_resultStandardSchemeFactory implements org.apache.thrift.scheme.SchemeFactory {
             public monitor_resultStandardScheme getScheme() {
                 return new monitor_resultStandardScheme();
             }
         }
 
-        private static class monitor_resultStandardScheme extends StandardScheme<monitor_result> {
+        private static class monitor_resultStandardScheme extends org.apache.thrift.scheme.StandardScheme<monitor_result> {
 
-            public void read(TProtocol iprot, monitor_result struct) throws TException {
-                TField schemeField;
+            public void read(org.apache.thrift.protocol.TProtocol iprot, monitor_result struct) throws org.apache.thrift.TException {
+                org.apache.thrift.protocol.TField schemeField;
                 iprot.readStructBegin();
                 while (true) {
                     schemeField = iprot.readFieldBegin();
-                    if (schemeField.type == TType.STOP) {
+                    if (schemeField.type == org.apache.thrift.protocol.TType.STOP) {
                         break;
                     }
                     switch (schemeField.id) {
                         case 0: // SUCCESS
-                            if (schemeField.type == TType.STRUCT) {
+                            if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
                                 struct.success = new Response();
                                 struct.success.read(iprot);
                                 struct.setSuccessIsSet(true);
                             } else {
-                                TProtocolUtil.skip(iprot, schemeField.type);
+                                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
                             }
                             break;
                         default:
-                            TProtocolUtil.skip(iprot, schemeField.type);
+                            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
                     }
                     iprot.readFieldEnd();
                 }
@@ -3875,7 +3859,7 @@ public class Opencron implements Serializable {
                 struct.validate();
             }
 
-            public void write(TProtocol oprot, monitor_result struct) throws TException {
+            public void write(org.apache.thrift.protocol.TProtocol oprot, monitor_result struct) throws org.apache.thrift.TException {
                 struct.validate();
 
                 oprot.writeStructBegin(STRUCT_DESC);
@@ -3890,18 +3874,18 @@ public class Opencron implements Serializable {
 
         }
 
-        private static class monitor_resultTupleSchemeFactory implements SchemeFactory {
+        private static class monitor_resultTupleSchemeFactory implements org.apache.thrift.scheme.SchemeFactory {
             public monitor_resultTupleScheme getScheme() {
                 return new monitor_resultTupleScheme();
             }
         }
 
-        private static class monitor_resultTupleScheme extends TupleScheme<monitor_result> {
+        private static class monitor_resultTupleScheme extends org.apache.thrift.scheme.TupleScheme<monitor_result> {
 
             @Override
-            public void write(TProtocol prot, monitor_result struct) throws TException {
-                TTupleProtocol oprot = (TTupleProtocol) prot;
-                BitSet optionals = new BitSet();
+            public void write(org.apache.thrift.protocol.TProtocol prot, monitor_result struct) throws org.apache.thrift.TException {
+                org.apache.thrift.protocol.TTupleProtocol oprot = (org.apache.thrift.protocol.TTupleProtocol) prot;
+                java.util.BitSet optionals = new java.util.BitSet();
                 if (struct.isSetSuccess()) {
                     optionals.set(0);
                 }
@@ -3912,9 +3896,9 @@ public class Opencron implements Serializable {
             }
 
             @Override
-            public void read(TProtocol prot, monitor_result struct) throws TException {
-                TTupleProtocol iprot = (TTupleProtocol) prot;
-                BitSet incoming = iprot.readBitSet(1);
+            public void read(org.apache.thrift.protocol.TProtocol prot, monitor_result struct) throws org.apache.thrift.TException {
+                org.apache.thrift.protocol.TTupleProtocol iprot = (org.apache.thrift.protocol.TTupleProtocol) prot;
+                java.util.BitSet incoming = iprot.readBitSet(1);
                 if (incoming.get(0)) {
                     struct.success = new Response();
                     struct.success.read(iprot);
@@ -3923,31 +3907,31 @@ public class Opencron implements Serializable {
             }
         }
 
-        private static <S extends IScheme> S scheme(TProtocol proto) {
-            return (StandardScheme.class.equals(proto.getScheme()) ? STANDARD_SCHEME_FACTORY : TUPLE_SCHEME_FACTORY).getScheme();
+        private static <S extends org.apache.thrift.scheme.IScheme> S scheme(org.apache.thrift.protocol.TProtocol proto) {
+            return (org.apache.thrift.scheme.StandardScheme.class.equals(proto.getScheme()) ? STANDARD_SCHEME_FACTORY : TUPLE_SCHEME_FACTORY).getScheme();
         }
     }
 
-    public static class execute_args implements TBase<execute_args, execute_args._Fields>, Serializable, Cloneable, Comparable<execute_args> {
-        private static final TStruct STRUCT_DESC = new TStruct("execute_args");
+    public static class execute_args implements org.apache.thrift.TBase<execute_args, execute_args._Fields>, java.io.Serializable, Cloneable, Comparable<execute_args> {
+        private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("execute_args");
 
-        private static final TField REQUEST_FIELD_DESC = new TField("request", TType.STRUCT, (short) 1);
+        private static final org.apache.thrift.protocol.TField REQUEST_FIELD_DESC = new org.apache.thrift.protocol.TField("request", org.apache.thrift.protocol.TType.STRUCT, (short) 1);
 
-        private static final SchemeFactory STANDARD_SCHEME_FACTORY = new execute_argsStandardSchemeFactory();
-        private static final SchemeFactory TUPLE_SCHEME_FACTORY = new execute_argsTupleSchemeFactory();
+        private static final org.apache.thrift.scheme.SchemeFactory STANDARD_SCHEME_FACTORY = new execute_argsStandardSchemeFactory();
+        private static final org.apache.thrift.scheme.SchemeFactory TUPLE_SCHEME_FACTORY = new execute_argsTupleSchemeFactory();
 
         public Request request; // required
 
         /**
          * The set of fields this struct contains, along with convenience methods for finding and manipulating them.
          */
-        public enum _Fields implements TFieldIdEnum {
+        public enum _Fields implements org.apache.thrift.TFieldIdEnum {
             REQUEST((short) 1, "request");
 
-            private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+            private static final java.util.Map<java.lang.String, _Fields> byName = new java.util.HashMap<java.lang.String, _Fields>();
 
             static {
-                for (_Fields field : EnumSet.allOf(_Fields.class)) {
+                for (_Fields field : java.util.EnumSet.allOf(_Fields.class)) {
                     byName.put(field.getFieldName(), field);
                 }
             }
@@ -3971,21 +3955,21 @@ public class Opencron implements Serializable {
             public static _Fields findByThriftIdOrThrow(int fieldId) {
                 _Fields fields = findByThriftId(fieldId);
                 if (fields == null)
-                    throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+                    throw new java.lang.IllegalArgumentException("Field " + fieldId + " doesn't exist!");
                 return fields;
             }
 
             /**
              * Find the _Fields constant that matches name, or null if its not found.
              */
-            public static _Fields findByName(String name) {
+            public static _Fields findByName(java.lang.String name) {
                 return byName.get(name);
             }
 
             private final short _thriftId;
-            private final String _fieldName;
+            private final java.lang.String _fieldName;
 
-            _Fields(short thriftId, String fieldName) {
+            _Fields(short thriftId, java.lang.String fieldName) {
                 _thriftId = thriftId;
                 _fieldName = fieldName;
             }
@@ -3994,20 +3978,20 @@ public class Opencron implements Serializable {
                 return _thriftId;
             }
 
-            public String getFieldName() {
+            public java.lang.String getFieldName() {
                 return _fieldName;
             }
         }
 
         // isset id assignments
-        public static final Map<_Fields, FieldMetaData> metaDataMap;
+        public static final java.util.Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
 
         static {
-            Map<_Fields, FieldMetaData> tmpMap = new EnumMap<_Fields, FieldMetaData>(_Fields.class);
-            tmpMap.put(_Fields.REQUEST, new FieldMetaData("request", TFieldRequirementType.DEFAULT,
-                    new StructMetaData(TType.STRUCT, Request.class)));
-            metaDataMap = Collections.unmodifiableMap(tmpMap);
-            FieldMetaData.addStructMetaDataMap(execute_args.class, metaDataMap);
+            java.util.Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new java.util.EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+            tmpMap.put(_Fields.REQUEST, new org.apache.thrift.meta_data.FieldMetaData("request", org.apache.thrift.TFieldRequirementType.DEFAULT,
+                    new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Request.class)));
+            metaDataMap = java.util.Collections.unmodifiableMap(tmpMap);
+            org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(execute_args.class, metaDataMap);
         }
 
         public execute_args() {
@@ -4063,7 +4047,7 @@ public class Opencron implements Serializable {
             }
         }
 
-        public void setFieldValue(_Fields field, Object value) {
+        public void setFieldValue(_Fields field, java.lang.Object value) {
             switch (field) {
                 case REQUEST:
                     if (value == null) {
@@ -4076,13 +4060,13 @@ public class Opencron implements Serializable {
             }
         }
 
-        public Object getFieldValue(_Fields field) {
+        public java.lang.Object getFieldValue(_Fields field) {
             switch (field) {
                 case REQUEST:
                     return getRequest();
 
             }
-            throw new IllegalStateException();
+            throw new java.lang.IllegalStateException();
         }
 
         /**
@@ -4090,18 +4074,18 @@ public class Opencron implements Serializable {
          */
         public boolean isSet(_Fields field) {
             if (field == null) {
-                throw new IllegalArgumentException();
+                throw new java.lang.IllegalArgumentException();
             }
 
             switch (field) {
                 case REQUEST:
                     return isSetRequest();
             }
-            throw new IllegalStateException();
+            throw new java.lang.IllegalStateException();
         }
 
         @Override
-        public boolean equals(Object that) {
+        public boolean equals(java.lang.Object that) {
             if (that == null)
                 return false;
             if (that instanceof execute_args)
@@ -4146,12 +4130,12 @@ public class Opencron implements Serializable {
 
             int lastComparison = 0;
 
-            lastComparison = Boolean.valueOf(isSetRequest()).compareTo(other.isSetRequest());
+            lastComparison = java.lang.Boolean.valueOf(isSetRequest()).compareTo(other.isSetRequest());
             if (lastComparison != 0) {
                 return lastComparison;
             }
             if (isSetRequest()) {
-                lastComparison = TBaseHelper.compareTo(this.request, other.request);
+                lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.request, other.request);
                 if (lastComparison != 0) {
                     return lastComparison;
                 }
@@ -4163,17 +4147,17 @@ public class Opencron implements Serializable {
             return _Fields.findByThriftId(fieldId);
         }
 
-        public void read(TProtocol iprot) throws TException {
+        public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
             scheme(iprot).read(iprot, this);
         }
 
-        public void write(TProtocol oprot) throws TException {
+        public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
             scheme(oprot).write(oprot, this);
         }
 
         @Override
-        public String toString() {
-            StringBuilder sb = new StringBuilder("execute_args(");
+        public java.lang.String toString() {
+            java.lang.StringBuilder sb = new java.lang.StringBuilder("execute_args(");
             boolean first = true;
 
             sb.append("request:");
@@ -4187,7 +4171,7 @@ public class Opencron implements Serializable {
             return sb.toString();
         }
 
-        public void validate() throws TException {
+        public void validate() throws org.apache.thrift.TException {
             // check for required fields
             // check for sub-struct validity
             if (request != null) {
@@ -4195,50 +4179,50 @@ public class Opencron implements Serializable {
             }
         }
 
-        private void writeObject(ObjectOutputStream out) throws IOException {
+        private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
             try {
-                write(new TCompactProtocol(new TIOStreamTransport(out)));
-            } catch (TException te) {
-                throw new IOException(te);
+                write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+            } catch (org.apache.thrift.TException te) {
+                throw new java.io.IOException(te);
             }
         }
 
-        private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, java.lang.ClassNotFoundException {
             try {
-                read(new TCompactProtocol(new TIOStreamTransport(in)));
-            } catch (TException te) {
-                throw new IOException(te);
+                read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+            } catch (org.apache.thrift.TException te) {
+                throw new java.io.IOException(te);
             }
         }
 
-        private static class execute_argsStandardSchemeFactory implements SchemeFactory {
+        private static class execute_argsStandardSchemeFactory implements org.apache.thrift.scheme.SchemeFactory {
             public execute_argsStandardScheme getScheme() {
                 return new execute_argsStandardScheme();
             }
         }
 
-        private static class execute_argsStandardScheme extends StandardScheme<execute_args> {
+        private static class execute_argsStandardScheme extends org.apache.thrift.scheme.StandardScheme<execute_args> {
 
-            public void read(TProtocol iprot, execute_args struct) throws TException {
-                TField schemeField;
+            public void read(org.apache.thrift.protocol.TProtocol iprot, execute_args struct) throws org.apache.thrift.TException {
+                org.apache.thrift.protocol.TField schemeField;
                 iprot.readStructBegin();
                 while (true) {
                     schemeField = iprot.readFieldBegin();
-                    if (schemeField.type == TType.STOP) {
+                    if (schemeField.type == org.apache.thrift.protocol.TType.STOP) {
                         break;
                     }
                     switch (schemeField.id) {
                         case 1: // REQUEST
-                            if (schemeField.type == TType.STRUCT) {
+                            if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
                                 struct.request = new Request();
                                 struct.request.read(iprot);
                                 struct.setRequestIsSet(true);
                             } else {
-                                TProtocolUtil.skip(iprot, schemeField.type);
+                                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
                             }
                             break;
                         default:
-                            TProtocolUtil.skip(iprot, schemeField.type);
+                            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
                     }
                     iprot.readFieldEnd();
                 }
@@ -4248,7 +4232,7 @@ public class Opencron implements Serializable {
                 struct.validate();
             }
 
-            public void write(TProtocol oprot, execute_args struct) throws TException {
+            public void write(org.apache.thrift.protocol.TProtocol oprot, execute_args struct) throws org.apache.thrift.TException {
                 struct.validate();
 
                 oprot.writeStructBegin(STRUCT_DESC);
@@ -4263,18 +4247,18 @@ public class Opencron implements Serializable {
 
         }
 
-        private static class execute_argsTupleSchemeFactory implements SchemeFactory {
+        private static class execute_argsTupleSchemeFactory implements org.apache.thrift.scheme.SchemeFactory {
             public execute_argsTupleScheme getScheme() {
                 return new execute_argsTupleScheme();
             }
         }
 
-        private static class execute_argsTupleScheme extends TupleScheme<execute_args> {
+        private static class execute_argsTupleScheme extends org.apache.thrift.scheme.TupleScheme<execute_args> {
 
             @Override
-            public void write(TProtocol prot, execute_args struct) throws TException {
-                TTupleProtocol oprot = (TTupleProtocol) prot;
-                BitSet optionals = new BitSet();
+            public void write(org.apache.thrift.protocol.TProtocol prot, execute_args struct) throws org.apache.thrift.TException {
+                org.apache.thrift.protocol.TTupleProtocol oprot = (org.apache.thrift.protocol.TTupleProtocol) prot;
+                java.util.BitSet optionals = new java.util.BitSet();
                 if (struct.isSetRequest()) {
                     optionals.set(0);
                 }
@@ -4285,9 +4269,9 @@ public class Opencron implements Serializable {
             }
 
             @Override
-            public void read(TProtocol prot, execute_args struct) throws TException {
-                TTupleProtocol iprot = (TTupleProtocol) prot;
-                BitSet incoming = iprot.readBitSet(1);
+            public void read(org.apache.thrift.protocol.TProtocol prot, execute_args struct) throws org.apache.thrift.TException {
+                org.apache.thrift.protocol.TTupleProtocol iprot = (org.apache.thrift.protocol.TTupleProtocol) prot;
+                java.util.BitSet incoming = iprot.readBitSet(1);
                 if (incoming.get(0)) {
                     struct.request = new Request();
                     struct.request.read(iprot);
@@ -4296,31 +4280,31 @@ public class Opencron implements Serializable {
             }
         }
 
-        private static <S extends IScheme> S scheme(TProtocol proto) {
-            return (StandardScheme.class.equals(proto.getScheme()) ? STANDARD_SCHEME_FACTORY : TUPLE_SCHEME_FACTORY).getScheme();
+        private static <S extends org.apache.thrift.scheme.IScheme> S scheme(org.apache.thrift.protocol.TProtocol proto) {
+            return (org.apache.thrift.scheme.StandardScheme.class.equals(proto.getScheme()) ? STANDARD_SCHEME_FACTORY : TUPLE_SCHEME_FACTORY).getScheme();
         }
     }
 
-    public static class execute_result implements TBase<execute_result, execute_result._Fields>, Serializable, Cloneable, Comparable<execute_result> {
-        private static final TStruct STRUCT_DESC = new TStruct("execute_result");
+    public static class execute_result implements org.apache.thrift.TBase<execute_result, execute_result._Fields>, java.io.Serializable, Cloneable, Comparable<execute_result> {
+        private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("execute_result");
 
-        private static final TField SUCCESS_FIELD_DESC = new TField("success", TType.STRUCT, (short) 0);
+        private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short) 0);
 
-        private static final SchemeFactory STANDARD_SCHEME_FACTORY = new execute_resultStandardSchemeFactory();
-        private static final SchemeFactory TUPLE_SCHEME_FACTORY = new execute_resultTupleSchemeFactory();
+        private static final org.apache.thrift.scheme.SchemeFactory STANDARD_SCHEME_FACTORY = new execute_resultStandardSchemeFactory();
+        private static final org.apache.thrift.scheme.SchemeFactory TUPLE_SCHEME_FACTORY = new execute_resultTupleSchemeFactory();
 
         public Response success; // required
 
         /**
          * The set of fields this struct contains, along with convenience methods for finding and manipulating them.
          */
-        public enum _Fields implements TFieldIdEnum {
+        public enum _Fields implements org.apache.thrift.TFieldIdEnum {
             SUCCESS((short) 0, "success");
 
-            private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+            private static final java.util.Map<java.lang.String, _Fields> byName = new java.util.HashMap<java.lang.String, _Fields>();
 
             static {
-                for (_Fields field : EnumSet.allOf(_Fields.class)) {
+                for (_Fields field : java.util.EnumSet.allOf(_Fields.class)) {
                     byName.put(field.getFieldName(), field);
                 }
             }
@@ -4344,21 +4328,21 @@ public class Opencron implements Serializable {
             public static _Fields findByThriftIdOrThrow(int fieldId) {
                 _Fields fields = findByThriftId(fieldId);
                 if (fields == null)
-                    throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+                    throw new java.lang.IllegalArgumentException("Field " + fieldId + " doesn't exist!");
                 return fields;
             }
 
             /**
              * Find the _Fields constant that matches name, or null if its not found.
              */
-            public static _Fields findByName(String name) {
+            public static _Fields findByName(java.lang.String name) {
                 return byName.get(name);
             }
 
             private final short _thriftId;
-            private final String _fieldName;
+            private final java.lang.String _fieldName;
 
-            _Fields(short thriftId, String fieldName) {
+            _Fields(short thriftId, java.lang.String fieldName) {
                 _thriftId = thriftId;
                 _fieldName = fieldName;
             }
@@ -4367,20 +4351,20 @@ public class Opencron implements Serializable {
                 return _thriftId;
             }
 
-            public String getFieldName() {
+            public java.lang.String getFieldName() {
                 return _fieldName;
             }
         }
 
         // isset id assignments
-        public static final Map<_Fields, FieldMetaData> metaDataMap;
+        public static final java.util.Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
 
         static {
-            Map<_Fields, FieldMetaData> tmpMap = new EnumMap<_Fields, FieldMetaData>(_Fields.class);
-            tmpMap.put(_Fields.SUCCESS, new FieldMetaData("success", TFieldRequirementType.DEFAULT,
-                    new StructMetaData(TType.STRUCT, Response.class)));
-            metaDataMap = Collections.unmodifiableMap(tmpMap);
-            FieldMetaData.addStructMetaDataMap(execute_result.class, metaDataMap);
+            java.util.Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new java.util.EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+            tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT,
+                    new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Response.class)));
+            metaDataMap = java.util.Collections.unmodifiableMap(tmpMap);
+            org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(execute_result.class, metaDataMap);
         }
 
         public execute_result() {
@@ -4436,7 +4420,7 @@ public class Opencron implements Serializable {
             }
         }
 
-        public void setFieldValue(_Fields field, Object value) {
+        public void setFieldValue(_Fields field, java.lang.Object value) {
             switch (field) {
                 case SUCCESS:
                     if (value == null) {
@@ -4449,13 +4433,13 @@ public class Opencron implements Serializable {
             }
         }
 
-        public Object getFieldValue(_Fields field) {
+        public java.lang.Object getFieldValue(_Fields field) {
             switch (field) {
                 case SUCCESS:
                     return getSuccess();
 
             }
-            throw new IllegalStateException();
+            throw new java.lang.IllegalStateException();
         }
 
         /**
@@ -4463,18 +4447,18 @@ public class Opencron implements Serializable {
          */
         public boolean isSet(_Fields field) {
             if (field == null) {
-                throw new IllegalArgumentException();
+                throw new java.lang.IllegalArgumentException();
             }
 
             switch (field) {
                 case SUCCESS:
                     return isSetSuccess();
             }
-            throw new IllegalStateException();
+            throw new java.lang.IllegalStateException();
         }
 
         @Override
-        public boolean equals(Object that) {
+        public boolean equals(java.lang.Object that) {
             if (that == null)
                 return false;
             if (that instanceof execute_result)
@@ -4519,12 +4503,12 @@ public class Opencron implements Serializable {
 
             int lastComparison = 0;
 
-            lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(other.isSetSuccess());
+            lastComparison = java.lang.Boolean.valueOf(isSetSuccess()).compareTo(other.isSetSuccess());
             if (lastComparison != 0) {
                 return lastComparison;
             }
             if (isSetSuccess()) {
-                lastComparison = TBaseHelper.compareTo(this.success, other.success);
+                lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, other.success);
                 if (lastComparison != 0) {
                     return lastComparison;
                 }
@@ -4536,17 +4520,17 @@ public class Opencron implements Serializable {
             return _Fields.findByThriftId(fieldId);
         }
 
-        public void read(TProtocol iprot) throws TException {
+        public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
             scheme(iprot).read(iprot, this);
         }
 
-        public void write(TProtocol oprot) throws TException {
+        public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
             scheme(oprot).write(oprot, this);
         }
 
         @Override
-        public String toString() {
-            StringBuilder sb = new StringBuilder("execute_result(");
+        public java.lang.String toString() {
+            java.lang.StringBuilder sb = new java.lang.StringBuilder("execute_result(");
             boolean first = true;
 
             sb.append("success:");
@@ -4560,7 +4544,7 @@ public class Opencron implements Serializable {
             return sb.toString();
         }
 
-        public void validate() throws TException {
+        public void validate() throws org.apache.thrift.TException {
             // check for required fields
             // check for sub-struct validity
             if (success != null) {
@@ -4568,50 +4552,50 @@ public class Opencron implements Serializable {
             }
         }
 
-        private void writeObject(ObjectOutputStream out) throws IOException {
+        private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
             try {
-                write(new TCompactProtocol(new TIOStreamTransport(out)));
-            } catch (TException te) {
-                throw new IOException(te);
+                write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+            } catch (org.apache.thrift.TException te) {
+                throw new java.io.IOException(te);
             }
         }
 
-        private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, java.lang.ClassNotFoundException {
             try {
-                read(new TCompactProtocol(new TIOStreamTransport(in)));
-            } catch (TException te) {
-                throw new IOException(te);
+                read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+            } catch (org.apache.thrift.TException te) {
+                throw new java.io.IOException(te);
             }
         }
 
-        private static class execute_resultStandardSchemeFactory implements SchemeFactory {
+        private static class execute_resultStandardSchemeFactory implements org.apache.thrift.scheme.SchemeFactory {
             public execute_resultStandardScheme getScheme() {
                 return new execute_resultStandardScheme();
             }
         }
 
-        private static class execute_resultStandardScheme extends StandardScheme<execute_result> {
+        private static class execute_resultStandardScheme extends org.apache.thrift.scheme.StandardScheme<execute_result> {
 
-            public void read(TProtocol iprot, execute_result struct) throws TException {
-                TField schemeField;
+            public void read(org.apache.thrift.protocol.TProtocol iprot, execute_result struct) throws org.apache.thrift.TException {
+                org.apache.thrift.protocol.TField schemeField;
                 iprot.readStructBegin();
                 while (true) {
                     schemeField = iprot.readFieldBegin();
-                    if (schemeField.type == TType.STOP) {
+                    if (schemeField.type == org.apache.thrift.protocol.TType.STOP) {
                         break;
                     }
                     switch (schemeField.id) {
                         case 0: // SUCCESS
-                            if (schemeField.type == TType.STRUCT) {
+                            if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
                                 struct.success = new Response();
                                 struct.success.read(iprot);
                                 struct.setSuccessIsSet(true);
                             } else {
-                                TProtocolUtil.skip(iprot, schemeField.type);
+                                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
                             }
                             break;
                         default:
-                            TProtocolUtil.skip(iprot, schemeField.type);
+                            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
                     }
                     iprot.readFieldEnd();
                 }
@@ -4621,7 +4605,7 @@ public class Opencron implements Serializable {
                 struct.validate();
             }
 
-            public void write(TProtocol oprot, execute_result struct) throws TException {
+            public void write(org.apache.thrift.protocol.TProtocol oprot, execute_result struct) throws org.apache.thrift.TException {
                 struct.validate();
 
                 oprot.writeStructBegin(STRUCT_DESC);
@@ -4636,18 +4620,18 @@ public class Opencron implements Serializable {
 
         }
 
-        private static class execute_resultTupleSchemeFactory implements SchemeFactory {
+        private static class execute_resultTupleSchemeFactory implements org.apache.thrift.scheme.SchemeFactory {
             public execute_resultTupleScheme getScheme() {
                 return new execute_resultTupleScheme();
             }
         }
 
-        private static class execute_resultTupleScheme extends TupleScheme<execute_result> {
+        private static class execute_resultTupleScheme extends org.apache.thrift.scheme.TupleScheme<execute_result> {
 
             @Override
-            public void write(TProtocol prot, execute_result struct) throws TException {
-                TTupleProtocol oprot = (TTupleProtocol) prot;
-                BitSet optionals = new BitSet();
+            public void write(org.apache.thrift.protocol.TProtocol prot, execute_result struct) throws org.apache.thrift.TException {
+                org.apache.thrift.protocol.TTupleProtocol oprot = (org.apache.thrift.protocol.TTupleProtocol) prot;
+                java.util.BitSet optionals = new java.util.BitSet();
                 if (struct.isSetSuccess()) {
                     optionals.set(0);
                 }
@@ -4658,9 +4642,9 @@ public class Opencron implements Serializable {
             }
 
             @Override
-            public void read(TProtocol prot, execute_result struct) throws TException {
-                TTupleProtocol iprot = (TTupleProtocol) prot;
-                BitSet incoming = iprot.readBitSet(1);
+            public void read(org.apache.thrift.protocol.TProtocol prot, execute_result struct) throws org.apache.thrift.TException {
+                org.apache.thrift.protocol.TTupleProtocol iprot = (org.apache.thrift.protocol.TTupleProtocol) prot;
+                java.util.BitSet incoming = iprot.readBitSet(1);
                 if (incoming.get(0)) {
                     struct.success = new Response();
                     struct.success.read(iprot);
@@ -4669,31 +4653,31 @@ public class Opencron implements Serializable {
             }
         }
 
-        private static <S extends IScheme> S scheme(TProtocol proto) {
-            return (StandardScheme.class.equals(proto.getScheme()) ? STANDARD_SCHEME_FACTORY : TUPLE_SCHEME_FACTORY).getScheme();
+        private static <S extends org.apache.thrift.scheme.IScheme> S scheme(org.apache.thrift.protocol.TProtocol proto) {
+            return (org.apache.thrift.scheme.StandardScheme.class.equals(proto.getScheme()) ? STANDARD_SCHEME_FACTORY : TUPLE_SCHEME_FACTORY).getScheme();
         }
     }
 
-    public static class password_args implements TBase<password_args, password_args._Fields>, Serializable, Cloneable, Comparable<password_args> {
-        private static final TStruct STRUCT_DESC = new TStruct("password_args");
+    public static class password_args implements org.apache.thrift.TBase<password_args, password_args._Fields>, java.io.Serializable, Cloneable, Comparable<password_args> {
+        private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("password_args");
 
-        private static final TField REQUEST_FIELD_DESC = new TField("request", TType.STRUCT, (short) 1);
+        private static final org.apache.thrift.protocol.TField REQUEST_FIELD_DESC = new org.apache.thrift.protocol.TField("request", org.apache.thrift.protocol.TType.STRUCT, (short) 1);
 
-        private static final SchemeFactory STANDARD_SCHEME_FACTORY = new password_argsStandardSchemeFactory();
-        private static final SchemeFactory TUPLE_SCHEME_FACTORY = new password_argsTupleSchemeFactory();
+        private static final org.apache.thrift.scheme.SchemeFactory STANDARD_SCHEME_FACTORY = new password_argsStandardSchemeFactory();
+        private static final org.apache.thrift.scheme.SchemeFactory TUPLE_SCHEME_FACTORY = new password_argsTupleSchemeFactory();
 
         public Request request; // required
 
         /**
          * The set of fields this struct contains, along with convenience methods for finding and manipulating them.
          */
-        public enum _Fields implements TFieldIdEnum {
+        public enum _Fields implements org.apache.thrift.TFieldIdEnum {
             REQUEST((short) 1, "request");
 
-            private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+            private static final java.util.Map<java.lang.String, _Fields> byName = new java.util.HashMap<java.lang.String, _Fields>();
 
             static {
-                for (_Fields field : EnumSet.allOf(_Fields.class)) {
+                for (_Fields field : java.util.EnumSet.allOf(_Fields.class)) {
                     byName.put(field.getFieldName(), field);
                 }
             }
@@ -4717,21 +4701,21 @@ public class Opencron implements Serializable {
             public static _Fields findByThriftIdOrThrow(int fieldId) {
                 _Fields fields = findByThriftId(fieldId);
                 if (fields == null)
-                    throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+                    throw new java.lang.IllegalArgumentException("Field " + fieldId + " doesn't exist!");
                 return fields;
             }
 
             /**
              * Find the _Fields constant that matches name, or null if its not found.
              */
-            public static _Fields findByName(String name) {
+            public static _Fields findByName(java.lang.String name) {
                 return byName.get(name);
             }
 
             private final short _thriftId;
-            private final String _fieldName;
+            private final java.lang.String _fieldName;
 
-            _Fields(short thriftId, String fieldName) {
+            _Fields(short thriftId, java.lang.String fieldName) {
                 _thriftId = thriftId;
                 _fieldName = fieldName;
             }
@@ -4740,20 +4724,20 @@ public class Opencron implements Serializable {
                 return _thriftId;
             }
 
-            public String getFieldName() {
+            public java.lang.String getFieldName() {
                 return _fieldName;
             }
         }
 
         // isset id assignments
-        public static final Map<_Fields, FieldMetaData> metaDataMap;
+        public static final java.util.Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
 
         static {
-            Map<_Fields, FieldMetaData> tmpMap = new EnumMap<_Fields, FieldMetaData>(_Fields.class);
-            tmpMap.put(_Fields.REQUEST, new FieldMetaData("request", TFieldRequirementType.DEFAULT,
-                    new StructMetaData(TType.STRUCT, Request.class)));
-            metaDataMap = Collections.unmodifiableMap(tmpMap);
-            FieldMetaData.addStructMetaDataMap(password_args.class, metaDataMap);
+            java.util.Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new java.util.EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+            tmpMap.put(_Fields.REQUEST, new org.apache.thrift.meta_data.FieldMetaData("request", org.apache.thrift.TFieldRequirementType.DEFAULT,
+                    new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Request.class)));
+            metaDataMap = java.util.Collections.unmodifiableMap(tmpMap);
+            org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(password_args.class, metaDataMap);
         }
 
         public password_args() {
@@ -4809,7 +4793,7 @@ public class Opencron implements Serializable {
             }
         }
 
-        public void setFieldValue(_Fields field, Object value) {
+        public void setFieldValue(_Fields field, java.lang.Object value) {
             switch (field) {
                 case REQUEST:
                     if (value == null) {
@@ -4822,13 +4806,13 @@ public class Opencron implements Serializable {
             }
         }
 
-        public Object getFieldValue(_Fields field) {
+        public java.lang.Object getFieldValue(_Fields field) {
             switch (field) {
                 case REQUEST:
                     return getRequest();
 
             }
-            throw new IllegalStateException();
+            throw new java.lang.IllegalStateException();
         }
 
         /**
@@ -4836,18 +4820,18 @@ public class Opencron implements Serializable {
          */
         public boolean isSet(_Fields field) {
             if (field == null) {
-                throw new IllegalArgumentException();
+                throw new java.lang.IllegalArgumentException();
             }
 
             switch (field) {
                 case REQUEST:
                     return isSetRequest();
             }
-            throw new IllegalStateException();
+            throw new java.lang.IllegalStateException();
         }
 
         @Override
-        public boolean equals(Object that) {
+        public boolean equals(java.lang.Object that) {
             if (that == null)
                 return false;
             if (that instanceof password_args)
@@ -4892,12 +4876,12 @@ public class Opencron implements Serializable {
 
             int lastComparison = 0;
 
-            lastComparison = Boolean.valueOf(isSetRequest()).compareTo(other.isSetRequest());
+            lastComparison = java.lang.Boolean.valueOf(isSetRequest()).compareTo(other.isSetRequest());
             if (lastComparison != 0) {
                 return lastComparison;
             }
             if (isSetRequest()) {
-                lastComparison = TBaseHelper.compareTo(this.request, other.request);
+                lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.request, other.request);
                 if (lastComparison != 0) {
                     return lastComparison;
                 }
@@ -4909,17 +4893,17 @@ public class Opencron implements Serializable {
             return _Fields.findByThriftId(fieldId);
         }
 
-        public void read(TProtocol iprot) throws TException {
+        public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
             scheme(iprot).read(iprot, this);
         }
 
-        public void write(TProtocol oprot) throws TException {
+        public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
             scheme(oprot).write(oprot, this);
         }
 
         @Override
-        public String toString() {
-            StringBuilder sb = new StringBuilder("password_args(");
+        public java.lang.String toString() {
+            java.lang.StringBuilder sb = new java.lang.StringBuilder("password_args(");
             boolean first = true;
 
             sb.append("request:");
@@ -4933,7 +4917,7 @@ public class Opencron implements Serializable {
             return sb.toString();
         }
 
-        public void validate() throws TException {
+        public void validate() throws org.apache.thrift.TException {
             // check for required fields
             // check for sub-struct validity
             if (request != null) {
@@ -4941,50 +4925,50 @@ public class Opencron implements Serializable {
             }
         }
 
-        private void writeObject(ObjectOutputStream out) throws IOException {
+        private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
             try {
-                write(new TCompactProtocol(new TIOStreamTransport(out)));
-            } catch (TException te) {
-                throw new IOException(te);
+                write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+            } catch (org.apache.thrift.TException te) {
+                throw new java.io.IOException(te);
             }
         }
 
-        private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, java.lang.ClassNotFoundException {
             try {
-                read(new TCompactProtocol(new TIOStreamTransport(in)));
-            } catch (TException te) {
-                throw new IOException(te);
+                read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+            } catch (org.apache.thrift.TException te) {
+                throw new java.io.IOException(te);
             }
         }
 
-        private static class password_argsStandardSchemeFactory implements SchemeFactory {
+        private static class password_argsStandardSchemeFactory implements org.apache.thrift.scheme.SchemeFactory {
             public password_argsStandardScheme getScheme() {
                 return new password_argsStandardScheme();
             }
         }
 
-        private static class password_argsStandardScheme extends StandardScheme<password_args> {
+        private static class password_argsStandardScheme extends org.apache.thrift.scheme.StandardScheme<password_args> {
 
-            public void read(TProtocol iprot, password_args struct) throws TException {
-                TField schemeField;
+            public void read(org.apache.thrift.protocol.TProtocol iprot, password_args struct) throws org.apache.thrift.TException {
+                org.apache.thrift.protocol.TField schemeField;
                 iprot.readStructBegin();
                 while (true) {
                     schemeField = iprot.readFieldBegin();
-                    if (schemeField.type == TType.STOP) {
+                    if (schemeField.type == org.apache.thrift.protocol.TType.STOP) {
                         break;
                     }
                     switch (schemeField.id) {
                         case 1: // REQUEST
-                            if (schemeField.type == TType.STRUCT) {
+                            if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
                                 struct.request = new Request();
                                 struct.request.read(iprot);
                                 struct.setRequestIsSet(true);
                             } else {
-                                TProtocolUtil.skip(iprot, schemeField.type);
+                                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
                             }
                             break;
                         default:
-                            TProtocolUtil.skip(iprot, schemeField.type);
+                            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
                     }
                     iprot.readFieldEnd();
                 }
@@ -4994,7 +4978,7 @@ public class Opencron implements Serializable {
                 struct.validate();
             }
 
-            public void write(TProtocol oprot, password_args struct) throws TException {
+            public void write(org.apache.thrift.protocol.TProtocol oprot, password_args struct) throws org.apache.thrift.TException {
                 struct.validate();
 
                 oprot.writeStructBegin(STRUCT_DESC);
@@ -5009,18 +4993,18 @@ public class Opencron implements Serializable {
 
         }
 
-        private static class password_argsTupleSchemeFactory implements SchemeFactory {
+        private static class password_argsTupleSchemeFactory implements org.apache.thrift.scheme.SchemeFactory {
             public password_argsTupleScheme getScheme() {
                 return new password_argsTupleScheme();
             }
         }
 
-        private static class password_argsTupleScheme extends TupleScheme<password_args> {
+        private static class password_argsTupleScheme extends org.apache.thrift.scheme.TupleScheme<password_args> {
 
             @Override
-            public void write(TProtocol prot, password_args struct) throws TException {
-                TTupleProtocol oprot = (TTupleProtocol) prot;
-                BitSet optionals = new BitSet();
+            public void write(org.apache.thrift.protocol.TProtocol prot, password_args struct) throws org.apache.thrift.TException {
+                org.apache.thrift.protocol.TTupleProtocol oprot = (org.apache.thrift.protocol.TTupleProtocol) prot;
+                java.util.BitSet optionals = new java.util.BitSet();
                 if (struct.isSetRequest()) {
                     optionals.set(0);
                 }
@@ -5031,9 +5015,9 @@ public class Opencron implements Serializable {
             }
 
             @Override
-            public void read(TProtocol prot, password_args struct) throws TException {
-                TTupleProtocol iprot = (TTupleProtocol) prot;
-                BitSet incoming = iprot.readBitSet(1);
+            public void read(org.apache.thrift.protocol.TProtocol prot, password_args struct) throws org.apache.thrift.TException {
+                org.apache.thrift.protocol.TTupleProtocol iprot = (org.apache.thrift.protocol.TTupleProtocol) prot;
+                java.util.BitSet incoming = iprot.readBitSet(1);
                 if (incoming.get(0)) {
                     struct.request = new Request();
                     struct.request.read(iprot);
@@ -5042,31 +5026,31 @@ public class Opencron implements Serializable {
             }
         }
 
-        private static <S extends IScheme> S scheme(TProtocol proto) {
-            return (StandardScheme.class.equals(proto.getScheme()) ? STANDARD_SCHEME_FACTORY : TUPLE_SCHEME_FACTORY).getScheme();
+        private static <S extends org.apache.thrift.scheme.IScheme> S scheme(org.apache.thrift.protocol.TProtocol proto) {
+            return (org.apache.thrift.scheme.StandardScheme.class.equals(proto.getScheme()) ? STANDARD_SCHEME_FACTORY : TUPLE_SCHEME_FACTORY).getScheme();
         }
     }
 
-    public static class password_result implements TBase<password_result, password_result._Fields>, Serializable, Cloneable, Comparable<password_result> {
-        private static final TStruct STRUCT_DESC = new TStruct("password_result");
+    public static class password_result implements org.apache.thrift.TBase<password_result, password_result._Fields>, java.io.Serializable, Cloneable, Comparable<password_result> {
+        private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("password_result");
 
-        private static final TField SUCCESS_FIELD_DESC = new TField("success", TType.STRUCT, (short) 0);
+        private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short) 0);
 
-        private static final SchemeFactory STANDARD_SCHEME_FACTORY = new password_resultStandardSchemeFactory();
-        private static final SchemeFactory TUPLE_SCHEME_FACTORY = new password_resultTupleSchemeFactory();
+        private static final org.apache.thrift.scheme.SchemeFactory STANDARD_SCHEME_FACTORY = new password_resultStandardSchemeFactory();
+        private static final org.apache.thrift.scheme.SchemeFactory TUPLE_SCHEME_FACTORY = new password_resultTupleSchemeFactory();
 
         public Response success; // required
 
         /**
          * The set of fields this struct contains, along with convenience methods for finding and manipulating them.
          */
-        public enum _Fields implements TFieldIdEnum {
+        public enum _Fields implements org.apache.thrift.TFieldIdEnum {
             SUCCESS((short) 0, "success");
 
-            private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+            private static final java.util.Map<java.lang.String, _Fields> byName = new java.util.HashMap<java.lang.String, _Fields>();
 
             static {
-                for (_Fields field : EnumSet.allOf(_Fields.class)) {
+                for (_Fields field : java.util.EnumSet.allOf(_Fields.class)) {
                     byName.put(field.getFieldName(), field);
                 }
             }
@@ -5090,21 +5074,21 @@ public class Opencron implements Serializable {
             public static _Fields findByThriftIdOrThrow(int fieldId) {
                 _Fields fields = findByThriftId(fieldId);
                 if (fields == null)
-                    throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+                    throw new java.lang.IllegalArgumentException("Field " + fieldId + " doesn't exist!");
                 return fields;
             }
 
             /**
              * Find the _Fields constant that matches name, or null if its not found.
              */
-            public static _Fields findByName(String name) {
+            public static _Fields findByName(java.lang.String name) {
                 return byName.get(name);
             }
 
             private final short _thriftId;
-            private final String _fieldName;
+            private final java.lang.String _fieldName;
 
-            _Fields(short thriftId, String fieldName) {
+            _Fields(short thriftId, java.lang.String fieldName) {
                 _thriftId = thriftId;
                 _fieldName = fieldName;
             }
@@ -5113,20 +5097,20 @@ public class Opencron implements Serializable {
                 return _thriftId;
             }
 
-            public String getFieldName() {
+            public java.lang.String getFieldName() {
                 return _fieldName;
             }
         }
 
         // isset id assignments
-        public static final Map<_Fields, FieldMetaData> metaDataMap;
+        public static final java.util.Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
 
         static {
-            Map<_Fields, FieldMetaData> tmpMap = new EnumMap<_Fields, FieldMetaData>(_Fields.class);
-            tmpMap.put(_Fields.SUCCESS, new FieldMetaData("success", TFieldRequirementType.DEFAULT,
-                    new StructMetaData(TType.STRUCT, Response.class)));
-            metaDataMap = Collections.unmodifiableMap(tmpMap);
-            FieldMetaData.addStructMetaDataMap(password_result.class, metaDataMap);
+            java.util.Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new java.util.EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+            tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT,
+                    new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Response.class)));
+            metaDataMap = java.util.Collections.unmodifiableMap(tmpMap);
+            org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(password_result.class, metaDataMap);
         }
 
         public password_result() {
@@ -5182,7 +5166,7 @@ public class Opencron implements Serializable {
             }
         }
 
-        public void setFieldValue(_Fields field, Object value) {
+        public void setFieldValue(_Fields field, java.lang.Object value) {
             switch (field) {
                 case SUCCESS:
                     if (value == null) {
@@ -5195,13 +5179,13 @@ public class Opencron implements Serializable {
             }
         }
 
-        public Object getFieldValue(_Fields field) {
+        public java.lang.Object getFieldValue(_Fields field) {
             switch (field) {
                 case SUCCESS:
                     return getSuccess();
 
             }
-            throw new IllegalStateException();
+            throw new java.lang.IllegalStateException();
         }
 
         /**
@@ -5209,18 +5193,18 @@ public class Opencron implements Serializable {
          */
         public boolean isSet(_Fields field) {
             if (field == null) {
-                throw new IllegalArgumentException();
+                throw new java.lang.IllegalArgumentException();
             }
 
             switch (field) {
                 case SUCCESS:
                     return isSetSuccess();
             }
-            throw new IllegalStateException();
+            throw new java.lang.IllegalStateException();
         }
 
         @Override
-        public boolean equals(Object that) {
+        public boolean equals(java.lang.Object that) {
             if (that == null)
                 return false;
             if (that instanceof password_result)
@@ -5265,12 +5249,12 @@ public class Opencron implements Serializable {
 
             int lastComparison = 0;
 
-            lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(other.isSetSuccess());
+            lastComparison = java.lang.Boolean.valueOf(isSetSuccess()).compareTo(other.isSetSuccess());
             if (lastComparison != 0) {
                 return lastComparison;
             }
             if (isSetSuccess()) {
-                lastComparison = TBaseHelper.compareTo(this.success, other.success);
+                lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, other.success);
                 if (lastComparison != 0) {
                     return lastComparison;
                 }
@@ -5282,17 +5266,17 @@ public class Opencron implements Serializable {
             return _Fields.findByThriftId(fieldId);
         }
 
-        public void read(TProtocol iprot) throws TException {
+        public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
             scheme(iprot).read(iprot, this);
         }
 
-        public void write(TProtocol oprot) throws TException {
+        public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
             scheme(oprot).write(oprot, this);
         }
 
         @Override
-        public String toString() {
-            StringBuilder sb = new StringBuilder("password_result(");
+        public java.lang.String toString() {
+            java.lang.StringBuilder sb = new java.lang.StringBuilder("password_result(");
             boolean first = true;
 
             sb.append("success:");
@@ -5306,7 +5290,7 @@ public class Opencron implements Serializable {
             return sb.toString();
         }
 
-        public void validate() throws TException {
+        public void validate() throws org.apache.thrift.TException {
             // check for required fields
             // check for sub-struct validity
             if (success != null) {
@@ -5314,50 +5298,50 @@ public class Opencron implements Serializable {
             }
         }
 
-        private void writeObject(ObjectOutputStream out) throws IOException {
+        private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
             try {
-                write(new TCompactProtocol(new TIOStreamTransport(out)));
-            } catch (TException te) {
-                throw new IOException(te);
+                write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+            } catch (org.apache.thrift.TException te) {
+                throw new java.io.IOException(te);
             }
         }
 
-        private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, java.lang.ClassNotFoundException {
             try {
-                read(new TCompactProtocol(new TIOStreamTransport(in)));
-            } catch (TException te) {
-                throw new IOException(te);
+                read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+            } catch (org.apache.thrift.TException te) {
+                throw new java.io.IOException(te);
             }
         }
 
-        private static class password_resultStandardSchemeFactory implements SchemeFactory {
+        private static class password_resultStandardSchemeFactory implements org.apache.thrift.scheme.SchemeFactory {
             public password_resultStandardScheme getScheme() {
                 return new password_resultStandardScheme();
             }
         }
 
-        private static class password_resultStandardScheme extends StandardScheme<password_result> {
+        private static class password_resultStandardScheme extends org.apache.thrift.scheme.StandardScheme<password_result> {
 
-            public void read(TProtocol iprot, password_result struct) throws TException {
-                TField schemeField;
+            public void read(org.apache.thrift.protocol.TProtocol iprot, password_result struct) throws org.apache.thrift.TException {
+                org.apache.thrift.protocol.TField schemeField;
                 iprot.readStructBegin();
                 while (true) {
                     schemeField = iprot.readFieldBegin();
-                    if (schemeField.type == TType.STOP) {
+                    if (schemeField.type == org.apache.thrift.protocol.TType.STOP) {
                         break;
                     }
                     switch (schemeField.id) {
                         case 0: // SUCCESS
-                            if (schemeField.type == TType.STRUCT) {
+                            if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
                                 struct.success = new Response();
                                 struct.success.read(iprot);
                                 struct.setSuccessIsSet(true);
                             } else {
-                                TProtocolUtil.skip(iprot, schemeField.type);
+                                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
                             }
                             break;
                         default:
-                            TProtocolUtil.skip(iprot, schemeField.type);
+                            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
                     }
                     iprot.readFieldEnd();
                 }
@@ -5367,7 +5351,7 @@ public class Opencron implements Serializable {
                 struct.validate();
             }
 
-            public void write(TProtocol oprot, password_result struct) throws TException {
+            public void write(org.apache.thrift.protocol.TProtocol oprot, password_result struct) throws org.apache.thrift.TException {
                 struct.validate();
 
                 oprot.writeStructBegin(STRUCT_DESC);
@@ -5382,18 +5366,18 @@ public class Opencron implements Serializable {
 
         }
 
-        private static class password_resultTupleSchemeFactory implements SchemeFactory {
+        private static class password_resultTupleSchemeFactory implements org.apache.thrift.scheme.SchemeFactory {
             public password_resultTupleScheme getScheme() {
                 return new password_resultTupleScheme();
             }
         }
 
-        private static class password_resultTupleScheme extends TupleScheme<password_result> {
+        private static class password_resultTupleScheme extends org.apache.thrift.scheme.TupleScheme<password_result> {
 
             @Override
-            public void write(TProtocol prot, password_result struct) throws TException {
-                TTupleProtocol oprot = (TTupleProtocol) prot;
-                BitSet optionals = new BitSet();
+            public void write(org.apache.thrift.protocol.TProtocol prot, password_result struct) throws org.apache.thrift.TException {
+                org.apache.thrift.protocol.TTupleProtocol oprot = (org.apache.thrift.protocol.TTupleProtocol) prot;
+                java.util.BitSet optionals = new java.util.BitSet();
                 if (struct.isSetSuccess()) {
                     optionals.set(0);
                 }
@@ -5404,9 +5388,9 @@ public class Opencron implements Serializable {
             }
 
             @Override
-            public void read(TProtocol prot, password_result struct) throws TException {
-                TTupleProtocol iprot = (TTupleProtocol) prot;
-                BitSet incoming = iprot.readBitSet(1);
+            public void read(org.apache.thrift.protocol.TProtocol prot, password_result struct) throws org.apache.thrift.TException {
+                org.apache.thrift.protocol.TTupleProtocol iprot = (org.apache.thrift.protocol.TTupleProtocol) prot;
+                java.util.BitSet incoming = iprot.readBitSet(1);
                 if (incoming.get(0)) {
                     struct.success = new Response();
                     struct.success.read(iprot);
@@ -5415,31 +5399,31 @@ public class Opencron implements Serializable {
             }
         }
 
-        private static <S extends IScheme> S scheme(TProtocol proto) {
-            return (StandardScheme.class.equals(proto.getScheme()) ? STANDARD_SCHEME_FACTORY : TUPLE_SCHEME_FACTORY).getScheme();
+        private static <S extends org.apache.thrift.scheme.IScheme> S scheme(org.apache.thrift.protocol.TProtocol proto) {
+            return (org.apache.thrift.scheme.StandardScheme.class.equals(proto.getScheme()) ? STANDARD_SCHEME_FACTORY : TUPLE_SCHEME_FACTORY).getScheme();
         }
     }
 
-    public static class kill_args implements TBase<kill_args, kill_args._Fields>, Serializable, Cloneable, Comparable<kill_args> {
-        private static final TStruct STRUCT_DESC = new TStruct("kill_args");
+    public static class kill_args implements org.apache.thrift.TBase<kill_args, kill_args._Fields>, java.io.Serializable, Cloneable, Comparable<kill_args> {
+        private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("kill_args");
 
-        private static final TField REQUEST_FIELD_DESC = new TField("request", TType.STRUCT, (short) 1);
+        private static final org.apache.thrift.protocol.TField REQUEST_FIELD_DESC = new org.apache.thrift.protocol.TField("request", org.apache.thrift.protocol.TType.STRUCT, (short) 1);
 
-        private static final SchemeFactory STANDARD_SCHEME_FACTORY = new kill_argsStandardSchemeFactory();
-        private static final SchemeFactory TUPLE_SCHEME_FACTORY = new kill_argsTupleSchemeFactory();
+        private static final org.apache.thrift.scheme.SchemeFactory STANDARD_SCHEME_FACTORY = new kill_argsStandardSchemeFactory();
+        private static final org.apache.thrift.scheme.SchemeFactory TUPLE_SCHEME_FACTORY = new kill_argsTupleSchemeFactory();
 
         public Request request; // required
 
         /**
          * The set of fields this struct contains, along with convenience methods for finding and manipulating them.
          */
-        public enum _Fields implements TFieldIdEnum {
+        public enum _Fields implements org.apache.thrift.TFieldIdEnum {
             REQUEST((short) 1, "request");
 
-            private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+            private static final java.util.Map<java.lang.String, _Fields> byName = new java.util.HashMap<java.lang.String, _Fields>();
 
             static {
-                for (_Fields field : EnumSet.allOf(_Fields.class)) {
+                for (_Fields field : java.util.EnumSet.allOf(_Fields.class)) {
                     byName.put(field.getFieldName(), field);
                 }
             }
@@ -5463,21 +5447,21 @@ public class Opencron implements Serializable {
             public static _Fields findByThriftIdOrThrow(int fieldId) {
                 _Fields fields = findByThriftId(fieldId);
                 if (fields == null)
-                    throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+                    throw new java.lang.IllegalArgumentException("Field " + fieldId + " doesn't exist!");
                 return fields;
             }
 
             /**
              * Find the _Fields constant that matches name, or null if its not found.
              */
-            public static _Fields findByName(String name) {
+            public static _Fields findByName(java.lang.String name) {
                 return byName.get(name);
             }
 
             private final short _thriftId;
-            private final String _fieldName;
+            private final java.lang.String _fieldName;
 
-            _Fields(short thriftId, String fieldName) {
+            _Fields(short thriftId, java.lang.String fieldName) {
                 _thriftId = thriftId;
                 _fieldName = fieldName;
             }
@@ -5486,20 +5470,20 @@ public class Opencron implements Serializable {
                 return _thriftId;
             }
 
-            public String getFieldName() {
+            public java.lang.String getFieldName() {
                 return _fieldName;
             }
         }
 
         // isset id assignments
-        public static final Map<_Fields, FieldMetaData> metaDataMap;
+        public static final java.util.Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
 
         static {
-            Map<_Fields, FieldMetaData> tmpMap = new EnumMap<_Fields, FieldMetaData>(_Fields.class);
-            tmpMap.put(_Fields.REQUEST, new FieldMetaData("request", TFieldRequirementType.DEFAULT,
-                    new StructMetaData(TType.STRUCT, Request.class)));
-            metaDataMap = Collections.unmodifiableMap(tmpMap);
-            FieldMetaData.addStructMetaDataMap(kill_args.class, metaDataMap);
+            java.util.Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new java.util.EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+            tmpMap.put(_Fields.REQUEST, new org.apache.thrift.meta_data.FieldMetaData("request", org.apache.thrift.TFieldRequirementType.DEFAULT,
+                    new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Request.class)));
+            metaDataMap = java.util.Collections.unmodifiableMap(tmpMap);
+            org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(kill_args.class, metaDataMap);
         }
 
         public kill_args() {
@@ -5555,7 +5539,7 @@ public class Opencron implements Serializable {
             }
         }
 
-        public void setFieldValue(_Fields field, Object value) {
+        public void setFieldValue(_Fields field, java.lang.Object value) {
             switch (field) {
                 case REQUEST:
                     if (value == null) {
@@ -5568,13 +5552,13 @@ public class Opencron implements Serializable {
             }
         }
 
-        public Object getFieldValue(_Fields field) {
+        public java.lang.Object getFieldValue(_Fields field) {
             switch (field) {
                 case REQUEST:
                     return getRequest();
 
             }
-            throw new IllegalStateException();
+            throw new java.lang.IllegalStateException();
         }
 
         /**
@@ -5582,18 +5566,18 @@ public class Opencron implements Serializable {
          */
         public boolean isSet(_Fields field) {
             if (field == null) {
-                throw new IllegalArgumentException();
+                throw new java.lang.IllegalArgumentException();
             }
 
             switch (field) {
                 case REQUEST:
                     return isSetRequest();
             }
-            throw new IllegalStateException();
+            throw new java.lang.IllegalStateException();
         }
 
         @Override
-        public boolean equals(Object that) {
+        public boolean equals(java.lang.Object that) {
             if (that == null)
                 return false;
             if (that instanceof kill_args)
@@ -5638,12 +5622,12 @@ public class Opencron implements Serializable {
 
             int lastComparison = 0;
 
-            lastComparison = Boolean.valueOf(isSetRequest()).compareTo(other.isSetRequest());
+            lastComparison = java.lang.Boolean.valueOf(isSetRequest()).compareTo(other.isSetRequest());
             if (lastComparison != 0) {
                 return lastComparison;
             }
             if (isSetRequest()) {
-                lastComparison = TBaseHelper.compareTo(this.request, other.request);
+                lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.request, other.request);
                 if (lastComparison != 0) {
                     return lastComparison;
                 }
@@ -5655,17 +5639,17 @@ public class Opencron implements Serializable {
             return _Fields.findByThriftId(fieldId);
         }
 
-        public void read(TProtocol iprot) throws TException {
+        public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
             scheme(iprot).read(iprot, this);
         }
 
-        public void write(TProtocol oprot) throws TException {
+        public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
             scheme(oprot).write(oprot, this);
         }
 
         @Override
-        public String toString() {
-            StringBuilder sb = new StringBuilder("kill_args(");
+        public java.lang.String toString() {
+            java.lang.StringBuilder sb = new java.lang.StringBuilder("kill_args(");
             boolean first = true;
 
             sb.append("request:");
@@ -5679,7 +5663,7 @@ public class Opencron implements Serializable {
             return sb.toString();
         }
 
-        public void validate() throws TException {
+        public void validate() throws org.apache.thrift.TException {
             // check for required fields
             // check for sub-struct validity
             if (request != null) {
@@ -5687,50 +5671,50 @@ public class Opencron implements Serializable {
             }
         }
 
-        private void writeObject(ObjectOutputStream out) throws IOException {
+        private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
             try {
-                write(new TCompactProtocol(new TIOStreamTransport(out)));
-            } catch (TException te) {
-                throw new IOException(te);
+                write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+            } catch (org.apache.thrift.TException te) {
+                throw new java.io.IOException(te);
             }
         }
 
-        private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, java.lang.ClassNotFoundException {
             try {
-                read(new TCompactProtocol(new TIOStreamTransport(in)));
-            } catch (TException te) {
-                throw new IOException(te);
+                read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+            } catch (org.apache.thrift.TException te) {
+                throw new java.io.IOException(te);
             }
         }
 
-        private static class kill_argsStandardSchemeFactory implements SchemeFactory {
+        private static class kill_argsStandardSchemeFactory implements org.apache.thrift.scheme.SchemeFactory {
             public kill_argsStandardScheme getScheme() {
                 return new kill_argsStandardScheme();
             }
         }
 
-        private static class kill_argsStandardScheme extends StandardScheme<kill_args> {
+        private static class kill_argsStandardScheme extends org.apache.thrift.scheme.StandardScheme<kill_args> {
 
-            public void read(TProtocol iprot, kill_args struct) throws TException {
-                TField schemeField;
+            public void read(org.apache.thrift.protocol.TProtocol iprot, kill_args struct) throws org.apache.thrift.TException {
+                org.apache.thrift.protocol.TField schemeField;
                 iprot.readStructBegin();
                 while (true) {
                     schemeField = iprot.readFieldBegin();
-                    if (schemeField.type == TType.STOP) {
+                    if (schemeField.type == org.apache.thrift.protocol.TType.STOP) {
                         break;
                     }
                     switch (schemeField.id) {
                         case 1: // REQUEST
-                            if (schemeField.type == TType.STRUCT) {
+                            if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
                                 struct.request = new Request();
                                 struct.request.read(iprot);
                                 struct.setRequestIsSet(true);
                             } else {
-                                TProtocolUtil.skip(iprot, schemeField.type);
+                                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
                             }
                             break;
                         default:
-                            TProtocolUtil.skip(iprot, schemeField.type);
+                            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
                     }
                     iprot.readFieldEnd();
                 }
@@ -5740,7 +5724,7 @@ public class Opencron implements Serializable {
                 struct.validate();
             }
 
-            public void write(TProtocol oprot, kill_args struct) throws TException {
+            public void write(org.apache.thrift.protocol.TProtocol oprot, kill_args struct) throws org.apache.thrift.TException {
                 struct.validate();
 
                 oprot.writeStructBegin(STRUCT_DESC);
@@ -5755,18 +5739,18 @@ public class Opencron implements Serializable {
 
         }
 
-        private static class kill_argsTupleSchemeFactory implements SchemeFactory {
+        private static class kill_argsTupleSchemeFactory implements org.apache.thrift.scheme.SchemeFactory {
             public kill_argsTupleScheme getScheme() {
                 return new kill_argsTupleScheme();
             }
         }
 
-        private static class kill_argsTupleScheme extends TupleScheme<kill_args> {
+        private static class kill_argsTupleScheme extends org.apache.thrift.scheme.TupleScheme<kill_args> {
 
             @Override
-            public void write(TProtocol prot, kill_args struct) throws TException {
-                TTupleProtocol oprot = (TTupleProtocol) prot;
-                BitSet optionals = new BitSet();
+            public void write(org.apache.thrift.protocol.TProtocol prot, kill_args struct) throws org.apache.thrift.TException {
+                org.apache.thrift.protocol.TTupleProtocol oprot = (org.apache.thrift.protocol.TTupleProtocol) prot;
+                java.util.BitSet optionals = new java.util.BitSet();
                 if (struct.isSetRequest()) {
                     optionals.set(0);
                 }
@@ -5777,9 +5761,9 @@ public class Opencron implements Serializable {
             }
 
             @Override
-            public void read(TProtocol prot, kill_args struct) throws TException {
-                TTupleProtocol iprot = (TTupleProtocol) prot;
-                BitSet incoming = iprot.readBitSet(1);
+            public void read(org.apache.thrift.protocol.TProtocol prot, kill_args struct) throws org.apache.thrift.TException {
+                org.apache.thrift.protocol.TTupleProtocol iprot = (org.apache.thrift.protocol.TTupleProtocol) prot;
+                java.util.BitSet incoming = iprot.readBitSet(1);
                 if (incoming.get(0)) {
                     struct.request = new Request();
                     struct.request.read(iprot);
@@ -5788,31 +5772,31 @@ public class Opencron implements Serializable {
             }
         }
 
-        private static <S extends IScheme> S scheme(TProtocol proto) {
-            return (StandardScheme.class.equals(proto.getScheme()) ? STANDARD_SCHEME_FACTORY : TUPLE_SCHEME_FACTORY).getScheme();
+        private static <S extends org.apache.thrift.scheme.IScheme> S scheme(org.apache.thrift.protocol.TProtocol proto) {
+            return (org.apache.thrift.scheme.StandardScheme.class.equals(proto.getScheme()) ? STANDARD_SCHEME_FACTORY : TUPLE_SCHEME_FACTORY).getScheme();
         }
     }
 
-    public static class kill_result implements TBase<kill_result, kill_result._Fields>, Serializable, Cloneable, Comparable<kill_result> {
-        private static final TStruct STRUCT_DESC = new TStruct("kill_result");
+    public static class kill_result implements org.apache.thrift.TBase<kill_result, kill_result._Fields>, java.io.Serializable, Cloneable, Comparable<kill_result> {
+        private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("kill_result");
 
-        private static final TField SUCCESS_FIELD_DESC = new TField("success", TType.STRUCT, (short) 0);
+        private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short) 0);
 
-        private static final SchemeFactory STANDARD_SCHEME_FACTORY = new kill_resultStandardSchemeFactory();
-        private static final SchemeFactory TUPLE_SCHEME_FACTORY = new kill_resultTupleSchemeFactory();
+        private static final org.apache.thrift.scheme.SchemeFactory STANDARD_SCHEME_FACTORY = new kill_resultStandardSchemeFactory();
+        private static final org.apache.thrift.scheme.SchemeFactory TUPLE_SCHEME_FACTORY = new kill_resultTupleSchemeFactory();
 
         public Response success; // required
 
         /**
          * The set of fields this struct contains, along with convenience methods for finding and manipulating them.
          */
-        public enum _Fields implements TFieldIdEnum {
+        public enum _Fields implements org.apache.thrift.TFieldIdEnum {
             SUCCESS((short) 0, "success");
 
-            private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+            private static final java.util.Map<java.lang.String, _Fields> byName = new java.util.HashMap<java.lang.String, _Fields>();
 
             static {
-                for (_Fields field : EnumSet.allOf(_Fields.class)) {
+                for (_Fields field : java.util.EnumSet.allOf(_Fields.class)) {
                     byName.put(field.getFieldName(), field);
                 }
             }
@@ -5836,21 +5820,21 @@ public class Opencron implements Serializable {
             public static _Fields findByThriftIdOrThrow(int fieldId) {
                 _Fields fields = findByThriftId(fieldId);
                 if (fields == null)
-                    throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+                    throw new java.lang.IllegalArgumentException("Field " + fieldId + " doesn't exist!");
                 return fields;
             }
 
             /**
              * Find the _Fields constant that matches name, or null if its not found.
              */
-            public static _Fields findByName(String name) {
+            public static _Fields findByName(java.lang.String name) {
                 return byName.get(name);
             }
 
             private final short _thriftId;
-            private final String _fieldName;
+            private final java.lang.String _fieldName;
 
-            _Fields(short thriftId, String fieldName) {
+            _Fields(short thriftId, java.lang.String fieldName) {
                 _thriftId = thriftId;
                 _fieldName = fieldName;
             }
@@ -5859,20 +5843,20 @@ public class Opencron implements Serializable {
                 return _thriftId;
             }
 
-            public String getFieldName() {
+            public java.lang.String getFieldName() {
                 return _fieldName;
             }
         }
 
         // isset id assignments
-        public static final Map<_Fields, FieldMetaData> metaDataMap;
+        public static final java.util.Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
 
         static {
-            Map<_Fields, FieldMetaData> tmpMap = new EnumMap<_Fields, FieldMetaData>(_Fields.class);
-            tmpMap.put(_Fields.SUCCESS, new FieldMetaData("success", TFieldRequirementType.DEFAULT,
-                    new StructMetaData(TType.STRUCT, Response.class)));
-            metaDataMap = Collections.unmodifiableMap(tmpMap);
-            FieldMetaData.addStructMetaDataMap(kill_result.class, metaDataMap);
+            java.util.Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new java.util.EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+            tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT,
+                    new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Response.class)));
+            metaDataMap = java.util.Collections.unmodifiableMap(tmpMap);
+            org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(kill_result.class, metaDataMap);
         }
 
         public kill_result() {
@@ -5928,7 +5912,7 @@ public class Opencron implements Serializable {
             }
         }
 
-        public void setFieldValue(_Fields field, Object value) {
+        public void setFieldValue(_Fields field, java.lang.Object value) {
             switch (field) {
                 case SUCCESS:
                     if (value == null) {
@@ -5941,13 +5925,13 @@ public class Opencron implements Serializable {
             }
         }
 
-        public Object getFieldValue(_Fields field) {
+        public java.lang.Object getFieldValue(_Fields field) {
             switch (field) {
                 case SUCCESS:
                     return getSuccess();
 
             }
-            throw new IllegalStateException();
+            throw new java.lang.IllegalStateException();
         }
 
         /**
@@ -5955,18 +5939,18 @@ public class Opencron implements Serializable {
          */
         public boolean isSet(_Fields field) {
             if (field == null) {
-                throw new IllegalArgumentException();
+                throw new java.lang.IllegalArgumentException();
             }
 
             switch (field) {
                 case SUCCESS:
                     return isSetSuccess();
             }
-            throw new IllegalStateException();
+            throw new java.lang.IllegalStateException();
         }
 
         @Override
-        public boolean equals(Object that) {
+        public boolean equals(java.lang.Object that) {
             if (that == null)
                 return false;
             if (that instanceof kill_result)
@@ -6011,12 +5995,12 @@ public class Opencron implements Serializable {
 
             int lastComparison = 0;
 
-            lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(other.isSetSuccess());
+            lastComparison = java.lang.Boolean.valueOf(isSetSuccess()).compareTo(other.isSetSuccess());
             if (lastComparison != 0) {
                 return lastComparison;
             }
             if (isSetSuccess()) {
-                lastComparison = TBaseHelper.compareTo(this.success, other.success);
+                lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, other.success);
                 if (lastComparison != 0) {
                     return lastComparison;
                 }
@@ -6028,17 +6012,17 @@ public class Opencron implements Serializable {
             return _Fields.findByThriftId(fieldId);
         }
 
-        public void read(TProtocol iprot) throws TException {
+        public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
             scheme(iprot).read(iprot, this);
         }
 
-        public void write(TProtocol oprot) throws TException {
+        public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
             scheme(oprot).write(oprot, this);
         }
 
         @Override
-        public String toString() {
-            StringBuilder sb = new StringBuilder("kill_result(");
+        public java.lang.String toString() {
+            java.lang.StringBuilder sb = new java.lang.StringBuilder("kill_result(");
             boolean first = true;
 
             sb.append("success:");
@@ -6052,7 +6036,7 @@ public class Opencron implements Serializable {
             return sb.toString();
         }
 
-        public void validate() throws TException {
+        public void validate() throws org.apache.thrift.TException {
             // check for required fields
             // check for sub-struct validity
             if (success != null) {
@@ -6060,50 +6044,50 @@ public class Opencron implements Serializable {
             }
         }
 
-        private void writeObject(ObjectOutputStream out) throws IOException {
+        private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
             try {
-                write(new TCompactProtocol(new TIOStreamTransport(out)));
-            } catch (TException te) {
-                throw new IOException(te);
+                write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+            } catch (org.apache.thrift.TException te) {
+                throw new java.io.IOException(te);
             }
         }
 
-        private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, java.lang.ClassNotFoundException {
             try {
-                read(new TCompactProtocol(new TIOStreamTransport(in)));
-            } catch (TException te) {
-                throw new IOException(te);
+                read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+            } catch (org.apache.thrift.TException te) {
+                throw new java.io.IOException(te);
             }
         }
 
-        private static class kill_resultStandardSchemeFactory implements SchemeFactory {
+        private static class kill_resultStandardSchemeFactory implements org.apache.thrift.scheme.SchemeFactory {
             public kill_resultStandardScheme getScheme() {
                 return new kill_resultStandardScheme();
             }
         }
 
-        private static class kill_resultStandardScheme extends StandardScheme<kill_result> {
+        private static class kill_resultStandardScheme extends org.apache.thrift.scheme.StandardScheme<kill_result> {
 
-            public void read(TProtocol iprot, kill_result struct) throws TException {
-                TField schemeField;
+            public void read(org.apache.thrift.protocol.TProtocol iprot, kill_result struct) throws org.apache.thrift.TException {
+                org.apache.thrift.protocol.TField schemeField;
                 iprot.readStructBegin();
                 while (true) {
                     schemeField = iprot.readFieldBegin();
-                    if (schemeField.type == TType.STOP) {
+                    if (schemeField.type == org.apache.thrift.protocol.TType.STOP) {
                         break;
                     }
                     switch (schemeField.id) {
                         case 0: // SUCCESS
-                            if (schemeField.type == TType.STRUCT) {
+                            if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
                                 struct.success = new Response();
                                 struct.success.read(iprot);
                                 struct.setSuccessIsSet(true);
                             } else {
-                                TProtocolUtil.skip(iprot, schemeField.type);
+                                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
                             }
                             break;
                         default:
-                            TProtocolUtil.skip(iprot, schemeField.type);
+                            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
                     }
                     iprot.readFieldEnd();
                 }
@@ -6113,7 +6097,7 @@ public class Opencron implements Serializable {
                 struct.validate();
             }
 
-            public void write(TProtocol oprot, kill_result struct) throws TException {
+            public void write(org.apache.thrift.protocol.TProtocol oprot, kill_result struct) throws org.apache.thrift.TException {
                 struct.validate();
 
                 oprot.writeStructBegin(STRUCT_DESC);
@@ -6128,18 +6112,18 @@ public class Opencron implements Serializable {
 
         }
 
-        private static class kill_resultTupleSchemeFactory implements SchemeFactory {
+        private static class kill_resultTupleSchemeFactory implements org.apache.thrift.scheme.SchemeFactory {
             public kill_resultTupleScheme getScheme() {
                 return new kill_resultTupleScheme();
             }
         }
 
-        private static class kill_resultTupleScheme extends TupleScheme<kill_result> {
+        private static class kill_resultTupleScheme extends org.apache.thrift.scheme.TupleScheme<kill_result> {
 
             @Override
-            public void write(TProtocol prot, kill_result struct) throws TException {
-                TTupleProtocol oprot = (TTupleProtocol) prot;
-                BitSet optionals = new BitSet();
+            public void write(org.apache.thrift.protocol.TProtocol prot, kill_result struct) throws org.apache.thrift.TException {
+                org.apache.thrift.protocol.TTupleProtocol oprot = (org.apache.thrift.protocol.TTupleProtocol) prot;
+                java.util.BitSet optionals = new java.util.BitSet();
                 if (struct.isSetSuccess()) {
                     optionals.set(0);
                 }
@@ -6150,9 +6134,9 @@ public class Opencron implements Serializable {
             }
 
             @Override
-            public void read(TProtocol prot, kill_result struct) throws TException {
-                TTupleProtocol iprot = (TTupleProtocol) prot;
-                BitSet incoming = iprot.readBitSet(1);
+            public void read(org.apache.thrift.protocol.TProtocol prot, kill_result struct) throws org.apache.thrift.TException {
+                org.apache.thrift.protocol.TTupleProtocol iprot = (org.apache.thrift.protocol.TTupleProtocol) prot;
+                java.util.BitSet incoming = iprot.readBitSet(1);
                 if (incoming.get(0)) {
                     struct.success = new Response();
                     struct.success.read(iprot);
@@ -6161,31 +6145,31 @@ public class Opencron implements Serializable {
             }
         }
 
-        private static <S extends IScheme> S scheme(TProtocol proto) {
-            return (StandardScheme.class.equals(proto.getScheme()) ? STANDARD_SCHEME_FACTORY : TUPLE_SCHEME_FACTORY).getScheme();
+        private static <S extends org.apache.thrift.scheme.IScheme> S scheme(org.apache.thrift.protocol.TProtocol proto) {
+            return (org.apache.thrift.scheme.StandardScheme.class.equals(proto.getScheme()) ? STANDARD_SCHEME_FACTORY : TUPLE_SCHEME_FACTORY).getScheme();
         }
     }
 
-    public static class proxy_args implements TBase<proxy_args, proxy_args._Fields>, Serializable, Cloneable, Comparable<proxy_args> {
-        private static final TStruct STRUCT_DESC = new TStruct("proxy_args");
+    public static class proxy_args implements org.apache.thrift.TBase<proxy_args, proxy_args._Fields>, java.io.Serializable, Cloneable, Comparable<proxy_args> {
+        private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("proxy_args");
 
-        private static final TField REQUEST_FIELD_DESC = new TField("request", TType.STRUCT, (short) 1);
+        private static final org.apache.thrift.protocol.TField REQUEST_FIELD_DESC = new org.apache.thrift.protocol.TField("request", org.apache.thrift.protocol.TType.STRUCT, (short) 1);
 
-        private static final SchemeFactory STANDARD_SCHEME_FACTORY = new proxy_argsStandardSchemeFactory();
-        private static final SchemeFactory TUPLE_SCHEME_FACTORY = new proxy_argsTupleSchemeFactory();
+        private static final org.apache.thrift.scheme.SchemeFactory STANDARD_SCHEME_FACTORY = new proxy_argsStandardSchemeFactory();
+        private static final org.apache.thrift.scheme.SchemeFactory TUPLE_SCHEME_FACTORY = new proxy_argsTupleSchemeFactory();
 
         public Request request; // required
 
         /**
          * The set of fields this struct contains, along with convenience methods for finding and manipulating them.
          */
-        public enum _Fields implements TFieldIdEnum {
+        public enum _Fields implements org.apache.thrift.TFieldIdEnum {
             REQUEST((short) 1, "request");
 
-            private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+            private static final java.util.Map<java.lang.String, _Fields> byName = new java.util.HashMap<java.lang.String, _Fields>();
 
             static {
-                for (_Fields field : EnumSet.allOf(_Fields.class)) {
+                for (_Fields field : java.util.EnumSet.allOf(_Fields.class)) {
                     byName.put(field.getFieldName(), field);
                 }
             }
@@ -6209,21 +6193,21 @@ public class Opencron implements Serializable {
             public static _Fields findByThriftIdOrThrow(int fieldId) {
                 _Fields fields = findByThriftId(fieldId);
                 if (fields == null)
-                    throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+                    throw new java.lang.IllegalArgumentException("Field " + fieldId + " doesn't exist!");
                 return fields;
             }
 
             /**
              * Find the _Fields constant that matches name, or null if its not found.
              */
-            public static _Fields findByName(String name) {
+            public static _Fields findByName(java.lang.String name) {
                 return byName.get(name);
             }
 
             private final short _thriftId;
-            private final String _fieldName;
+            private final java.lang.String _fieldName;
 
-            _Fields(short thriftId, String fieldName) {
+            _Fields(short thriftId, java.lang.String fieldName) {
                 _thriftId = thriftId;
                 _fieldName = fieldName;
             }
@@ -6232,20 +6216,20 @@ public class Opencron implements Serializable {
                 return _thriftId;
             }
 
-            public String getFieldName() {
+            public java.lang.String getFieldName() {
                 return _fieldName;
             }
         }
 
         // isset id assignments
-        public static final Map<_Fields, FieldMetaData> metaDataMap;
+        public static final java.util.Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
 
         static {
-            Map<_Fields, FieldMetaData> tmpMap = new EnumMap<_Fields, FieldMetaData>(_Fields.class);
-            tmpMap.put(_Fields.REQUEST, new FieldMetaData("request", TFieldRequirementType.DEFAULT,
-                    new StructMetaData(TType.STRUCT, Request.class)));
-            metaDataMap = Collections.unmodifiableMap(tmpMap);
-            FieldMetaData.addStructMetaDataMap(proxy_args.class, metaDataMap);
+            java.util.Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new java.util.EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+            tmpMap.put(_Fields.REQUEST, new org.apache.thrift.meta_data.FieldMetaData("request", org.apache.thrift.TFieldRequirementType.DEFAULT,
+                    new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Request.class)));
+            metaDataMap = java.util.Collections.unmodifiableMap(tmpMap);
+            org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(proxy_args.class, metaDataMap);
         }
 
         public proxy_args() {
@@ -6301,7 +6285,7 @@ public class Opencron implements Serializable {
             }
         }
 
-        public void setFieldValue(_Fields field, Object value) {
+        public void setFieldValue(_Fields field, java.lang.Object value) {
             switch (field) {
                 case REQUEST:
                     if (value == null) {
@@ -6314,13 +6298,13 @@ public class Opencron implements Serializable {
             }
         }
 
-        public Object getFieldValue(_Fields field) {
+        public java.lang.Object getFieldValue(_Fields field) {
             switch (field) {
                 case REQUEST:
                     return getRequest();
 
             }
-            throw new IllegalStateException();
+            throw new java.lang.IllegalStateException();
         }
 
         /**
@@ -6328,18 +6312,18 @@ public class Opencron implements Serializable {
          */
         public boolean isSet(_Fields field) {
             if (field == null) {
-                throw new IllegalArgumentException();
+                throw new java.lang.IllegalArgumentException();
             }
 
             switch (field) {
                 case REQUEST:
                     return isSetRequest();
             }
-            throw new IllegalStateException();
+            throw new java.lang.IllegalStateException();
         }
 
         @Override
-        public boolean equals(Object that) {
+        public boolean equals(java.lang.Object that) {
             if (that == null)
                 return false;
             if (that instanceof proxy_args)
@@ -6384,12 +6368,12 @@ public class Opencron implements Serializable {
 
             int lastComparison = 0;
 
-            lastComparison = Boolean.valueOf(isSetRequest()).compareTo(other.isSetRequest());
+            lastComparison = java.lang.Boolean.valueOf(isSetRequest()).compareTo(other.isSetRequest());
             if (lastComparison != 0) {
                 return lastComparison;
             }
             if (isSetRequest()) {
-                lastComparison = TBaseHelper.compareTo(this.request, other.request);
+                lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.request, other.request);
                 if (lastComparison != 0) {
                     return lastComparison;
                 }
@@ -6401,17 +6385,17 @@ public class Opencron implements Serializable {
             return _Fields.findByThriftId(fieldId);
         }
 
-        public void read(TProtocol iprot) throws TException {
+        public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
             scheme(iprot).read(iprot, this);
         }
 
-        public void write(TProtocol oprot) throws TException {
+        public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
             scheme(oprot).write(oprot, this);
         }
 
         @Override
-        public String toString() {
-            StringBuilder sb = new StringBuilder("proxy_args(");
+        public java.lang.String toString() {
+            java.lang.StringBuilder sb = new java.lang.StringBuilder("proxy_args(");
             boolean first = true;
 
             sb.append("request:");
@@ -6425,7 +6409,7 @@ public class Opencron implements Serializable {
             return sb.toString();
         }
 
-        public void validate() throws TException {
+        public void validate() throws org.apache.thrift.TException {
             // check for required fields
             // check for sub-struct validity
             if (request != null) {
@@ -6433,50 +6417,50 @@ public class Opencron implements Serializable {
             }
         }
 
-        private void writeObject(ObjectOutputStream out) throws IOException {
+        private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
             try {
-                write(new TCompactProtocol(new TIOStreamTransport(out)));
-            } catch (TException te) {
-                throw new IOException(te);
+                write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+            } catch (org.apache.thrift.TException te) {
+                throw new java.io.IOException(te);
             }
         }
 
-        private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, java.lang.ClassNotFoundException {
             try {
-                read(new TCompactProtocol(new TIOStreamTransport(in)));
-            } catch (TException te) {
-                throw new IOException(te);
+                read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+            } catch (org.apache.thrift.TException te) {
+                throw new java.io.IOException(te);
             }
         }
 
-        private static class proxy_argsStandardSchemeFactory implements SchemeFactory {
+        private static class proxy_argsStandardSchemeFactory implements org.apache.thrift.scheme.SchemeFactory {
             public proxy_argsStandardScheme getScheme() {
                 return new proxy_argsStandardScheme();
             }
         }
 
-        private static class proxy_argsStandardScheme extends StandardScheme<proxy_args> {
+        private static class proxy_argsStandardScheme extends org.apache.thrift.scheme.StandardScheme<proxy_args> {
 
-            public void read(TProtocol iprot, proxy_args struct) throws TException {
-                TField schemeField;
+            public void read(org.apache.thrift.protocol.TProtocol iprot, proxy_args struct) throws org.apache.thrift.TException {
+                org.apache.thrift.protocol.TField schemeField;
                 iprot.readStructBegin();
                 while (true) {
                     schemeField = iprot.readFieldBegin();
-                    if (schemeField.type == TType.STOP) {
+                    if (schemeField.type == org.apache.thrift.protocol.TType.STOP) {
                         break;
                     }
                     switch (schemeField.id) {
                         case 1: // REQUEST
-                            if (schemeField.type == TType.STRUCT) {
+                            if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
                                 struct.request = new Request();
                                 struct.request.read(iprot);
                                 struct.setRequestIsSet(true);
                             } else {
-                                TProtocolUtil.skip(iprot, schemeField.type);
+                                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
                             }
                             break;
                         default:
-                            TProtocolUtil.skip(iprot, schemeField.type);
+                            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
                     }
                     iprot.readFieldEnd();
                 }
@@ -6486,7 +6470,7 @@ public class Opencron implements Serializable {
                 struct.validate();
             }
 
-            public void write(TProtocol oprot, proxy_args struct) throws TException {
+            public void write(org.apache.thrift.protocol.TProtocol oprot, proxy_args struct) throws org.apache.thrift.TException {
                 struct.validate();
 
                 oprot.writeStructBegin(STRUCT_DESC);
@@ -6501,18 +6485,18 @@ public class Opencron implements Serializable {
 
         }
 
-        private static class proxy_argsTupleSchemeFactory implements SchemeFactory {
+        private static class proxy_argsTupleSchemeFactory implements org.apache.thrift.scheme.SchemeFactory {
             public proxy_argsTupleScheme getScheme() {
                 return new proxy_argsTupleScheme();
             }
         }
 
-        private static class proxy_argsTupleScheme extends TupleScheme<proxy_args> {
+        private static class proxy_argsTupleScheme extends org.apache.thrift.scheme.TupleScheme<proxy_args> {
 
             @Override
-            public void write(TProtocol prot, proxy_args struct) throws TException {
-                TTupleProtocol oprot = (TTupleProtocol) prot;
-                BitSet optionals = new BitSet();
+            public void write(org.apache.thrift.protocol.TProtocol prot, proxy_args struct) throws org.apache.thrift.TException {
+                org.apache.thrift.protocol.TTupleProtocol oprot = (org.apache.thrift.protocol.TTupleProtocol) prot;
+                java.util.BitSet optionals = new java.util.BitSet();
                 if (struct.isSetRequest()) {
                     optionals.set(0);
                 }
@@ -6523,9 +6507,9 @@ public class Opencron implements Serializable {
             }
 
             @Override
-            public void read(TProtocol prot, proxy_args struct) throws TException {
-                TTupleProtocol iprot = (TTupleProtocol) prot;
-                BitSet incoming = iprot.readBitSet(1);
+            public void read(org.apache.thrift.protocol.TProtocol prot, proxy_args struct) throws org.apache.thrift.TException {
+                org.apache.thrift.protocol.TTupleProtocol iprot = (org.apache.thrift.protocol.TTupleProtocol) prot;
+                java.util.BitSet incoming = iprot.readBitSet(1);
                 if (incoming.get(0)) {
                     struct.request = new Request();
                     struct.request.read(iprot);
@@ -6534,31 +6518,31 @@ public class Opencron implements Serializable {
             }
         }
 
-        private static <S extends IScheme> S scheme(TProtocol proto) {
-            return (StandardScheme.class.equals(proto.getScheme()) ? STANDARD_SCHEME_FACTORY : TUPLE_SCHEME_FACTORY).getScheme();
+        private static <S extends org.apache.thrift.scheme.IScheme> S scheme(org.apache.thrift.protocol.TProtocol proto) {
+            return (org.apache.thrift.scheme.StandardScheme.class.equals(proto.getScheme()) ? STANDARD_SCHEME_FACTORY : TUPLE_SCHEME_FACTORY).getScheme();
         }
     }
 
-    public static class proxy_result implements TBase<proxy_result, proxy_result._Fields>, Serializable, Cloneable, Comparable<proxy_result> {
-        private static final TStruct STRUCT_DESC = new TStruct("proxy_result");
+    public static class proxy_result implements org.apache.thrift.TBase<proxy_result, proxy_result._Fields>, java.io.Serializable, Cloneable, Comparable<proxy_result> {
+        private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("proxy_result");
 
-        private static final TField SUCCESS_FIELD_DESC = new TField("success", TType.STRUCT, (short) 0);
+        private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short) 0);
 
-        private static final SchemeFactory STANDARD_SCHEME_FACTORY = new proxy_resultStandardSchemeFactory();
-        private static final SchemeFactory TUPLE_SCHEME_FACTORY = new proxy_resultTupleSchemeFactory();
+        private static final org.apache.thrift.scheme.SchemeFactory STANDARD_SCHEME_FACTORY = new proxy_resultStandardSchemeFactory();
+        private static final org.apache.thrift.scheme.SchemeFactory TUPLE_SCHEME_FACTORY = new proxy_resultTupleSchemeFactory();
 
         public Response success; // required
 
         /**
          * The set of fields this struct contains, along with convenience methods for finding and manipulating them.
          */
-        public enum _Fields implements TFieldIdEnum {
+        public enum _Fields implements org.apache.thrift.TFieldIdEnum {
             SUCCESS((short) 0, "success");
 
-            private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+            private static final java.util.Map<java.lang.String, _Fields> byName = new java.util.HashMap<java.lang.String, _Fields>();
 
             static {
-                for (_Fields field : EnumSet.allOf(_Fields.class)) {
+                for (_Fields field : java.util.EnumSet.allOf(_Fields.class)) {
                     byName.put(field.getFieldName(), field);
                 }
             }
@@ -6582,21 +6566,21 @@ public class Opencron implements Serializable {
             public static _Fields findByThriftIdOrThrow(int fieldId) {
                 _Fields fields = findByThriftId(fieldId);
                 if (fields == null)
-                    throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+                    throw new java.lang.IllegalArgumentException("Field " + fieldId + " doesn't exist!");
                 return fields;
             }
 
             /**
              * Find the _Fields constant that matches name, or null if its not found.
              */
-            public static _Fields findByName(String name) {
+            public static _Fields findByName(java.lang.String name) {
                 return byName.get(name);
             }
 
             private final short _thriftId;
-            private final String _fieldName;
+            private final java.lang.String _fieldName;
 
-            _Fields(short thriftId, String fieldName) {
+            _Fields(short thriftId, java.lang.String fieldName) {
                 _thriftId = thriftId;
                 _fieldName = fieldName;
             }
@@ -6605,20 +6589,20 @@ public class Opencron implements Serializable {
                 return _thriftId;
             }
 
-            public String getFieldName() {
+            public java.lang.String getFieldName() {
                 return _fieldName;
             }
         }
 
         // isset id assignments
-        public static final Map<_Fields, FieldMetaData> metaDataMap;
+        public static final java.util.Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
 
         static {
-            Map<_Fields, FieldMetaData> tmpMap = new EnumMap<_Fields, FieldMetaData>(_Fields.class);
-            tmpMap.put(_Fields.SUCCESS, new FieldMetaData("success", TFieldRequirementType.DEFAULT,
-                    new StructMetaData(TType.STRUCT, Response.class)));
-            metaDataMap = Collections.unmodifiableMap(tmpMap);
-            FieldMetaData.addStructMetaDataMap(proxy_result.class, metaDataMap);
+            java.util.Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new java.util.EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+            tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT,
+                    new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Response.class)));
+            metaDataMap = java.util.Collections.unmodifiableMap(tmpMap);
+            org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(proxy_result.class, metaDataMap);
         }
 
         public proxy_result() {
@@ -6674,7 +6658,7 @@ public class Opencron implements Serializable {
             }
         }
 
-        public void setFieldValue(_Fields field, Object value) {
+        public void setFieldValue(_Fields field, java.lang.Object value) {
             switch (field) {
                 case SUCCESS:
                     if (value == null) {
@@ -6687,13 +6671,13 @@ public class Opencron implements Serializable {
             }
         }
 
-        public Object getFieldValue(_Fields field) {
+        public java.lang.Object getFieldValue(_Fields field) {
             switch (field) {
                 case SUCCESS:
                     return getSuccess();
 
             }
-            throw new IllegalStateException();
+            throw new java.lang.IllegalStateException();
         }
 
         /**
@@ -6701,18 +6685,18 @@ public class Opencron implements Serializable {
          */
         public boolean isSet(_Fields field) {
             if (field == null) {
-                throw new IllegalArgumentException();
+                throw new java.lang.IllegalArgumentException();
             }
 
             switch (field) {
                 case SUCCESS:
                     return isSetSuccess();
             }
-            throw new IllegalStateException();
+            throw new java.lang.IllegalStateException();
         }
 
         @Override
-        public boolean equals(Object that) {
+        public boolean equals(java.lang.Object that) {
             if (that == null)
                 return false;
             if (that instanceof proxy_result)
@@ -6757,12 +6741,12 @@ public class Opencron implements Serializable {
 
             int lastComparison = 0;
 
-            lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(other.isSetSuccess());
+            lastComparison = java.lang.Boolean.valueOf(isSetSuccess()).compareTo(other.isSetSuccess());
             if (lastComparison != 0) {
                 return lastComparison;
             }
             if (isSetSuccess()) {
-                lastComparison = TBaseHelper.compareTo(this.success, other.success);
+                lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, other.success);
                 if (lastComparison != 0) {
                     return lastComparison;
                 }
@@ -6774,17 +6758,17 @@ public class Opencron implements Serializable {
             return _Fields.findByThriftId(fieldId);
         }
 
-        public void read(TProtocol iprot) throws TException {
+        public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
             scheme(iprot).read(iprot, this);
         }
 
-        public void write(TProtocol oprot) throws TException {
+        public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
             scheme(oprot).write(oprot, this);
         }
 
         @Override
-        public String toString() {
-            StringBuilder sb = new StringBuilder("proxy_result(");
+        public java.lang.String toString() {
+            java.lang.StringBuilder sb = new java.lang.StringBuilder("proxy_result(");
             boolean first = true;
 
             sb.append("success:");
@@ -6798,7 +6782,7 @@ public class Opencron implements Serializable {
             return sb.toString();
         }
 
-        public void validate() throws TException {
+        public void validate() throws org.apache.thrift.TException {
             // check for required fields
             // check for sub-struct validity
             if (success != null) {
@@ -6806,50 +6790,50 @@ public class Opencron implements Serializable {
             }
         }
 
-        private void writeObject(ObjectOutputStream out) throws IOException {
+        private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
             try {
-                write(new TCompactProtocol(new TIOStreamTransport(out)));
-            } catch (TException te) {
-                throw new IOException(te);
+                write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+            } catch (org.apache.thrift.TException te) {
+                throw new java.io.IOException(te);
             }
         }
 
-        private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, java.lang.ClassNotFoundException {
             try {
-                read(new TCompactProtocol(new TIOStreamTransport(in)));
-            } catch (TException te) {
-                throw new IOException(te);
+                read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+            } catch (org.apache.thrift.TException te) {
+                throw new java.io.IOException(te);
             }
         }
 
-        private static class proxy_resultStandardSchemeFactory implements SchemeFactory {
+        private static class proxy_resultStandardSchemeFactory implements org.apache.thrift.scheme.SchemeFactory {
             public proxy_resultStandardScheme getScheme() {
                 return new proxy_resultStandardScheme();
             }
         }
 
-        private static class proxy_resultStandardScheme extends StandardScheme<proxy_result> {
+        private static class proxy_resultStandardScheme extends org.apache.thrift.scheme.StandardScheme<proxy_result> {
 
-            public void read(TProtocol iprot, proxy_result struct) throws TException {
-                TField schemeField;
+            public void read(org.apache.thrift.protocol.TProtocol iprot, proxy_result struct) throws org.apache.thrift.TException {
+                org.apache.thrift.protocol.TField schemeField;
                 iprot.readStructBegin();
                 while (true) {
                     schemeField = iprot.readFieldBegin();
-                    if (schemeField.type == TType.STOP) {
+                    if (schemeField.type == org.apache.thrift.protocol.TType.STOP) {
                         break;
                     }
                     switch (schemeField.id) {
                         case 0: // SUCCESS
-                            if (schemeField.type == TType.STRUCT) {
+                            if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
                                 struct.success = new Response();
                                 struct.success.read(iprot);
                                 struct.setSuccessIsSet(true);
                             } else {
-                                TProtocolUtil.skip(iprot, schemeField.type);
+                                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
                             }
                             break;
                         default:
-                            TProtocolUtil.skip(iprot, schemeField.type);
+                            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
                     }
                     iprot.readFieldEnd();
                 }
@@ -6859,7 +6843,7 @@ public class Opencron implements Serializable {
                 struct.validate();
             }
 
-            public void write(TProtocol oprot, proxy_result struct) throws TException {
+            public void write(org.apache.thrift.protocol.TProtocol oprot, proxy_result struct) throws org.apache.thrift.TException {
                 struct.validate();
 
                 oprot.writeStructBegin(STRUCT_DESC);
@@ -6874,18 +6858,18 @@ public class Opencron implements Serializable {
 
         }
 
-        private static class proxy_resultTupleSchemeFactory implements SchemeFactory {
+        private static class proxy_resultTupleSchemeFactory implements org.apache.thrift.scheme.SchemeFactory {
             public proxy_resultTupleScheme getScheme() {
                 return new proxy_resultTupleScheme();
             }
         }
 
-        private static class proxy_resultTupleScheme extends TupleScheme<proxy_result> {
+        private static class proxy_resultTupleScheme extends org.apache.thrift.scheme.TupleScheme<proxy_result> {
 
             @Override
-            public void write(TProtocol prot, proxy_result struct) throws TException {
-                TTupleProtocol oprot = (TTupleProtocol) prot;
-                BitSet optionals = new BitSet();
+            public void write(org.apache.thrift.protocol.TProtocol prot, proxy_result struct) throws org.apache.thrift.TException {
+                org.apache.thrift.protocol.TTupleProtocol oprot = (org.apache.thrift.protocol.TTupleProtocol) prot;
+                java.util.BitSet optionals = new java.util.BitSet();
                 if (struct.isSetSuccess()) {
                     optionals.set(0);
                 }
@@ -6896,9 +6880,9 @@ public class Opencron implements Serializable {
             }
 
             @Override
-            public void read(TProtocol prot, proxy_result struct) throws TException {
-                TTupleProtocol iprot = (TTupleProtocol) prot;
-                BitSet incoming = iprot.readBitSet(1);
+            public void read(org.apache.thrift.protocol.TProtocol prot, proxy_result struct) throws org.apache.thrift.TException {
+                org.apache.thrift.protocol.TTupleProtocol iprot = (org.apache.thrift.protocol.TTupleProtocol) prot;
+                java.util.BitSet incoming = iprot.readBitSet(1);
                 if (incoming.get(0)) {
                     struct.success = new Response();
                     struct.success.read(iprot);
@@ -6907,31 +6891,31 @@ public class Opencron implements Serializable {
             }
         }
 
-        private static <S extends IScheme> S scheme(TProtocol proto) {
-            return (StandardScheme.class.equals(proto.getScheme()) ? STANDARD_SCHEME_FACTORY : TUPLE_SCHEME_FACTORY).getScheme();
+        private static <S extends org.apache.thrift.scheme.IScheme> S scheme(org.apache.thrift.protocol.TProtocol proto) {
+            return (org.apache.thrift.scheme.StandardScheme.class.equals(proto.getScheme()) ? STANDARD_SCHEME_FACTORY : TUPLE_SCHEME_FACTORY).getScheme();
         }
     }
 
-    public static class restart_args implements TBase<restart_args, restart_args._Fields>, Serializable, Cloneable, Comparable<restart_args> {
-        private static final TStruct STRUCT_DESC = new TStruct("restart_args");
+    public static class restart_args implements org.apache.thrift.TBase<restart_args, restart_args._Fields>, java.io.Serializable, Cloneable, Comparable<restart_args> {
+        private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("restart_args");
 
-        private static final TField REQUEST_FIELD_DESC = new TField("request", TType.STRUCT, (short) 1);
+        private static final org.apache.thrift.protocol.TField REQUEST_FIELD_DESC = new org.apache.thrift.protocol.TField("request", org.apache.thrift.protocol.TType.STRUCT, (short) 1);
 
-        private static final SchemeFactory STANDARD_SCHEME_FACTORY = new restart_argsStandardSchemeFactory();
-        private static final SchemeFactory TUPLE_SCHEME_FACTORY = new restart_argsTupleSchemeFactory();
+        private static final org.apache.thrift.scheme.SchemeFactory STANDARD_SCHEME_FACTORY = new restart_argsStandardSchemeFactory();
+        private static final org.apache.thrift.scheme.SchemeFactory TUPLE_SCHEME_FACTORY = new restart_argsTupleSchemeFactory();
 
         public Request request; // required
 
         /**
          * The set of fields this struct contains, along with convenience methods for finding and manipulating them.
          */
-        public enum _Fields implements TFieldIdEnum {
+        public enum _Fields implements org.apache.thrift.TFieldIdEnum {
             REQUEST((short) 1, "request");
 
-            private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+            private static final java.util.Map<java.lang.String, _Fields> byName = new java.util.HashMap<java.lang.String, _Fields>();
 
             static {
-                for (_Fields field : EnumSet.allOf(_Fields.class)) {
+                for (_Fields field : java.util.EnumSet.allOf(_Fields.class)) {
                     byName.put(field.getFieldName(), field);
                 }
             }
@@ -6955,21 +6939,21 @@ public class Opencron implements Serializable {
             public static _Fields findByThriftIdOrThrow(int fieldId) {
                 _Fields fields = findByThriftId(fieldId);
                 if (fields == null)
-                    throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+                    throw new java.lang.IllegalArgumentException("Field " + fieldId + " doesn't exist!");
                 return fields;
             }
 
             /**
              * Find the _Fields constant that matches name, or null if its not found.
              */
-            public static _Fields findByName(String name) {
+            public static _Fields findByName(java.lang.String name) {
                 return byName.get(name);
             }
 
             private final short _thriftId;
-            private final String _fieldName;
+            private final java.lang.String _fieldName;
 
-            _Fields(short thriftId, String fieldName) {
+            _Fields(short thriftId, java.lang.String fieldName) {
                 _thriftId = thriftId;
                 _fieldName = fieldName;
             }
@@ -6978,20 +6962,20 @@ public class Opencron implements Serializable {
                 return _thriftId;
             }
 
-            public String getFieldName() {
+            public java.lang.String getFieldName() {
                 return _fieldName;
             }
         }
 
         // isset id assignments
-        public static final Map<_Fields, FieldMetaData> metaDataMap;
+        public static final java.util.Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
 
         static {
-            Map<_Fields, FieldMetaData> tmpMap = new EnumMap<_Fields, FieldMetaData>(_Fields.class);
-            tmpMap.put(_Fields.REQUEST, new FieldMetaData("request", TFieldRequirementType.DEFAULT,
-                    new StructMetaData(TType.STRUCT, Request.class)));
-            metaDataMap = Collections.unmodifiableMap(tmpMap);
-            FieldMetaData.addStructMetaDataMap(restart_args.class, metaDataMap);
+            java.util.Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new java.util.EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+            tmpMap.put(_Fields.REQUEST, new org.apache.thrift.meta_data.FieldMetaData("request", org.apache.thrift.TFieldRequirementType.DEFAULT,
+                    new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Request.class)));
+            metaDataMap = java.util.Collections.unmodifiableMap(tmpMap);
+            org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(restart_args.class, metaDataMap);
         }
 
         public restart_args() {
@@ -7047,7 +7031,7 @@ public class Opencron implements Serializable {
             }
         }
 
-        public void setFieldValue(_Fields field, Object value) {
+        public void setFieldValue(_Fields field, java.lang.Object value) {
             switch (field) {
                 case REQUEST:
                     if (value == null) {
@@ -7060,13 +7044,13 @@ public class Opencron implements Serializable {
             }
         }
 
-        public Object getFieldValue(_Fields field) {
+        public java.lang.Object getFieldValue(_Fields field) {
             switch (field) {
                 case REQUEST:
                     return getRequest();
 
             }
-            throw new IllegalStateException();
+            throw new java.lang.IllegalStateException();
         }
 
         /**
@@ -7074,18 +7058,18 @@ public class Opencron implements Serializable {
          */
         public boolean isSet(_Fields field) {
             if (field == null) {
-                throw new IllegalArgumentException();
+                throw new java.lang.IllegalArgumentException();
             }
 
             switch (field) {
                 case REQUEST:
                     return isSetRequest();
             }
-            throw new IllegalStateException();
+            throw new java.lang.IllegalStateException();
         }
 
         @Override
-        public boolean equals(Object that) {
+        public boolean equals(java.lang.Object that) {
             if (that == null)
                 return false;
             if (that instanceof restart_args)
@@ -7130,12 +7114,12 @@ public class Opencron implements Serializable {
 
             int lastComparison = 0;
 
-            lastComparison = Boolean.valueOf(isSetRequest()).compareTo(other.isSetRequest());
+            lastComparison = java.lang.Boolean.valueOf(isSetRequest()).compareTo(other.isSetRequest());
             if (lastComparison != 0) {
                 return lastComparison;
             }
             if (isSetRequest()) {
-                lastComparison = TBaseHelper.compareTo(this.request, other.request);
+                lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.request, other.request);
                 if (lastComparison != 0) {
                     return lastComparison;
                 }
@@ -7147,17 +7131,17 @@ public class Opencron implements Serializable {
             return _Fields.findByThriftId(fieldId);
         }
 
-        public void read(TProtocol iprot) throws TException {
+        public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
             scheme(iprot).read(iprot, this);
         }
 
-        public void write(TProtocol oprot) throws TException {
+        public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
             scheme(oprot).write(oprot, this);
         }
 
         @Override
-        public String toString() {
-            StringBuilder sb = new StringBuilder("restart_args(");
+        public java.lang.String toString() {
+            java.lang.StringBuilder sb = new java.lang.StringBuilder("restart_args(");
             boolean first = true;
 
             sb.append("request:");
@@ -7171,7 +7155,7 @@ public class Opencron implements Serializable {
             return sb.toString();
         }
 
-        public void validate() throws TException {
+        public void validate() throws org.apache.thrift.TException {
             // check for required fields
             // check for sub-struct validity
             if (request != null) {
@@ -7179,50 +7163,50 @@ public class Opencron implements Serializable {
             }
         }
 
-        private void writeObject(ObjectOutputStream out) throws IOException {
+        private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
             try {
-                write(new TCompactProtocol(new TIOStreamTransport(out)));
-            } catch (TException te) {
-                throw new IOException(te);
+                write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+            } catch (org.apache.thrift.TException te) {
+                throw new java.io.IOException(te);
             }
         }
 
-        private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, java.lang.ClassNotFoundException {
             try {
-                read(new TCompactProtocol(new TIOStreamTransport(in)));
-            } catch (TException te) {
-                throw new IOException(te);
+                read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+            } catch (org.apache.thrift.TException te) {
+                throw new java.io.IOException(te);
             }
         }
 
-        private static class restart_argsStandardSchemeFactory implements SchemeFactory {
+        private static class restart_argsStandardSchemeFactory implements org.apache.thrift.scheme.SchemeFactory {
             public restart_argsStandardScheme getScheme() {
                 return new restart_argsStandardScheme();
             }
         }
 
-        private static class restart_argsStandardScheme extends StandardScheme<restart_args> {
+        private static class restart_argsStandardScheme extends org.apache.thrift.scheme.StandardScheme<restart_args> {
 
-            public void read(TProtocol iprot, restart_args struct) throws TException {
-                TField schemeField;
+            public void read(org.apache.thrift.protocol.TProtocol iprot, restart_args struct) throws org.apache.thrift.TException {
+                org.apache.thrift.protocol.TField schemeField;
                 iprot.readStructBegin();
                 while (true) {
                     schemeField = iprot.readFieldBegin();
-                    if (schemeField.type == TType.STOP) {
+                    if (schemeField.type == org.apache.thrift.protocol.TType.STOP) {
                         break;
                     }
                     switch (schemeField.id) {
                         case 1: // REQUEST
-                            if (schemeField.type == TType.STRUCT) {
+                            if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
                                 struct.request = new Request();
                                 struct.request.read(iprot);
                                 struct.setRequestIsSet(true);
                             } else {
-                                TProtocolUtil.skip(iprot, schemeField.type);
+                                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
                             }
                             break;
                         default:
-                            TProtocolUtil.skip(iprot, schemeField.type);
+                            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
                     }
                     iprot.readFieldEnd();
                 }
@@ -7232,7 +7216,7 @@ public class Opencron implements Serializable {
                 struct.validate();
             }
 
-            public void write(TProtocol oprot, restart_args struct) throws TException {
+            public void write(org.apache.thrift.protocol.TProtocol oprot, restart_args struct) throws org.apache.thrift.TException {
                 struct.validate();
 
                 oprot.writeStructBegin(STRUCT_DESC);
@@ -7247,18 +7231,18 @@ public class Opencron implements Serializable {
 
         }
 
-        private static class restart_argsTupleSchemeFactory implements SchemeFactory {
+        private static class restart_argsTupleSchemeFactory implements org.apache.thrift.scheme.SchemeFactory {
             public restart_argsTupleScheme getScheme() {
                 return new restart_argsTupleScheme();
             }
         }
 
-        private static class restart_argsTupleScheme extends TupleScheme<restart_args> {
+        private static class restart_argsTupleScheme extends org.apache.thrift.scheme.TupleScheme<restart_args> {
 
             @Override
-            public void write(TProtocol prot, restart_args struct) throws TException {
-                TTupleProtocol oprot = (TTupleProtocol) prot;
-                BitSet optionals = new BitSet();
+            public void write(org.apache.thrift.protocol.TProtocol prot, restart_args struct) throws org.apache.thrift.TException {
+                org.apache.thrift.protocol.TTupleProtocol oprot = (org.apache.thrift.protocol.TTupleProtocol) prot;
+                java.util.BitSet optionals = new java.util.BitSet();
                 if (struct.isSetRequest()) {
                     optionals.set(0);
                 }
@@ -7269,9 +7253,9 @@ public class Opencron implements Serializable {
             }
 
             @Override
-            public void read(TProtocol prot, restart_args struct) throws TException {
-                TTupleProtocol iprot = (TTupleProtocol) prot;
-                BitSet incoming = iprot.readBitSet(1);
+            public void read(org.apache.thrift.protocol.TProtocol prot, restart_args struct) throws org.apache.thrift.TException {
+                org.apache.thrift.protocol.TTupleProtocol iprot = (org.apache.thrift.protocol.TTupleProtocol) prot;
+                java.util.BitSet incoming = iprot.readBitSet(1);
                 if (incoming.get(0)) {
                     struct.request = new Request();
                     struct.request.read(iprot);
@@ -7280,29 +7264,29 @@ public class Opencron implements Serializable {
             }
         }
 
-        private static <S extends IScheme> S scheme(TProtocol proto) {
-            return (StandardScheme.class.equals(proto.getScheme()) ? STANDARD_SCHEME_FACTORY : TUPLE_SCHEME_FACTORY).getScheme();
+        private static <S extends org.apache.thrift.scheme.IScheme> S scheme(org.apache.thrift.protocol.TProtocol proto) {
+            return (org.apache.thrift.scheme.StandardScheme.class.equals(proto.getScheme()) ? STANDARD_SCHEME_FACTORY : TUPLE_SCHEME_FACTORY).getScheme();
         }
     }
 
-    public static class restart_result implements TBase<restart_result, restart_result._Fields>, Serializable, Cloneable, Comparable<restart_result> {
-        private static final TStruct STRUCT_DESC = new TStruct("restart_result");
+    public static class restart_result implements org.apache.thrift.TBase<restart_result, restart_result._Fields>, java.io.Serializable, Cloneable, Comparable<restart_result> {
+        private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("restart_result");
 
 
-        private static final SchemeFactory STANDARD_SCHEME_FACTORY = new restart_resultStandardSchemeFactory();
-        private static final SchemeFactory TUPLE_SCHEME_FACTORY = new restart_resultTupleSchemeFactory();
+        private static final org.apache.thrift.scheme.SchemeFactory STANDARD_SCHEME_FACTORY = new restart_resultStandardSchemeFactory();
+        private static final org.apache.thrift.scheme.SchemeFactory TUPLE_SCHEME_FACTORY = new restart_resultTupleSchemeFactory();
 
 
         /**
          * The set of fields this struct contains, along with convenience methods for finding and manipulating them.
          */
-        public enum _Fields implements TFieldIdEnum {
+        public enum _Fields implements org.apache.thrift.TFieldIdEnum {
             ;
 
-            private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+            private static final java.util.Map<java.lang.String, _Fields> byName = new java.util.HashMap<java.lang.String, _Fields>();
 
             static {
-                for (_Fields field : EnumSet.allOf(_Fields.class)) {
+                for (_Fields field : java.util.EnumSet.allOf(_Fields.class)) {
                     byName.put(field.getFieldName(), field);
                 }
             }
@@ -7324,21 +7308,21 @@ public class Opencron implements Serializable {
             public static _Fields findByThriftIdOrThrow(int fieldId) {
                 _Fields fields = findByThriftId(fieldId);
                 if (fields == null)
-                    throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+                    throw new java.lang.IllegalArgumentException("Field " + fieldId + " doesn't exist!");
                 return fields;
             }
 
             /**
              * Find the _Fields constant that matches name, or null if its not found.
              */
-            public static _Fields findByName(String name) {
+            public static _Fields findByName(java.lang.String name) {
                 return byName.get(name);
             }
 
             private final short _thriftId;
-            private final String _fieldName;
+            private final java.lang.String _fieldName;
 
-            _Fields(short thriftId, String fieldName) {
+            _Fields(short thriftId, java.lang.String fieldName) {
                 _thriftId = thriftId;
                 _fieldName = fieldName;
             }
@@ -7347,17 +7331,17 @@ public class Opencron implements Serializable {
                 return _thriftId;
             }
 
-            public String getFieldName() {
+            public java.lang.String getFieldName() {
                 return _fieldName;
             }
         }
 
-        public static final Map<_Fields, FieldMetaData> metaDataMap;
+        public static final java.util.Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
 
         static {
-            Map<_Fields, FieldMetaData> tmpMap = new EnumMap<_Fields, FieldMetaData>(_Fields.class);
-            metaDataMap = Collections.unmodifiableMap(tmpMap);
-            FieldMetaData.addStructMetaDataMap(restart_result.class, metaDataMap);
+            java.util.Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new java.util.EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+            metaDataMap = java.util.Collections.unmodifiableMap(tmpMap);
+            org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(restart_result.class, metaDataMap);
         }
 
         public restart_result() {
@@ -7377,15 +7361,15 @@ public class Opencron implements Serializable {
         public void clear() {
         }
 
-        public void setFieldValue(_Fields field, Object value) {
+        public void setFieldValue(_Fields field, java.lang.Object value) {
             switch (field) {
             }
         }
 
-        public Object getFieldValue(_Fields field) {
+        public java.lang.Object getFieldValue(_Fields field) {
             switch (field) {
             }
-            throw new IllegalStateException();
+            throw new java.lang.IllegalStateException();
         }
 
         /**
@@ -7393,16 +7377,16 @@ public class Opencron implements Serializable {
          */
         public boolean isSet(_Fields field) {
             if (field == null) {
-                throw new IllegalArgumentException();
+                throw new java.lang.IllegalArgumentException();
             }
 
             switch (field) {
             }
-            throw new IllegalStateException();
+            throw new java.lang.IllegalStateException();
         }
 
         @Override
-        public boolean equals(Object that) {
+        public boolean equals(java.lang.Object that) {
             if (that == null)
                 return false;
             if (that instanceof restart_result)
@@ -7441,63 +7425,63 @@ public class Opencron implements Serializable {
             return _Fields.findByThriftId(fieldId);
         }
 
-        public void read(TProtocol iprot) throws TException {
+        public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
             scheme(iprot).read(iprot, this);
         }
 
-        public void write(TProtocol oprot) throws TException {
+        public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
             scheme(oprot).write(oprot, this);
         }
 
         @Override
-        public String toString() {
-            StringBuilder sb = new StringBuilder("restart_result(");
+        public java.lang.String toString() {
+            java.lang.StringBuilder sb = new java.lang.StringBuilder("restart_result(");
             boolean first = true;
 
             sb.append(")");
             return sb.toString();
         }
 
-        public void validate() throws TException {
+        public void validate() throws org.apache.thrift.TException {
             // check for required fields
             // check for sub-struct validity
         }
 
-        private void writeObject(ObjectOutputStream out) throws IOException {
+        private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
             try {
-                write(new TCompactProtocol(new TIOStreamTransport(out)));
-            } catch (TException te) {
-                throw new IOException(te);
+                write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+            } catch (org.apache.thrift.TException te) {
+                throw new java.io.IOException(te);
             }
         }
 
-        private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, java.lang.ClassNotFoundException {
             try {
-                read(new TCompactProtocol(new TIOStreamTransport(in)));
-            } catch (TException te) {
-                throw new IOException(te);
+                read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+            } catch (org.apache.thrift.TException te) {
+                throw new java.io.IOException(te);
             }
         }
 
-        private static class restart_resultStandardSchemeFactory implements SchemeFactory {
+        private static class restart_resultStandardSchemeFactory implements org.apache.thrift.scheme.SchemeFactory {
             public restart_resultStandardScheme getScheme() {
                 return new restart_resultStandardScheme();
             }
         }
 
-        private static class restart_resultStandardScheme extends StandardScheme<restart_result> {
+        private static class restart_resultStandardScheme extends org.apache.thrift.scheme.StandardScheme<restart_result> {
 
-            public void read(TProtocol iprot, restart_result struct) throws TException {
-                TField schemeField;
+            public void read(org.apache.thrift.protocol.TProtocol iprot, restart_result struct) throws org.apache.thrift.TException {
+                org.apache.thrift.protocol.TField schemeField;
                 iprot.readStructBegin();
                 while (true) {
                     schemeField = iprot.readFieldBegin();
-                    if (schemeField.type == TType.STOP) {
+                    if (schemeField.type == org.apache.thrift.protocol.TType.STOP) {
                         break;
                     }
                     switch (schemeField.id) {
                         default:
-                            TProtocolUtil.skip(iprot, schemeField.type);
+                            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
                     }
                     iprot.readFieldEnd();
                 }
@@ -7507,7 +7491,7 @@ public class Opencron implements Serializable {
                 struct.validate();
             }
 
-            public void write(TProtocol oprot, restart_result struct) throws TException {
+            public void write(org.apache.thrift.protocol.TProtocol oprot, restart_result struct) throws org.apache.thrift.TException {
                 struct.validate();
 
                 oprot.writeStructBegin(STRUCT_DESC);
@@ -7517,27 +7501,27 @@ public class Opencron implements Serializable {
 
         }
 
-        private static class restart_resultTupleSchemeFactory implements SchemeFactory {
+        private static class restart_resultTupleSchemeFactory implements org.apache.thrift.scheme.SchemeFactory {
             public restart_resultTupleScheme getScheme() {
                 return new restart_resultTupleScheme();
             }
         }
 
-        private static class restart_resultTupleScheme extends TupleScheme<restart_result> {
+        private static class restart_resultTupleScheme extends org.apache.thrift.scheme.TupleScheme<restart_result> {
 
             @Override
-            public void write(TProtocol prot, restart_result struct) throws TException {
-                TTupleProtocol oprot = (TTupleProtocol) prot;
+            public void write(org.apache.thrift.protocol.TProtocol prot, restart_result struct) throws org.apache.thrift.TException {
+                org.apache.thrift.protocol.TTupleProtocol oprot = (org.apache.thrift.protocol.TTupleProtocol) prot;
             }
 
             @Override
-            public void read(TProtocol prot, restart_result struct) throws TException {
-                TTupleProtocol iprot = (TTupleProtocol) prot;
+            public void read(org.apache.thrift.protocol.TProtocol prot, restart_result struct) throws org.apache.thrift.TException {
+                org.apache.thrift.protocol.TTupleProtocol iprot = (org.apache.thrift.protocol.TTupleProtocol) prot;
             }
         }
 
-        private static <S extends IScheme> S scheme(TProtocol proto) {
-            return (StandardScheme.class.equals(proto.getScheme()) ? STANDARD_SCHEME_FACTORY : TUPLE_SCHEME_FACTORY).getScheme();
+        private static <S extends org.apache.thrift.scheme.IScheme> S scheme(org.apache.thrift.protocol.TProtocol proto) {
+            return (org.apache.thrift.scheme.StandardScheme.class.equals(proto.getScheme()) ? STANDARD_SCHEME_FACTORY : TUPLE_SCHEME_FACTORY).getScheme();
         }
     }
 

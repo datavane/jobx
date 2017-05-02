@@ -27,11 +27,11 @@ import java.util.HashMap;
 public class Request implements org.apache.thrift.TBase<Request, Request._Fields>, java.io.Serializable, Cloneable, Comparable<Request> {
     private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("Request");
 
-    private static final org.apache.thrift.protocol.TField HOST_NAME_FIELD_DESC = new org.apache.thrift.protocol.TField("hostName", org.apache.thrift.protocol.TType.STRING, (short)1);
-    private static final org.apache.thrift.protocol.TField PORT_FIELD_DESC = new org.apache.thrift.protocol.TField("port", org.apache.thrift.protocol.TType.I32, (short)2);
-    private static final org.apache.thrift.protocol.TField ACTION_FIELD_DESC = new org.apache.thrift.protocol.TField("action", org.apache.thrift.protocol.TType.I32, (short)3);
-    private static final org.apache.thrift.protocol.TField PASSWORD_FIELD_DESC = new org.apache.thrift.protocol.TField("password", org.apache.thrift.protocol.TType.STRING, (short)4);
-    private static final org.apache.thrift.protocol.TField PARAMS_FIELD_DESC = new org.apache.thrift.protocol.TField("params", org.apache.thrift.protocol.TType.MAP, (short)5);
+    private static final org.apache.thrift.protocol.TField HOST_NAME_FIELD_DESC = new org.apache.thrift.protocol.TField("hostName", org.apache.thrift.protocol.TType.STRING, (short) 1);
+    private static final org.apache.thrift.protocol.TField PORT_FIELD_DESC = new org.apache.thrift.protocol.TField("port", org.apache.thrift.protocol.TType.I32, (short) 2);
+    private static final org.apache.thrift.protocol.TField ACTION_FIELD_DESC = new org.apache.thrift.protocol.TField("action", org.apache.thrift.protocol.TType.I32, (short) 3);
+    private static final org.apache.thrift.protocol.TField PASSWORD_FIELD_DESC = new org.apache.thrift.protocol.TField("password", org.apache.thrift.protocol.TType.STRING, (short) 4);
+    private static final org.apache.thrift.protocol.TField PARAMS_FIELD_DESC = new org.apache.thrift.protocol.TField("params", org.apache.thrift.protocol.TType.MAP, (short) 5);
 
     private static final org.apache.thrift.scheme.SchemeFactory STANDARD_SCHEME_FACTORY = new RequestStandardSchemeFactory();
     private static final org.apache.thrift.scheme.SchemeFactory TUPLE_SCHEME_FACTORY = new RequestTupleSchemeFactory();
@@ -39,24 +39,24 @@ public class Request implements org.apache.thrift.TBase<Request, Request._Fields
     public java.lang.String hostName; // required
     public int port; // required
     /**
-     *
      * @see Action
      */
     public Action action; // required
     public java.lang.String password; // required
-    public java.util.Map<java.lang.String,java.lang.String> params; // required
+    public java.util.Map<java.lang.String, java.lang.String> params; // required
 
-    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    /**
+     * The set of fields this struct contains, along with convenience methods for finding and manipulating them.
+     */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-        HOST_NAME((short)1, "hostName"),
-        PORT((short)2, "port"),
+        HOST_NAME((short) 1, "hostName"),
+        PORT((short) 2, "port"),
         /**
-         *
          * @see Action
          */
-        ACTION((short)3, "action"),
-        PASSWORD((short)4, "password"),
-        PARAMS((short)5, "params");
+        ACTION((short) 3, "action"),
+        PASSWORD((short) 4, "password"),
+        PARAMS((short) 5, "params");
 
         private static final java.util.Map<java.lang.String, _Fields> byName = new java.util.HashMap<java.lang.String, _Fields>();
 
@@ -70,7 +70,7 @@ public class Request implements org.apache.thrift.TBase<Request, Request._Fields
          * Find the _Fields constant that matches fieldId, or null if its not found.
          */
         public static _Fields findByThriftId(int fieldId) {
-            switch(fieldId) {
+            switch (fieldId) {
                 case 1: // HOST_NAME
                     return HOST_NAME;
                 case 2: // PORT
@@ -124,6 +124,7 @@ public class Request implements org.apache.thrift.TBase<Request, Request._Fields
     private static final int __PORT_ISSET_ID = 0;
     private byte __isset_bitfield = 0;
     public static final java.util.Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+
     static {
         java.util.Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new java.util.EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
         tmpMap.put(_Fields.HOST_NAME, new org.apache.thrift.meta_data.FieldMetaData("hostName", org.apache.thrift.TFieldRequirementType.DEFAULT,
@@ -150,8 +151,7 @@ public class Request implements org.apache.thrift.TBase<Request, Request._Fields
             int port,
             Action action,
             java.lang.String password,
-            java.util.Map<java.lang.String,java.lang.String> params)
-    {
+            java.util.Map<java.lang.String, java.lang.String> params) {
         this();
         this.hostName = hostName;
         this.port = port;
@@ -177,7 +177,7 @@ public class Request implements org.apache.thrift.TBase<Request, Request._Fields
             this.password = other.password;
         }
         if (other.isSetParams()) {
-            java.util.Map<java.lang.String,java.lang.String> __this__params = new java.util.HashMap<java.lang.String,java.lang.String>(other.params);
+            java.util.Map<java.lang.String, java.lang.String> __this__params = new java.util.HashMap<java.lang.String, java.lang.String>(other.params);
             this.params = __this__params;
         }
     }
@@ -209,7 +209,9 @@ public class Request implements org.apache.thrift.TBase<Request, Request._Fields
         this.hostName = null;
     }
 
-    /** Returns true if field hostName is set (has been assigned a value) and false otherwise */
+    /**
+     * Returns true if field hostName is set (has been assigned a value) and false otherwise
+     */
     public boolean isSetHostName() {
         return this.hostName != null;
     }
@@ -234,7 +236,9 @@ public class Request implements org.apache.thrift.TBase<Request, Request._Fields
         __isset_bitfield = org.apache.thrift.EncodingUtils.clearBit(__isset_bitfield, __PORT_ISSET_ID);
     }
 
-    /** Returns true if field port is set (has been assigned a value) and false otherwise */
+    /**
+     * Returns true if field port is set (has been assigned a value) and false otherwise
+     */
     public boolean isSetPort() {
         return org.apache.thrift.EncodingUtils.testBit(__isset_bitfield, __PORT_ISSET_ID);
     }
@@ -244,7 +248,6 @@ public class Request implements org.apache.thrift.TBase<Request, Request._Fields
     }
 
     /**
-     *
      * @see Action
      */
     public Action getAction() {
@@ -252,7 +255,6 @@ public class Request implements org.apache.thrift.TBase<Request, Request._Fields
     }
 
     /**
-     *
      * @see Action
      */
     public Request setAction(Action action) {
@@ -264,7 +266,9 @@ public class Request implements org.apache.thrift.TBase<Request, Request._Fields
         this.action = null;
     }
 
-    /** Returns true if field action is set (has been assigned a value) and false otherwise */
+    /**
+     * Returns true if field action is set (has been assigned a value) and false otherwise
+     */
     public boolean isSetAction() {
         return this.action != null;
     }
@@ -288,7 +292,9 @@ public class Request implements org.apache.thrift.TBase<Request, Request._Fields
         this.password = null;
     }
 
-    /** Returns true if field password is set (has been assigned a value) and false otherwise */
+    /**
+     * Returns true if field password is set (has been assigned a value) and false otherwise
+     */
     public boolean isSetPassword() {
         return this.password != null;
     }
@@ -305,16 +311,16 @@ public class Request implements org.apache.thrift.TBase<Request, Request._Fields
 
     public void putToParams(java.lang.String key, java.lang.String val) {
         if (this.params == null) {
-            this.params = new java.util.HashMap<java.lang.String,java.lang.String>();
+            this.params = new java.util.HashMap<java.lang.String, java.lang.String>();
         }
         this.params.put(key, val);
     }
 
-    public java.util.Map<java.lang.String,java.lang.String> getParams() {
+    public java.util.Map<java.lang.String, java.lang.String> getParams() {
         return this.params;
     }
 
-    public Request setParams(java.util.Map<java.lang.String,java.lang.String> params) {
+    public Request setParams(java.util.Map<java.lang.String, java.lang.String> params) {
         this.params = params;
         return this;
     }
@@ -323,7 +329,9 @@ public class Request implements org.apache.thrift.TBase<Request, Request._Fields
         this.params = null;
     }
 
-    /** Returns true if field params is set (has been assigned a value) and false otherwise */
+    /**
+     * Returns true if field params is set (has been assigned a value) and false otherwise
+     */
     public boolean isSetParams() {
         return this.params != null;
     }
@@ -340,7 +348,7 @@ public class Request implements org.apache.thrift.TBase<Request, Request._Fields
                 if (value == null) {
                     unsetHostName();
                 } else {
-                    setHostName((java.lang.String)value);
+                    setHostName((java.lang.String) value);
                 }
                 break;
 
@@ -348,7 +356,7 @@ public class Request implements org.apache.thrift.TBase<Request, Request._Fields
                 if (value == null) {
                     unsetPort();
                 } else {
-                    setPort((java.lang.Integer)value);
+                    setPort((java.lang.Integer) value);
                 }
                 break;
 
@@ -356,7 +364,7 @@ public class Request implements org.apache.thrift.TBase<Request, Request._Fields
                 if (value == null) {
                     unsetAction();
                 } else {
-                    setAction((Action)value);
+                    setAction((Action) value);
                 }
                 break;
 
@@ -364,7 +372,7 @@ public class Request implements org.apache.thrift.TBase<Request, Request._Fields
                 if (value == null) {
                     unsetPassword();
                 } else {
-                    setPassword((java.lang.String)value);
+                    setPassword((java.lang.String) value);
                 }
                 break;
 
@@ -372,7 +380,7 @@ public class Request implements org.apache.thrift.TBase<Request, Request._Fields
                 if (value == null) {
                     unsetParams();
                 } else {
-                    setParams((java.util.Map<java.lang.String,java.lang.String>)value);
+                    setParams((java.util.Map<java.lang.String, java.lang.String>) value);
                 }
                 break;
 
@@ -400,7 +408,9 @@ public class Request implements org.apache.thrift.TBase<Request, Request._Fields
         throw new java.lang.IllegalStateException();
     }
 
-    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    /**
+     * Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise
+     */
     public boolean isSet(_Fields field) {
         if (field == null) {
             throw new java.lang.IllegalArgumentException();
@@ -426,7 +436,7 @@ public class Request implements org.apache.thrift.TBase<Request, Request._Fields
         if (that == null)
             return false;
         if (that instanceof Request)
-            return this.equals((Request)that);
+            return this.equals((Request) that);
         return false;
     }
 
@@ -660,8 +670,7 @@ public class Request implements org.apache.thrift.TBase<Request, Request._Fields
         public void read(org.apache.thrift.protocol.TProtocol iprot, Request struct) throws org.apache.thrift.TException {
             org.apache.thrift.protocol.TField schemeField;
             iprot.readStructBegin();
-            while (true)
-            {
+            while (true) {
                 schemeField = iprot.readFieldBegin();
                 if (schemeField.type == org.apache.thrift.protocol.TType.STOP) {
                     break;
@@ -703,11 +712,10 @@ public class Request implements org.apache.thrift.TBase<Request, Request._Fields
                         if (schemeField.type == org.apache.thrift.protocol.TType.MAP) {
                             {
                                 org.apache.thrift.protocol.TMap _map0 = iprot.readMapBegin();
-                                struct.params = new java.util.HashMap<java.lang.String,java.lang.String>(2*_map0.size);
+                                struct.params = new java.util.HashMap<java.lang.String, java.lang.String>(2 * _map0.size);
                                 java.lang.String _key1;
                                 java.lang.String _val2;
-                                for (int _i3 = 0; _i3 < _map0.size; ++_i3)
-                                {
+                                for (int _i3 = 0; _i3 < _map0.size; ++_i3) {
                                     _key1 = iprot.readString();
                                     _val2 = iprot.readString();
                                     struct.params.put(_key1, _val2);
@@ -756,8 +764,7 @@ public class Request implements org.apache.thrift.TBase<Request, Request._Fields
                 oprot.writeFieldBegin(PARAMS_FIELD_DESC);
                 {
                     oprot.writeMapBegin(new org.apache.thrift.protocol.TMap(org.apache.thrift.protocol.TType.STRING, org.apache.thrift.protocol.TType.STRING, struct.params.size()));
-                    for (java.util.Map.Entry<java.lang.String, java.lang.String> _iter4 : struct.params.entrySet())
-                    {
+                    for (java.util.Map.Entry<java.lang.String, java.lang.String> _iter4 : struct.params.entrySet()) {
                         oprot.writeString(_iter4.getKey());
                         oprot.writeString(_iter4.getValue());
                     }
@@ -814,8 +821,7 @@ public class Request implements org.apache.thrift.TBase<Request, Request._Fields
             if (struct.isSetParams()) {
                 {
                     oprot.writeI32(struct.params.size());
-                    for (java.util.Map.Entry<java.lang.String, java.lang.String> _iter5 : struct.params.entrySet())
-                    {
+                    for (java.util.Map.Entry<java.lang.String, java.lang.String> _iter5 : struct.params.entrySet()) {
                         oprot.writeString(_iter5.getKey());
                         oprot.writeString(_iter5.getValue());
                     }
@@ -846,11 +852,10 @@ public class Request implements org.apache.thrift.TBase<Request, Request._Fields
             if (incoming.get(4)) {
                 {
                     org.apache.thrift.protocol.TMap _map6 = new org.apache.thrift.protocol.TMap(org.apache.thrift.protocol.TType.STRING, org.apache.thrift.protocol.TType.STRING, iprot.readI32());
-                    struct.params = new java.util.HashMap<java.lang.String,java.lang.String>(2*_map6.size);
+                    struct.params = new java.util.HashMap<java.lang.String, java.lang.String>(2 * _map6.size);
                     java.lang.String _key7;
                     java.lang.String _val8;
-                    for (int _i9 = 0; _i9 < _map6.size; ++_i9)
-                    {
+                    for (int _i9 = 0; _i9 < _map6.size; ++_i9) {
                         _key7 = iprot.readString();
                         _val8 = iprot.readString();
                         struct.params.put(_key7, _val8);
