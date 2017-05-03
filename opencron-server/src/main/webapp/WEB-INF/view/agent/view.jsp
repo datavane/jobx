@@ -45,11 +45,11 @@
             var clipboard = new Clipboard('#copy-btn');
 
             clipboard.on('success', function(e) {
+                e.clearSelection();
                 $("#copy-btn").text("已复制");
                 setTimeout(function () {
                     $("#copy-btn").text("复制");
-                },1000);
-                e.clearSelection();
+                },2000);
             });
 
             setInterval(function () {
