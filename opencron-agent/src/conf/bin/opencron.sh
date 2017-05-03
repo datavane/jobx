@@ -97,6 +97,7 @@ if $cygwin; then
   [ -n "$OPENCRON_HOME" ] && OPENCRON_HOME=`cygpath --unix "$OPENCRON_HOME"`
   [ -n "$OPENCRON_BASE" ] && OPENCRON_BASE=`cygpath --unix "$OPENCRON_BASE"`
   [ -n "$CLASSPATH" ] && CLASSPATH=`cygpath --path --unix "$CLASSPATH"`
+  [ -n "$CLASSPATH" ] && CLASSPATH=`cygpath --path --unix "$CLASSPATH"`
 fi
 
 # Ensure that neither OPENCRON_HOME nor OPENCRON_BASE contains a colon
@@ -164,19 +165,11 @@ OPENCRON_SHUTDOWNPORT=15707
 #opencron version
 OPENCRON_VERSION="1.1.0-RELEASE"
 
-# Add on extra jar files to CLASSPATH
+# Add bootstrap.jar to classpath
 if [ ! -z "$CLASSPATH" ] ; then
   CLASSPATH="$CLASSPATH":
 fi
 CLASSPATH="$CLASSPATH""$OPENCRON_BASE"/lib/opencron-agent-${OPENCRON_VERSION}.jar
-
-# Add bootstrap.jar to classpath
-# bootstrap can be over-ridden per instance
-if [ -r "$OPENCRON_BASE/lib/opencron-agent-${OPENCRON_VERSION}.jar" ] ; then
-  CLASSPATH=$CLASSPATH:$OPENCRON_BASE/lib/opencron-agent-${OPENCRON_VERSION}.jar
-else
-  CLASSPATH=$CLASSPATH:$OPENCRON_BASE/lib/opencron-agent-${OPENCRON_VERSION}.jar
-fi
 
 # Bugzilla 37848: When no TTY is available, don't output to console
 have_tty=0
