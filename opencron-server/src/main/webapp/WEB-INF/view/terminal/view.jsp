@@ -25,7 +25,7 @@
                 var pageSize = $("#size").val();
                 window.location.href="${contextPath}/terminal/view?pageNo=${pageBean.pageNo}&pageSize="+pageSize+"&orderBy=${pageBean.orderBy}&order=${pageBean.order}&csrf=${csrf}";
             });
-        })
+        });
 
         function ssh(id, type) {
             $.ajax({
@@ -149,7 +149,7 @@
                     dataType: "html",
                     success: function (message) {
                         if (message == "true") {
-                            alertMsg("删除成功!")
+                            alertMsg("删除成功!");
                             $("#tr_" + id).remove();
                         }else {
                             alert("删除失败!")
@@ -263,7 +263,7 @@
                                 success: function (status) {
                                     $("#sshModal").modal("hide");
                                     $("#sshform")[0].reset();
-                                    if (status == "true") {
+                                    if (status == "success") {
                                         alertMsg("恭喜你添加终端成功!");
                                         location.reload();
                                     } else {
@@ -294,13 +294,13 @@
                         $("#sshModal").modal("hide");
                         $("#sshform")[0].reset();
                         if(action == "login") {
-                            if (status == "true") {
+                            if (status == "success") {
                                 ssh($("#sshid").val(), 0);
                             }else {
                                 alert("用户名密码错误,登陆终端失败!");
                             }
                         }else {
-                            if (status == "true") {
+                            if (status == "success") {
                                 alertMsg("恭喜你修改终端成功!");
                                 location.reload();
                             } else {

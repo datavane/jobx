@@ -180,7 +180,7 @@
                         $("#email").val(obj.emailAddress);
                         $("#comment").val(obj.comment);
                         $("#agentModal").modal("show");
-                        return;
+
                     }
                 },
                 error: function () {
@@ -384,7 +384,7 @@
                         $("#agentId").val(obj.agentId);
                         window.errorAgentPwd = 0;
                         $("#pwdModal").modal("show");
-                        return;
+
                     }
                 },
                 error: function () {
@@ -556,10 +556,10 @@
                 success: function (data) {
                     if (data == "true") {
                         $("#pingResult").html("<font color='green'>" + '<i class="glyphicon glyphicon-ok-sign"></i>&nbsp;通信正常' + "</font>");
-                        return;
+
                     } else {
                         $("#pingResult").html("<font color='red'>" + '<i class="glyphicon glyphicon-remove-sign"></i>&nbsp;通信失败' + "</font>");
-                        return;
+
                     }
                 },
                 error: function () {
@@ -883,8 +883,16 @@
                     <form class="form-horizontal" role="form" id="pwdform">
                         <input type="hidden" id="agentId">
                         <label id="pwdReset" style="display: none;text-align: left;color:red;margin-left: 95px;padding-bottom: 10px;" for="pwd0" class="col-lab control-label">
-                            您已经连续三次输入无效的密码,请进入执行器下,执行下面的命令,复制该值到密钥输入框,或者重新输入<a href="#"  onclick="inputPwd();" style="color: dodgerblue">原密码</a>
-                            <br/><span id="pwdPath"></span>
+                            您已经连续三次输入无效的密码,请进入执行器下,执行下面的命令,复制内容到密钥输入框,或者重新输入<a href="#"  onclick="inputPwd();" style="color: dodgerblue">原密码</a>
+                            <br/>
+                            <div class="input-group">
+                                <div class="col-md-6">
+                                    <input id="pwdPath" type="text" class="form-control">
+                                </div>
+                                <span class="input-group-btn">
+                                 <button class="btn btn-default" type="button">复制</button>
+                                </span>
+                            </div>
                         </label>
                         <div class="form-group" style="margin-bottom: 4px;">
                             <label for="pwd0" id="pwdlable" class="col-lab control-label"><i class="glyphicon glyphicon-lock"></i>&nbsp;&nbsp;原&nbsp;&nbsp;密&nbsp;&nbsp;码：</label>
