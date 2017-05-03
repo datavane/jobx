@@ -33,6 +33,7 @@ import org.slf4j.Logger;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.Format;
 import java.util.*;
@@ -187,8 +188,9 @@ public class AgentMonitor {
 
     public String getCpuData(Monitor.Info info) {
         //cpu usage report..
-        Long sysIdle = toLong(info.getCpu().getId2()) - toLong(info.getCpu().getId1());
-        Long total = toLong(info.getCpu().getTotal2()) - toLong(info.getCpu().getTotal1());
+
+        Long sysIdle = toLong(new BigDecimal(info.getCpu().getId2()).toPlainString()) - toLong(new BigDecimal(info.getCpu().getId1()).toPlainString());
+        Long total = toLong(new BigDecimal(info.getCpu().getTotal2()).toPlainString()) - toLong(new BigDecimal(info.getCpu().getTotal1()).toPlainString());
 
         Map<String, String> cpuData = new HashMap<String, String>(0);
 
@@ -446,6 +448,5 @@ public class AgentMonitor {
     public boolean stoped() {
         return stop;
     }
-
 
 }
