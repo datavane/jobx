@@ -7,6 +7,7 @@
 <html lang="en">
 <head>
     <jsp:include page="/WEB-INF/common/resource.jsp"/>
+    <script type="text/javascript" src="${contextPath}/js/clipboard.js?resId=${resourceId}"></script> <!-- jQuery Library -->
 
     <script type="text/javascript">
         function showContact() {
@@ -39,6 +40,16 @@
             $("#size").change(function () {
                 var pageSize = $("#size").val();
                 window.location.href = "${contextPath}/agent/view?pageSize=" + pageSize+"&csrf=${csrf}";
+            });
+
+            var clipboard = new Clipboard('#copy-btn');
+
+            clipboard.on('success', function(e) {
+                $("#copy-btn").text("已复制");
+                setTimeout(function () {
+                    $("#copy-btn").text("复制");
+                },1000);
+                e.clearSelection();
             });
 
             setInterval(function () {
@@ -113,7 +124,7 @@
 
             $("#pwd0").blur(function () {
                 if (!$("#pwd0").val()) {
-                    $("#oldpwd").html("<font color='red'>" + '<i class="glyphicon glyphicon-remove-sign"></i>&nbsp;请输入'+(window.errorAgentPwd>=3?"密钥":"原密码")+"</font>");
+                    $("#oldpwd").html("<font color='red'>" + '<i class="glyphicon glyphicon-remove-sign"></i>&nbsp;请输入'+(window.errorAgentPwd>=3?"密文":"原密码")+"</font>");
                 }
             });
 
@@ -371,6 +382,7 @@
         }
 
         function editPwd(id) {
+            inputPwd();
             $.ajax({
                 headers:{"csrf":"${csrf}"},
                 type: "POST",
@@ -440,7 +452,7 @@
             }
             var pwd0 = $("#pwd0").val();
             if (!pwd0) {
-                $("#oldpwd").html("<font color='red'>" + '<i class="glyphicon glyphicon-remove-sign"></i>&nbsp;请输入'+(window.errorAgentPwd>=3?"密钥":"原密码")+"</font>");
+                $("#oldpwd").html("<font color='red'>" + '<i class="glyphicon glyphicon-remove-sign"></i>&nbsp;请输入'+(window.errorAgentPwd>=3?"密文":"原密码")+"</font>");
                 return false;
             }
             var pwd1 = $("#pwd1").val();
@@ -486,7 +498,7 @@
                     }
                     if (data == "one") {//原密码错误
                         if (window.errorAgentPwd!=undefined && window.errorAgentPwd>=3){
-                            $("#oldpwd").html("<font color='red'>" + '<i class="glyphicon glyphicon-remove-sign"></i>&nbsp;执行器密钥不正确链接失败,请检查重新输入' + "</font>");
+                            $("#oldpwd").html("<font color='red'>" + '<i class="glyphicon glyphicon-remove-sign"></i>&nbsp;执行器密文不正确链接失败,请检查重新输入' + "</font>");
                         }else{
                             ++window.errorAgentPwd;
                             if (window.errorAgentPwd>=3) {
@@ -589,10 +601,10 @@
                 dataType:"html",
                 success:function(result) {
                     if(result) {
-                        $("#pwdPath").text("more " + result);
+                        $("#pwdPath").val("more " + result);
                         $("#oldpwd").html('');
-                        $("#pwdlable").html('<i class="glyphicon glyphicon-lock"></i>&nbsp;&nbsp;密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;钥：');
-                        $("#pwd0").attr("placeholder","请输入密钥").val('');
+                        $("#pwdlable").html('<i class="glyphicon glyphicon-lock"></i>&nbsp;&nbsp;密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;文：');
+                        $("#pwd0").attr("placeholder","请输入密文").val('');
                         $("#pwdReset").show().val('');
                     }else {
                         alert("错误! 请确保执行器端服务已经启动");
@@ -600,8 +612,6 @@
                 }
             });
         }
-
-
 
     </script>
 
@@ -883,16 +893,13 @@
                     <form class="form-horizontal" role="form" id="pwdform">
                         <input type="hidden" id="agentId">
                         <label id="pwdReset" style="display: none;text-align: left;color:red;margin-left: 95px;padding-bottom: 10px;" for="pwd0" class="col-lab control-label">
-                            您已经连续三次输入无效的密码,请进入执行器下,执行下面的命令,复制内容到密钥输入框,或者重新输入<a href="#"  onclick="inputPwd();" style="color: dodgerblue">原密码</a>
-                            <br/>
-                            <div class="input-group">
-                                <div class="col-md-6">
-                                    <input id="pwdPath" type="text" class="form-control">
-                                </div>
-                                <span class="input-group-btn">
-                                 <button class="btn btn-default" type="button">复制</button>
-                                </span>
+                            <div style="margin-bottom: 10px;">
+                                您已经连续三次输入无效的密码,请进入执行器下,执行下面的命令,复制密码原文到秘文输入框,或者重新输入<a href="#"  onclick="inputPwd();" style="color: dodgerblue">原密码</a>
                             </div>
+                            <div style="margin-bottom: 5px;">
+                                <input class="btn btn-default" id="pwdPath" type="text" style="width: 80%;text-align: left" readonly></input>
+                               <button class="btn btn-default" type="button" id="copy-btn" data-clipboard-action="copy" data-clipboard-target="#pwdPath" aria-label="已复制" style="width: 15%">复制</button>
+                           </div>
                         </label>
                         <div class="form-group" style="margin-bottom: 4px;">
                             <label for="pwd0" id="pwdlable" class="col-lab control-label"><i class="glyphicon glyphicon-lock"></i>&nbsp;&nbsp;原&nbsp;&nbsp;密&nbsp;&nbsp;码：</label>
