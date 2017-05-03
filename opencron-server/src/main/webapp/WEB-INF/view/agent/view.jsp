@@ -497,14 +497,18 @@
                         return false;
                     }
                     if (data == "one") {//原密码错误
-                        if (window.errorAgentPwd!=undefined && window.errorAgentPwd>=3){
-                            $("#oldpwd").html("<font color='red'>" + '<i class="glyphicon glyphicon-remove-sign"></i>&nbsp;执行器密文不正确链接失败,请检查重新输入' + "</font>");
-                        }else{
-                            ++window.errorAgentPwd;
-                            if (window.errorAgentPwd>=3) {
-                                inputSrcPwd(id);
-                            }else {
-                                $("#oldpwd").html("<font color='red'>" + '<i class="glyphicon glyphicon-remove-sign"></i>&nbsp;原密码不正确' + "</font>");
+                        if( window.agentStarted!=undefined && window.agentStarted == false){
+                            $("#oldpwd").html("<font color='red'>" + '<i class="glyphicon glyphicon-remove-sign"></i>&nbsp;错误! 请确保执行器端服务已经启动' + "</font>");
+                        }else {
+                            if (window.errorAgentPwd!=undefined && window.errorAgentPwd>=3) {
+                                $("#oldpwd").html("<font color='red'>" + '<i class="glyphicon glyphicon-remove-sign"></i>&nbsp;执行器密文不正确链接失败,请检查重新输入' + "</font>");
+                            }else{
+                                ++window.errorAgentPwd;
+                                if (window.errorAgentPwd>=3) {
+                                    inputSrcPwd(id);
+                                }else {
+                                    $("#oldpwd").html("<font color='red'>" + '<i class="glyphicon glyphicon-remove-sign"></i>&nbsp;原密码不正确' + "</font>");
+                                }
                             }
                         }
                         return false;
@@ -608,6 +612,7 @@
                         $("#pwd0").attr("placeholder","请输入密文").val('');
                         $("#pwdReset").show().val('');
                     }else {
+                        window.agentStarted = false;
                         alert("错误! 请确保执行器端服务已经启动");
                     }
                 }
