@@ -503,8 +503,9 @@
                             ++window.errorAgentPwd;
                             if (window.errorAgentPwd>=3) {
                                 inputSrcPwd(id);
+                            }else {
+                                $("#oldpwd").html("<font color='red'>" + '<i class="glyphicon glyphicon-remove-sign"></i>&nbsp;原密码不正确' + "</font>");
                             }
-                            $("#oldpwd").html("<font color='red'>" + '<i class="glyphicon glyphicon-remove-sign"></i>&nbsp;原密码不正确' + "</font>");
                         }
                         return false;
                     }
