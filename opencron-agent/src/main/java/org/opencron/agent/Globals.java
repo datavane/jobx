@@ -20,6 +20,15 @@ public final class Globals {
     public static String OPENCRON_PASSWORD = System.getProperty("opencron.password");
 
     /**
+     * serverurl
+     */
+    public static String OPENCRON_SERVERURL = System.getProperty("opencron.serverurl");
+    /**
+     * regkey
+     */
+    public static String OPENCRON_REGKEY = System.getProperty("opencron.regkey");
+
+    /**
      * pid
      */
     public static File OPENCRON_PID_FILE = new File(System.getProperty("opencron.pid"));

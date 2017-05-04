@@ -24,6 +24,7 @@ package org.opencron.agent;
  */
 
 import org.opencron.common.job.Opencron;
+import org.opencron.common.utils.HttpUtils;
 import org.opencron.common.utils.IOUtils;
 import org.opencron.common.utils.LoggerFactory;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -186,6 +187,12 @@ public class Bootstrap implements Serializable {
              * write pid to pidfile...
              */
             IOUtils.writeText(Globals.OPENCRON_PID_FILE, getPid(), CHARSET);
+
+            if(Globals.OPENCRON_SERVERURL!=null) {
+                String params = "";
+                //发送自动注册请求
+                HttpUtils.doPost(Globals.OPENCRON_SERVERURL,params,"UTF-8");
+            }
 
             //new thread to start for thrift server
             new Thread(new Runnable() {

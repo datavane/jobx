@@ -229,6 +229,12 @@ case "$1" in
                 -p|--pass)
                     OPENCRON_PASSWORD=$2;
                     shift 2;;
+                -s|--server)
+                     OPENCRON_SERVERURL=$2;
+                     shift 2;;
+                -k|--key)
+                     OPENCRON_KEY=$2;
+                     shift 2;;
                 --) break ;;
                 *)
                     echo "usage {-P\${port}|-p\${pasword}}"
@@ -295,6 +301,8 @@ case "$1" in
         -Dopencron.pid="$OPENCRON_PID" \
         -Djava.io.tmpdir="$OPENCRON_TMPDIR" \
         -Dopencron.port="$OPENCRON_PORT" \
+        -Dopencron.serverurl="$OPENCRON_SERVERURL" \
+        -Dopencron.regkey="$OPENCRON_KEY" \
         -Dopencron.password="$OPENCRON_PASSWORD" \
         -Dopencron.shutdown="$OPENCRON_SHUTDOWNPORT" \
         org.opencron.agent.Bootstrap start \
