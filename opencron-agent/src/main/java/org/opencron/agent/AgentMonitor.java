@@ -281,16 +281,19 @@ public class AgentMonitor {
         Double freeTotal = 0D;
         for (Map.Entry<String, String> entry : map.entrySet()) {
             Map<String, String> disk = new HashMap<String, String>();
+            try {
+                Double used = generateDiskSpace(entry.getValue().split(",")[0]);
+                Double free = generateDiskSpace(entry.getValue().split(",")[1]);
 
-            Double used = generateDiskSpace(entry.getValue().split(",")[0]);
-            Double free = generateDiskSpace(entry.getValue().split(",")[1]);
-
-            usedTotal += used;
-            freeTotal += free;
-            disk.put("disk", entry.getKey());
-            disk.put("used", format.format(used));
-            disk.put("free", format.format(free));
-            disks.add(disk);
+                usedTotal += used;
+                freeTotal += free;
+                disk.put("disk", entry.getKey());
+                disk.put("used", format.format(used));
+                disk.put("free", format.format(free));
+                disks.add(disk);
+            }catch (NumberFormatException e) {
+                continue;
+            }
         }
 
         Map<String, String> disk = new HashMap<String, String>();
@@ -448,5 +451,6 @@ public class AgentMonitor {
     public boolean stoped() {
         return stop;
     }
+
 
 }
