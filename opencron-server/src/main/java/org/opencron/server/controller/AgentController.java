@@ -119,7 +119,7 @@ public class AgentController extends BaseController {
     @RequestMapping("/autoreg")
     public void autoReg(HttpServletRequest request, HttpServletResponse response, Agent agent, String key) {
         String ip = WebUtils.getIp(request);
-        String format = "{status:%d,message:'%s'}";
+        String format = "{status:'%d',message:'%s'}";
         if (ip == null) {
             WebUtils.writeJson(response, String.format(format,500,"can't get agent'ip"));
             return;
@@ -142,6 +142,8 @@ public class AgentController extends BaseController {
         }else {
             //新的机器，需要自动注册.
             agent.setIp(ip);
+            agent.setName(ip);
+            agent.setComment("agent auto registered");
             agent.setWarning(false);
             agent.setMobiles(null);
             agent.setEmailAddress(null);

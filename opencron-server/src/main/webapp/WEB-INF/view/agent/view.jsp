@@ -292,8 +292,9 @@
                                     "port": port,
                                     "password": password
                                 },
-                                dataType:"json",
+                                dataType:"html",
                                 success: function (data) {
+                                    data = eval("("+data+")");
                                     if (data.success == "true") {
                                         canSave(proxy, id, name, port, warning, mobiles, email);
                                         return false;
@@ -571,8 +572,9 @@
                     "port": port,
                     "password": password
                 },
-                dataType:'json',
+                dataType:'html',
                 success: function (data) {
+                    data = eval("("+data+")");
                     if (data.success == "true") {
                         $("#pingResult").html("<font color='green'>" + '<i class="glyphicon glyphicon-ok-sign"></i>&nbsp;通信正常' + "</font>");
                     } else {

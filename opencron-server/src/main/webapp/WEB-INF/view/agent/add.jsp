@@ -96,8 +96,9 @@
                                             "port": port,
                                             "password": calcMD5(password)
                                         },
-                                        dataType:"json",
+                                        dataType:"html",
                                         success: function (data) {
+                                            data = eval("("+data+")");
                                             if (data.success == "true") {
                                                 $("#agent").submit();
                                                 return;
@@ -176,9 +177,10 @@
                     "port": port,
                     "password": calcMD5(password)
                 },
-                dataType:"json",
+                dataType:"html",
                 success: function (data) {
-                    if (data.success == "true") {
+                        data = eval("("+data+")");
+                        if (data.success == "true") {
                         $("#machineId").val(data.machineId);
                         $("#pingResult").html("<font color='green'>" + '<i class="glyphicon glyphicon-ok-sign"></i>&nbsp;通信正常' + "</font>");
                         return;

@@ -72,7 +72,7 @@ public class SecurityHandlerInterceptor extends HandlerInterceptorAdapter {
         }
 
         //登陆
-        if (requestURI.contains("/login") || requestURI.contains("/upload")) {
+        if (requestURI.contains("/login") || requestURI.contains("/upload") || requestURI.contains("/agent/autoreg")) {
             return super.preHandle(request, response, handler);
         }
 
