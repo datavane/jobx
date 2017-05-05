@@ -56,8 +56,8 @@ public class MacUtils {
         for (String line; (line = bufReader.readLine()) != null ;) {
             Matcher matcher = macPattern.matcher(line);
             if (matcher.matches()) {
-                macAddressList.add(matcher.group(1));
-                //macAddressList.add(matcher.group(1).replaceAll("[-:]", ""));//去掉MAC中的“-”
+                //macAddressList.add(matcher.group(1));
+                macAddressList.add(matcher.group(1).replaceAll("[-:]", ""));//去掉MAC中的“-”
             }
         }
         process.destroy();
