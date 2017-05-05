@@ -8,6 +8,7 @@ enum Action {
     PASSWORD,
     KILL,
     PROXY,
+    GUID,
     RESTART
 }
 
@@ -37,5 +38,6 @@ service Opencron {
  Response password(1:Request request),
  Response kill(1:Request request),
  Response proxy(1:Request request),
+ Response guid(1:Request request),
  void restart(1:Request request)
 }

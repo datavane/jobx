@@ -192,8 +192,7 @@ public class AgentService {
         boolean verify;
         if (type) {//直接输入的密钥
             agent.setPassword(pwd0);
-            Response response = executeService.ping(agent);
-            verify = response!=null&&response.isSuccess();
+            verify = executeService.ping(agent);
         } else {//密码...
             verify = DigestUtils.md5Hex(pwd0).equals(agent.getPassword());
         }

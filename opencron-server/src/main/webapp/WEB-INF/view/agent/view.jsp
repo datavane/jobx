@@ -294,8 +294,7 @@
                                 },
                                 dataType:"html",
                                 success: function (data) {
-                                    data = eval("("+data+")");
-                                    if (data.success == "true") {
+                                    if (data == "true") {
                                         canSave(proxy, id, name, port, warning, mobiles, email);
                                         return false;
                                     } else {
@@ -572,10 +571,9 @@
                     "port": port,
                     "password": password
                 },
-                dataType:'html',
+                dataType:"html",
                 success: function (data) {
-                    data = eval("("+data+")");
-                    if (data.success == "true") {
+                    if (data == "true") {
                         $("#pingResult").html("<font color='green'>" + '<i class="glyphicon glyphicon-ok-sign"></i>&nbsp;通信正常' + "</font>");
                     } else {
                         $("#pingResult").html("<font color='red'>" + '<i class="glyphicon glyphicon-remove-sign"></i>&nbsp;通信失败' + "</font>");

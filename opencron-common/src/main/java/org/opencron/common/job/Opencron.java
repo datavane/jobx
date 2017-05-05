@@ -430,7 +430,6 @@ public class Opencron implements Serializable {
 
     }
 
-
     public interface Iface {
 
         public Response ping(Request request) throws org.apache.thrift.TException;
@@ -446,6 +445,8 @@ public class Opencron implements Serializable {
         public Response kill(Request request) throws org.apache.thrift.TException;
 
         public Response proxy(Request request) throws org.apache.thrift.TException;
+
+        public Response guid(Request request) throws org.apache.thrift.TException;
 
         public void restart(Request request) throws org.apache.thrift.TException;
 
@@ -466,6 +467,8 @@ public class Opencron implements Serializable {
         public void kill(Request request, org.apache.thrift.async.AsyncMethodCallback<Response> resultHandler) throws org.apache.thrift.TException;
 
         public void proxy(Request request, org.apache.thrift.async.AsyncMethodCallback<Response> resultHandler) throws org.apache.thrift.TException;
+
+        public void guid(Request request, org.apache.thrift.async.AsyncMethodCallback<Response> resultHandler) throws org.apache.thrift.TException;
 
         public void restart(Request request, org.apache.thrift.async.AsyncMethodCallback<Void> resultHandler) throws org.apache.thrift.TException;
 
@@ -631,6 +634,26 @@ public class Opencron implements Serializable {
                 return result.success;
             }
             throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "proxy failed: unknown result");
+        }
+
+        public Response guid(Request request) throws org.apache.thrift.TException {
+            send_guid(request);
+            return recv_guid();
+        }
+
+        public void send_guid(Request request) throws org.apache.thrift.TException {
+            guid_args args = new guid_args();
+            args.setRequest(request);
+            sendBase("guid", args);
+        }
+
+        public Response recv_guid() throws org.apache.thrift.TException {
+            guid_result result = new guid_result();
+            receiveBase(result, "guid");
+            if (result.isSetSuccess()) {
+                return result.success;
+            }
+            throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "guid failed: unknown result");
         }
 
         public void restart(Request request) throws org.apache.thrift.TException {
@@ -902,6 +925,39 @@ public class Opencron implements Serializable {
             }
         }
 
+        public void guid(Request request, org.apache.thrift.async.AsyncMethodCallback<Response> resultHandler) throws org.apache.thrift.TException {
+            checkReady();
+            guid_call method_call = new guid_call(request, resultHandler, this, ___protocolFactory, ___transport);
+            this.___currentMethod = method_call;
+            ___manager.call(method_call);
+        }
+
+        public static class guid_call extends org.apache.thrift.async.TAsyncMethodCall<Response> {
+            private Request request;
+
+            public guid_call(Request request, org.apache.thrift.async.AsyncMethodCallback<Response> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+                super(client, protocolFactory, transport, resultHandler, false);
+                this.request = request;
+            }
+
+            public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
+                prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("guid", org.apache.thrift.protocol.TMessageType.CALL, 0));
+                guid_args args = new guid_args();
+                args.setRequest(request);
+                args.write(prot);
+                prot.writeMessageEnd();
+            }
+
+            public Response getResult() throws org.apache.thrift.TException {
+                if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
+                    throw new java.lang.IllegalStateException("Method call not finished!");
+                }
+                org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
+                org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
+                return (new Client(prot)).recv_guid();
+            }
+        }
+
         public void restart(Request request, org.apache.thrift.async.AsyncMethodCallback<Void> resultHandler) throws org.apache.thrift.TException {
             checkReady();
             restart_call method_call = new restart_call(request, resultHandler, this, ___protocolFactory, ___transport);
@@ -956,6 +1012,7 @@ public class Opencron implements Serializable {
             processMap.put("password", new password());
             processMap.put("kill", new kill());
             processMap.put("proxy", new proxy());
+            processMap.put("guid", new guid());
             processMap.put("restart", new restart());
             return processMap;
         }
@@ -1128,6 +1185,30 @@ public class Opencron implements Serializable {
             }
         }
 
+        public static class guid<I extends Iface> extends org.apache.thrift.ProcessFunction<I, guid_args> {
+            public guid() {
+                super("guid");
+            }
+
+            public guid_args getEmptyArgsInstance() {
+                return new guid_args();
+            }
+
+            protected boolean isOneway() {
+                return false;
+            }
+
+            protected boolean handleRuntimeExceptions() {
+                return false;
+            }
+
+            public guid_result getResult(I iface, guid_args args) throws org.apache.thrift.TException {
+                guid_result result = new guid_result();
+                result.success = iface.guid(args.request);
+                return result;
+            }
+        }
+
         public static class restart<I extends Iface> extends org.apache.thrift.ProcessFunction<I, restart_args> {
             public restart() {
                 super("restart");
@@ -1173,6 +1254,7 @@ public class Opencron implements Serializable {
             processMap.put("password", new password());
             processMap.put("kill", new kill());
             processMap.put("proxy", new proxy());
+            processMap.put("guid", new guid());
             processMap.put("restart", new restart());
             return processMap;
         }
@@ -1608,6 +1690,68 @@ public class Opencron implements Serializable {
 
             public void start(I iface, proxy_args args, org.apache.thrift.async.AsyncMethodCallback<Response> resultHandler) throws org.apache.thrift.TException {
                 iface.proxy(args.request, resultHandler);
+            }
+        }
+
+        public static class guid<I extends AsyncIface> extends org.apache.thrift.AsyncProcessFunction<I, guid_args, Response> {
+            public guid() {
+                super("guid");
+            }
+
+            public guid_args getEmptyArgsInstance() {
+                return new guid_args();
+            }
+
+            public org.apache.thrift.async.AsyncMethodCallback<Response> getResultHandler(final org.apache.thrift.server.AbstractNonblockingServer.AsyncFrameBuffer fb, final int seqid) {
+                final org.apache.thrift.AsyncProcessFunction fcall = this;
+                return new org.apache.thrift.async.AsyncMethodCallback<Response>() {
+                    public void onComplete(Response o) {
+                        guid_result result = new guid_result();
+                        result.success = o;
+                        try {
+                            fcall.sendResponse(fb, result, org.apache.thrift.protocol.TMessageType.REPLY, seqid);
+                        } catch (org.apache.thrift.transport.TTransportException e) {
+                            _LOGGER.error("TTransportException writing to internal frame buffer", e);
+                            fb.close();
+                        } catch (java.lang.Exception e) {
+                            _LOGGER.error("Exception writing to internal frame buffer", e);
+                            onError(e);
+                        }
+                    }
+
+                    public void onError(java.lang.Exception e) {
+                        byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
+                        org.apache.thrift.TSerializable msg;
+                        guid_result result = new guid_result();
+                        if (e instanceof org.apache.thrift.transport.TTransportException) {
+                            _LOGGER.error("TTransportException inside handler", e);
+                            fb.close();
+                            return;
+                        } else if (e instanceof org.apache.thrift.TApplicationException) {
+                            _LOGGER.error("TApplicationException inside handler", e);
+                            msgType = org.apache.thrift.protocol.TMessageType.EXCEPTION;
+                            msg = (org.apache.thrift.TApplicationException) e;
+                        } else {
+                            _LOGGER.error("Exception inside handler", e);
+                            msgType = org.apache.thrift.protocol.TMessageType.EXCEPTION;
+                            msg = new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.INTERNAL_ERROR, e.getMessage());
+                        }
+                        try {
+                            fcall.sendResponse(fb, msg, msgType, seqid);
+                        } catch (java.lang.Exception ex) {
+                            _LOGGER.error("Exception writing to internal frame buffer", ex);
+                            fb.close();
+                        }
+                    }
+                };
+            }
+
+            protected boolean isOneway() {
+                return false;
+            }
+
+            public void start(I iface, guid_args args, org.apache.thrift.async.AsyncMethodCallback<Response> resultHandler) throws org.apache.thrift.TException {
+                iface.guid(args.request, resultHandler);
             }
         }
 
@@ -6881,6 +7025,752 @@ public class Opencron implements Serializable {
 
             @Override
             public void read(org.apache.thrift.protocol.TProtocol prot, proxy_result struct) throws org.apache.thrift.TException {
+                org.apache.thrift.protocol.TTupleProtocol iprot = (org.apache.thrift.protocol.TTupleProtocol) prot;
+                java.util.BitSet incoming = iprot.readBitSet(1);
+                if (incoming.get(0)) {
+                    struct.success = new Response();
+                    struct.success.read(iprot);
+                    struct.setSuccessIsSet(true);
+                }
+            }
+        }
+
+        private static <S extends org.apache.thrift.scheme.IScheme> S scheme(org.apache.thrift.protocol.TProtocol proto) {
+            return (org.apache.thrift.scheme.StandardScheme.class.equals(proto.getScheme()) ? STANDARD_SCHEME_FACTORY : TUPLE_SCHEME_FACTORY).getScheme();
+        }
+    }
+
+    public static class guid_args implements org.apache.thrift.TBase<guid_args, guid_args._Fields>, java.io.Serializable, Cloneable, Comparable<guid_args> {
+        private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("guid_args");
+
+        private static final org.apache.thrift.protocol.TField REQUEST_FIELD_DESC = new org.apache.thrift.protocol.TField("request", org.apache.thrift.protocol.TType.STRUCT, (short) 1);
+
+        private static final org.apache.thrift.scheme.SchemeFactory STANDARD_SCHEME_FACTORY = new guid_argsStandardSchemeFactory();
+        private static final org.apache.thrift.scheme.SchemeFactory TUPLE_SCHEME_FACTORY = new guid_argsTupleSchemeFactory();
+
+        public Request request; // required
+
+        /**
+         * The set of fields this struct contains, along with convenience methods for finding and manipulating them.
+         */
+        public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+            REQUEST((short) 1, "request");
+
+            private static final java.util.Map<java.lang.String, _Fields> byName = new java.util.HashMap<java.lang.String, _Fields>();
+
+            static {
+                for (_Fields field : java.util.EnumSet.allOf(_Fields.class)) {
+                    byName.put(field.getFieldName(), field);
+                }
+            }
+
+            /**
+             * Find the _Fields constant that matches fieldId, or null if its not found.
+             */
+            public static _Fields findByThriftId(int fieldId) {
+                switch (fieldId) {
+                    case 1: // REQUEST
+                        return REQUEST;
+                    default:
+                        return null;
+                }
+            }
+
+            /**
+             * Find the _Fields constant that matches fieldId, throwing an exception
+             * if it is not found.
+             */
+            public static _Fields findByThriftIdOrThrow(int fieldId) {
+                _Fields fields = findByThriftId(fieldId);
+                if (fields == null)
+                    throw new java.lang.IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+                return fields;
+            }
+
+            /**
+             * Find the _Fields constant that matches name, or null if its not found.
+             */
+            public static _Fields findByName(java.lang.String name) {
+                return byName.get(name);
+            }
+
+            private final short _thriftId;
+            private final java.lang.String _fieldName;
+
+            _Fields(short thriftId, java.lang.String fieldName) {
+                _thriftId = thriftId;
+                _fieldName = fieldName;
+            }
+
+            public short getThriftFieldId() {
+                return _thriftId;
+            }
+
+            public java.lang.String getFieldName() {
+                return _fieldName;
+            }
+        }
+
+        // isset id assignments
+        public static final java.util.Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+
+        static {
+            java.util.Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new java.util.EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+            tmpMap.put(_Fields.REQUEST, new org.apache.thrift.meta_data.FieldMetaData("request", org.apache.thrift.TFieldRequirementType.DEFAULT,
+                    new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Request.class)));
+            metaDataMap = java.util.Collections.unmodifiableMap(tmpMap);
+            org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(guid_args.class, metaDataMap);
+        }
+
+        public guid_args() {
+        }
+
+        public guid_args(
+                Request request) {
+            this();
+            this.request = request;
+        }
+
+        /**
+         * Performs a deep copy on <i>other</i>.
+         */
+        public guid_args(guid_args other) {
+            if (other.isSetRequest()) {
+                this.request = new Request(other.request);
+            }
+        }
+
+        public guid_args deepCopy() {
+            return new guid_args(this);
+        }
+
+        @Override
+        public void clear() {
+            this.request = null;
+        }
+
+        public Request getRequest() {
+            return this.request;
+        }
+
+        public guid_args setRequest(Request request) {
+            this.request = request;
+            return this;
+        }
+
+        public void unsetRequest() {
+            this.request = null;
+        }
+
+        /**
+         * Returns true if field request is set (has been assigned a value) and false otherwise
+         */
+        public boolean isSetRequest() {
+            return this.request != null;
+        }
+
+        public void setRequestIsSet(boolean value) {
+            if (!value) {
+                this.request = null;
+            }
+        }
+
+        public void setFieldValue(_Fields field, java.lang.Object value) {
+            switch (field) {
+                case REQUEST:
+                    if (value == null) {
+                        unsetRequest();
+                    } else {
+                        setRequest((Request) value);
+                    }
+                    break;
+
+            }
+        }
+
+        public java.lang.Object getFieldValue(_Fields field) {
+            switch (field) {
+                case REQUEST:
+                    return getRequest();
+
+            }
+            throw new java.lang.IllegalStateException();
+        }
+
+        /**
+         * Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise
+         */
+        public boolean isSet(_Fields field) {
+            if (field == null) {
+                throw new java.lang.IllegalArgumentException();
+            }
+
+            switch (field) {
+                case REQUEST:
+                    return isSetRequest();
+            }
+            throw new java.lang.IllegalStateException();
+        }
+
+        @Override
+        public boolean equals(java.lang.Object that) {
+            if (that == null)
+                return false;
+            if (that instanceof guid_args)
+                return this.equals((guid_args) that);
+            return false;
+        }
+
+        public boolean equals(guid_args that) {
+            if (that == null)
+                return false;
+            if (this == that)
+                return true;
+
+            boolean this_present_request = true && this.isSetRequest();
+            boolean that_present_request = true && that.isSetRequest();
+            if (this_present_request || that_present_request) {
+                if (!(this_present_request && that_present_request))
+                    return false;
+                if (!this.request.equals(that.request))
+                    return false;
+            }
+
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            int hashCode = 1;
+
+            hashCode = hashCode * 8191 + ((isSetRequest()) ? 131071 : 524287);
+            if (isSetRequest())
+                hashCode = hashCode * 8191 + request.hashCode();
+
+            return hashCode;
+        }
+
+        @Override
+        public int compareTo(guid_args other) {
+            if (!getClass().equals(other.getClass())) {
+                return getClass().getName().compareTo(other.getClass().getName());
+            }
+
+            int lastComparison = 0;
+
+            lastComparison = java.lang.Boolean.valueOf(isSetRequest()).compareTo(other.isSetRequest());
+            if (lastComparison != 0) {
+                return lastComparison;
+            }
+            if (isSetRequest()) {
+                lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.request, other.request);
+                if (lastComparison != 0) {
+                    return lastComparison;
+                }
+            }
+            return 0;
+        }
+
+        public _Fields fieldForId(int fieldId) {
+            return _Fields.findByThriftId(fieldId);
+        }
+
+        public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+            scheme(iprot).read(iprot, this);
+        }
+
+        public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+            scheme(oprot).write(oprot, this);
+        }
+
+        @Override
+        public java.lang.String toString() {
+            java.lang.StringBuilder sb = new java.lang.StringBuilder("guid_args(");
+            boolean first = true;
+
+            sb.append("request:");
+            if (this.request == null) {
+                sb.append("null");
+            } else {
+                sb.append(this.request);
+            }
+            first = false;
+            sb.append(")");
+            return sb.toString();
+        }
+
+        public void validate() throws org.apache.thrift.TException {
+            // check for required fields
+            // check for sub-struct validity
+            if (request != null) {
+                request.validate();
+            }
+        }
+
+        private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+            try {
+                write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+            } catch (org.apache.thrift.TException te) {
+                throw new java.io.IOException(te);
+            }
+        }
+
+        private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, java.lang.ClassNotFoundException {
+            try {
+                read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+            } catch (org.apache.thrift.TException te) {
+                throw new java.io.IOException(te);
+            }
+        }
+
+        private static class guid_argsStandardSchemeFactory implements org.apache.thrift.scheme.SchemeFactory {
+            public guid_argsStandardScheme getScheme() {
+                return new guid_argsStandardScheme();
+            }
+        }
+
+        private static class guid_argsStandardScheme extends org.apache.thrift.scheme.StandardScheme<guid_args> {
+
+            public void read(org.apache.thrift.protocol.TProtocol iprot, guid_args struct) throws org.apache.thrift.TException {
+                org.apache.thrift.protocol.TField schemeField;
+                iprot.readStructBegin();
+                while (true) {
+                    schemeField = iprot.readFieldBegin();
+                    if (schemeField.type == org.apache.thrift.protocol.TType.STOP) {
+                        break;
+                    }
+                    switch (schemeField.id) {
+                        case 1: // REQUEST
+                            if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+                                struct.request = new Request();
+                                struct.request.read(iprot);
+                                struct.setRequestIsSet(true);
+                            } else {
+                                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+                            }
+                            break;
+                        default:
+                            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+                    }
+                    iprot.readFieldEnd();
+                }
+                iprot.readStructEnd();
+
+                // check for required fields of primitive type, which can't be checked in the validate method
+                struct.validate();
+            }
+
+            public void write(org.apache.thrift.protocol.TProtocol oprot, guid_args struct) throws org.apache.thrift.TException {
+                struct.validate();
+
+                oprot.writeStructBegin(STRUCT_DESC);
+                if (struct.request != null) {
+                    oprot.writeFieldBegin(REQUEST_FIELD_DESC);
+                    struct.request.write(oprot);
+                    oprot.writeFieldEnd();
+                }
+                oprot.writeFieldStop();
+                oprot.writeStructEnd();
+            }
+
+        }
+
+        private static class guid_argsTupleSchemeFactory implements org.apache.thrift.scheme.SchemeFactory {
+            public guid_argsTupleScheme getScheme() {
+                return new guid_argsTupleScheme();
+            }
+        }
+
+        private static class guid_argsTupleScheme extends org.apache.thrift.scheme.TupleScheme<guid_args> {
+
+            @Override
+            public void write(org.apache.thrift.protocol.TProtocol prot, guid_args struct) throws org.apache.thrift.TException {
+                org.apache.thrift.protocol.TTupleProtocol oprot = (org.apache.thrift.protocol.TTupleProtocol) prot;
+                java.util.BitSet optionals = new java.util.BitSet();
+                if (struct.isSetRequest()) {
+                    optionals.set(0);
+                }
+                oprot.writeBitSet(optionals, 1);
+                if (struct.isSetRequest()) {
+                    struct.request.write(oprot);
+                }
+            }
+
+            @Override
+            public void read(org.apache.thrift.protocol.TProtocol prot, guid_args struct) throws org.apache.thrift.TException {
+                org.apache.thrift.protocol.TTupleProtocol iprot = (org.apache.thrift.protocol.TTupleProtocol) prot;
+                java.util.BitSet incoming = iprot.readBitSet(1);
+                if (incoming.get(0)) {
+                    struct.request = new Request();
+                    struct.request.read(iprot);
+                    struct.setRequestIsSet(true);
+                }
+            }
+        }
+
+        private static <S extends org.apache.thrift.scheme.IScheme> S scheme(org.apache.thrift.protocol.TProtocol proto) {
+            return (org.apache.thrift.scheme.StandardScheme.class.equals(proto.getScheme()) ? STANDARD_SCHEME_FACTORY : TUPLE_SCHEME_FACTORY).getScheme();
+        }
+    }
+
+    public static class guid_result implements org.apache.thrift.TBase<guid_result, guid_result._Fields>, java.io.Serializable, Cloneable, Comparable<guid_result> {
+        private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("guid_result");
+
+        private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short) 0);
+
+        private static final org.apache.thrift.scheme.SchemeFactory STANDARD_SCHEME_FACTORY = new guid_resultStandardSchemeFactory();
+        private static final org.apache.thrift.scheme.SchemeFactory TUPLE_SCHEME_FACTORY = new guid_resultTupleSchemeFactory();
+
+        public Response success; // required
+
+        /**
+         * The set of fields this struct contains, along with convenience methods for finding and manipulating them.
+         */
+        public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+            SUCCESS((short) 0, "success");
+
+            private static final java.util.Map<java.lang.String, _Fields> byName = new java.util.HashMap<java.lang.String, _Fields>();
+
+            static {
+                for (_Fields field : java.util.EnumSet.allOf(_Fields.class)) {
+                    byName.put(field.getFieldName(), field);
+                }
+            }
+
+            /**
+             * Find the _Fields constant that matches fieldId, or null if its not found.
+             */
+            public static _Fields findByThriftId(int fieldId) {
+                switch (fieldId) {
+                    case 0: // SUCCESS
+                        return SUCCESS;
+                    default:
+                        return null;
+                }
+            }
+
+            /**
+             * Find the _Fields constant that matches fieldId, throwing an exception
+             * if it is not found.
+             */
+            public static _Fields findByThriftIdOrThrow(int fieldId) {
+                _Fields fields = findByThriftId(fieldId);
+                if (fields == null)
+                    throw new java.lang.IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+                return fields;
+            }
+
+            /**
+             * Find the _Fields constant that matches name, or null if its not found.
+             */
+            public static _Fields findByName(java.lang.String name) {
+                return byName.get(name);
+            }
+
+            private final short _thriftId;
+            private final java.lang.String _fieldName;
+
+            _Fields(short thriftId, java.lang.String fieldName) {
+                _thriftId = thriftId;
+                _fieldName = fieldName;
+            }
+
+            public short getThriftFieldId() {
+                return _thriftId;
+            }
+
+            public java.lang.String getFieldName() {
+                return _fieldName;
+            }
+        }
+
+        // isset id assignments
+        public static final java.util.Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+
+        static {
+            java.util.Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new java.util.EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+            tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT,
+                    new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Response.class)));
+            metaDataMap = java.util.Collections.unmodifiableMap(tmpMap);
+            org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(guid_result.class, metaDataMap);
+        }
+
+        public guid_result() {
+        }
+
+        public guid_result(
+                Response success) {
+            this();
+            this.success = success;
+        }
+
+        /**
+         * Performs a deep copy on <i>other</i>.
+         */
+        public guid_result(guid_result other) {
+            if (other.isSetSuccess()) {
+                this.success = new Response(other.success);
+            }
+        }
+
+        public guid_result deepCopy() {
+            return new guid_result(this);
+        }
+
+        @Override
+        public void clear() {
+            this.success = null;
+        }
+
+        public Response getSuccess() {
+            return this.success;
+        }
+
+        public guid_result setSuccess(Response success) {
+            this.success = success;
+            return this;
+        }
+
+        public void unsetSuccess() {
+            this.success = null;
+        }
+
+        /**
+         * Returns true if field success is set (has been assigned a value) and false otherwise
+         */
+        public boolean isSetSuccess() {
+            return this.success != null;
+        }
+
+        public void setSuccessIsSet(boolean value) {
+            if (!value) {
+                this.success = null;
+            }
+        }
+
+        public void setFieldValue(_Fields field, java.lang.Object value) {
+            switch (field) {
+                case SUCCESS:
+                    if (value == null) {
+                        unsetSuccess();
+                    } else {
+                        setSuccess((Response) value);
+                    }
+                    break;
+
+            }
+        }
+
+        public java.lang.Object getFieldValue(_Fields field) {
+            switch (field) {
+                case SUCCESS:
+                    return getSuccess();
+
+            }
+            throw new java.lang.IllegalStateException();
+        }
+
+        /**
+         * Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise
+         */
+        public boolean isSet(_Fields field) {
+            if (field == null) {
+                throw new java.lang.IllegalArgumentException();
+            }
+
+            switch (field) {
+                case SUCCESS:
+                    return isSetSuccess();
+            }
+            throw new java.lang.IllegalStateException();
+        }
+
+        @Override
+        public boolean equals(java.lang.Object that) {
+            if (that == null)
+                return false;
+            if (that instanceof guid_result)
+                return this.equals((guid_result) that);
+            return false;
+        }
+
+        public boolean equals(guid_result that) {
+            if (that == null)
+                return false;
+            if (this == that)
+                return true;
+
+            boolean this_present_success = true && this.isSetSuccess();
+            boolean that_present_success = true && that.isSetSuccess();
+            if (this_present_success || that_present_success) {
+                if (!(this_present_success && that_present_success))
+                    return false;
+                if (!this.success.equals(that.success))
+                    return false;
+            }
+
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            int hashCode = 1;
+
+            hashCode = hashCode * 8191 + ((isSetSuccess()) ? 131071 : 524287);
+            if (isSetSuccess())
+                hashCode = hashCode * 8191 + success.hashCode();
+
+            return hashCode;
+        }
+
+        @Override
+        public int compareTo(guid_result other) {
+            if (!getClass().equals(other.getClass())) {
+                return getClass().getName().compareTo(other.getClass().getName());
+            }
+
+            int lastComparison = 0;
+
+            lastComparison = java.lang.Boolean.valueOf(isSetSuccess()).compareTo(other.isSetSuccess());
+            if (lastComparison != 0) {
+                return lastComparison;
+            }
+            if (isSetSuccess()) {
+                lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, other.success);
+                if (lastComparison != 0) {
+                    return lastComparison;
+                }
+            }
+            return 0;
+        }
+
+        public _Fields fieldForId(int fieldId) {
+            return _Fields.findByThriftId(fieldId);
+        }
+
+        public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+            scheme(iprot).read(iprot, this);
+        }
+
+        public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+            scheme(oprot).write(oprot, this);
+        }
+
+        @Override
+        public java.lang.String toString() {
+            java.lang.StringBuilder sb = new java.lang.StringBuilder("guid_result(");
+            boolean first = true;
+
+            sb.append("success:");
+            if (this.success == null) {
+                sb.append("null");
+            } else {
+                sb.append(this.success);
+            }
+            first = false;
+            sb.append(")");
+            return sb.toString();
+        }
+
+        public void validate() throws org.apache.thrift.TException {
+            // check for required fields
+            // check for sub-struct validity
+            if (success != null) {
+                success.validate();
+            }
+        }
+
+        private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+            try {
+                write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+            } catch (org.apache.thrift.TException te) {
+                throw new java.io.IOException(te);
+            }
+        }
+
+        private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, java.lang.ClassNotFoundException {
+            try {
+                read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+            } catch (org.apache.thrift.TException te) {
+                throw new java.io.IOException(te);
+            }
+        }
+
+        private static class guid_resultStandardSchemeFactory implements org.apache.thrift.scheme.SchemeFactory {
+            public guid_resultStandardScheme getScheme() {
+                return new guid_resultStandardScheme();
+            }
+        }
+
+        private static class guid_resultStandardScheme extends org.apache.thrift.scheme.StandardScheme<guid_result> {
+
+            public void read(org.apache.thrift.protocol.TProtocol iprot, guid_result struct) throws org.apache.thrift.TException {
+                org.apache.thrift.protocol.TField schemeField;
+                iprot.readStructBegin();
+                while (true) {
+                    schemeField = iprot.readFieldBegin();
+                    if (schemeField.type == org.apache.thrift.protocol.TType.STOP) {
+                        break;
+                    }
+                    switch (schemeField.id) {
+                        case 0: // SUCCESS
+                            if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+                                struct.success = new Response();
+                                struct.success.read(iprot);
+                                struct.setSuccessIsSet(true);
+                            } else {
+                                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+                            }
+                            break;
+                        default:
+                            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+                    }
+                    iprot.readFieldEnd();
+                }
+                iprot.readStructEnd();
+
+                // check for required fields of primitive type, which can't be checked in the validate method
+                struct.validate();
+            }
+
+            public void write(org.apache.thrift.protocol.TProtocol oprot, guid_result struct) throws org.apache.thrift.TException {
+                struct.validate();
+
+                oprot.writeStructBegin(STRUCT_DESC);
+                if (struct.success != null) {
+                    oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
+                    struct.success.write(oprot);
+                    oprot.writeFieldEnd();
+                }
+                oprot.writeFieldStop();
+                oprot.writeStructEnd();
+            }
+
+        }
+
+        private static class guid_resultTupleSchemeFactory implements org.apache.thrift.scheme.SchemeFactory {
+            public guid_resultTupleScheme getScheme() {
+                return new guid_resultTupleScheme();
+            }
+        }
+
+        private static class guid_resultTupleScheme extends org.apache.thrift.scheme.TupleScheme<guid_result> {
+
+            @Override
+            public void write(org.apache.thrift.protocol.TProtocol prot, guid_result struct) throws org.apache.thrift.TException {
+                org.apache.thrift.protocol.TTupleProtocol oprot = (org.apache.thrift.protocol.TTupleProtocol) prot;
+                java.util.BitSet optionals = new java.util.BitSet();
+                if (struct.isSetSuccess()) {
+                    optionals.set(0);
+                }
+                oprot.writeBitSet(optionals, 1);
+                if (struct.isSetSuccess()) {
+                    struct.success.write(oprot);
+                }
+            }
+
+            @Override
+            public void read(org.apache.thrift.protocol.TProtocol prot, guid_result struct) throws org.apache.thrift.TException {
                 org.apache.thrift.protocol.TTupleProtocol iprot = (org.apache.thrift.protocol.TTupleProtocol) prot;
                 java.util.BitSet incoming = iprot.readBitSet(1);
                 if (incoming.get(0)) {

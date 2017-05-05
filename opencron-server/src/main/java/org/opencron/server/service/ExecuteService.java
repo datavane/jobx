@@ -494,8 +494,8 @@ public class ExecuteService implements Job {
      * 任务执行前 检测通信
      */
     private void checkPing(JobVo job, Record record) throws PingException {
-        Response response = ping(job.getAgent());
-        if ( response==null || !response.isSuccess() ) {
+        boolean ping = ping(job.getAgent());
+        if ( ! ping ) {
             record.setStatus(RunStatus.DONE.getStatus());//已完成
             record.setReturnCode(StatusCode.ERROR_PING.getValue());
 
@@ -510,11 +510,22 @@ public class ExecuteService implements Job {
         }
     }
 
-    public Response ping(Agent agent) {
+    public boolean ping(Agent agent) {
         try {
-            return opencronCaller.call(Request.request(agent.getIp(), agent.getPort(), Action.PING, agent.getPassword()).putParam("serverPort", OpencronMonitor.port + ""), agent);
+            Response response = opencronCaller.call(Request.request(agent.getIp(), agent.getPort(), Action.PING, agent.getPassword()).putParam("serverPort", OpencronMonitor.port + ""), agent);
+            return response!=null && response.isSuccess();
         } catch (Exception e) {
             logger.error("[opencron]ping failed,host:{},port:{}", agent.getIp(), agent.getPort());
+            return false;
+        }
+    }
+
+    public String guid(Agent agent) {
+        try {
+            Response response = opencronCaller.call(Request.request(agent.getIp(), agent.getPort(), Action.GUID,agent.getPassword()), agent);
+            return response.getMessage();
+        } catch (Exception e) {
+            logger.error("[opencron]getguid failed,host:{},port:{}", agent.getIp(), agent.getPort());
             return null;
         }
     }
@@ -580,4 +591,6 @@ public class ExecuteService implements Job {
         logger.error(errorInfo, e);
         return errorInfo;
     }
+
+
 }

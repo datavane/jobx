@@ -30,7 +30,8 @@ public enum Action implements org.apache.thrift.TEnum {
   PASSWORD(4),
   KILL(5),
   PROXY(6),
-  RESTART(7);
+  GUID(7),
+  RESTART(8);
 
   private final int value;
 
@@ -66,6 +67,8 @@ public enum Action implements org.apache.thrift.TEnum {
       case 6:
         return PROXY;
       case 7:
+        return GUID;
+      case 8:
         return RESTART;
       default:
         return null;

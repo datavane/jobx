@@ -96,7 +96,7 @@ public class AgentProcessor implements Opencron.Iface {
             }
         }
 
-        return Response.response(request).setSuccess(true).setMessage(MacUtils.getMacAddress()).setExitCode(Opencron.StatusCode.SUCCESS_EXIT.getValue()).end();
+        return Response.response(request).setSuccess(true).setExitCode(Opencron.StatusCode.SUCCESS_EXIT.getValue()).end();
     }
 
     @Override
@@ -389,6 +389,15 @@ public class AgentProcessor implements Opencron.Iface {
         transport.close();
         return response;
     }
+
+    @Override
+    public Response guid(Request request) throws TException {
+        if (!this.password.equalsIgnoreCase(request.getPassword())) {
+            return errorPasswordResponse(request);
+        }
+        return Response.response(request).setSuccess(true).setMessage(MacUtils.getMacAddress()).setExitCode(Opencron.StatusCode.SUCCESS_EXIT.getValue()).end();
+    }
+
 
     /**
      *重启前先检查密码,密码不正确返回Response,密码正确则直接执行重启

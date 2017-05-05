@@ -98,8 +98,7 @@
                                         },
                                         dataType:"html",
                                         success: function (data) {
-                                            data = eval("("+data+")");
-                                            if (data.success == "true") {
+                                            if (data == "true") {
                                                 $("#agent").submit();
                                                 return;
                                             } else {
@@ -179,9 +178,23 @@
                 },
                 dataType:"html",
                 success: function (data) {
-                        data = eval("("+data+")");
-                        if (data.success == "true") {
-                        $("#machineId").val(data.machineId);
+                    if (data == "true") {
+                        $.ajax({
+                            headers: {"csrf": "${csrf}"},
+                            type: "POST",
+                            url: "${contextPath}/verify/guid",
+                            data: {
+                                "proxy": proxy || 0,
+                                "proxyId": proxyId,
+                                "ip": ip,
+                                "port": port,
+                                "password": calcMD5(password)
+                            },
+                            dataType:"html",
+                            success:function(data){
+                                $("#machineId").val(data);
+                            }
+                        });
                         $("#pingResult").html("<font color='green'>" + '<i class="glyphicon glyphicon-ok-sign"></i>&nbsp;通信正常' + "</font>");
                         return;
                     } else {

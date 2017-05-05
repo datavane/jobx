@@ -65,14 +65,12 @@ public class VerifyController extends BaseController {
         agent.setPort(port);
         agent.setPassword(password);
 
-        String format = "{success:'%s',machineId:'%s'}";
-
         if (proxy == Opencron.ConnType.PROXY.getType()) {
             agent.setProxy(Opencron.ConnType.CONN.getType());
             if (proxyId != null) {
                 Agent proxyAgent = agentService.getAgent(proxyId);
                 if (proxyAgent == null) {
-                    WebUtils.writeJson(response, String.format(format,"false",""));
+                    WebUtils.writeHtml(response,"false");
                     return;
                 }
                 agent.setProxyAgent(proxyId);
@@ -80,12 +78,37 @@ public class VerifyController extends BaseController {
                 agent.setProxy(Opencron.ConnType.PROXY.getType());
             }
         }
-        Response resp = executeService.ping(agent);
-        if (resp!=null&&resp.isSuccess()) {
-            WebUtils.writeJson(response, String.format(format,"true",resp.getMessage()));
+        boolean ping = executeService.ping(agent);
+        if (ping) {
+            WebUtils.writeHtml(response,"true");
         } else {
             logger.error(String.format("validate ip:%s,port:%s cannot ping!", agent.getIp(), port));
-            WebUtils.writeJson(response, String.format(format,"false",""));
+            WebUtils.writeHtml(response,"false");
         }
+    }
+
+    @RequestMapping("/guid")
+    public void getGuid(int proxy, Long proxyId, String ip, Integer port, String password, HttpServletResponse response) {
+        Agent agent = new Agent();
+        agent.setProxy(proxy);
+        agent.setIp(ip);
+        agent.setPort(port);
+        agent.setPassword(password);
+
+        if (proxy == Opencron.ConnType.PROXY.getType()) {
+            agent.setProxy(Opencron.ConnType.CONN.getType());
+            if (proxyId != null) {
+                Agent proxyAgent = agentService.getAgent(proxyId);
+                if (proxyAgent == null) {
+                    WebUtils.writeHtml(response,"");
+                    return;
+                }
+                agent.setProxyAgent(proxyId);
+                //需要代理..
+                agent.setProxy(Opencron.ConnType.PROXY.getType());
+            }
+        }
+        String guid = executeService.guid(agent);
+        WebUtils.writeHtml(response,guid);
     }
 }
