@@ -495,7 +495,7 @@ public class ExecuteService implements Job {
      */
     private void checkPing(JobVo job, Record record) throws PingException {
         Response response = ping(job.getAgent());
-        if ( response!=null && response.isSuccess() ) {
+        if ( response==null || !response.isSuccess() ) {
             record.setStatus(RunStatus.DONE.getStatus());//已完成
             record.setReturnCode(StatusCode.ERROR_PING.getValue());
 
