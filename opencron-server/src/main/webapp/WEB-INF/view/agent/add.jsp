@@ -96,8 +96,9 @@
                                             "port": port,
                                             "password": calcMD5(password)
                                         },
+                                        dataType:"json",
                                         success: function (data) {
-                                            if (data == "true") {
+                                            if (data.success == "true") {
                                                 $("#agent").submit();
                                                 return;
                                             } else {
@@ -175,8 +176,10 @@
                     "port": port,
                     "password": calcMD5(password)
                 },
+                dataType:"json",
                 success: function (data) {
-                    if (data == "true") {
+                    if (data.success == "true") {
+                        $("#macId").val(data.macId);
                         $("#pingResult").html("<font color='green'>" + '<i class="glyphicon glyphicon-ok-sign"></i>&nbsp;通信正常' + "</font>");
                         return;
                     } else {
@@ -321,6 +324,7 @@
         <div class="tile p-15">
             <form class="form-horizontal" role="form" id="agent" action="${contextPath}/agent/add" method="post"></br>
                 <input type="hidden" name="csrf" value="${csrf}">
+                <input type="hidden" name="macId" id="macId" value="">
                 <div class="form-group">
                     <label for="name" class="col-lab control-label"><i class="glyphicon glyphicon-leaf"></i>&nbsp;&nbsp;执行器名：</label>
                     <div class="col-md-10">

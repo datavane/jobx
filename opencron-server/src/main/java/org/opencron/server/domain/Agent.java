@@ -39,6 +39,9 @@ public class Agent implements Serializable {
     @GeneratedValue
     private Long agentId;
 
+    //执行器机器的唯一id(当前取的是机器的MAC地址)
+    private String machineId;
+
     //代理执行器的Id
     private Long proxyAgent;
 
@@ -75,6 +78,14 @@ public class Agent implements Serializable {
 
     public void setIp(String ip) {
         this.ip = ip;
+    }
+
+    public String getMachineId() {
+        return machineId;
+    }
+
+    public void setMachineId(String machineId) {
+        this.machineId = machineId;
     }
 
     public Integer getPort() {

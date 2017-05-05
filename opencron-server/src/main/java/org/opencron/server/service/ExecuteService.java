@@ -494,7 +494,8 @@ public class ExecuteService implements Job {
      * 任务执行前 检测通信
      */
     private void checkPing(JobVo job, Record record) throws PingException {
-        if (!ping(job.getAgent())) {
+        Response response = ping(job.getAgent());
+        if ( response!=null && response.isSuccess() ) {
             record.setStatus(RunStatus.DONE.getStatus());//已完成
             record.setReturnCode(StatusCode.ERROR_PING.getValue());
 
@@ -509,13 +510,12 @@ public class ExecuteService implements Job {
         }
     }
 
-    public boolean ping(Agent agent) {
+    public Response ping(Agent agent) {
         try {
-            Response response = opencronCaller.call(Request.request(agent.getIp(), agent.getPort(), Action.PING, agent.getPassword()).putParam("serverPort", OpencronMonitor.port + ""), agent);
-            return response.isSuccess();
+            return opencronCaller.call(Request.request(agent.getIp(), agent.getPort(), Action.PING, agent.getPassword()).putParam("serverPort", OpencronMonitor.port + ""), agent);
         } catch (Exception e) {
             logger.error("[opencron]ping failed,host:{},port:{}", agent.getIp(), agent.getPort());
-            return false;
+            return null;
         }
     }
 

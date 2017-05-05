@@ -22,6 +22,7 @@
 package org.opencron.server.controller;
 
 import org.opencron.common.job.Opencron;
+import org.opencron.common.job.Response;
 import org.opencron.common.utils.WebUtils;
 import org.opencron.server.domain.Agent;
 import org.opencron.server.service.AgentService;
@@ -58,19 +59,20 @@ public class VerifyController extends BaseController {
 
     @RequestMapping("/ping")
     public void validatePing(int proxy, Long proxyId, String ip, Integer port, String password, HttpServletResponse response) {
-        String pass = "false";
         Agent agent = new Agent();
         agent.setProxy(proxy);
         agent.setIp(ip);
         agent.setPort(port);
         agent.setPassword(password);
 
+        String format = "{success:'%s',macId:'%s'}";
+
         if (proxy == Opencron.ConnType.PROXY.getType()) {
             agent.setProxy(Opencron.ConnType.CONN.getType());
             if (proxyId != null) {
                 Agent proxyAgent = agentService.getAgent(proxyId);
                 if (proxyAgent == null) {
-                    WebUtils.writeHtml(response, "false");
+                    WebUtils.writeJson(response, String.format(format,"false",""));
                     return;
                 }
                 agent.setProxyAgent(proxyId);
@@ -78,12 +80,12 @@ public class VerifyController extends BaseController {
                 agent.setProxy(Opencron.ConnType.PROXY.getType());
             }
         }
-        boolean ping = executeService.ping(agent);
-        if (!ping) {
-            logger.error(String.format("validate ip:%s,port:%s cannot ping!", agent.getIp(), port));
+        Response resp = executeService.ping(agent);
+        if (resp!=null&&resp.isSuccess()) {
+            WebUtils.writeJson(response, String.format(format,"true",resp.getMessage()));
         } else {
-            pass = "true";
+            logger.error(String.format("validate ip:%s,port:%s cannot ping!", agent.getIp(), port));
+            WebUtils.writeJson(response, String.format(format,"false",""));
         }
-        WebUtils.writeHtml(response, pass);
     }
 }

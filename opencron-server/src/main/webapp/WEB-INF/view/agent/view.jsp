@@ -292,8 +292,9 @@
                                     "port": port,
                                     "password": password
                                 },
+                                dataType:"json",
                                 success: function (data) {
-                                    if (data == "true") {
+                                    if (data.success == "true") {
                                         canSave(proxy, id, name, port, warning, mobiles, email);
                                         return false;
                                     } else {
@@ -570,13 +571,12 @@
                     "port": port,
                     "password": password
                 },
+                dataType:'json',
                 success: function (data) {
-                    if (data == "true") {
+                    if (data.success == "true") {
                         $("#pingResult").html("<font color='green'>" + '<i class="glyphicon glyphicon-ok-sign"></i>&nbsp;通信正常' + "</font>");
-
                     } else {
                         $("#pingResult").html("<font color='red'>" + '<i class="glyphicon glyphicon-remove-sign"></i>&nbsp;通信失败' + "</font>");
-
                     }
                 },
                 error: function () {

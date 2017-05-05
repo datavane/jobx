@@ -25,6 +25,7 @@ package org.opencron.server.service;
 import java.util.Collections;
 import java.util.List;
 
+import org.opencron.common.job.Response;
 import org.opencron.common.utils.CommonUtils;
 import org.opencron.server.dao.QueryDao;
 import org.opencron.server.domain.User;
@@ -191,7 +192,8 @@ public class AgentService {
         boolean verify;
         if (type) {//直接输入的密钥
             agent.setPassword(pwd0);
-            verify = executeService.ping(agent);
+            Response response = executeService.ping(agent);
+            verify = response!=null&&response.isSuccess();
         } else {//密码...
             verify = DigestUtils.md5Hex(pwd0).equals(agent.getPassword());
         }
@@ -231,5 +233,10 @@ public class AgentService {
             agent.setUsers(getAgentUsers(agent));
         }
         return agent;
+    }
+
+    public Agent getAgentByMachineId(String machineId) {
+        String sql = "SELECT * FROM T_AGENT WHERE deleted=0 AND machineId=?";
+        return queryDao.sqlUniqueQuery(Agent.class,sql,machineId);
     }
 }

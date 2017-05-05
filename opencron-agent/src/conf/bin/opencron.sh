@@ -230,10 +230,10 @@ case "$1" in
                     OPENCRON_PASSWORD=$2;
                     shift 2;;
                 -s|--server)
-                     OPENCRON_SERVERURL=$2;
+                     OPENCRON_SERVER=$2;
                      shift 2;;
                 -k|--key)
-                     OPENCRON_KEY=$2;
+                     OPENCRON_REGKEY=$2;
                      shift 2;;
                 --) break ;;
                 *)
@@ -250,8 +250,17 @@ case "$1" in
         fi
 
         if [ -z "$OPENCRON_PASSWORD" ];then
-            OPENCRON_PASSWORD=opencron;
-            echo "opencron password not input,will be used password:opencron"
+            #.password file not exists
+            if [ ! -f "$OPENCRON_BASE/.password" ];then
+                  OPENCRON_PASSWORD="opencron";
+                  cho "opencron password not input,will be used password:opencron"
+            else
+                #.password file already exists but empty
+               if [ x`cat "$OPENCRON_BASE/.password"` = x"" ];then
+                  OPENCRON_PASSWORD=opencron;
+                  cho "opencron password not input,will be used password:opencron"
+               fi
+            fi
         fi
 
         if [ ! -z "$OPENCRON_PID" ]; then
@@ -301,8 +310,8 @@ case "$1" in
         -Dopencron.pid="$OPENCRON_PID" \
         -Djava.io.tmpdir="$OPENCRON_TMPDIR" \
         -Dopencron.port="$OPENCRON_PORT" \
-        -Dopencron.serverurl="$OPENCRON_SERVERURL" \
-        -Dopencron.regkey="$OPENCRON_KEY" \
+        -Dopencron.server="$OPENCRON_SERVER" \
+        -Dopencron.regkey="$OPENCRON_REGKEY" \
         -Dopencron.password="$OPENCRON_PASSWORD" \
         -Dopencron.shutdown="$OPENCRON_SHUTDOWNPORT" \
         org.opencron.agent.Bootstrap start \

@@ -31,10 +31,7 @@ public class RegDemo {
     public static void main(String[] args) {
 
 
-        String str = "id=1213&csrf=0c9a2fbd97c64534aa2c368ddd66becf?";
 
-        String xx1 = str.replaceAll("\\?$","");
-        System.out.println(xx1);
 
     }
 }

@@ -13,41 +13,46 @@ public final class Globals {
     /**
      * port
      */
-    public static String OPENCRON_PORT = System.getProperty("opencron.port");
+    public static final String OPENCRON_PORT = System.getProperty("opencron.port");
     /**
      * password
      */
-    public static String OPENCRON_PASSWORD = System.getProperty("opencron.password");
+    public static final String OPENCRON_PASSWORD = System.getProperty("opencron.password");
+
+    /**
+     * agent default password
+     */
+    public static final String OPENCRON_DEFPASSWORD = "opencron";
 
     /**
      * serverurl
      */
-    public static String OPENCRON_SERVERURL = System.getProperty("opencron.serverurl");
+    public static final String OPENCRON_SERVER = System.getProperty("opencron.server");
     /**
      * regkey
      */
-    public static String OPENCRON_REGKEY = System.getProperty("opencron.regkey");
+    public static final String OPENCRON_REGKEY = System.getProperty("opencron.regkey");
 
     /**
      * pid
      */
-    public static File OPENCRON_PID_FILE = new File(System.getProperty("opencron.pid"));
+    public static final File OPENCRON_PID_FILE = new File(System.getProperty("opencron.pid"));
 
     /**
      * password file
      */
 
-    public static File OPENCRON_PASSWORD_FILE = new File(OPENCRON_HOME + File.separator + ".password");
+    public static final File OPENCRON_PASSWORD_FILE = new File(OPENCRON_HOME + File.separator + ".password");
 
     /**
      * monitor file
      */
-    public static File OPENCRON_MONITOR_SHELL = new File(OPENCRON_HOME + "/bin/monitor.sh");
+    public static final File OPENCRON_MONITOR_SHELL = new File(OPENCRON_HOME + "/bin/monitor.sh");
 
     /**
      * kill file
      */
-    public static File OPENCRON_KILL_SHELL = new File(OPENCRON_HOME + "/bin/kill.sh");
+    public static final File OPENCRON_KILL_SHELL = new File(OPENCRON_HOME + "/bin/kill.sh");
 
 
     public static String OPENCRON_SOCKET_ADDRESS;

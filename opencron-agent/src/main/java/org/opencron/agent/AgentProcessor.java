@@ -23,6 +23,7 @@
 package org.opencron.agent;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import org.opencron.common.job.*;
 import org.opencron.common.utils.*;
 import org.apache.commons.exec.*;
@@ -95,7 +96,7 @@ public class AgentProcessor implements Opencron.Iface {
             }
         }
 
-        return Response.response(request).setSuccess(true).setExitCode(Opencron.StatusCode.SUCCESS_EXIT.getValue()).end();
+        return Response.response(request).setSuccess(true).setMessage(MacUtils.getMacAddress()).setExitCode(Opencron.StatusCode.SUCCESS_EXIT.getValue()).end();
     }
 
     @Override
@@ -442,6 +443,32 @@ public class AgentProcessor implements Opencron.Iface {
         return resultMap;
     }
 
+    public boolean register() {
+        if (CommonUtils.notEmpty(Globals.OPENCRON_SERVER)) {
+            String mac = MacUtils.getMacAddress();
+            String passowrd = IOUtils.readText(Globals.OPENCRON_PASSWORD_FILE, "UTF-8").trim().toLowerCase();
+            String params = "machineId=%s&password=%s&port=%d&key=%s";
+            try {
+                String result = HttpUtils.doPost(
+                        Globals.OPENCRON_SERVER+"/agent/autoreg",
+                        String.format(params,mac,passowrd,Globals.OPENCRON_PORT,Globals.OPENCRON_REGKEY),
+                        "UTF-8");
+                if (result==null) {
+                    return false;
+                }
+                JSONObject jsonObject = JSON.parseObject(result);
+                if (jsonObject.get("status").toString().equals("200")) {
+                    return true;
+                }
+                logger.error("[opencron:agent auto regsiter error:{}]",jsonObject.get("message"));
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+        return false;
+    }
+
     class AgentHeartBeat {
 
         private String serverIp;
@@ -491,8 +518,15 @@ public class AgentProcessor implements Opencron.Iface {
                         } catch (IOException e) {
                             logger.debug("[opencron]:heartbeat error:{}", e.getMessage());
                             try {
+                                int tryIndex = 0;
+                                boolean autoReg = false;
+                                //失联后自动发起注册...
+                                while (!autoReg||tryIndex<3) {
+                                    autoReg = register();
+                                    ++tryIndex;
+                                }
                                 AgentHeartBeat.this.stop();
-                            } catch (IOException e1) {
+                            } catch (Exception e1) {
                                 logger.debug("[opencron]:heartbeat error:{}", e1.getMessage());
                             }
                         }

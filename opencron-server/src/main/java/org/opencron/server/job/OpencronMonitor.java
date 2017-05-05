@@ -21,6 +21,7 @@
 
 package org.opencron.server.job;
 
+import org.opencron.common.job.Response;
 import org.opencron.common.utils.CommonUtils;
 import org.opencron.common.utils.HttpUtils;
 import org.opencron.server.domain.Agent;
@@ -110,7 +111,8 @@ public class OpencronMonitor implements Serializable {
                 if (agents.size() != successConnStatus.size()) {
                     for (Agent agent : agents) {
                         if (successConnStatus.get(agent) == null) {
-                            boolean ping = executeService.ping(agent);
+                            Response response = executeService.ping(agent);
+                            boolean ping = response!=null&&response.isSuccess();
                             if (ping) {
                                 agent.setStatus(true);
                                 agentService.addOrUpdate(agent);
@@ -135,7 +137,8 @@ public class OpencronMonitor implements Serializable {
                     Agent agent = entry.getKey();
                     //已经失联的状态,再次通知连接
                     if (!agent.getStatus()) {
-                        boolean ping = executeService.ping(agent);
+                        Response response = executeService.ping(agent);
+                        boolean ping = response!=null&&response.isSuccess();
                         if (ping) {
                             agent.setStatus(true);
                             agentService.addOrUpdate(agent);

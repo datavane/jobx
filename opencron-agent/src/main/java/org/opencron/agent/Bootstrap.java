@@ -146,17 +146,30 @@ public class Bootstrap implements Serializable {
      */
     private void init() throws Exception {
         port = Integer.valueOf(Integer.parseInt(Globals.OPENCRON_PORT));
-        String inputPwd = Globals.OPENCRON_PASSWORD;
-        if (notEmpty(inputPwd)) {
-            this.password = DigestUtils.md5Hex(inputPwd).toLowerCase();
+        String inputPassword = Globals.OPENCRON_PASSWORD;
+        if (notEmpty(inputPassword)) {
             Globals.OPENCRON_PASSWORD_FILE.deleteOnExit();
+            this.password = DigestUtils.md5Hex(inputPassword).toLowerCase();
             IOUtils.writeText(Globals.OPENCRON_PASSWORD_FILE, this.password, CHARSET);
         } else {
-            if (!Globals.OPENCRON_PASSWORD_FILE.exists()) {
-                this.password = DigestUtils.md5Hex(this.password).toLowerCase();
-                IOUtils.writeText(Globals.OPENCRON_PASSWORD_FILE, this.password, CHARSET);
+            boolean writeDefault = false;
+            //.password file already exists
+            if (Globals.OPENCRON_PASSWORD_FILE.exists()) {
+                //read password from .password file
+                String filePassowrd = IOUtils.readText(Globals.OPENCRON_PASSWORD_FILE, CHARSET).trim().toLowerCase();
+                if (notEmpty(filePassowrd)) {
+                    this.password = filePassowrd;
+                }else {
+                    writeDefault = true;
+                }
             } else {
-                password = IOUtils.readText(Globals.OPENCRON_PASSWORD_FILE, CHARSET).trim().toLowerCase();
+                writeDefault = true;
+            }
+
+            if (writeDefault) {
+                this.password = DigestUtils.md5Hex(Globals.OPENCRON_DEFPASSWORD).toLowerCase();
+                Globals.OPENCRON_PASSWORD_FILE.deleteOnExit();
+                IOUtils.writeText(Globals.OPENCRON_PASSWORD_FILE, this.password, CHARSET);
             }
         }
     }
@@ -188,11 +201,7 @@ public class Bootstrap implements Serializable {
              */
             IOUtils.writeText(Globals.OPENCRON_PID_FILE, getPid(), CHARSET);
 
-            if(Globals.OPENCRON_SERVERURL!=null) {
-                String params = "";
-                //发送自动注册请求
-                HttpUtils.doPost(Globals.OPENCRON_SERVERURL,params,"UTF-8");
-            }
+            agentProcessor.register();
 
             //new thread to start for thrift server
             new Thread(new Runnable() {

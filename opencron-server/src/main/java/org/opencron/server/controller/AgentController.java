@@ -28,7 +28,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.alibaba.fastjson.JSON;
+import org.apache.http.HttpRequest;
+import org.apache.http.HttpResponse;
 import org.opencron.common.job.Opencron;
+import org.opencron.common.utils.CommonUtils;
+import org.opencron.common.utils.HttpUtils;
+import org.opencron.common.utils.PropertyPlaceholder;
 import org.opencron.server.job.OpencronTools;
 import org.opencron.server.service.ExecuteService;
 import org.opencron.server.tag.PageBean;
@@ -112,6 +117,45 @@ public class AgentController extends BaseController {
         agent.setUpdateTime(new Date());
         agentService.addOrUpdate(agent);
         return "redirect:/agent/view?csrf=" + OpencronTools.getCSRF(session);
+    }
+
+    @RequestMapping("/autoreg")
+    public void autoReg(HttpServletRequest request, HttpServletResponse response, Agent agent, String key) {
+        String ip = WebUtils.getIp(request);
+        String format = "{status:%d,message:'%s'}";
+        if (ip == null) {
+            WebUtils.writeJson(response, String.format(format,500,"can't get agent'ip"));
+            return;
+        }
+
+        //验证Key是否与服务器端一致
+        String serverAutoRegKey = PropertyPlaceholder.get("opencron.autoRegKey");
+        if (CommonUtils.notEmpty(serverAutoRegKey)) {
+            if (CommonUtils.isEmpty(key) || !key.equals(serverAutoRegKey)) {
+                WebUtils.writeJson(response, String.format(format,400,"autoReg error!"));
+            }
+        }
+
+        Agent dbAgent = agentService.getAgentByMachineId(agent.getMachineId());
+        //agent ip发生改变的情况下，自动重新注册
+        if (dbAgent!=null) {
+            dbAgent.setIp(ip);
+            agentService.addOrUpdate(dbAgent);
+            WebUtils.writeJson(response, String.format(format,200,ip));
+        }else {
+            //新的机器，需要自动注册.
+            agent.setIp(ip);
+            agent.setWarning(false);
+            agent.setMobiles(null);
+            agent.setEmailAddress(null);
+            agent.setProxy(Opencron.ConnType.CONN.getType());
+            agent.setProxyAgent(null);
+            agent.setStatus(true);
+            agent.setDeleted(false);
+            agent.setUpdateTime(new Date());
+            agentService.addOrUpdate(agent);
+            WebUtils.writeJson(response, String.format(format,200,ip));
+        }
     }
 
     @RequestMapping("/editpage")
