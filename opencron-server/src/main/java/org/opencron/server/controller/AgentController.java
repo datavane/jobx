@@ -28,11 +28,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.alibaba.fastjson.JSON;
-import org.apache.http.HttpRequest;
-import org.apache.http.HttpResponse;
 import org.opencron.common.job.Opencron;
 import org.opencron.common.utils.CommonUtils;
-import org.opencron.common.utils.HttpUtils;
 import org.opencron.common.utils.PropertyPlaceholder;
 import org.opencron.server.job.OpencronTools;
 import org.opencron.server.service.ExecuteService;
