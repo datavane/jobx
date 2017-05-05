@@ -218,7 +218,7 @@ fi
 
 case "$1" in
     start)
-        GETOPT_ARGS=`getopt -o P:p: -al port:,password: -- "$@"`
+        GETOPT_ARGS=`getopt -o P:p:s:k: -al port:,password: -- "$@"`
         eval set -- "$GETOPT_ARGS"
         while [ -n "$1" ]
         do
@@ -253,12 +253,12 @@ case "$1" in
             #.password file not exists
             if [ ! -f "$OPENCRON_BASE/.password" ];then
                   OPENCRON_PASSWORD="opencron";
-                  cho "opencron password not input,will be used password:opencron"
+                  echo "opencron password not input,will be used password:opencron"
             else
                 #.password file already exists but empty
                if [ x`cat "$OPENCRON_BASE/.password"` = x"" ];then
                   OPENCRON_PASSWORD=opencron;
-                  cho "opencron password not input,will be used password:opencron"
+                  echo "opencron password not input,will be used password:opencron"
                fi
             fi
         fi

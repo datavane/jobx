@@ -448,6 +448,7 @@ public class AgentProcessor implements Opencron.Iface {
             String mac = MacUtils.getMacAddress();
             String passowrd = IOUtils.readText(Globals.OPENCRON_PASSWORD_FILE, "UTF-8").trim().toLowerCase();
             String params = "machineId=%s&password=%s&port=%d&key=%s";
+            logger.info("[opencron]agent auto register staring:{}",Globals.OPENCRON_SERVER);
             try {
                 String result = HttpUtils.doPost(
                         Globals.OPENCRON_SERVER+"/agent/autoreg",

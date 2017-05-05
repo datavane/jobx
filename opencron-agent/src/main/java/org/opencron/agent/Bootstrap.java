@@ -201,8 +201,6 @@ public class Bootstrap implements Serializable {
              */
             IOUtils.writeText(Globals.OPENCRON_PID_FILE, getPid(), CHARSET);
 
-            agentProcessor.register();
-
             //new thread to start for thrift server
             new Thread(new Runnable() {
                 @Override
@@ -210,6 +208,9 @@ public class Bootstrap implements Serializable {
                     server.serve();
                 }
             }).start();
+
+            agentProcessor.register();
+
             logger.info("[opencron]agent started @ port:{},pid:{}", port, getPid());
         } catch (Exception e) {
             e.printStackTrace();
