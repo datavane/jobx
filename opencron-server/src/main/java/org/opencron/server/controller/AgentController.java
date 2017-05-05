@@ -132,7 +132,7 @@ public class AgentController extends BaseController {
         String serverAutoRegKey = PropertyPlaceholder.get("opencron.autoRegKey");
         if (CommonUtils.notEmpty(serverAutoRegKey)) {
             if (CommonUtils.isEmpty(key) || !key.equals(serverAutoRegKey)) {
-                WebUtils.writeJson(response, String.format(format,400,"autoReg error!"));
+                WebUtils.writeJson(response, String.format(format,400,"auto register key error!"));
             }
         }
 

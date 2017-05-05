@@ -65,7 +65,7 @@ public class VerifyController extends BaseController {
         agent.setPort(port);
         agent.setPassword(password);
 
-        String format = "{success:'%s',macId:'%s'}";
+        String format = "{success:'%s',machineId:'%s'}";
 
         if (proxy == Opencron.ConnType.PROXY.getType()) {
             agent.setProxy(Opencron.ConnType.CONN.getType());
