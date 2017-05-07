@@ -117,7 +117,7 @@ public class AgentController extends BaseController {
     }
 
     @RequestMapping("/autoreg")
-    public void autoReg(HttpServletRequest request, HttpServletResponse response, Agent agent, String key) {
+    public synchronized void autoReg(HttpServletRequest request, HttpServletResponse response, Agent agent, String key) {
         String ip = WebUtils.getIp(request);
         String format = "{status:'%d',message:'%s'}";
         if (ip == null) {
@@ -133,12 +133,17 @@ public class AgentController extends BaseController {
             }
         }
 
+        if (agent.getMachineId()==null) {
+            WebUtils.writeJson(response, String.format(format,500,"can't get agent'macaddress"));
+            return;
+        }
+
         Agent dbAgent = agentService.getAgentByMachineId(agent.getMachineId());
         //agent ip发生改变的情况下，自动重新注册
         if (dbAgent!=null) {
             dbAgent.setIp(ip);
             agentService.addOrUpdate(dbAgent);
-            WebUtils.writeJson(response, String.format(format,200,ip));
+            WebUtils.writeJson(response, String.format(format, 200, ip));
         }else {
             //新的机器，需要自动注册.
             agent.setIp(ip);

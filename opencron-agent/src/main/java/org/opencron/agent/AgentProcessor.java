@@ -395,7 +395,23 @@ public class AgentProcessor implements Opencron.Iface {
         if (!this.password.equalsIgnoreCase(request.getPassword())) {
             return errorPasswordResponse(request);
         }
-        return Response.response(request).setSuccess(true).setMessage(MacUtils.getMacAddress()).setExitCode(Opencron.StatusCode.SUCCESS_EXIT.getValue()).end();
+        String macId = null;
+        try {
+            //多个网卡地址,按照字典顺序把他们连接在一块,用-分割.
+            List<String> macIds = MacUtils.getMacAddressList();
+            if (CommonUtils.notEmpty(macIds)) {
+                TreeSet<String> macSet = new TreeSet<String>(macIds);
+                macId = StringUtils.joinString(macSet,"-");
+            }
+        } catch (IOException e) {
+            logger.error("[opencron]:getMac error:{}",e);
+        }
+
+        Response response = Response.response(request).end();
+        if (notEmpty(macId)) {
+            return response.setMessage(macId).setSuccess(true).setExitCode(Opencron.StatusCode.SUCCESS_EXIT.getValue());
+        }
+        return response.setSuccess(false).setExitCode(Opencron.StatusCode.ERROR_EXIT.getValue());
     }
 
 

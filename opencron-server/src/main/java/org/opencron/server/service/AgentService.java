@@ -236,6 +236,11 @@ public class AgentService {
 
     public Agent getAgentByMachineId(String machineId) {
         String sql = "SELECT * FROM T_AGENT WHERE deleted=0 AND machineId=?";
-        return queryDao.sqlUniqueQuery(Agent.class,sql,machineId);
+        //不能保证macId的唯一性,可能两台机器存在同样的macId,这种概率可以忽略不计,这里为了程序的健壮性...
+        List<Agent> agents = queryDao.sqlQuery(Agent.class,sql,machineId);
+        if (CommonUtils.notEmpty(agents)) {
+            return agents.get(0);
+        }
+        return null;
     }
 }

@@ -38,7 +38,7 @@ public class MacUtils {
     private static final String[] linuxCommand   = { "/sbin/ifconfig", "-a" };
     private static final Pattern  macPattern     = Pattern.compile(".*((:?[0-9a-f]{2}[-:]){5}[0-9a-f]{2}).*", Pattern.CASE_INSENSITIVE);
 
-    private final static List<String> getMacAddressList() throws IOException {
+    public final static List<String> getMacAddressList() throws IOException {
         final ArrayList<String> macAddressList = new ArrayList<String>();
         final String command[];
 
