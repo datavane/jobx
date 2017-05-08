@@ -111,8 +111,7 @@ public class OpencronMonitor implements Serializable {
                 if (agents.size() != successConnStatus.size()) {
                     for (Agent agent : agents) {
                         if (successConnStatus.get(agent) == null) {
-                            Response response = executeService.ping(agent);
-                            boolean ping = response!=null&&response.isSuccess();
+                            boolean ping =  executeService.ping(agent);
                             if (ping) {
                                 agent.setStatus(true);
                                 agentService.addOrUpdate(agent);
@@ -137,8 +136,7 @@ public class OpencronMonitor implements Serializable {
                     Agent agent = entry.getKey();
                     //已经失联的状态,再次通知连接
                     if (!agent.getStatus()) {
-                        Response response = executeService.ping(agent);
-                        boolean ping = response!=null&&response.isSuccess();
+                        boolean ping = executeService.ping(agent);
                         if (ping) {
                             agent.setStatus(true);
                             agentService.addOrUpdate(agent);
