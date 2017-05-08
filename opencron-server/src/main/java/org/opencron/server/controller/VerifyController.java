@@ -22,7 +22,6 @@
 package org.opencron.server.controller;
 
 import org.opencron.common.job.Opencron;
-import org.opencron.common.job.Response;
 import org.opencron.common.utils.WebUtils;
 import org.opencron.server.domain.Agent;
 import org.opencron.server.service.AgentService;
