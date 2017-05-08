@@ -25,7 +25,6 @@ package org.opencron.server.service;
 import java.util.Collections;
 import java.util.List;
 
-import org.opencron.common.job.Response;
 import org.opencron.common.utils.CommonUtils;
 import org.opencron.server.dao.QueryDao;
 import org.opencron.server.domain.User;
