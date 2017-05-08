@@ -153,6 +153,15 @@ public class AgentService {
 
     }
 
+    public synchronized void checkForUpdate(Agent agent) {
+        //从数据库获取最新的agent,防止已经被删除的agent,当在监测时重新给改为非删除...
+        agent = getAgent(agent.getAgentId());
+        //已经删除的过滤掉..
+        if (!agent.getDeleted()) {
+            addOrUpdate(agent);
+        }
+    }
+
     public boolean existsName(Long id, String name) {
         String sql = "SELECT COUNT(1) FROM T_AGENT WHERE deleted=0 AND name=? ";
         if (notEmpty(id)) {
@@ -242,4 +251,6 @@ public class AgentService {
         }
         return null;
     }
+
+
 }

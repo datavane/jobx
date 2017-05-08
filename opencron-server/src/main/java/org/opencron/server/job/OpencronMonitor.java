@@ -113,17 +113,17 @@ public class OpencronMonitor implements Serializable {
                             boolean ping =  executeService.ping(agent);
                             if (ping) {
                                 agent.setStatus(true);
-                                agentService.addOrUpdate(agent);
+                                agentService.checkForUpdate(agent);
                             }else {
                                 if (CommonUtils.isEmpty(agent.getFailTime()) || new Date().getTime() - agent.getFailTime().getTime() >= configService.getSysConfig().getSpaceTime() * 60 * 1000) {
                                     noticeService.notice(agent);
                                     //记录本次任务失败的时间
                                     agent.setFailTime(new Date());
                                     agent.setStatus(false);
-                                    agentService.addOrUpdate(agent);
+                                    agentService.checkForUpdate(agent);
                                 } else if (agent.getStatus()) {
                                     agent.setStatus(false);
-                                    agentService.addOrUpdate(agent);
+                                    agentService.checkForUpdate(agent);
                                 }
                             }
                         }
@@ -138,7 +138,7 @@ public class OpencronMonitor implements Serializable {
                         boolean ping = executeService.ping(agent);
                         if (ping) {
                             agent.setStatus(true);
-                            agentService.addOrUpdate(agent);
+                            agentService.checkForUpdate(agent);
                             continue;
                         }
                     }
@@ -148,16 +148,16 @@ public class OpencronMonitor implements Serializable {
                             //记录本次任务失败的时间
                             agent.setFailTime(new Date());
                             agent.setStatus(false);
-                            agentService.addOrUpdate(agent);
+                            agentService.checkForUpdate(agent);
                         }
                         if (agent.getStatus()) {
                             agent.setStatus(false);
-                            agentService.addOrUpdate(agent);
+                            agentService.checkForUpdate(agent);
                         }
                     } else {
                         if (!agent.getStatus()) {
                             agent.setStatus(true);
-                            agentService.addOrUpdate(agent);
+                            agentService.checkForUpdate(agent);
                         }
                     }
                 }
