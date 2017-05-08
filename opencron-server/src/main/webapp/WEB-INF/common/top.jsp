@@ -191,10 +191,18 @@
 					<i aria-hidden="true" class="fa fa-tachometer"></i><span class="menu-item">作业报告</span>
 				</a>
 			</li>
-			<li class="<c:if test="${fn:contains(uri,'/agent')}">active</c:if>">
-				<a  href="${contextPath}/agent/view?csrf=${csrf}">
-					<i aria-hidden="true" class="fa fa-desktop"></i><span class="menu-item">执行器管理</span>
+			<li class="dropdown <c:if test="${fn:contains(uri,'/agent')}">active</c:if>">
+				<a href="#">
+					<i aria-hidden="true" class="fa fa-desktop" aria-hidden="true"></i><span class="menu-item">执行器管理</span>
 				</a>
+				<ul class="list-unstyled menu-item">
+					<li <c:if test="${fn:contains(uri,'/group')}">class="active"</c:if>>
+						<a href="${contextPath}/agent/group?csrf=${csrf}" class="<c:if test="${fn:contains(uri,'/group')}">active</c:if>">分组管理</a>
+					</li>
+					<li <c:if test="${fn:contains(uri,'/view')}">class="active"</c:if>>
+						<a href="${contextPath}/job/view?csrf=${csrf}" class="<c:if test="${fn:contains(uri,'/view')}">active</c:if>">执行器管理</a>
+					</li>
+				</ul>
 			</li>
 			<li class="dropdown <c:if test="${fn:contains(uri,'/job')}">active</c:if>">
 				<a href="#">
