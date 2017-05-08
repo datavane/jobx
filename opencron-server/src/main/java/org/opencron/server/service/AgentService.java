@@ -118,6 +118,13 @@ public class AgentService {
          */
         boolean update = false;
         if (agent.getAgentId() != null) {
+            //从数据库获取最新的agent,防止已经被删除的agent当在监测时重新给改为非删除...
+            Agent dbAgent = getAgent(agent.getAgentId());
+
+            //已经删除的过滤掉..
+            if (dbAgent.getDeleted()) {
+                return;
+            }
             update = true;
         }
 
@@ -151,15 +158,6 @@ public class AgentService {
          */
         flushAgent();
 
-    }
-
-    public synchronized void checkForUpdate(Agent agent) {
-        //从数据库获取最新的agent,防止已经被删除的agent,当在监测时重新给改为非删除...
-        agent = getAgent(agent.getAgentId());
-        //已经删除的过滤掉..
-        if (!agent.getDeleted()) {
-            addOrUpdate(agent);
-        }
     }
 
     public boolean existsName(Long id, String name) {
