@@ -27,6 +27,7 @@ import java.util.List;
 
 import org.opencron.common.utils.CommonUtils;
 import org.opencron.server.dao.QueryDao;
+import org.opencron.server.domain.AgentGroup;
 import org.opencron.server.domain.User;
 import org.opencron.server.job.OpencronTools;
 import org.opencron.server.tag.PageBean;
@@ -70,6 +71,10 @@ public class AgentService {
             flushAgent();
         }
         return OpencronTools.CACHE.get(OpencronTools.CACHED_AGENT_ID, List.class);
+    }
+
+    public PageBean<AgentGroup> getAgentGroup(HttpSession session, PageBean pageBean) {
+        return queryDao.getPageBySql(pageBean,AgentGroup.class,"SELECT G.*,U.userName FROM T_AGENTGROUP AS G INNER JOIN T_USER AS U ON G.userId=u.userId");
     }
 
     private synchronized void flushAgent() {
