@@ -8,7 +8,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "T_AGENTGROUP")
-public class AgentGroup {
+public class    AgentGroup {
 
     @Id
     @GeneratedValue
