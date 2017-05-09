@@ -23,9 +23,9 @@
         <li class="icon">&#61753;</li>
         当前位置：
         <li><a href="">opencron</a></li>
-        <li><a href=""> 执行器管理</a></li>
+        <li><a href=""> 执行器组管理</a></li>
     </ol>
-    <h4 class="page-title"><i aria-hidden="true" class="fa fa-user"></i>&nbsp;分组管理</h4>
+    <h4 class="page-title"><i aria-hidden="true" class="fa fa-group"></i>&nbsp;分组管理</h4>
     <div class="block-area" id="defaultStyle">
 
         <div style="float: left">

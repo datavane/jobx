@@ -92,7 +92,7 @@
                 <br>
 
                 <div class="form-group" id="agentsDiv" style="display: ${u.roleId eq 999 ? 'none' : 'block'}">
-                    <label class="col-lab control-label"><i class="fa fa-desktop" aria-hidden="true"></i>&nbsp;执行器成员：</label>
+                    <label class="col-lab control-label"><i class="fa fa-group" aria-hidden="true"></i>&nbsp;执行器成员：</label>
                     <div class="col-md-10">
                         <input type="checkbox" id="checkAllInput">全选<span class="tips">&nbsp;&nbsp;&nbsp;<b>*&nbsp;</b>该组下的执行器成员</span></br>
                         <div class="form-control m-b-10 input-sm" id="agent-content" style="height: 150px;overflow: hidden;">
