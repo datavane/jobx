@@ -48,7 +48,7 @@
                 <td class="item"><i class="glyphicon glyphicon-signal"></i>&nbsp;通信状态：</td>
                 <td><c:if test="${agent.status eq false}">
                         <span class="label label-danger">&nbsp;&nbsp;失&nbsp;败&nbsp;&nbsp;</span>
-                        <span style="font-size: 12px">&nbsp;&nbsp;&nbsp;&nbsp;失败时间：<fmt:formatDate value="${agent.failTime}" pattern="yyyy-MM-dd HH:mm:ss"/></span>
+                        <span style="font-size: 12px">&nbsp;&nbsp;&nbsp;&nbsp;失败时间：<fmt:formatDate value="${agent.notifyTime}" pattern="yyyy-MM-dd HH:mm:ss"/></span>
                     </c:if>
                     <c:if test="${agent.status eq true}">
                         <span class="label label-success">&nbsp;&nbsp;成&nbsp;功&nbsp;&nbsp;</span>

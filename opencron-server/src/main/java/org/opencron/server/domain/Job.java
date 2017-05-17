@@ -36,7 +36,11 @@ public class Job implements Serializable {
     private String jobName;
     private Integer cronType;
     private String cronExp;
+
+    @Lob
+    @Column(columnDefinition="TEXT")
     private String command;
+    
     private Integer execType;
     private String comment;
     private Long userId;

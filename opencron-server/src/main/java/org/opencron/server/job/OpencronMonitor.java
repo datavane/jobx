@@ -108,23 +108,26 @@ public class OpencronMonitor implements Serializable {
             public void run() {
                 List<Agent> agents = agentService.getAll();
                 if (agents.size() != successConnStatus.size()) {
-                    for (Agent agent : agents) {
+                    for (Agent agent: agents) {
                         if (successConnStatus.get(agent) == null) {
                             boolean ping =  executeService.ping(agent);
                             if (ping) {
                                 agent.setStatus(true);
                                 agentService.addOrUpdate(agent);
                             }else {
-                                if (CommonUtils.isEmpty(agent.getFailTime()) || new Date().getTime() - agent.getFailTime().getTime() >= configService.getSysConfig().getSpaceTime() * 60 * 1000) {
-                                    noticeService.notice(agent);
-                                    //记录本次任务失败的时间
-                                    agent.setFailTime(new Date());
-                                    agent.setStatus(false);
-                                    agentService.addOrUpdate(agent);
-                                } else if (agent.getStatus()) {
+
+                                if (agent.getStatus()) {
                                     agent.setStatus(false);
                                     agentService.addOrUpdate(agent);
                                 }
+
+                                if (CommonUtils.isEmpty(agent.getNotifyTime()) || new Date().getTime() - agent.getNotifyTime().getTime() >= configService.getSysConfig().getSpaceTime() * 60 * 1000) {
+                                    noticeService.notice(agent);
+                                    //记录本次任务失败的时间
+                                    agent.setNotifyTime(new Date());
+                                    agentService.addOrUpdate(agent);
+                                }
+
                             }
                         }
                     }
@@ -143,11 +146,11 @@ public class OpencronMonitor implements Serializable {
                         }
                     }
                     if (System.currentTimeMillis() - lastAliveTime > OpencronMonitor.this.keepAliveDelay) {
-                        if (CommonUtils.isEmpty(agent.getFailTime()) || new Date().getTime() - agent.getFailTime().getTime() >= configService.getSysConfig().getSpaceTime() * 60 * 1000) {
+                        if (CommonUtils.isEmpty(agent.getNotifyTime()) || new Date().getTime() - agent.getNotifyTime().getTime() >= configService.getSysConfig().getSpaceTime() * 60 * 1000) {
+                            agent.setStatus(false);
                             noticeService.notice(agent);
                             //记录本次任务失败的时间
-                            agent.setFailTime(new Date());
-                            agent.setStatus(false);
+                            agent.setNotifyTime(new Date());
                             agentService.addOrUpdate(agent);
                         }
                         if (agent.getStatus()) {

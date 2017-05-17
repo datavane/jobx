@@ -48,15 +48,15 @@ import java.util.Random;
  */
 public class HttpClientUtils {
 
-    private static PoolingHttpClientConnectionManager cm;
+    private static PoolingHttpClientConnectionManager connectionManager;
     private static String EMPTY_STR = "";
     private static String UTF_8 = "UTF-8";
 
     private static void init() {
-        if (cm == null) {
-            cm = new PoolingHttpClientConnectionManager();
-            cm.setMaxTotal(50);// 整个连接池最大连接数  
-            cm.setDefaultMaxPerRoute(5);// 每路由最大连接数，默认值是2  
+        if (connectionManager == null) {
+            connectionManager = new PoolingHttpClientConnectionManager();
+            connectionManager.setMaxTotal(50);// 整个连接池最大连接数
+            connectionManager.setDefaultMaxPerRoute(5);// 每路由最大连接数，默认值是2
         }
     }
 
@@ -67,7 +67,7 @@ public class HttpClientUtils {
      */
     private static CloseableHttpClient getHttpClient() {
         init();
-        return HttpClients.custom().setConnectionManager(cm).build();
+        return HttpClients.custom().setConnectionManager(connectionManager).build();
     }
 
     private static Random random = new Random();
@@ -203,11 +203,6 @@ public class HttpClientUtils {
      * @return
      */
     private static String getResult(HttpRequestBase request) {
-        int index = random.nextInt(22);
-        String agent = getUserAgent(index);
-        request.setHeader("User-Agent", agent);
-        request.setHeader("Cookie", "bid=Y9MEughkwCA; gr_user_id=d74c974a-5675-4faf-a6d3-542f7b49849d; viewed=\"1230206_1099305_1723199_2130190_1313042_3227098_10734875_1052241_5372651_1130500\"; ll=\"108288\"; _pk_ref.100001.4cf6=%5B%22%22%2C%22%22%2C1490855899%2C%22https%3A%2F%2Fwww.baidu.com%2Fs%3Fwd%3D%25E8%25B1%2586%25E7%2593%25A3%26rsv_spt%3D1%26rsv_iqid%3D0xb2a7de02000083fa%26issp%3D1%26f%3D8%26rsv_bp%3D0%26rsv_idx%3D2%26ie%3Dutf-8%26tn%3Dbaiduhome_pg%26rsv_enter%3D1%26rsv_sug3%3D6%26rsv_sug1%3D4%26rsv_sug7%3D101%26rsv_t%3D9d3aBUJzBPuK4QX0n3jMSa%252FpfM%252F2akwJPgS5fgg3Onp5fn3g3gf6IkW463acRiAOMh9k%22%5D; ps=y; as=\"https://sec.douban.com/b?r=https%3A%2F%2Fmovie.douban.com%2F\"; dbcl2=\"159698227:W0V1jqmwwA0\"; ck=39ep; __utmt=1; ap=1; _vwo_uuid_v2=797335D26DE908ED1F813B6B83509C5F|1058b741a51e80426013cc5e46948a22; push_noty_num=0; push_doumail_num=0; _pk_id.100001.4cf6=58a6e592fe090e49.1490613079.12.1490861349.1490850510.; _pk_ses.100001.4cf6=*; __utma=30149280.561181449.1487580003.1490850510.1490855899.20; __utmb=30149280.19.5.1490859981726; __utmc=30149280; __utmz=30149280.1490753308.11.11.utmcsr=baidu|utmccn=(organic)|utmcmd=organic; __utmv=30149280.15969; __utma=223695111.1019133641.1490613079.1490855899.1490859572.13; __utmb=223695111.0.10.1490859572; __utmc=223695111; __utmz=223695111.1490859572.13.5.utmcsr=baidu|utmccn=(organic)|utmcmd=organic");
-        // CloseableHttpClient httpClient = HttpClients.createDefault();  
         CloseableHttpClient httpClient = getHttpClient();
         try {
             CloseableHttpResponse response = httpClient.execute(request);

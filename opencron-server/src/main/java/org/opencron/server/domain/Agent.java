@@ -57,7 +57,7 @@ public class Agent implements Serializable {
     private String mobiles;
     private Boolean status;
     private Boolean deleted;//是否删除
-    private Date failTime;
+    private Date notifyTime;//失败后发送通知告警的时间
     private String comment;
     private Date updateTime;
 
@@ -146,12 +146,12 @@ public class Agent implements Serializable {
         this.status = status;
     }
 
-    public Date getFailTime() {
-        return failTime;
+    public Date getNotifyTime() {
+        return notifyTime;
     }
 
-    public void setFailTime(Date failTime) {
-        this.failTime = failTime;
+    public void setNotifyTime(Date notifyTime) {
+        this.notifyTime = notifyTime;
     }
 
     public String getComment() {
@@ -226,6 +226,7 @@ public class Agent implements Serializable {
         this.users = users;
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -249,7 +250,7 @@ public class Agent implements Serializable {
         if (getMobiles() != null ? !getMobiles().equals(agent.getMobiles()) : agent.getMobiles() != null) return false;
         if (getStatus() != null ? !getStatus().equals(agent.getStatus()) : agent.getStatus() != null) return false;
         if (getDeleted() != null ? !getDeleted().equals(agent.getDeleted()) : agent.getDeleted() != null) return false;
-        if (getFailTime() != null ? !getFailTime().equals(agent.getFailTime()) : agent.getFailTime() != null)
+        if (getNotifyTime() != null ? !getNotifyTime().equals(agent.getNotifyTime()) : agent.getNotifyTime() != null)
             return false;
         if (getComment() != null ? !getComment().equals(agent.getComment()) : agent.getComment() != null) return false;
         if (getUpdateTime() != null ? !getUpdateTime().equals(agent.getUpdateTime()) : agent.getUpdateTime() != null)
@@ -275,7 +276,7 @@ public class Agent implements Serializable {
         result = 31 * result + (getMobiles() != null ? getMobiles().hashCode() : 0);
         result = 31 * result + (getStatus() != null ? getStatus().hashCode() : 0);
         result = 31 * result + (getDeleted() != null ? getDeleted().hashCode() : 0);
-        result = 31 * result + (getFailTime() != null ? getFailTime().hashCode() : 0);
+        result = 31 * result + (getNotifyTime() != null ? getNotifyTime().hashCode() : 0);
         result = 31 * result + (getComment() != null ? getComment().hashCode() : 0);
         result = 31 * result + (getUpdateTime() != null ? getUpdateTime().hashCode() : 0);
         result = 31 * result + (getProxy() != null ? getProxy().hashCode() : 0);
@@ -300,7 +301,7 @@ public class Agent implements Serializable {
                 ", mobiles='" + mobiles + '\'' +
                 ", status=" + status +
                 ", deleted=" + deleted +
-                ", failTime=" + failTime +
+                ", notifyTime=" + notifyTime +
                 ", comment='" + comment + '\'' +
                 ", updateTime=" + updateTime +
                 ", proxy=" + proxy +

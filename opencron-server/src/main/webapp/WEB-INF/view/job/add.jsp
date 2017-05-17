@@ -601,16 +601,44 @@
                 <div class="form-group">
                     <label for="commandInput" class="col-lab control-label"><i class="glyphicon glyphicon-th-large"></i>&nbsp;&nbsp;执行命令：</label>
                     <div class="col-md-10">
-                        <textarea class="form-control input-sm" id="commandInput" style="height:80px;"></textarea>
+                        <textarea class="form-control input-sm" id="commandInput" style="height:200px;resize:vertical"></textarea>
                         <span class="tips"><b>*&nbsp;</b>请采用unix/linux的shell支持的命令</span>
                     </div>
                 </div><br>
 
                 <div class="form-group">
-                    <label class="col-lab control-label"><i class="glyphicon  glyphicon glyphicon-forward"></i>&nbsp;&nbsp;重新执行：</label>
+                    <label class="col-lab control-label"><i class="glyphicons glyphicons-saw-blade"></i>&nbsp;&nbsp;命令类型：</label>
                     <div class="col-md-10">
-                        <label onclick="showCountDiv()" for="redo01" class="radio-label"><input type="radio" name="redo" value="1" id="redo01" checked>是&nbsp;&nbsp;&nbsp;</label>
-                        <label onclick="hideCountDiv()" for="redo00" class="radio-label"><input type="radio" name="redo" value="0" id="redo00">否</label>&nbsp;&nbsp;&nbsp;
+                        <label for="script-shell" class="radio-label"><input type="radio" name="scriptType" id="script-shell" value="0" checked>shell&nbsp;&nbsp;&nbsp;</label>
+                        <label for="script-python" class="radio-label"><input type="radio" name="scriptType" id="script-python" value="1">python&nbsp;&nbsp;&nbsp;</label>
+                        <label for="script-bat" class="radio-label"><input type="radio" name="scriptType" id="script-bat" value="2">bat&nbsp;&nbsp;&nbsp;</label>
+                        <label for="script-php" class="radio-label"><input type="radio" name="scriptType" id="script-php" value="3">php&nbsp;&nbsp;&nbsp;</label>
+                        <label for="script-powerShell" class="radio-label"><input type="radio" name="scriptType" id="script-powerShell" value="4">powerShell&nbsp;&nbsp;&nbsp;</label>
+                        <br><span class="tips"><b>*&nbsp;</b>该命令的类型</span>
+                    </div>
+                </div><br>
+
+                <div class="form-group">
+                    <label for="runas" class="col-lab control-label"><i class="glyphicons glyphicons-user"></i>&nbsp;&nbsp;运行身份：</label>
+                    <div class="col-md-10">
+                        <input type="text" class="form-control input-sm" id="runas" name="runas" value="root">
+                        <span class="tips"><b>*&nbsp;</b>该任务以哪个身份执行(默认是root)</span>
+                    </div>
+                </div><br>
+
+                <div class="form-group">
+                    <label for="successStatus" class="col-lab control-label"><i class="glyphicons glyphicons-tags"></i>&nbsp;&nbsp;成功标识：</label>
+                    <div class="col-md-10">
+                        <input type="text" class="form-control input-sm" id="successStatus" name="successStatus" value="0">
+                        <span class="tips"><b>*&nbsp;</b>自定义作业执行成功的返回标识(默认执行成功是0)</span>
+                    </div>
+                </div><br>
+
+                <div class="form-group">
+                    <label class="col-lab control-label"><i class="glyphicon  glyphicon glyphicon-forward"></i>&nbsp;&nbsp;失败重跑：</label>
+                    <div class="col-md-10">
+                        <label onclick="showCountDiv()" for="redo01" class="radio-label"><input type="radio" name="redo" value="1" id="redo01">是&nbsp;&nbsp;&nbsp;</label>
+                        <label onclick="hideCountDiv()" for="redo00" class="radio-label"><input type="radio" name="redo" value="0" id="redo00" checked>否</label>&nbsp;&nbsp;&nbsp;
                         <br><span class="tips"><b>*&nbsp;</b>执行失败时是否自动重新执行</span>
                     </div>
                 </div><br>
