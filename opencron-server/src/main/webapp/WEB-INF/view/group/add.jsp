@@ -8,9 +8,9 @@
 <head>
     <jsp:include page="/WEB-INF/common/resource.jsp"/>
 
-    <link rel="stylesheet" href="${contextPath}/bootstrap-select/bootstrap-select.css">
-    <script src="${contextPath}/bootstrap-select/bootstrap-select.js"></script>
-    <script src="${contextPath}/bootstrap-select/defaults-zh_CN.js"></script>
+    <link rel="stylesheet" href="${contextPath}/js/bootstrap-select/bootstrap-select.css">
+    <script src="${contextPath}/js/bootstrap-select/bootstrap-select.js"></script>
+    <script src="${contextPath}/js/bootstrap-select/defaults-zh_CN.js"></script>
 
     <style type="text/css">
         .dropdown-menu {
@@ -130,7 +130,7 @@
                     <label class="col-lab control-label"><i class="fa fa-group" aria-hidden="true"></i>&nbsp;执行器成员：</label>
                     <div class="col-md-10">
                         <div class="input-sm" id="selectpicker-container" style="margin-left: -10px;">
-                            <select class="selectpicker" data-width="auto" multiple data-live-search="true" data-live-search-placeholder="根据名字搜索" data-actions-box="true">
+                            <select class="selectpicker" data-width="auto" multiple data-live-search="true" data-live-search-placeholder="根据执行器名字搜索" data-actions-box="true">
                                 <c:forEach var="g" items="${groups}">
                                     <optgroup label="${g.groupName}">
                                         <c:forEach var="a" items="${g.agents}" >
