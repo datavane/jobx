@@ -198,7 +198,7 @@
 				</a>
 				<ul class="list-unstyled menu-item">
 					<li <c:if test="${fn:contains(uri,'/group')}">class="active"</c:if>>
-						<a href="${contextPath}/agent/group?csrf=${csrf}" class="<c:if test="${fn:contains(uri,'/group')}">active</c:if>">分组管理</a>
+						<a href="${contextPath}/group/view?csrf=${csrf}" class="<c:if test="${fn:contains(uri,'/group')}">active</c:if>">分组管理</a>
 					</li>
 					<li <c:if test="${fn:contains(uri,'/view')}">class="active"</c:if>>
 						<a href="${contextPath}/agent/view?csrf=${csrf}" class="<c:if test="${fn:contains(uri,'/agent')}">active</c:if>">执行器管理</a>

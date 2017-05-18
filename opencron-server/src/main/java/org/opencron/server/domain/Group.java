@@ -1,14 +1,17 @@
 package org.opencron.server.domain;
 
 import javax.persistence.*;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by th on 2017/5/8.
  */
 @Entity
-@Table(name = "T_AGENTGROUP")
-public class    AgentGroup {
+@Table(name = "T_GROUP")
+public class Group {
 
     @Id
     @GeneratedValue
@@ -19,6 +22,14 @@ public class    AgentGroup {
     private String comment;//备注信息
 
     private Long userId;//创建人
+
+    @ManyToMany(cascade = {CascadeType.ALL})
+    @JoinTable(
+            name = "T_AGENT_GROUP",
+            joinColumns =@JoinColumn(name = "groupId"),
+            inverseJoinColumns = @JoinColumn(name = "agentId")
+    )
+    private Set<Agent> agents = new HashSet<Agent>(0);
 
     private Date createTime;
 
@@ -71,5 +82,13 @@ public class    AgentGroup {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public Set<Agent> getAgents() {
+        return agents;
+    }
+
+    public void setAgents(Set<Agent> agents) {
+        this.agents = agents;
     }
 }

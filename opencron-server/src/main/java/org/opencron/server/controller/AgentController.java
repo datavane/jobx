@@ -64,19 +64,6 @@ public class AgentController extends BaseController {
         return "/agent/view";
     }
 
-    @RequestMapping("/group")
-    public String group(HttpSession session, PageBean pageBean) {
-        agentService.getAgentGroup(session, pageBean);
-        return "/group/view";
-    }
-
-    @RequestMapping("/addgroup")
-    public String addgroup(HttpSession session, Model model) {
-        List<Agent> agents = agentService.getAll();
-        model.addAttribute("agents",agents);
-        return "/group/add";
-    }
-
     @RequestMapping("/checkname")
     public void checkName(HttpServletResponse response, Long id, String name) {
         boolean exists = agentService.existsName(id, name);

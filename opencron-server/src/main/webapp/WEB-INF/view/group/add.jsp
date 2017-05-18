@@ -8,6 +8,41 @@
 <head>
     <jsp:include page="/WEB-INF/common/resource.jsp"/>
 
+    <link rel="stylesheet" href="${contextPath}/bootstrap-select/bootstrap-select.css">
+    <script src="${contextPath}/bootstrap-select/bootstrap-select.js"></script>
+    <script src="${contextPath}/bootstrap-select/defaults-zh_CN.js"></script>
+
+    <style type="text/css">
+        .dropdown-menu {
+            background: rgba(25, 25, 25, 0.98) none repeat scroll 0 0;
+            color: #000;
+            margin-top: -1px;
+            overflow: hidden;
+        }
+
+        .dropdown-menu > li > a {
+            color: rgba(195, 195, 195, 0.95);
+            font-family: open-sans-regular;
+        }
+
+        .dropdown-menu > li > a:hover {
+            color: #fff;
+            background-color: rgba(0,0,0,0.95);
+        }
+
+        .dropdown-menu > .selected{
+            background-color: rgba(20,20,20,20.90);
+        }
+
+        .dropdown-header {
+            color: rgba(245, 245, 245, 0.95);
+            display: block;
+            font-size: 12px;
+            line-height: 1.42857;
+            padding: 3px 20px;
+        }
+
+    </style>
     <script type="text/javascript">
 
         function save() {
@@ -94,14 +129,20 @@
                 <div class="form-group" id="agentsDiv" style="display: ${u.roleId eq 999 ? 'none' : 'block'}">
                     <label class="col-lab control-label"><i class="fa fa-group" aria-hidden="true"></i>&nbsp;执行器成员：</label>
                     <div class="col-md-10">
-                        <input type="checkbox" id="checkAllInput">全选<span class="tips">&nbsp;&nbsp;&nbsp;<b>*&nbsp;</b>该组下的执行器成员</span></br>
-                        <div class="form-control m-b-10 input-sm" id="agent-content" style="height: 150px;overflow: hidden;">
-                            <c:forEach var="w" items="${agents}" varStatus="index">
-                                <input type="checkbox" name="agentIds" value="${w.agentId}" id="agent_${w.agentId}" class="each-box form-control input-sm">${w.name}&nbsp;&nbsp;${w.ip}<br>
-                            </c:forEach>
+                        <div class="input-sm" id="selectpicker-container" style="margin-left: -10px;">
+                            <select class="selectpicker" data-width="auto" multiple data-live-search="true" data-live-search-placeholder="根据名字搜索" data-actions-box="true">
+                                <c:forEach var="g" items="${groups}">
+                                    <optgroup label="${g.groupName}">
+                                        <c:forEach var="a" items="${g.agents}" >
+                                            <option>${a.name}</option>
+                                        </c:forEach>
+                                    </optgroup>
+                                </c:forEach>
+                            </select>
                         </div>
                     </div>
                 </div>
+                <br>
 
                 <div class="form-group">
                     <label for="comment" class="col-lab control-label"><i class="glyphicon glyphicon-magnet"></i>&nbsp;&nbsp;描&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;述：</label>
