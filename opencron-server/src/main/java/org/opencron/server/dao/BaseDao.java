@@ -129,7 +129,7 @@ public class BaseDao<T, PK extends Serializable> extends HibernateDao {
             tmpSql = tmpSql.replace(strFinded, strReplace);
         }
 
-        Pattern groupPattern = Pattern.compile(".from.*group\\s+{1,}by\\s+{1,}.*");
+        Pattern groupPattern = Pattern.compile(".from.*group\\s+by\\s+.*");
         Matcher groupMatcher = groupPattern.matcher(sql.toLowerCase());
 
         if (groupMatcher.find()) {

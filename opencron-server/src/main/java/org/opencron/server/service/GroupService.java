@@ -107,7 +107,7 @@ public class GroupService {
     }
 
     public boolean existsName(Long id, String name) {
-        String sql = "SELECT COUNT(1) FROM T_GROUP WHERE name=? ";
+        String sql = "SELECT COUNT(1) FROM T_GROUP WHERE groupName=? ";
         if (notEmpty(id)) {
             sql += " AND groupId != " + id;
         }

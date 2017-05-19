@@ -251,4 +251,8 @@ public class AgentService {
         return null;
     }
 
+    public List<Agent> getAgentByIds(String agentIds) {
+        String sql = "SELECT * FROM T_AGENT WHERE agentId IN (?)";
+        return queryDao.sqlQuery(Agent.class,sql,agentIds);
+    }
 }

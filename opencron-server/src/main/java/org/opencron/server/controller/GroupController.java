@@ -63,22 +63,17 @@ public class GroupController extends BaseController {
     }
 
     @RequestMapping("/checkname")
-    public void checkname(Long id, String name, HttpServletResponse response) {
-        boolean exists = groupService.existsName(id, name);
+    public void checkname(Long id, String groupName, HttpServletResponse response) {
+        boolean exists = groupService.existsName(id, groupName);
         WebUtils.writeHtml(response, exists ? "false" : "true");
     }
 
     @RequestMapping("/save")
     public String save(HttpSession session,Group group, String agentIds){
-        Set<Group> groups = new HashSet<Group>();
-        String ids[] = agentIds.split(",");
-        List<Agent> agents = new ArrayList<Agent>(0);
-        for(String id:ids){
-            Agent agent = agentService.getAgent(Long.parseLong(id));
-            agents.add(agent);
-        }
         group.setCreateTime(new Date());
         group.setUserId(OpencronTools.getUserId(session));
+
+        List<Agent> agents = agentService.getAgentByIds(agentIds);
         group.getAgents().addAll(agents);
         groupService.merge(group);
         return "redirect:/group/view?csrf=" + OpencronTools.getCSRF(session);

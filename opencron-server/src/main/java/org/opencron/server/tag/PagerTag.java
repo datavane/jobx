@@ -133,8 +133,7 @@ public class PagerTag extends SimpleTagSupport {
         super.doTag();
     }
 
-    private void wrapLink(JspWriter out, String href, int curr, String title)
-            throws IOException {
+    private void wrapLink(JspWriter out, String href, int curr, String title) throws IOException {
         out.append("<li><a href=\"").append(href).append(idParameterName).append("=")
                 .append("" + curr).append("&").append(sizeParameterName).append("=")
                 .append("" + size).append("\">").append(title).append("</a></li>");
