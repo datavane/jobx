@@ -12,8 +12,7 @@
     <script src="${contextPath}/js/highcharts/js/highcharts-more.js?resId=${resourceId}"></script>
     <script src="${contextPath}/js/highcharts/js/highcharts-3d.js?resId=${resourceId}"></script>
     <script src="${contextPath}/js/highcharts/js/modules/exporting.js?resId=${resourceId}"></script>
-    <script src="${contextPath}/js/socket/socket.io.js?resId=${resourceId}"></script>
-    <script src="${contextPath}/js/socket/websocket.js?resId=${resourceId}"></script>
+    <script src="${contextPath}/js/socket.io.js?resId=${resourceId}"></script>
     <script src="${contextPath}/js/home.js?resId=${resourceId}"></script>
 
     <style type="text/css">

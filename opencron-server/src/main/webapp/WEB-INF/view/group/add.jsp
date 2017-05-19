@@ -8,9 +8,9 @@
 <head>
     <jsp:include page="/WEB-INF/common/resource.jsp"/>
 
-    <link rel="stylesheet" href="${contextPath}/js/bootstrap-select/bootstrap-select.css">
-    <script src="${contextPath}/js/bootstrap-select/bootstrap-select.js"></script>
-    <script src="${contextPath}/js/bootstrap-select/defaults-zh_CN.js"></script>
+    <link rel="stylesheet" href="${contextPath}/js/bootstrap-select.css">
+    <script src="${contextPath}/js/bootstrap-select.js"></script>
+    <script src="${contextPath}/js/bootstrap-select/bootstrap-select-lang.js"></script>
 
     <style type="text/css">
         .dropdown-menu {
@@ -57,7 +57,7 @@
 
             $("#name").blur(function () {
                 if (!$("#name").val()) {
-                    $("#checkName").html("<font color='red'>" + '<i class="glyphicon glyphicon-remove-sign"></i>&nbsp;请填写/执行器组名' + "</font>");
+                    $("#checkName").html("<font color='red'>" + '<i class="glyphicon glyphicon-remove-sign"></i>&nbsp;请填写执行器组名' + "</font>");
                     return false;
                 }
                 $.ajax({
@@ -69,10 +69,10 @@
                     },
                     success: function (data) {
                         if (data == "true") {
-                            $("#checkName").html("<font color='green'>" + '<i class="glyphicon glyphicon-ok-sign"></i>&nbsp;/执行器组名可用' + "</font>");
+                            $("#checkName").html("<font color='green'>" + '<i class="glyphicon glyphicon-ok-sign"></i>&nbsp;执行器组名可用' + "</font>");
                             return false;
                         } else {
-                            $("#checkName").html("<font color='red'>" + '<i class="glyphicon glyphicon-remove-sign"></i>&nbsp;/执行器组名已存在' + "</font>");
+                            $("#checkName").html("<font color='red'>" + '<i class="glyphicon glyphicon-remove-sign"></i>&nbsp;执行器组名已存在' + "</font>");
                             return false;
                         }
                     },
@@ -82,7 +82,7 @@
                     }
                 });
             }).focus(function () {
-                $("#checkName").html('<b>*&nbsp;</b>/执行器组名称必填');
+                $("#checkName").html('<b>*&nbsp;</b>执行器组名称必填');
             });
 
         });
@@ -115,7 +115,7 @@
 
     <div class="block-area" id="basic">
         <div class="tile p-15">
-            <form class="form-horizontal" role="form" id="agent" action="${contextPath}/group/add" method="post"></br>
+            <form class="form-horizontal" role="form" id="agent" action="${contextPath}/group/add" method="post" onsubmit="return save()"></br>
                 <input type="hidden" name="csrf" value="${csrf}">
                 <div class="form-group">
                     <label for="name" class="col-lab control-label"><i class="glyphicon glyphicon-leaf"></i>&nbsp;&nbsp;执行器组名：</label>
@@ -140,13 +140,14 @@
                                 </c:forEach>
                             </select>
                         </div>
+                        <span class="tips" id="checkGroup" style="margin-top: 6px;position:absolute;"><b>*&nbsp;</b>执行器组成员必填</span>
                     </div>
                 </div>
                 <br>
 
-                <div class="form-group">
+                <div class="form-group" style="margin-top: 25px;">
                     <label for="comment" class="col-lab control-label"><i class="glyphicon glyphicon-magnet"></i>&nbsp;&nbsp;描&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;述：</label>
-                    <div class="col-md-10">
+                    <div class="col-md-10" style="margin-left: 2px;">
                         <textarea class="form-control input-sm" id="comment" name="comment"></textarea>
                     </div>
                 </div>
@@ -154,7 +155,7 @@
 
                 <div class="form-group">
                     <div class="col-md-offset-1 col-md-10">
-                        <button type="button" onclick="save()" class="btn btn-sm m-t-10"><i class="icon">&#61717;</i>&nbsp;保存
+                        <button type="submit" class="btn btn-sm m-t-10"><i class="icon">&#61717;</i>&nbsp;保存
                         </button>&nbsp;&nbsp;
                         <button type="button" onclick="history.back()" class="btn btn-sm m-t-10"><i class="icon">&#61740;</i>&nbsp;取消
                         </button>
