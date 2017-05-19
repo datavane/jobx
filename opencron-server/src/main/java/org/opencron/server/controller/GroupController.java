@@ -70,6 +70,7 @@ public class GroupController extends BaseController {
 
     @RequestMapping("/save")
     public String save(HttpSession session,Group group, String agentIds){
+        Set<Group> groups = new HashSet<Group>();
         String ids[] = agentIds.split(",");
         List<Agent> agents = new ArrayList<Agent>(0);
         for(String id:ids){

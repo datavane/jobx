@@ -23,7 +23,7 @@ public class Group {
 
     private Long userId;//创建人
 
-    @ManyToMany(cascade = {CascadeType.ALL})
+    @ManyToMany(cascade = {CascadeType.MERGE})
     @JoinTable(
             name = "T_AGENT_GROUP",
             joinColumns =@JoinColumn(name = "groupId"),

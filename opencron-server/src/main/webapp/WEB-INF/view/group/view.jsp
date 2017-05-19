@@ -47,6 +47,7 @@
             <thead>
             <tr>
                 <th>分组名称</th>
+                <th>机器台数</th>
                 <th>创建人</th>
                 <th>创建时间</th>
                 <th>备注信息</th>
@@ -58,6 +59,7 @@
                 <c:forEach var="g" items="${pageBean.result}" varStatus="index">
                     <tr>
                         <td><center>${g.groupName}</center></td>
+                        <td>${fn:length(g.agents)}</td>
                         <td>${g.userName}</td>
                         <td><fmt:formatDate value="${g.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                         <td>${g.comment}</td>
