@@ -215,7 +215,7 @@ public class TerminalController extends BaseController {
         if (authStatus.equals(Terminal.AuthStatus.SUCCESS)) {
             User user = OpencronTools.getUser(session);
             term.setUserId(user.getUserId());
-            termService.saveOrUpdate(term);
+            termService.merge(term);
         }
         WebUtils.writeHtml(response, authStatus.status);
     }

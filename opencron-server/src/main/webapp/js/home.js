@@ -213,6 +213,7 @@ function OpencronChart() {
 ;OpencronChart.prototype.render = function () {
     var self = this;
     $(".loader").remove();
+
     //解决子页面登录失联,不能跳到登录页面的bug
     if (!self.diskLoad) {
         self.diskLoad = true;

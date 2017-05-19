@@ -113,7 +113,7 @@ public class AgentService {
     }
 
 
-    public void addOrUpdate(Agent agent) {
+    public void merge(Agent agent) {
         /**
          * 修改过agent
          */
@@ -137,7 +137,7 @@ public class AgentService {
          *
          */
         if (update) {
-            queryDao.save(agent);
+            queryDao.merge(agent);
             /**
              * 获取该执行器下所有的自动执行,并且是quartz类型的作业
              */
@@ -151,7 +151,7 @@ public class AgentService {
                 throw new RuntimeException(e.getCause());
             }
         } else {
-            queryDao.save(agent);
+            queryDao.merge(agent);
         }
 
         /**
@@ -209,7 +209,7 @@ public class AgentService {
                 Boolean flag = executeService.password(agent, pwd1);
                 if (flag) {
                     agent.setPassword(pwd1);
-                    this.addOrUpdate(agent);
+                    this.merge(agent);
                     flushAgent();
                     return "true";
                 } else {

@@ -21,7 +21,11 @@
 
 package org.opencron.server.controller;
 
+import org.apache.http.HttpResponse;
+import org.opencron.common.utils.WebUtils;
+import org.opencron.server.domain.Agent;
 import org.opencron.server.domain.Group;
+import org.opencron.server.job.OpencronTools;
 import org.opencron.server.service.AgentService;
 import org.opencron.server.service.GroupService;
 import org.opencron.server.tag.PageBean;
@@ -30,6 +34,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.*;
 
 
@@ -39,6 +45,9 @@ public class GroupController extends BaseController {
 
     @Autowired
     private GroupService groupService;
+
+    @Autowired
+    private AgentService agentService;
 
     @RequestMapping("/view")
     public String view(PageBean pageBean) {
@@ -51,6 +60,27 @@ public class GroupController extends BaseController {
         List<Group> groups = groupService.getGroupforAgent();
         model.addAttribute("groups",groups);
         return "/group/add";
+    }
+
+    @RequestMapping("/checkname")
+    public void checkname(Long id, String name, HttpServletResponse response) {
+        boolean exists = groupService.existsName(id, name);
+        WebUtils.writeHtml(response, exists ? "false" : "true");
+    }
+
+    @RequestMapping("/save")
+    public String save(HttpSession session,Group group, String agentIds){
+        String ids[] = agentIds.split(",");
+        List<Agent> agents = new ArrayList<Agent>(0);
+        for(String id:ids){
+            Agent agent = agentService.getAgent(Long.parseLong(id));
+            agents.add(agent);
+        }
+        group.setCreateTime(new Date());
+        group.setUserId(OpencronTools.getUserId(session));
+        group.getAgents().addAll(agents);
+        groupService.merge(group);
+        return "redirect:/group/view?csrf=" + OpencronTools.getCSRF(session);
     }
 
 }

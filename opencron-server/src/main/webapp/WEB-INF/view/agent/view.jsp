@@ -758,7 +758,7 @@
                                         <i aria-hidden="true" class="fa fa-lock"></i>
                                     </a>&nbsp;&nbsp;
                                     <a href="#" onclick="remove('${w.agentId}')" title="删除">
-                                        <i aria-hidden="true" class="fa fa-close"></i>
+                                        <i aria-hidden="true" class="fa fa-times"></i>
                                     </a>&nbsp;&nbsp;
                                 </c:if>
                                 <a href="${contextPath}/agent/detail?id=${w.agentId}&csrf=${csrf}" title="查看详情">

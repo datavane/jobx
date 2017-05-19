@@ -2,6 +2,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="cron"  uri="http://www.opencron.org"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%
+    String port = request.getServerPort() == 80 ? "" : (":"+request.getServerPort());
+    String path = request.getContextPath().replaceAll("/$","");
+    String contextPath = request.getScheme()+"://"+request.getServerName()+port+path;
+    pageContext.setAttribute("contextPath",contextPath);
+%>
 
 <c:forEach var="m" items="${message}" varStatus="index">
 

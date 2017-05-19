@@ -125,12 +125,20 @@ public class HibernateDao {
         delete(getClassMetadata(entityClass).instantiate(id, null));
     }
 
-
     @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
-    protected <T> T save(T entity) {
+    protected <T> T merge(T entity) {
         return (T) getSession().merge(entity);
     }
 
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+    protected <T> T save(T entity) {
+        return (T) getSession().save(entity);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+    protected void persist(Object entity) {
+        getSession().persist(entity);
+    }
 
     @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
     protected <T> void save(List<T> entities) {

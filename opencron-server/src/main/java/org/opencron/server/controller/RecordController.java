@@ -140,7 +140,7 @@ public class RecordController extends BaseController {
         if (Opencron.RunStatus.RERUNNING.getStatus().equals(record.getStatus())) {
             //父记录临时改为停止中
             record.setStatus(Opencron.RunStatus.STOPPING.getStatus());
-            recordService.save(record);
+            recordService.merge(record);
             //得到当前正在重跑的子记录
             record = recordService.getReRunningSubJob(recordId);
         }

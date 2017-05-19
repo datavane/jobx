@@ -1,13 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<%
-    String port = request.getServerPort() == 80 ? "" : (":"+request.getServerPort());
-    String path = request.getContextPath().replaceAll("/$","");
-    String contextPath = request.getScheme()+"://"+request.getServerName()+port+path;
-    pageContext.setAttribute("contextPath",contextPath);
-%>
-
 <!DOCTYPE html>
 
 <!--[if IE 9 ]><html class="ie9"><![endif]-->

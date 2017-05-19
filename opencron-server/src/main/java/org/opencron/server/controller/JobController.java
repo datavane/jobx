@@ -157,7 +157,7 @@ public class JobController extends BaseController {
             job.setUserId(OpencronTools.getUserId(session));
             job.setUpdateTime(new Date());
             job.setLastChild(false);
-            job = jobService.addOrUpdate(job);
+            job = jobService.merge(job);
         } else { //流程任务
             Map<String, String[]> map = request.getParameterMap();
             Object[] jobName = map.get("child.jobName");
@@ -257,7 +257,7 @@ public class JobController extends BaseController {
         }
         dbJob.setComment(job.getComment());
         dbJob.setUpdateTime(new Date());
-        jobService.addOrUpdate(dbJob);
+        jobService.merge(dbJob);
         schedulerService.syncJobTigger(dbJob.getJobId(), executeService);
         WebUtils.writeHtml(response, "true");
     }
@@ -269,7 +269,7 @@ public class JobController extends BaseController {
         if (!jobService.checkJobOwner(session, dbJob.getUserId())) return;
         dbJob.setCommand(command);
         dbJob.setUpdateTime(new Date());
-        jobService.addOrUpdate(dbJob);
+        jobService.merge(dbJob);
         schedulerService.syncJobTigger(Opencron.JobType.FLOW.getCode().equals(dbJob.getJobType()) ? dbJob.getFlowId() : dbJob.getJobId(), executeService);
         WebUtils.writeHtml(response, "true");
     }

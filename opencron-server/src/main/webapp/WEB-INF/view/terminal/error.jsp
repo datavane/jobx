@@ -2,12 +2,18 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="cron" uri="http://www.opencron.org" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%
+    String port = request.getServerPort() == 80 ? "" : (":"+request.getServerPort());
+    String path = request.getContextPath().replaceAll("/$","");
+    String contextPath = request.getScheme()+"://"+request.getServerName()+port+path;
+    pageContext.setAttribute("contextPath",contextPath);
+%>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="shortcut icon" href="${contextPath}/img/terminal.png"/>
     <jsp:include page="/WEB-INF/common/resource.jsp"/>
+    <link rel="shortcut icon" href="${contextPath}/img/terminal.png"/>
     <style type="text/css">
         .error_msg {
             color: red;

@@ -8,8 +8,8 @@
 <head>
     <jsp:include page="/WEB-INF/common/resource.jsp"/>
 
-    <link rel="stylesheet" href="${contextPath}/js/bootstrap-select.css">
-    <script src="${contextPath}/js/bootstrap-select.js"></script>
+    <link rel="stylesheet" href="${contextPath}/js/bootstrap-select/bootstrap-select.css">
+    <script src="${contextPath}/js/bootstrap-select/bootstrap-select.js"></script>
     <script src="${contextPath}/js/bootstrap-select/bootstrap-select-lang.js"></script>
 
     <style type="text/css">
@@ -46,17 +46,30 @@
     <script type="text/javascript">
 
         function save() {
-            var name = $("#name").val();
+            var name = $("#groupName").val();
             if (!name) {
-                alert("请填写/执行器组名称!");
+                $("#checkName").html("<font color='red'>" + '<i class="glyphicon glyphicon-remove-sign"></i>&nbsp;请填写执行器组名' + "</font>");
                 return false;
+            }
+
+            var agentIds = $(".selectpicker").val();
+            if (!agentIds){
+                $("#checkGroup").html("<font color='red'>" + '<i class="glyphicon glyphicon-remove-sign"></i>&nbsp;请选择执行器组成员' + "</font>");
+                alert("请选择执行器组成员!");
+                return false;
+            }else {
+                $("#agentIds").val(agentIds);
             }
         }
 
         $(document).ready(function () {
 
-            $("#name").blur(function () {
-                if (!$("#name").val()) {
+            $('.selectpicker').selectpicker({
+                style: 'btn-info'
+            });
+
+            $("#groupName").blur(function () {
+                if (!$("#groupName").val()) {
                     $("#checkName").html("<font color='red'>" + '<i class="glyphicon glyphicon-remove-sign"></i>&nbsp;请填写执行器组名' + "</font>");
                     return false;
                 }
@@ -65,7 +78,7 @@
                     type: "POST",
                     url: "${contextPath}/group/checkname",
                     data: {
-                        "name": $("#name").val()
+                        "groupName": $("#groupName").val()
                     },
                     success: function (data) {
                         if (data == "true") {
@@ -115,12 +128,12 @@
 
     <div class="block-area" id="basic">
         <div class="tile p-15">
-            <form class="form-horizontal" role="form" id="agent" action="${contextPath}/group/add" method="post" onsubmit="return save()"></br>
+            <form class="form-horizontal" role="form" id="agent" action="${contextPath}/group/save" method="post" onsubmit="return save()"></br>
                 <input type="hidden" name="csrf" value="${csrf}">
                 <div class="form-group">
-                    <label for="name" class="col-lab control-label"><i class="glyphicon glyphicon-leaf"></i>&nbsp;&nbsp;执行器组名：</label>
+                    <label for="groupName" class="col-lab control-label"><i class="glyphicon glyphicon-leaf"></i>&nbsp;&nbsp;执行器组名：</label>
                     <div class="col-md-10">
-                        <input type="text" class="form-control input-sm" id="name" name="name">
+                        <input type="text" class="form-control input-sm" id="groupName" name="groupName">
                         <span class="tips" id="checkName"><b>*&nbsp;</b>执行器组名称必填</span>
                     </div>
                 </div>
@@ -130,11 +143,12 @@
                     <label class="col-lab control-label"><i class="fa fa-group" aria-hidden="true"></i>&nbsp;执行器成员：</label>
                     <div class="col-md-10">
                         <div class="input-sm" id="selectpicker-container" style="margin-left: -10px;">
+                            <input type="hidden" name="agentIds" id="agentIds">
                             <select class="selectpicker" data-width="auto" multiple data-live-search="true" data-live-search-placeholder="根据执行器名字搜索" data-actions-box="true">
                                 <c:forEach var="g" items="${groups}">
                                     <optgroup label="${g.groupName}">
                                         <c:forEach var="a" items="${g.agents}" >
-                                            <option>${a.name}</option>
+                                            <option value="${a.agentId}">${a.name}</option>
                                         </c:forEach>
                                     </optgroup>
                                 </c:forEach>

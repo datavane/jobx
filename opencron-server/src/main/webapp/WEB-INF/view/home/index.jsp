@@ -12,7 +12,6 @@
     <script src="${contextPath}/js/highcharts/js/highcharts-more.js?resId=${resourceId}"></script>
     <script src="${contextPath}/js/highcharts/js/highcharts-3d.js?resId=${resourceId}"></script>
     <script src="${contextPath}/js/highcharts/js/modules/exporting.js?resId=${resourceId}"></script>
-    <script src="${contextPath}/js/socket.io.js?resId=${resourceId}"></script>
     <script src="${contextPath}/js/home.js?resId=${resourceId}"></script>
 
     <style type="text/css">
@@ -110,9 +109,6 @@
 
             //跨时段查询任务运行比例
             opencronChart.query();
-
-            //系统实时监控
-            opencronChart.monitor();
 
             $("#queryChart").click(function () {
                 opencronChart.query();
@@ -435,7 +431,7 @@
         </div>
     </div>
 
-    <h4 class="page-title" ><i class="icon">&#61881;</i> &nbsp;监控概况</h4>
+ <%--   <h4 class="page-title" ><i class="icon">&#61881;</i> &nbsp;监控概况</h4>
     <!-- Main Widgets -->
     <div class="block-area" id="monitor" style="margin-top: 0px">
 
@@ -664,7 +660,7 @@
             </div>
         </div>
     </div>
-
+--%>
 </section>
 
 <jsp:include page="/WEB-INF/common/footer.jsp"/>

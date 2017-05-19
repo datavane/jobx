@@ -208,8 +208,8 @@ public class JobService {
     }
 
 
-    public Job addOrUpdate(Job job) {
-        Job saveJob = (Job) queryDao.save(job);
+    public Job merge(Job job) {
+        Job saveJob = (Job) queryDao.merge(job);
         flushJob();
         return saveJob;
     }
@@ -320,7 +320,7 @@ public class JobService {
          * 保存最顶层的父级任务
          */
         if (job.getJobId() != null) {
-            addOrUpdate(job);
+            merge(job);
             /**
              * 当前作业已有的子作业
              */
@@ -347,9 +347,9 @@ public class JobService {
                 delete(hasChild.getJobId());
             }
         } else {
-            Job job1 = addOrUpdate(job);
+            Job job1 = merge(job);
             job1.setFlowId(job1.getJobId());//flowId
-            addOrUpdate(job1);
+            merge(job1);
             job.setJobId(job1.getJobId());
         }
 
@@ -367,7 +367,7 @@ public class JobService {
             child.setWarning(job.getWarning());
             child.setMobiles(job.getMobiles());
             child.setEmailAddress(job.getEmailAddress());
-            addOrUpdate(child);
+            merge(child);
         }
     }
 

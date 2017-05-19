@@ -37,6 +37,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.opencron.common.utils.CommonUtils.notEmpty;
+
 @Service
 @Transactional
 public class GroupService {
@@ -99,4 +101,17 @@ public class GroupService {
         }
         return groups;
     }
+
+    public void merge(Group group) {
+        queryDao.merge(group);
+    }
+
+    public boolean existsName(Long id, String name) {
+        String sql = "SELECT COUNT(1) FROM T_GROUP WHERE name=? ";
+        if (notEmpty(id)) {
+            sql += " AND groupId != " + id;
+        }
+        return (queryDao.getCountBySql(sql, name)) > 0L;
+    }
+
 }

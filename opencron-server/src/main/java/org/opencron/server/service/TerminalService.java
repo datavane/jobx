@@ -93,13 +93,13 @@ public class TerminalService {
         return terminal != null;
     }
 
-    public boolean saveOrUpdate(Terminal term) throws Exception {
+    public boolean merge(Terminal term) throws Exception {
         Terminal dbTerm = queryDao.sqlUniqueQuery(Terminal.class, "SELECT * FROM T_TERMINAL WHERE ID=?", term.getId());
         if (dbTerm != null) {
             term.setId(dbTerm.getId());
         }
         try {
-            queryDao.save(term);
+            queryDao.merge(term);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -166,7 +166,7 @@ public class TerminalService {
     public void login(Terminal terminal) {
         terminal = getById(terminal.getId());
         terminal.setLogintime(new Date());
-        queryDao.save(terminal);
+        queryDao.merge(terminal);
     }
 
     public List<Terminal> getListByUser(User user) {
@@ -176,7 +176,7 @@ public class TerminalService {
 
     public void theme(Terminal terminal, String theme) throws Exception {
         terminal.setTheme(theme);
-        saveOrUpdate(terminal);
+        merge(terminal);
     }
 
     public static class TerminalClient {

@@ -112,7 +112,7 @@ public class AgentController extends BaseController {
         agent.setStatus(true);
         agent.setDeleted(false);
         agent.setUpdateTime(new Date());
-        agentService.addOrUpdate(agent);
+        agentService.merge(agent);
         return "redirect:/agent/view?csrf=" + OpencronTools.getCSRF(session);
     }
 
@@ -142,7 +142,7 @@ public class AgentController extends BaseController {
         //agent ip发生改变的情况下，自动重新注册
         if (dbAgent!=null) {
             dbAgent.setIp(ip);
-            agentService.addOrUpdate(dbAgent);
+            agentService.merge(dbAgent);
             WebUtils.writeJson(response, String.format(format, 200, ip));
         }else {
             //新的机器，需要自动注册.
@@ -157,7 +157,7 @@ public class AgentController extends BaseController {
             agent.setStatus(true);
             agent.setDeleted(false);
             agent.setUpdateTime(new Date());
-            agentService.addOrUpdate(agent);
+            agentService.merge(agent);
             WebUtils.writeJson(response, String.format(format,200,ip));
         }
     }
@@ -189,7 +189,7 @@ public class AgentController extends BaseController {
         }
         agent1.setComment(agent.getComment());
         agent1.setUpdateTime(new Date());
-        agentService.addOrUpdate(agent1);
+        agentService.merge(agent1);
         WebUtils.writeHtml(response, "true");
     }
 

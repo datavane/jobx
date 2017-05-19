@@ -877,7 +877,7 @@
                                     </a>&nbsp;&nbsp;
                                 </span>
                                 <a href="#" onclick="remove('${r.jobId}')" title="删除">
-                                    <i aria-hidden="true" class="fa fa-close"></i>
+                                    <i aria-hidden="true" class="fa fa-times"></i>
                                 </a>&nbsp;&nbsp;
                                 <a href="${contextPath}/job/detail?id=${r.jobId}&csrf=${csrf}" title="查看详情">
                                     <i class="glyphicon glyphicon-eye-open"></i>

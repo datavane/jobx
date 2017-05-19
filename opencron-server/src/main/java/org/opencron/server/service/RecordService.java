@@ -181,8 +181,8 @@ public class RecordService {
                 id);
     }
 
-    public Record save(Record record) {
-        return (Record) queryDao.save(record);
+    public Record merge(Record record) {
+        return (Record) queryDao.merge(record);
     }
 
     public Record get(Long recordId) {

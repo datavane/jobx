@@ -2,6 +2,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="cron"  uri="http://www.opencron.org"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%
+    String port = request.getServerPort() == 80 ? "" : (":"+request.getServerPort());
+    String path = request.getContextPath().replaceAll("/$","");
+    String contextPath = request.getScheme()+"://"+request.getServerName()+port+path;
+    pageContext.setAttribute("contextPath",contextPath);
+%>
 
 <c:forEach var="w" items="${pageBean.result}" varStatus="index">
     <tr>
@@ -38,7 +44,7 @@
                             <i aria-hidden="true" class="fa fa-lock"></i>
                         </a>&nbsp;&nbsp;
                         <a href="#" onclick="remove('${w.agentId}')" title="删除">
-                            <i aria-hidden="true" class="fa fa-close"></i>
+                            <i aria-hidden="true" class="fa fa-times"></i>
                         </a>&nbsp;&nbsp;
                     </c:if>
                     <a href="${contextPath}/agent/detail?id=${w.agentId}&csrf=${csrf}" title="查看详情">

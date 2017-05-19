@@ -69,7 +69,7 @@ public class UserService {
         String saltPassword = Encodes.encodeHex(Digests.sha1(user.getPassword().getBytes(), salt, 1024));
         user.setPassword(saltPassword);
         user.setCreateTime(new Date());
-        queryDao.save(user);
+        queryDao.merge(user);
     }
 
     public User getUserById(Long id) {
@@ -77,7 +77,7 @@ public class UserService {
     }
 
     public void updateUser(User user) {
-        queryDao.save(user);
+        queryDao.merge(user);
     }
 
     public User uploadimg(File file, Long userId) throws IOException {
@@ -98,7 +98,7 @@ public class UserService {
             if (pwd1.equals(pwd2)) {
                 byte[] hashPwd = Digests.sha1(pwd1.getBytes(), salt, 1024);
                 user.setPassword(Encodes.encodeHex(hashPwd));
-                queryDao.save(user);
+                queryDao.merge(user);
                 return "true";
             } else {
                 return "two";

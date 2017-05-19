@@ -114,11 +114,11 @@ public class ExecuteService implements Job {
         record.setJobType(JobType.SINGLETON.getCode());//单一任务
         try {
             //执行前先保存
-            record = recordService.save(record);
+            record = recordService.merge(record);
             //执行前先检测一次通信是否正常
             checkPing(job, record);
             Response response = responseToRecord(job, record);
-            recordService.save(record);
+            recordService.merge(record);
             if (!response.isSuccess()) {
                 //当前的单一任务只运行一次未设置重跑.
                 if (job.getRedo() == 0 || job.getRunCount() == 0) {
@@ -216,14 +216,14 @@ public class ExecuteService implements Job {
 
         try {
             //执行前先保存
-            record = recordService.save(record);
+            record = recordService.merge(record);
             //执行前先检测一次通信是否正常
             checkPing(job, record);
 
             Response result = responseToRecord(job, record);
 
             if (!result.isSuccess()) {
-                recordService.save(record);
+                recordService.merge(record);
                 //被kill,直接退出
                 if (StatusCode.KILL.getValue().equals(result.getExitCode())) {
                     recordService.flowJobDone(record);
@@ -234,12 +234,12 @@ public class ExecuteService implements Job {
             } else {
                 //当前任务是流程任务的最后一个任务,则整个任务运行完毕
                 if (job.getLastChild()) {
-                    recordService.save(record);
+                    recordService.merge(record);
                     recordService.flowJobDone(record);
                 } else {
                     //当前任务非流程任务最后一个子任务,全部流程任务为运行中...
                     record.setStatus(RunStatus.RUNNING.getStatus());
-                    recordService.save(record);
+                    recordService.merge(record);
                 }
                 return true;
             }
@@ -255,7 +255,7 @@ public class ExecuteService implements Job {
             record.setSuccess(ResultStatus.FAILED.getStatus());//程序调用失败
             record.setReturnCode(StatusCode.ERROR_EXEC.getValue());
             record.setEndTime(new Date());
-            recordService.save(record);
+            recordService.merge(record);
             success = false;
             return false;
         } finally {
@@ -329,7 +329,7 @@ public class ExecuteService implements Job {
         Record record = new Record(job);
 
         try {
-            recordService.save(parentRecord);
+            recordService.merge(parentRecord);
             /**
              * 当前重新执行的新纪录
              */
@@ -339,7 +339,7 @@ public class ExecuteService implements Job {
             record.setJobType(jobType.getCode());
             parentRecord.setRedoCount(parentRecord.getRedoCount() + 1);//运行次数
             record.setRedoCount(parentRecord.getRedoCount());
-            record = recordService.save(record);
+            record = recordService.merge(record);
 
             //执行前先检测一次通信是否正常
             checkPing(job, record);
@@ -374,8 +374,8 @@ public class ExecuteService implements Job {
                 parentRecord.setStatus(RunStatus.RERUNDONE.getStatus());
             }
             try {
-                recordService.save(record);
-                recordService.save(parentRecord);
+                recordService.merge(record);
+                recordService.merge(parentRecord);
             } catch (Exception e) {
                 if (e instanceof PacketTooBigException) {
                     record.setMessage(this.loggerError("execute failed(flow job):jobName:%s at ip:%s,port:%d,info:" + PACKETTOOBIG_ERROR, job, e.getMessage(), e));
@@ -416,13 +416,13 @@ public class ExecuteService implements Job {
                             cord.setSuccess(ResultStatus.KILLED.getStatus());//被杀.
                             JobVo job = null;
                             try {
-                                recordService.save(cord);
+                                recordService.merge(cord);
                                 job = jobService.getJobVoById(cord.getJobId());
                                 //向远程机器发送kill指令
                                 opencronCaller.call(Request.request(job.getIp(), job.getPort(), Action.KILL, job.getPassword()).putParam("pid", cord.getPid()), job.getAgent());
                                 cord.setStatus(RunStatus.STOPED.getStatus());
                                 cord.setEndTime(new Date());
-                                recordService.save(cord);
+                                recordService.merge(cord);
                                 loggerInfo("killed successful :jobName:{} at ip:{},port:{},pid:{}", job, cord.getPid());
                             } catch (Exception e) {
                                 if (e instanceof PacketTooBigException) {
@@ -486,7 +486,7 @@ public class ExecuteService implements Job {
         record.setReturnCode(StatusCode.ERROR_EXEC.getValue());
         record.setEndTime(new Date());
         record.setMessage(errorInfo);
-        recordService.save(record);
+        recordService.merge(record);
     }
 
 
@@ -505,7 +505,7 @@ public class ExecuteService implements Job {
             record.setMessage(content);
             record.setSuccess(ResultStatus.FAILED.getStatus());
             record.setEndTime(new Date());
-            recordService.save(record);
+            recordService.merge(record);
             throw new PingException(content);
         }
     }

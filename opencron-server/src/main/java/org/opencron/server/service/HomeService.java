@@ -131,7 +131,7 @@ public class HomeService {
 
     
     public void saveLog(Log log) {
-        queryDao.save(log);
+        queryDao.merge(log);
     }
 
     public Log getLogDetail(Long logId) {
