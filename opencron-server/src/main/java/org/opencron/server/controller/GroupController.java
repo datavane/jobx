@@ -30,7 +30,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.servlet.http.HttpSession;
 import java.util.*;
 
 
@@ -41,9 +40,6 @@ public class GroupController extends BaseController {
     @Autowired
     private GroupService groupService;
 
-    @Autowired
-    private AgentService agentService;
-
     @RequestMapping("/view")
     public String view(PageBean pageBean) {
         groupService.getGroupPage(pageBean);
@@ -52,7 +48,7 @@ public class GroupController extends BaseController {
 
     @RequestMapping("/addpage")
     public String add(Model model) {
-        List<Group> groups = agentService.getGroupforAgent();
+        List<Group> groups = groupService.getGroupforAgent();
         model.addAttribute("groups",groups);
         return "/group/add";
     }

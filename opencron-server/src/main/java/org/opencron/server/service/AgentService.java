@@ -26,14 +26,12 @@ import java.util.*;
 
 import org.opencron.common.utils.CommonUtils;
 import org.opencron.server.dao.QueryDao;
-import org.opencron.server.domain.Group;
 import org.opencron.server.domain.User;
 import org.opencron.server.job.OpencronTools;
 import org.opencron.server.tag.PageBean;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.opencron.common.job.Opencron;
 import org.opencron.server.domain.Agent;
-import org.opencron.server.vo.AgentGroupVo;
 import org.opencron.server.vo.JobVo;
 import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -253,52 +251,4 @@ public class AgentService {
         return null;
     }
 
-
-    public List<Group> getGroupforAgent() {
-        String sql = "SELECT T.groupId,G.groupName,A.agentId,A.`name` AS agentName,A.ip AS agentIp " +
-                " FROM T_AGENT A " +
-                " LEFT JOIN T_AGENT_GROUP AS T " +
-                " ON A.agentId = T.agentId" +
-                " LEFT JOIN T_GROUP AS G" +
-                " ON T.groupId = G.groupId" +
-                " WHERE A.deleted=0 "+
-                " ORDER BY G.createTime ";
-
-        Group noGroup = new Group();
-        noGroup.setGroupName("未分组");
-        noGroup.setGroupId(0L);
-
-        Map<Long,Group> groupMap = new HashMap<Long, Group>(0);
-
-        List<AgentGroupVo> agentGroupVos = queryDao.sqlQuery(AgentGroupVo.class,sql);
-        if (CommonUtils.notEmpty(agentGroupVos))  {
-            for(AgentGroupVo agentGroup:agentGroupVos){
-                Agent agent = new Agent();
-                agent.setAgentId(agentGroup.getAgentId());
-                agent.setName(agentGroup.getAgentName());
-                agent.setIp(agentGroup.getAgentIp());
-
-                if (agentGroup.getGroupId()==null) {
-                    noGroup.getAgents().add(agent);
-                }else {
-                    if (groupMap.get(agentGroup.getGroupId()) == null) {
-                        Group group = new Group();
-                        group.setGroupId(agentGroup.getGroupId());
-                        group.setGroupName(agentGroup.getGroupName());
-                        group.getAgents().add(agent);
-                        groupMap.put(agentGroup.getGroupId(),group);
-                    }else {
-                        groupMap.get(agentGroup.getGroupId()).getAgents().add(agent);
-                    }
-                }
-            }
-        }
-
-        List<Group> groups = new ArrayList<Group>(0);
-        groups.add(noGroup);
-        for(Map.Entry<Long,Group> entry:groupMap.entrySet()){
-            groups.add(entry.getValue());
-        }
-        return groups;
-    }
 }
