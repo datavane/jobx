@@ -36,10 +36,10 @@ public abstract class LoggerFactory {
         String currPath = LoggerFactory.class.getProtectionDomain().getCodeSource().getLocation().getFile();
         File file = new File(currPath);
         String path = file.getParentFile().getParentFile() + "/conf/log4j.properties";
-       /* if (!new File(path).exists()) {
+        if (!new File(path).exists()) {
             throw new ExceptionInInitializerError("[opencron] error: can not found log4j.properties...");
         }
-        PropertyConfigurator.configure(path);*/
+        PropertyConfigurator.configure(path);
         return org.slf4j.LoggerFactory.getLogger(clazz);
     }
 
