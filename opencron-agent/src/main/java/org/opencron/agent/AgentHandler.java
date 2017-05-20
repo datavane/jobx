@@ -24,14 +24,12 @@ package org.opencron.agent;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import io.netty.channel.ChannelHandler.Sharable;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.SimpleChannelInboundHandler;
 import org.opencron.common.job.*;
 import org.opencron.common.utils.*;
 import org.apache.commons.exec.*;
-import org.apache.thrift.TException;
-import org.apache.thrift.protocol.TBinaryProtocol;
-import org.apache.thrift.protocol.TProtocol;
-import org.apache.thrift.transport.TSocket;
-import org.apache.thrift.transport.TTransport;
 import org.slf4j.Logger;
 
 import java.beans.Introspector;
@@ -40,7 +38,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.lang.reflect.Method;
 import java.net.Socket;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -50,9 +47,10 @@ import static org.opencron.common.utils.CommonUtils.*;
 /**
  * Created by benjo on 2016/3/25.
  */
-public class AgentProcessor implements Opencron.Iface {
+@Sharable
+public class AgentHandler extends SimpleChannelInboundHandler<Request> implements Opencron {
 
-    private Logger logger = LoggerFactory.getLogger(AgentProcessor.class);
+    private Logger logger = LoggerFactory.getLogger(AgentHandler.class);
 
     private String password;
 
@@ -66,16 +64,68 @@ public class AgentProcessor implements Opencron.Iface {
 
     private AgentMonitor agentMonitor;
 
+    private ChannelHandlerContext channelHandlerContext;
+
     private Map<String, AgentHeartBeat> agentHeartBeatMap = new ConcurrentHashMap<String, AgentHeartBeat>(0);
 
-    public AgentProcessor(String password) {
+    private Response response;
+
+    public AgentHandler(String password) {
         this.password = password;
+        this.register();
     }
 
     @Override
-    public Response ping(Request request) throws TException {
+    protected void channelRead0(ChannelHandlerContext channelHandlerContext, Request request) throws Exception {
+        this.channelHandlerContext = channelHandlerContext;
+        Action action = request.getAction();
+        switch (action) {
+            case PING:
+                this.ping(request);
+                break;
+            case PATH:
+                this.path(request);
+                break;
+            case MONITOR:
+                this.monitor(request);
+                break;
+            case EXECUTE:
+                this.execute(request);
+                break;
+            case PASSWORD:
+                this.password(request);
+                break;
+            case KILL:
+                this.kill(request);
+                break;
+            case PROXY:
+                this.proxy(request);
+                break;
+            case GUID:
+                this.guid(request);
+                break;
+            case RESTART:
+                this.restart(request);
+                break;
+            default:
+        }
+        channelHandlerContext.writeAndFlush(this.response);
+        channelHandlerContext.close();
+    }
+
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        cause.printStackTrace();
+        ctx.close();
+    }
+
+
+    @Override
+    public void ping(Request request) throws Exception {
         if (!this.password.equalsIgnoreCase(request.getPassword())) {
-            return errorPasswordResponse(request);
+            this.response = errorPasswordResponse(request);
+            return;
         }
 
         //非直连
@@ -95,14 +145,13 @@ public class AgentProcessor implements Opencron.Iface {
                 }
             }
         }
-
-        return Response.response(request).setSuccess(true).setExitCode(Opencron.StatusCode.SUCCESS_EXIT.getValue()).end();
+        this.response = Response.response(request).setSuccess(true).setExitCode(Opencron.StatusCode.SUCCESS_EXIT.getValue()).end();
     }
 
     @Override
-    public Response path(Request request) throws TException {
+    public void path(Request request) throws Exception {
         //返回密码文件的路径...
-        return Response.response(request).setSuccess(true)
+        this.response = Response.response(request).setSuccess(true)
                 .setExitCode(Opencron.StatusCode.SUCCESS_EXIT.getValue())
                 .setMessage(Globals.OPENCRON_HOME)
                 .end();
@@ -110,9 +159,9 @@ public class AgentProcessor implements Opencron.Iface {
 
 
     @Override
-    public Response monitor(Request request) throws TException {
+    public void monitor(Request request) throws Exception {
         Opencron.ConnType connType = Opencron.ConnType.getByName(request.getParams().get("connType"));
-        Response response = Response.response(request);
+        this.response = Response.response(request);
         Map<String, String> map = new HashMap<String, String>(0);
 
         if (agentMonitor == null) {
@@ -133,21 +182,19 @@ public class AgentProcessor implements Opencron.Iface {
                 logger.debug("[opencron]:getMonitorPort @:{}", socketPort);
                 map.put("port", this.socketPort.toString());
                 response.setResult(map);
-                return response;
             case PROXY:
                 Monitor monitor = agentMonitor.monitor();
                 map = serializableToMap(monitor);
                 response.setResult(map);
-                return response;
             default:
-                return null;
         }
     }
 
     @Override
-    public Response execute(final Request request) throws TException {
+    public void execute(final Request request) throws Exception {
         if (!this.password.equalsIgnoreCase(request.getPassword())) {
-            return errorPasswordResponse(request);
+            this.response = errorPasswordResponse(request);
+            return;
         }
 
         String command = request.getParams().get("command") + EXITCODE_SCRIPT;
@@ -164,7 +211,7 @@ public class AgentProcessor implements Opencron.Iface {
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
-        final Response response = Response.response(request);
+        this.response = Response.response(request);
 
         final ExecuteWatchdog watchdog = new ExecuteWatchdog(Integer.MAX_VALUE);
 
@@ -204,7 +251,7 @@ public class AgentProcessor implements Opencron.Iface {
                             try {
                                 kill(request);
                                 response.setExitCode(Opencron.StatusCode.TIME_OUT.getValue());
-                            } catch (TException e) {
+                            } catch (Exception e) {
                                 e.printStackTrace();
                             }
 
@@ -282,40 +329,42 @@ public class AgentProcessor implements Opencron.Iface {
         }
         logger.info("[opencron]:execute result:{}", response.toString());
         watchdog.stop();
-
-        return response;
     }
 
     @Override
-    public Response password(Request request) throws TException {
+    public void password(Request request) throws Exception {
         if (!this.password.equalsIgnoreCase(request.getPassword())) {
-            return errorPasswordResponse(request);
+            this.response = errorPasswordResponse(request);
+            return;
         }
 
         String newPassword = request.getParams().get("newPassword");
-        Response response = Response.response(request);
+        this.response = Response.response(request);
 
         if (isEmpty(newPassword)) {
-            return response.setSuccess(false).setExitCode(Opencron.StatusCode.SUCCESS_EXIT.getValue()).setMessage("密码不能为空").end();
+            response.setSuccess(false).setExitCode(Opencron.StatusCode.SUCCESS_EXIT.getValue()).setMessage("密码不能为空").end();
+            return;
         }
+
         this.password = newPassword.toLowerCase().trim();
 
         IOUtils.writeText(Globals.OPENCRON_PASSWORD_FILE, this.password, "UTF-8");
 
-        return response.setSuccess(true).setExitCode(Opencron.StatusCode.SUCCESS_EXIT.getValue()).end();
+        response.setSuccess(true).setExitCode(Opencron.StatusCode.SUCCESS_EXIT.getValue()).end();
     }
 
     @Override
-    public Response kill(Request request) throws TException {
+    public void kill(Request request) throws Exception {
 
         if (!this.password.equalsIgnoreCase(request.getPassword())) {
-            return errorPasswordResponse(request);
+            this.response = errorPasswordResponse(request);
+            return;
         }
 
         String pid = request.getParams().get("pid");
         logger.info("[opencron]:kill pid:{}", pid);
 
-        Response response = Response.response(request);
+        this.response = Response.response(request);
         String text = CommandUtils.executeShell(Globals.OPENCRON_KILL_SHELL, pid, EXITCODE_SCRIPT);
         String message = "";
         Integer exitVal = 0;
@@ -334,11 +383,16 @@ public class AgentProcessor implements Opencron.Iface {
                 .end();
 
         logger.info("[opencron]:kill result:{}" + response);
-        return response;
     }
 
     @Override
-    public Response proxy(Request request) throws TException {
+    public void proxy(Request request) throws Exception {
+
+    }
+
+    /*
+    @Override
+    public void proxy(Request request) throws Exception {
         String proxyHost = request.getParams().get("proxyHost");
         String proxyPort = request.getParams().get("proxyPort");
         String proxyAction = request.getParams().get("proxyAction");
@@ -356,9 +410,9 @@ public class AgentProcessor implements Opencron.Iface {
         logger.info("[opencron]proxy params:{}", proxyReq.toString());
 
         TTransport transport;
-        /**
+        *//**
          * ping的超时设置为5毫秒,其他默认
-         */
+         *//*
         if (proxyReq.getAction().equals(Action.PING)) {
             proxyReq.getParams().put("proxy","true");
             transport = new TSocket(proxyReq.getHostName(), proxyReq.getPort(), 1000 * 5);
@@ -389,11 +443,12 @@ public class AgentProcessor implements Opencron.Iface {
         transport.close();
         return response;
     }
-
+*/
     @Override
-    public Response guid(Request request) throws TException {
+    public void guid(Request request) throws Exception {
         if (!this.password.equalsIgnoreCase(request.getPassword())) {
-            return errorPasswordResponse(request);
+            this.response  =  errorPasswordResponse(request);
+            return;
         }
         String macId = null;
         try {
@@ -407,11 +462,12 @@ public class AgentProcessor implements Opencron.Iface {
             logger.error("[opencron]:getMac error:{}",e);
         }
 
-        Response response = Response.response(request).end();
+        this.response = Response.response(request).end();
         if (notEmpty(macId)) {
-            return response.setMessage(macId).setSuccess(true).setExitCode(Opencron.StatusCode.SUCCESS_EXIT.getValue());
+            response.setMessage(macId).setSuccess(true).setExitCode(Opencron.StatusCode.SUCCESS_EXIT.getValue());
+            return;
         }
-        return response.setSuccess(false).setExitCode(Opencron.StatusCode.ERROR_EXIT.getValue());
+        response.setSuccess(false).setExitCode(Opencron.StatusCode.ERROR_EXIT.getValue());
     }
 
 
@@ -419,11 +475,11 @@ public class AgentProcessor implements Opencron.Iface {
      *重启前先检查密码,密码不正确返回Response,密码正确则直接执行重启
      * @param request
      * @return
-     * @throws TException
+     * @throws Exception
      * @throws InterruptedException
      */
     @Override
-    public void restart(Request request) throws TException {
+    public void restart(Request request) throws Exception {
 
     }
 

@@ -22,14 +22,17 @@
 package org.opencron.server.job;
 
 import com.alibaba.fastjson.JSON;
+import io.netty.bootstrap.Bootstrap;
+import io.netty.channel.*;
+import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.SocketChannel;
+import io.netty.channel.socket.nio.NioSocketChannel;
+import org.opencron.common.serialization.OpencronDecoder;
+import org.opencron.common.serialization.ResponseEncoder;
 import org.opencron.common.utils.CommonUtils;
 import org.opencron.common.utils.ParamsMap;
 import org.opencron.server.domain.Agent;
 import org.opencron.server.service.AgentService;
-import org.apache.thrift.protocol.TBinaryProtocol;
-import org.apache.thrift.protocol.TProtocol;
-import org.apache.thrift.transport.TSocket;
-import org.apache.thrift.transport.TTransport;
 import org.opencron.common.job.Action;
 import org.opencron.common.job.Opencron;
 import org.opencron.common.job.Request;
@@ -37,7 +40,8 @@ import org.opencron.common.job.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * agent OpencronCaller
@@ -53,8 +57,40 @@ public class OpencronCaller {
     @Autowired
     private AgentService agentService;
 
-    public Response call(Request request, Agent agent) throws Exception {
+    private void start( String host,int port, final OpencronHandler handler) throws Exception{
+        //配置客户端线程组
+        EventLoopGroup group=new NioEventLoopGroup();
+        try{
+            Bootstrap bootstrap=new Bootstrap();
+            bootstrap.group(group).channel(NioSocketChannel.class)
+                    .option(ChannelOption.TCP_NODELAY, true)
+                    .handler(new ChannelInitializer<SocketChannel>() {
+                        @Override
+                        public void initChannel(SocketChannel ch) throws Exception {
+                            ch.pipeline().addLast(
+                                    new OpencronDecoder<Response>(Response.class, 1024 * 1024, 4, 4));
+                            ch.pipeline().addLast(new ResponseEncoder());
+                            ch.pipeline().addLast(handler);
+                        }
+                    });
 
+            ChannelFuture channelFuture=bootstrap.connect(host,port).sync();
+            channelFuture.channel().closeFuture().sync();
+            channelFuture.channel().close();
+        }finally{
+            group.shutdownGracefully();
+        }
+    }
+
+    /**
+     * 异步请求...
+     * @param request
+     * @param agent
+     * @return
+     * @throws Exception
+     */
+
+    public Response asyncCall(final Request request, Agent agent) throws Exception {
         //代理...
         if (agent.getProxy() == Opencron.ConnType.PROXY.getType()) {
             ParamsMap proxyParams = new ParamsMap();
@@ -77,30 +113,20 @@ public class OpencronCaller {
             request.setParams(proxyParams);
         }
 
-        TTransport transport;
-        /**
-         * ping的超时设置为5毫秒,其他默认
-         */
-        if (request.getAction().equals(Action.PING)) {
-            transport = new TSocket(request.getHostName(), request.getPort(), 1000 * 10);
-        } else {
-            transport = new TSocket(request.getHostName(), request.getPort());
-        }
-        TProtocol protocol = new TBinaryProtocol(transport);
-        Opencron.Client client = new Opencron.Client(protocol);
-        transport.open();
-
-        Response response = null;
-        for (Method method : client.getClass().getMethods()) {
-            if (method.getName().equalsIgnoreCase(request.getAction().name())) {
-                response = (Response) method.invoke(client, request);
-                break;
+        final List<Response> responseList = new ArrayList<Response>(1);
+        this.start(request.getHostName(),request.getPort(),new OpencronHandler(){
+            @Override
+            public void channelActive(ChannelHandlerContext channelHandlerContext) throws Exception {
+                channelHandlerContext.writeAndFlush(request);
             }
-        }
 
-        transport.flush();
-        transport.close();
-        return response;
+            @Override
+            public void channelRead0(ChannelHandlerContext channelHandlerContext, Response response) throws Exception {
+                responseList.add(response);
+                channelHandlerContext.close();
+            }
+        });
+        return responseList.get(0);
     }
 
 }

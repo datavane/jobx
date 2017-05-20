@@ -22,7 +22,7 @@
 
 package org.opencron.common.job;
 
-public enum Action implements org.apache.thrift.TEnum {
+public enum Action {
   PING(0),
   PATH(1),
   MONITOR(2),
@@ -35,7 +35,7 @@ public enum Action implements org.apache.thrift.TEnum {
 
   private final int value;
 
-  private Action(int value) {
+  Action(int value) {
     this.value = value;
   }
 

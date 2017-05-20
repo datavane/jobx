@@ -19,28 +19,26 @@
  * under the License.
  */
 
-package org.opencron.common.utils;
+package org.opencron.common.serialization;
 
-
-import org.apache.log4j.PropertyConfigurator;
-import org.slf4j.Logger;
-
-import java.io.File;
+import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.MessageToByteEncoder;
+import org.opencron.common.job.Response;
 
 /**
- * Created by benjobs on 14-4-28.
+ * ${DESCRIPTION}
+ *
+ * @author Ricky Fung
  */
-public abstract class LoggerFactory {
+public final class ResponseEncoder extends MessageToByteEncoder<Response> {
 
-    public static Logger getLogger(@SuppressWarnings("rawtypes") Class clazz) {
-        String currPath = LoggerFactory.class.getProtectionDomain().getCodeSource().getLocation().getFile();
-        File file = new File(currPath);
-        String path = file.getParentFile().getParentFile() + "/conf/log4j.properties";
-       /* if (!new File(path).exists()) {
-            throw new ExceptionInInitializerError("[opencron] error: can not found log4j.properties...");
-        }
-        PropertyConfigurator.configure(path);*/
-        return org.slf4j.LoggerFactory.getLogger(clazz);
+    private Serializer serializer = new HessianSerializer();
+
+    @Override
+    protected void encode(ChannelHandlerContext ctx, Response response, ByteBuf byteBuf) throws Exception {
+        byte[] data = serializer.encode(response);
+        byteBuf.writeInt(data.length);
+        byteBuf.writeBytes(data);
     }
-
 }

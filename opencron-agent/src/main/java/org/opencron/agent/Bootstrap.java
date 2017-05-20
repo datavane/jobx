@@ -23,20 +23,22 @@ package org.opencron.agent;
  * Created by benjobs on 16/3/3.
  */
 
-import org.opencron.common.job.Opencron;
-import org.opencron.common.utils.HttpUtils;
+import io.netty.bootstrap.ServerBootstrap;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelOption;
+import io.netty.channel.EventLoopGroup;
+import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.SocketChannel;
+import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.logging.LogLevel;
+import io.netty.handler.logging.LoggingHandler;
+import org.opencron.common.job.Request;
+import org.opencron.common.serialization.OpencronDecoder;
+import org.opencron.common.serialization.RequestEncoder;
 import org.opencron.common.utils.IOUtils;
 import org.opencron.common.utils.LoggerFactory;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.thrift.protocol.TBinaryProtocol;
-import org.apache.thrift.protocol.TProtocol;
-import org.apache.thrift.server.ServerContext;
-import org.apache.thrift.server.TServer;
-import org.apache.thrift.server.TServerEventHandler;
-import org.apache.thrift.server.TThreadPoolServer;
-import org.apache.thrift.transport.TServerSocket;
-import org.apache.thrift.transport.TSocket;
-import org.apache.thrift.transport.TTransport;
 import org.slf4j.Logger;
 
 import java.io.*;
@@ -60,10 +62,12 @@ public class Bootstrap implements Serializable {
 
     private static Logger logger = LoggerFactory.getLogger(Bootstrap.class);
 
-    /**
-     * thrift server
-     */
-    private TServer server;
+
+    private ChannelFuture channelFuture;
+
+    private EventLoopGroup bossGroup;
+
+    private EventLoopGroup workerGroup;
 
     /**
      * agent port
@@ -148,9 +152,9 @@ public class Bootstrap implements Serializable {
         port = Integer.valueOf(Integer.parseInt(Globals.OPENCRON_PORT));
         String inputPassword = Globals.OPENCRON_PASSWORD;
         if (notEmpty(inputPassword)) {
-            Globals.OPENCRON_PASSWORD_FILE.deleteOnExit();
-            this.password = DigestUtils.md5Hex(inputPassword).toLowerCase();
-            IOUtils.writeText(Globals.OPENCRON_PASSWORD_FILE, this.password, CHARSET);
+               Globals.OPENCRON_PASSWORD_FILE.deleteOnExit();
+               this.password = DigestUtils.md5Hex(inputPassword).toLowerCase();
+               IOUtils.writeText(Globals.OPENCRON_PASSWORD_FILE, this.password, CHARSET);
         } else {
             boolean writeDefault = false;
             //.password file already exists
@@ -159,7 +163,7 @@ public class Bootstrap implements Serializable {
                 String filePassowrd = IOUtils.readText(Globals.OPENCRON_PASSWORD_FILE, CHARSET).trim().toLowerCase();
                 if (notEmpty(filePassowrd)) {
                     this.password = filePassowrd;
-                }else {
+                } else {
                     writeDefault = true;
                 }
             } else {
@@ -174,46 +178,49 @@ public class Bootstrap implements Serializable {
         }
     }
 
-    private void start() throws Exception {
+
+    public void start() throws Exception {
+        this.bossGroup = new NioEventLoopGroup();
+        this.workerGroup = new NioEventLoopGroup();
         try {
-            TServerSocket serverTransport = new TServerSocket(port);
-            AgentProcessor agentProcessor = new AgentProcessor(password);
-            Opencron.Processor processor = new Opencron.Processor(agentProcessor);
-            TBinaryProtocol.Factory protFactory = new TBinaryProtocol.Factory(true, true);
-            TThreadPoolServer.Args arg = new TThreadPoolServer.Args(serverTransport);
-            arg.protocolFactory(protFactory);
-            arg.processor(processor);
-            this.server = new TThreadPoolServer(arg);
+            final ServerBootstrap bootstrap = new ServerBootstrap();
+            bootstrap.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class)
+                    .option(ChannelOption.SO_BACKLOG, 1024)
+                    .handler(new LoggingHandler(LogLevel.INFO))
+                    .childHandler(new ChannelInitializer<SocketChannel>() {
+                        @Override
+                        public void initChannel(SocketChannel ch)
+                                throws IOException {
+                            ch.pipeline().addLast(
+                                    new OpencronDecoder<Request>(Request.class,1<<20, 4, 4));
+                            ch.pipeline().addLast(new RequestEncoder());
+                            ch.pipeline().addLast(new AgentHandler(password));
+                        }
+                    });
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        channelFuture = bootstrap.bind(port).sync();
+                        channelFuture.channel().closeFuture().sync();
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
 
-            this.server.setServerEventHandler(new TServerEventHandler(){
-                public void preServe() {}
-                public void deleteContext(ServerContext serverContext, TProtocol tProtocol, TProtocol tProtocol1) {}
-                public ServerContext createContext(TProtocol tProtocol, TProtocol tProtocol1) {return null;}
-                public void processContext(ServerContext serverContext, TTransport inputTransport, TTransport outputTransport) {
-                    TSocket socket = (TSocket) inputTransport;
-                    //获取OPENCRON-server的ip
-                    Globals.OPENCRON_SOCKET_ADDRESS = socket.getSocket().getRemoteSocketAddress().toString().substring(1);
                 }
-            });
+            }).start();
 
+            logger.info("opencron-agent started at:port:{},pid:{}" ,this.port,getPid());
             /**
              * write pid to pidfile...
              */
             IOUtils.writeText(Globals.OPENCRON_PID_FILE, getPid(), CHARSET);
 
-            //new thread to start for thrift server
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    server.serve();
-                }
-            }).start();
-
-            agentProcessor.register();
-
             logger.info("[opencron]agent started @ port:{},pid:{}", port, getPid());
+
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.info("opencron-agent start error:{}",e.getMessage());
+            stopServer();
         }
     }
 
@@ -331,7 +338,6 @@ public class Bootstrap implements Serializable {
     }
 
     /**
-     *
      * @throws Exception
      */
 
@@ -339,7 +345,7 @@ public class Bootstrap implements Serializable {
         /**
          * connect to startup socket and send stop command。。。。。。
          */
-        Socket socket = new Socket("localhost",Integer.valueOf(System.getProperty("opencron.shutdown")));
+        Socket socket = new Socket("localhost", Integer.valueOf(System.getProperty("opencron.shutdown")));
         OutputStream os = socket.getOutputStream();
         PrintWriter pw = new PrintWriter(os);
         InputStream is = socket.getInputStream();
@@ -359,8 +365,16 @@ public class Bootstrap implements Serializable {
     }
 
     private void stopServer() {
-        if (this.server != null && this.server.isServing()) {
-            this.server.stop();
+
+        if (bossGroup != null && !bossGroup.isShutdown()) {
+            bossGroup.shutdownGracefully();
+        }
+
+        if (workerGroup != null && !workerGroup.isShutdown()) {
+            workerGroup.shutdownGracefully();
+        }
+        if (channelFuture != null) {
+            channelFuture.channel().close();
             /**
              * delete pid file...
              */
