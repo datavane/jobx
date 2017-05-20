@@ -58,7 +58,6 @@ public class AgentService {
 
     @Autowired
     private SchedulerService schedulerService;
-    private List<Agent> groupforAgent;
 
     public List<Agent> getAgentByConnType(Opencron.ConnType connType) {
         return queryDao.sqlQuery(Agent.class, "SELECT * FROM T_AGENT WHERE deleted=0 AND status = 1 AND proxy = " + connType.getType());
