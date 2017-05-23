@@ -60,6 +60,7 @@
         <jackson.version>2.7.4</jackson.version>
         <junit.version>4.7</junit.version>
         <slf4j.version>1.7.5</slf4j.version>
+        <protostuff.version>1.0.12</protostuff.version>
     </properties>
 
     <dependencies>
@@ -411,6 +412,25 @@
                 <artifactId>druid</artifactId>
                 <version>1.0.29</version>
             </dependency>
+
+            <!-- Objenesis -->
+            <dependency>
+                <groupId>org.objenesis</groupId>
+                <artifactId>objenesis</artifactId>
+                <version>2.4</version>
+            </dependency>
+            <!-- serialization  -->
+            <dependency>
+                <groupId>com.dyuproject.protostuff</groupId>
+                <artifactId>protostuff-core</artifactId>
+                <version>${protostuff.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.dyuproject.protostuff</groupId>
+                <artifactId>protostuff-runtime</artifactId>
+                <version>${protostuff.version}</version>
+            </dependency>
+
         </dependencies>
 
     </dependencyManagement>
