@@ -28,7 +28,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.alibaba.fastjson.JSON;
-import org.opencron.common.job.Opencron;
+import org.opencron.common.rpc.model.Opencron;
 import org.opencron.common.utils.CommonUtils;
 import org.opencron.common.utils.PropertyPlaceholder;
 import org.opencron.server.job.OpencronTools;

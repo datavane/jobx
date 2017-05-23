@@ -24,10 +24,9 @@ package org.opencron.agent;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import org.opencron.common.job.*;
+import org.opencron.common.rpc.model.*;
 import org.opencron.common.utils.*;
 import org.apache.commons.exec.*;
 import org.slf4j.Logger;
@@ -47,10 +46,9 @@ import static org.opencron.common.utils.CommonUtils.*;
 /**
  * Created by benjo on 2016/3/25.
  */
-@Sharable
-public class AgentHandler extends SimpleChannelInboundHandler<Request> implements Opencron {
+public class AgentServerHandler extends SimpleChannelInboundHandler<Request> implements Opencron {
 
-    private Logger logger = LoggerFactory.getLogger(AgentHandler.class);
+    private Logger logger = LoggerFactory.getLogger(AgentServerHandler.class);
 
     private String password;
 
@@ -64,21 +62,20 @@ public class AgentHandler extends SimpleChannelInboundHandler<Request> implement
 
     private AgentMonitor agentMonitor;
 
-    private ChannelHandlerContext channelHandlerContext;
-
     private Map<String, AgentHeartBeat> agentHeartBeatMap = new ConcurrentHashMap<String, AgentHeartBeat>(0);
 
     private Response response;
 
-    public AgentHandler(String password) {
+    public AgentServerHandler(String password) {
         this.password = password;
         this.register();
     }
 
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, Request request) throws Exception {
-        this.channelHandlerContext = channelHandlerContext;
         Action action = request.getAction();
+        logger.info("[opencron] connSucess..@{}",action.toString());
+
         switch (action) {
             case PING:
                 this.ping(request);

@@ -27,7 +27,7 @@ import com.corundumstudio.socketio.SocketIOClient;
 import com.corundumstudio.socketio.SocketIOServer;
 import com.corundumstudio.socketio.listener.ConnectListener;
 import com.corundumstudio.socketio.listener.DisconnectListener;
-import org.opencron.common.job.Monitor;
+import org.opencron.common.rpc.model.Monitor;
 import org.opencron.common.utils.*;
 import org.slf4j.Logger;
 

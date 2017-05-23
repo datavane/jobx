@@ -23,7 +23,7 @@
 package org.opencron.server.job;
 
 import org.opencron.server.service.*;
-import org.opencron.common.job.Opencron;
+import org.opencron.common.rpc.model.Opencron;
 import org.opencron.common.utils.CommonUtils;
 import org.opencron.server.domain.Record;
 import org.opencron.server.vo.JobVo;
@@ -31,7 +31,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

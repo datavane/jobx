@@ -22,7 +22,7 @@
 
 package org.opencron.server.service;
 
-import org.opencron.common.job.Opencron;
+import org.opencron.common.rpc.model.Opencron;
 import org.opencron.server.job.OpencronCollector;
 import org.opencron.server.vo.JobVo;
 import org.quartz.*;

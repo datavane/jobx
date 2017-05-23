@@ -24,8 +24,8 @@ package org.opencron.server.controller;
 import java.util.*;
 
 import com.alibaba.fastjson.JSON;
-import org.opencron.common.job.Opencron;
-import org.opencron.common.job.Opencron.ExecType;
+import org.opencron.common.rpc.model.Opencron;
+import org.opencron.common.rpc.model.Opencron.ExecType;
 import org.opencron.common.utils.DigestUtils;
 import org.opencron.common.utils.StringUtils;
 import org.opencron.server.domain.Job;

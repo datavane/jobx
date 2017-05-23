@@ -23,9 +23,9 @@
 package org.opencron.server.service;
 
 import org.opencron.common.exception.PingException;
-import org.opencron.common.job.Action;
-import org.opencron.common.job.Request;
-import org.opencron.common.job.Response;
+import org.opencron.common.rpc.model.Action;
+import org.opencron.common.rpc.model.Request;
+import org.opencron.common.rpc.model.Response;
 import org.opencron.common.utils.ParamsMap;
 import org.opencron.server.domain.Record;
 import org.opencron.server.domain.Agent;
@@ -45,7 +45,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import static org.opencron.common.job.Opencron.*;
+import static org.opencron.common.rpc.model.Opencron.*;
 
 @Service
 public class ExecuteService implements Job {
