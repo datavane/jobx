@@ -34,13 +34,14 @@ import org.slf4j.LoggerFactory;
  *
  * @author Ricky Fung
  */
-public class AgentConnHandler extends ChannelDuplexHandler {
+public class ConnectionHandler extends ChannelDuplexHandler {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
         if (evt instanceof IdleStateEvent) {
             IdleStateEvent e = (IdleStateEvent) evt;
+
             if (e.state() == IdleState.READER_IDLE) {
                 logger.info("READER_IDLE 事件触发, 关闭连接");/*读超时*/
                 ctx.close();

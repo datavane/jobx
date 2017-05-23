@@ -37,6 +37,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -75,6 +76,9 @@ public class AgentServerHandler extends SimpleChannelInboundHandler<Request> imp
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, Request request) throws Exception {
         Action action = request.getAction();
         logger.info("[opencron] connSucess..@{}",action.toString());
+
+        InetSocketAddress insocket = (InetSocketAddress) channelHandlerContext.channel().remoteAddress();
+        Globals.OPENCRON_SOCKET_ADDRESS = insocket.getAddress().getHostAddress();
 
         switch (action) {
             case PING:

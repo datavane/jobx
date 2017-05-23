@@ -19,7 +19,7 @@
  * under the License.
  */
 
-package org.opencron.common.serialization;
+package org.opencron.common.rpc.serialization;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;

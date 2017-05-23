@@ -18,7 +18,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.opencron.common.rpc.util;
+package org.opencron.common.rpc.core;
 
 import java.util.concurrent.atomic.AtomicInteger;
 

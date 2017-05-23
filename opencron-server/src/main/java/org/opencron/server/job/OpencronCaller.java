@@ -21,7 +21,6 @@
 
 package org.opencron.server.job;
 
-import com.alibaba.fastjson.JSON;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -32,27 +31,17 @@ import io.netty.handler.codec.LengthFieldPrepender;
 import io.netty.handler.timeout.IdleStateHandler;
 import org.opencron.common.rpc.codec.RpcDecoder;
 import org.opencron.common.rpc.codec.RpcEncoder;
-import org.opencron.common.rpc.core.AgentConnHandler;
 import org.opencron.common.rpc.core.ChannelWrapper;
 import org.opencron.common.rpc.core.InvokeCallback;
+import org.opencron.common.rpc.core.ConnectionHandler;
 import org.opencron.common.rpc.core.RpcFuture;
-import org.opencron.common.rpc.util.NetUtils;
-import org.opencron.common.serialization.OpencronDecoder;
-import org.opencron.common.serialization.OpencronEncoder;
-import org.opencron.common.utils.CommonUtils;
-import org.opencron.common.utils.ParamsMap;
-import org.opencron.server.domain.Agent;
-import org.opencron.server.service.AgentService;
-import org.opencron.common.rpc.model.Action;
-import org.opencron.common.rpc.model.Opencron;
 import org.opencron.common.rpc.model.Request;
 import org.opencron.common.rpc.model.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.xml.transform.Result;
+import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -74,22 +63,27 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Component
 public class OpencronCaller {
 
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private EventLoopGroup group = new NioEventLoopGroup();
+    private EventLoopGroup group;
 
-    private Bootstrap bootstrap = new Bootstrap();
+    private Bootstrap bootstrap;
 
-    protected final ConcurrentHashMap<String, RpcFuture> rpcFutureTable =  new ConcurrentHashMap<String, RpcFuture>(256);
+    protected ConcurrentHashMap<String, RpcFuture> rpcFutureTable;
 
-    private final ConcurrentHashMap<String, ChannelWrapper> channelTable =  new ConcurrentHashMap<String, ChannelWrapper>();
+    private ConcurrentHashMap<String, ChannelWrapper> channelTable;
 
     private ScheduledThreadPoolExecutor scheduledThreadPoolExecutor;
 
-    @Autowired
-    private AgentService agentService;
+    public void start() {
 
-    private void start( final  Request request, final org.opencron.server.job.OpencronHandler handler) throws Exception {
+        group = new NioEventLoopGroup();
+
+        bootstrap = new Bootstrap();
+
+        this.rpcFutureTable = new ConcurrentHashMap<String, RpcFuture>(256);
+
+        this.channelTable = new ConcurrentHashMap<String, ChannelWrapper>();
 
         bootstrap.group(group).channel(NioSocketChannel.class)
                 .option(ChannelOption.TCP_NODELAY, true)
@@ -98,15 +92,24 @@ public class OpencronCaller {
                     @Override
                     public void initChannel(SocketChannel ch)
                             throws Exception {
-                        ch.pipeline().addLast(new LengthFieldBasedFrameDecoder(1<<20, 0, 4, 0, 4),
+                        ch.pipeline().addLast(new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 0, 4, 0, 4),
                                 new LengthFieldPrepender(4),
                                 new RpcDecoder(Response.class), //
                                 new RpcEncoder(Request.class), //
                                 new IdleStateHandler(0, 0, 60, TimeUnit.SECONDS),
-                                new AgentConnHandler(),
-                                handler);
+                                new ConnectionHandler(),
+                                new OpencronHandler());
                     }
                 });
+
+        this.scheduledThreadPoolExecutor = new ScheduledThreadPoolExecutor(5, new ThreadFactory() {
+            private final AtomicInteger idGenerator = new AtomicInteger(0);
+            @Override
+            public Thread newThread(Runnable r) {
+
+                return new Thread(r, "Rpc-Scheduled-" + this.idGenerator.incrementAndGet());
+            }
+        });
 
         this.scheduledThreadPoolExecutor.scheduleAtFixedRate(new Runnable() {
             @Override
@@ -114,109 +117,23 @@ public class OpencronCaller {
                 scanRpcFutureTable();
             }
         }, 500, 500, TimeUnit.MILLISECONDS);
-
-
-      /*  //配置客户端线程组
-        EventLoopGroup group=new NioEventLoopGroup();
-        try{
-            Bootstrap bootstrap=new Bootstrap();
-            bootstrap.group(group).channel(NioSocketChannel.class)
-                    .option(ChannelOption.TCP_NODELAY, true)
-                    .handler(new ChannelInitializer<SocketChannel>() {
-                        @Override
-                        public void initChannel(SocketChannel ch) throws Exception {
-                            ch.pipeline().addLast(
-                                    new OpencronDecoder<Response>(Response.class, 0x7fffffff, 4, 4));
-                            ch.pipeline().addLast(new OpencronEncoder<Result>(Result.class));
-                            ch.pipeline().addLast(handler);
-                        }
-                    });
-
-            ChannelFuture future=bootstrap.connect(request.getHostName(),request.getPort()).sync();
-            if (future.awaitUninterruptibly(5000)) {
-                logger.info("client connect host:{}, port:{}", request.getHostName(),request.getPort());
-                if (future.channel().isActive()) {
-                    logger.info("[opencron] send request {} Starting ",request.getHostName());
-                    future.channel().writeAndFlush(request);
-                    logger.info("[opencron] send request {} done ",request.getHostName());
-                }
-            }
-        }finally{
-            group.shutdownGracefully();
-        }*/
     }
-
-
-    class OpencronHandler extends SimpleChannelInboundHandler<Response> {
-
-        @Override
-        protected void channelRead0(ChannelHandlerContext channelHandlerContext, Response msg) throws Exception {
-
-        }
-
-        @Override
-        public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-            super.exceptionCaught(ctx, cause);
-            logger.error("捕获异常", cause);
-        }
-    }
-
-
-    /**
-     * 异步请求...
-     * @param request
-     * @param agent
-     * @return
-     * @throws Exception
-     */
-
-    public Response asyncCall(final Request request, Agent agent) throws Exception {
-        //代理...
-        if (agent.getProxy() == Opencron.ConnType.PROXY.getType()) {
-            ParamsMap proxyParams = new ParamsMap();
-            proxyParams.put(
-                    "proxyHost", request.getHostName(),
-                    "proxyPort", request.getPort(),
-                    "proxyAction", request.getAction().name(),
-                    "proxyPassword", request.getPassword()
-            );
-
-            if (CommonUtils.notEmpty(request.getParams())) {
-                proxyParams.put("proxyParams", JSON.toJSONString(request.getParams()));
-            }
-
-            Agent proxyAgent = agentService.getAgent(agent.getProxyAgent());
-            request.setHostName(proxyAgent.getIp());
-            request.setPort(proxyAgent.getPort());
-            request.setAction(Action.PROXY);
-            request.setPassword(proxyAgent.getPassword());
-            request.setParams(proxyParams);
-        }
-
-        final List<Response> responseList = new ArrayList<Response>(1);
-        this.start(request,new org.opencron.server.job.OpencronHandler(){
-            @Override
-            public void channelRead0(ChannelHandlerContext channelHandlerContext, Response response) throws Exception {
-                responseList.add(response);
-                channelHandlerContext.close();
-            }
-        });
-        return responseList.get(0);
-    }
-
-
 
     public void shutdown(){
         this.scheduledThreadPoolExecutor.shutdown();
         this.group.shutdownGracefully();
     }
 
-    public Response sendSync(String address, final Request request, long timeout, TimeUnit unit) throws Exception {
-        Channel channel = getOrCreateChannel(address);
+    public Response sendSync(final Request request, long timeout, TimeUnit unit) throws Exception {
+
+        this.start();
+
+        Channel channel = getOrCreateChannel(request);
 
         if (channel != null && channel.isActive()) {
 
             final RpcFuture<Response> rpcFuture = new RpcFuture<Response>(timeout, unit);
+
             this.rpcFutureTable.put(request.getId(), rpcFuture);
             //写数据
             channel.writeAndFlush(request).addListener(new ChannelFutureListener() {
@@ -236,15 +153,28 @@ public class OpencronCaller {
                 }
             });
 
+            this.shutdown();
+
             return rpcFuture.get(timeout, unit);
         } else {
             throw new IllegalArgumentException("channel not active. request id:"+request.getId());
         }
+
     }
 
-    public void sendAsync(String address, final Request request, long timeout, TimeUnit unit, final InvokeCallback callback) throws Exception {
+    /**
+     * 异步
+     * @param request
+     * @param timeout
+     * @param unit
+     * @param callback
+     * @throws Exception
+     */
+    public void sendAsync(final Request request, long timeout, TimeUnit unit, final InvokeCallback callback) throws Exception {
 
-        Channel channel = getOrCreateChannel(address);
+        this.start();
+
+        Channel channel = getOrCreateChannel(request);
         if (channel != null && channel.isActive()) {
 
             final RpcFuture<Response> rpcFuture = new RpcFuture<Response>(timeout, unit, callback);
@@ -272,11 +202,21 @@ public class OpencronCaller {
         } else {
             throw new IllegalArgumentException("channel not active. request id:"+request.getId());
         }
+
+        this.shutdown();
     }
 
-    public void sendOneway(String address, final Request request, long timeout, TimeUnit unit){
+    /**
+     * 单向
+     * @param request
+     * @param timeout
+     * @param unit
+     */
+    public void sendOneway(final Request request, long timeout, TimeUnit unit){
 
-        Channel channel = getOrCreateChannel(address);
+        this.start();
+
+        Channel channel = getOrCreateChannel(request);
         if (channel != null && channel.isActive()) {
             channel.writeAndFlush(request).addListener(new ChannelFutureListener() {
                 @Override
@@ -292,9 +232,11 @@ public class OpencronCaller {
         } else {
             throw new IllegalArgumentException("channel not active. request id:"+request.getId());
         }
+
+        this.shutdown();
     }
 
-    class NettyClientHandler extends SimpleChannelInboundHandler<Response> {
+    class OpencronHandler extends SimpleChannelInboundHandler<Response> {
 
         @Override
         protected void channelRead0(ChannelHandlerContext channelHandlerContext, Response msg) throws Exception {
@@ -317,31 +259,33 @@ public class OpencronCaller {
         }
     }
 
-    private Channel getOrCreateChannel(String address){
+    private Channel getOrCreateChannel(Request request){
 
-        ChannelWrapper cw = this.channelTable.get(address);
+        String addr = request.getHostName()+":"+request.getPort();
+        ChannelWrapper cw = this.channelTable.get(addr);
         if (cw != null && cw.isActive()) {
             return cw.getChannel();
         }
 
         synchronized (this){
             // 发起异步连接操作
-            ChannelFuture channelFuture = bootstrap.connect(NetUtils.parseSocketAddress(address));
+            InetSocketAddress address = new InetSocketAddress(request.getHostName(),request.getPort());
+            ChannelFuture channelFuture = bootstrap.connect(address);
             cw = new ChannelWrapper(channelFuture);
-            this.channelTable.put(address, cw);
+            this.channelTable.put(addr, cw);
         }
         if (cw != null) {
             ChannelFuture channelFuture = cw.getChannelFuture();
             long timeout = 5000;
             if (channelFuture.awaitUninterruptibly(timeout)) {
                 if (cw.isActive()) {
-                    logger.info("createChannel: connect remote host[{}] success, {}", address, channelFuture.toString());
+                    logger.info("createChannel: connect remote host[{}] success, {}", addr, channelFuture.toString());
                     return cw.getChannel();
                 } else {
-                    logger.warn("createChannel: connect remote host[" + address + "] failed, " + channelFuture.toString(), channelFuture.cause());
+                    logger.warn("createChannel: connect remote host[" + addr + "] failed, " + channelFuture.toString(), channelFuture.cause());
                 }
             } else {
-                logger.warn("createChannel: connect remote host[{}] timeout {}ms, {}", address, timeout, channelFuture);
+                logger.warn("createChannel: connect remote host[{}] timeout {}ms, {}", addr, timeout, channelFuture);
             }
         }
         return null;

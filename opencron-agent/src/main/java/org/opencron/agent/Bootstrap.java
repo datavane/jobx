@@ -32,10 +32,11 @@ import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.codec.LengthFieldPrepender;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
+import io.netty.handler.timeout.IdleStateHandler;
 import org.junit.runners.model.InitializationError;
 import org.opencron.common.rpc.codec.RpcDecoder;
 import org.opencron.common.rpc.codec.RpcEncoder;
-import org.opencron.common.rpc.core.AgentConnHandler;
+import org.opencron.common.rpc.core.ConnectionHandler;
 import org.opencron.common.rpc.model.Request;
 import org.opencron.common.rpc.model.Response;
 import org.opencron.common.utils.IOUtils;
@@ -52,6 +53,7 @@ import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.security.AccessControlException;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 import static org.opencron.common.utils.CommonUtils.isEmpty;
 
@@ -66,12 +68,14 @@ public class Bootstrap implements Serializable {
 
     private ChannelFuture channelFuture;
 
+
     private EventLoopGroup bossGroup = new NioEventLoopGroup(1);
+
 
     private EventLoopGroup workerGroup = new NioEventLoopGroup();
 
-    private ServerBootstrap serverBootstrap = new ServerBootstrap();
 
+    private ServerBootstrap serverBootstrap = new ServerBootstrap();
 
     /**
      * agent port
@@ -178,18 +182,20 @@ public class Bootstrap implements Serializable {
                     .handler(new LoggingHandler(LogLevel.INFO))
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
-                        public void initChannel(SocketChannel ch) throws IOException {
-                            ch.pipeline().addLast(new LengthFieldBasedFrameDecoder(1 << 20, 0, 4, 0, 4),
+                        public void initChannel(SocketChannel channel) throws IOException {
+                            channel.pipeline().addLast(new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 0, 4, 0, 4),
                                     new LengthFieldPrepender(4),
                                     new RpcDecoder(Request.class), //
                                     new RpcEncoder(Response.class), //
-                                    new AgentConnHandler(),
+                                    new IdleStateHandler(0, 0, 60, TimeUnit.SECONDS),
+                                    new ConnectionHandler(),
                                     new AgentServerHandler(password));
                         }
                     });
 
-            channelFuture.channel().closeFuture().sync();
-            channelFuture.addListener(new ChannelFutureListener() {
+            this.channelFuture = this.serverBootstrap.bind(this.port).sync();
+
+            this.channelFuture.addListener(new ChannelFutureListener() {
                 @Override
                 public void operationComplete(ChannelFuture future) throws Exception {
                     if (future.isSuccess()) {
@@ -206,8 +212,11 @@ public class Bootstrap implements Serializable {
                     }
                 }
             });
+
+            logger.info("[opencron]Agent rpc start..." + this.port);
+
         } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("bind server error", e);
         }
     }
 

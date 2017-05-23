@@ -19,7 +19,7 @@
  * under the License.
  */
 
-package org.opencron.common.serialization;
+package org.opencron.common.rpc.serialization;
 
 import java.io.IOException;
 

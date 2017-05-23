@@ -19,7 +19,7 @@
  * under the License.
  */
 
-package org.opencron.common.serialization;
+package org.opencron.common.rpc.serialization;
 
 import com.caucho.hessian.io.Hessian2Input;
 import com.caucho.hessian.io.Hessian2Output;
