@@ -19,7 +19,7 @@
  * under the License.
  */
 
-package org.opencron.common.job;
+package org.opencron.common.rpc.model;
 
 import com.alibaba.fastjson.annotation.JSONType;
 

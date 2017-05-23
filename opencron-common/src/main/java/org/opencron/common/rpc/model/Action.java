@@ -20,7 +20,7 @@
  */
 
 
-package org.opencron.common.job;
+package org.opencron.common.rpc.model;
 
 public enum Action {
   PING(0),

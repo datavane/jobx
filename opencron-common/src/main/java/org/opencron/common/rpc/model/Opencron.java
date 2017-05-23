@@ -20,7 +20,9 @@
  * <p>
  */
 
-package org.opencron.common.job;
+package org.opencron.common.rpc.model;
+
+import org.opencron.common.rpc.model.Request;
 
 import javax.annotation.Generated;
 import java.io.Serializable;
@@ -445,5 +447,19 @@ public interface Opencron {
         }
 
     }
+
+    public enum RpcType {
+        SYNC("同步RPC调用"), ASYNC("异步RPC调用"), ONE_WAY("单向调用");
+
+        private String desc;
+        RpcType(String desc) {
+            this.desc = desc;
+        }
+
+        public String getDesc() {
+            return desc;
+        }
+    }
+
 
 }

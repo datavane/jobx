@@ -24,13 +24,14 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-package org.opencron.common.job;
+package org.opencron.common.rpc.model;
 
 import java.util.Date;
 import java.util.Map;
 
 public class Response implements java.io.Serializable {
 
+    private String id;
     /**
      * @see Action
      */
@@ -41,6 +42,16 @@ public class Response implements java.io.Serializable {
     public long startTime;
     public long endTime;
     public String message;
+
+    public String getId() {
+        return id;
+    }
+
+    public Response setId(String id) {
+        this.id = id;
+        return this;
+    }
+
 
     public Action getAction() {
         return action;

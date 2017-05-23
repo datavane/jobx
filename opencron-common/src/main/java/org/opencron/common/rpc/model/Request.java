@@ -18,13 +18,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.opencron.common.job;
+package org.opencron.common.rpc.model;
 
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Request implements Serializable {
+    private String id;
     public String hostName;
     public int port;
     /**
@@ -33,6 +34,16 @@ public class Request implements Serializable {
     public Action action;
     public String password;
     public Map<String, String> params;
+
+
+    public String getId() {
+        return id;
+    }
+
+    public Request setId(String id) {
+        this.id = id;
+        return this;
+    }
 
     public String getHostName() {
         return hostName;
