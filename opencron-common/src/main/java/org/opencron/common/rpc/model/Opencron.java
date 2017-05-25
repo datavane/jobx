@@ -56,6 +56,12 @@ import java.io.Serializable;
 @Generated(value = "created by @benjobs", date = "2017-05-20")
 public interface Opencron {
 
+    public final static int readerIdleTimeSeconds = 10;//读操作空闲30秒
+
+    public final static int writerIdleTimeSeconds = 10;//写操作空闲60秒
+
+    public final static int allIdleTimeSeconds = 20;//读写全部空闲100秒
+
     void ping(Request request) throws Exception;
 
     void path(Request request) throws Exception;

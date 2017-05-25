@@ -42,9 +42,6 @@ public class OpencronTask implements InitializingBean {
     private final Logger logger = LoggerFactory.getLogger(OpencronTask.class);
 
     @Autowired
-    private AgentService agentService;
-
-    @Autowired
     private ExecuteService executeService;
 
     @Autowired
@@ -60,15 +57,17 @@ public class OpencronTask implements InitializingBean {
     private SchedulerService schedulerService;
 
     @Autowired
-    private OpencronMonitor opencronMonitor;
+    private AgentService agentService;
+
+    @Autowired
+    private OpencronHander opencronHander;
 
     @Override
     public void afterPropertiesSet() throws Exception {
         configService.initDataBase();
         //检测所有的agent...
         clearCache();
-        //通知所有的agent,启动心跳检测...
-        opencronMonitor.start();
+        opencronHander.start(agentService.getAll());
         schedulerService.initQuartz(executeService);
         schedulerService.initCrontab();
     }

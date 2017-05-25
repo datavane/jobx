@@ -37,6 +37,7 @@ import org.junit.runners.model.InitializationError;
 import org.opencron.common.rpc.codec.RpcDecoder;
 import org.opencron.common.rpc.codec.RpcEncoder;
 import org.opencron.common.rpc.core.ConnectionHandler;
+import org.opencron.common.rpc.model.Opencron;
 import org.opencron.common.rpc.model.Request;
 import org.opencron.common.rpc.model.Response;
 import org.opencron.common.utils.IOUtils;
@@ -187,9 +188,8 @@ public class Bootstrap implements Serializable {
                                     new LengthFieldPrepender(4),
                                     new RpcDecoder(Request.class), //
                                     new RpcEncoder(Response.class), //
-                                    new IdleStateHandler(0, 0, 60, TimeUnit.SECONDS),
-                                    new ConnectionHandler(),
-                                    new AgentServerHandler(password));
+                                    new IdleStateHandler(Opencron.readerIdleTimeSeconds, Opencron.writerIdleTimeSeconds, Opencron.allIdleTimeSeconds, TimeUnit.SECONDS),
+                                    new AgentHandler(password));
                         }
                     });
 

@@ -28,6 +28,8 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.codec.LengthFieldPrepender;
+import io.netty.handler.timeout.IdleState;
+import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.handler.timeout.IdleStateHandler;
 import org.opencron.common.rpc.codec.RpcDecoder;
 import org.opencron.common.rpc.codec.RpcEncoder;
@@ -35,17 +37,18 @@ import org.opencron.common.rpc.core.ChannelWrapper;
 import org.opencron.common.rpc.core.InvokeCallback;
 import org.opencron.common.rpc.core.ConnectionHandler;
 import org.opencron.common.rpc.core.RpcFuture;
+import org.opencron.common.rpc.model.Action;
+import org.opencron.common.rpc.model.Opencron;
 import org.opencron.common.rpc.model.Request;
 import org.opencron.common.rpc.model.Response;
+import org.opencron.common.utils.CommonUtils;
+import org.opencron.server.domain.Agent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.net.InetSocketAddress;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.ThreadFactory;
@@ -61,29 +64,21 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 
 @Component
-public class OpencronCaller {
+public class OpencronHander {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private EventLoopGroup group;
+    private EventLoopGroup group = new NioEventLoopGroup();
 
-    private Bootstrap bootstrap;
+    private Bootstrap bootstrap = new Bootstrap();
 
-    protected ConcurrentHashMap<String, RpcFuture> rpcFutureTable;
+    protected final ConcurrentHashMap<String, RpcFuture> rpcFutureTable = new ConcurrentHashMap<String, RpcFuture>(256);
 
-    private ConcurrentHashMap<String, ChannelWrapper> channelTable;
+    private final ConcurrentHashMap<String, ChannelWrapper> channelTable = new ConcurrentHashMap<String, ChannelWrapper>();
 
     private ScheduledThreadPoolExecutor scheduledThreadPoolExecutor;
 
-    public void start() {
-
-        group = new NioEventLoopGroup();
-
-        bootstrap = new Bootstrap();
-
-        this.rpcFutureTable = new ConcurrentHashMap<String, RpcFuture>(256);
-
-        this.channelTable = new ConcurrentHashMap<String, ChannelWrapper>();
+    public void start (List<Agent> agents) {
 
         bootstrap.group(group).channel(NioSocketChannel.class)
                 .option(ChannelOption.TCP_NODELAY, true)
@@ -92,11 +87,11 @@ public class OpencronCaller {
                     @Override
                     public void initChannel(SocketChannel ch)
                             throws Exception {
-                        ch.pipeline().addLast(new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 0, 4, 0, 4),
+                        ch.pipeline().addLast(new LengthFieldBasedFrameDecoder(1<<20, 0, 4, 0, 4),
                                 new LengthFieldPrepender(4),
                                 new RpcDecoder(Response.class), //
                                 new RpcEncoder(Request.class), //
-                                new IdleStateHandler(0, 0, 60, TimeUnit.SECONDS),
+                                new IdleStateHandler(Opencron.readerIdleTimeSeconds, Opencron.writerIdleTimeSeconds, Opencron.allIdleTimeSeconds, TimeUnit.SECONDS),
                                 new ConnectionHandler(),
                                 new OpencronHandler());
                     }
@@ -106,27 +101,35 @@ public class OpencronCaller {
             private final AtomicInteger idGenerator = new AtomicInteger(0);
             @Override
             public Thread newThread(Runnable r) {
-
                 return new Thread(r, "Rpc-Scheduled-" + this.idGenerator.incrementAndGet());
             }
         });
-
         this.scheduledThreadPoolExecutor.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
                 scanRpcFutureTable();
             }
         }, 500, 500, TimeUnit.MILLISECONDS);
-    }
 
-    public void shutdown(){
-        this.scheduledThreadPoolExecutor.shutdown();
-        this.group.shutdownGracefully();
+        //开始连接所有的Agent...
+        if (CommonUtils.notEmpty(agents)) {
+            for (Agent agent:agents) {
+                try {
+                    Request request = Request.request(agent.getIp(), agent.getPort(), Action.PING, agent.getPassword());
+                    Response response = this.sendSync(request, 1000 * 5, TimeUnit.MILLISECONDS);
+                    if(!response.isSuccess()) {
+                        String addr = request.getHostName()+":"+request.getPort();
+                        channelTable.remove(addr);
+                        logger.info("<<<<<<<ping error>>>>>>>>>@ {}",agent.getIp());
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     public Response sendSync(final Request request, long timeout, TimeUnit unit) throws Exception {
-
-        this.start();
 
         Channel channel = getOrCreateChannel(request);
 
@@ -153,8 +156,6 @@ public class OpencronCaller {
                 }
             });
 
-            this.shutdown();
-
             return rpcFuture.get(timeout, unit);
         } else {
             throw new IllegalArgumentException("channel not active. request id:"+request.getId());
@@ -171,9 +172,6 @@ public class OpencronCaller {
      * @throws Exception
      */
     public void sendAsync(final Request request, long timeout, TimeUnit unit, final InvokeCallback callback) throws Exception {
-
-        this.start();
-
         Channel channel = getOrCreateChannel(request);
         if (channel != null && channel.isActive()) {
 
@@ -203,7 +201,6 @@ public class OpencronCaller {
             throw new IllegalArgumentException("channel not active. request id:"+request.getId());
         }
 
-        this.shutdown();
     }
 
     /**
@@ -213,8 +210,6 @@ public class OpencronCaller {
      * @param unit
      */
     public void sendOneway(final Request request, long timeout, TimeUnit unit){
-
-        this.start();
 
         Channel channel = getOrCreateChannel(request);
         if (channel != null && channel.isActive()) {
@@ -232,16 +227,12 @@ public class OpencronCaller {
         } else {
             throw new IllegalArgumentException("channel not active. request id:"+request.getId());
         }
-
-        this.shutdown();
     }
 
     class OpencronHandler extends SimpleChannelInboundHandler<Response> {
 
         @Override
-        protected void channelRead0(ChannelHandlerContext channelHandlerContext, Response msg) throws Exception {
-
-            final Response response = msg;
+        protected void channelRead0(ChannelHandlerContext channelHandlerContext, Response response) throws Exception {
             logger.info("Rpc client receive response id:{}", response.getId());
             RpcFuture future = rpcFutureTable.get(response.getId());
 
@@ -256,6 +247,19 @@ public class OpencronCaller {
         public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
             super.exceptionCaught(ctx, cause);
             logger.error("捕获异常", cause);
+        }
+
+        @Override
+        public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
+            if (IdleStateEvent.class.isAssignableFrom(evt.getClass())) {
+                IdleStateEvent event = (IdleStateEvent) evt;
+                if (event.state() == IdleState.READER_IDLE)
+                    System.out.println("read idle");
+                else if (event.state() == IdleState.WRITER_IDLE)
+                    System.out.println("write idle");
+                else if (event.state() == IdleState.ALL_IDLE)
+                    System.out.println("all idle");
+            }
         }
     }
 
@@ -309,6 +313,5 @@ public class OpencronCaller {
             //释放资源
         }
     }
-
 
 }
