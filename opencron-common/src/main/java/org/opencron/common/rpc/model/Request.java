@@ -93,7 +93,7 @@ public class Request implements Serializable {
     }
 
     public static Request request(String hostName, Integer port, Action action, String password) {
-        return new Request().setId(IdGenerator.getId().toString()).setHostName(hostName).setPort(port).setAction(action).setPassword(password);
+        return new Request().setId(hostName+":"+port).setHostName(hostName).setPort(port).setAction(action).setPassword(password);
     }
 
     public Request putParam(String key, String value) {

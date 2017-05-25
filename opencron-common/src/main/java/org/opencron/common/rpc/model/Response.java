@@ -26,6 +26,8 @@
  */
 package org.opencron.common.rpc.model;
 
+import org.opencron.common.rpc.core.IdGenerator;
+
 import java.util.Date;
 import java.util.Map;
 
@@ -127,6 +129,6 @@ public class Response implements java.io.Serializable {
     }
 
     public static Response response(Request request) {
-        return new Response().setAction(request.getAction()).start();
+        return new Response().setId(request.getHostName()+":"+request.getPort()).setAction(request.getAction()).start();
     }
 }
