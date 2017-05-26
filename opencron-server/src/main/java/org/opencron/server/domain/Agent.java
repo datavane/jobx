@@ -27,9 +27,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
-
-import org.opencron.common.utils.CommonUtils;
-
 import javax.persistence.*;
 
 @Entity
@@ -228,6 +225,7 @@ public class Agent implements Serializable {
         this.users = users;
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -235,12 +233,12 @@ public class Agent implements Serializable {
 
         Agent agent = (Agent) o;
 
-        return getAgentId().equals(agent.getAgentId());
+        return getAgentId() != null ? getAgentId().equals(agent.getAgentId()) : agent.getAgentId() == null;
     }
 
     @Override
     public int hashCode() {
-        return getAgentId().hashCode();
+        return getAgentId() != null ? getAgentId().hashCode() : 0;
     }
 
     @Override
