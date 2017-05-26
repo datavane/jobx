@@ -21,7 +21,6 @@
 
 package org.opencron.server.controller;
 
-import org.apache.http.HttpResponse;
 import org.opencron.common.utils.WebUtils;
 import org.opencron.server.domain.Agent;
 import org.opencron.server.domain.Group;
@@ -78,5 +77,15 @@ public class GroupController extends BaseController {
         groupService.merge(group);
         return "redirect:/group/view?csrf=" + OpencronTools.getCSRF(session);
     }
+
+    @RequestMapping("/editpage")
+    public String edit(Long groupId,Model model) {
+        Group group = groupService.getById(groupId);
+        List<Group> groups = groupService.getGroupforAgent();
+        model.addAttribute("group",group);
+        model.addAttribute("groups",groups);
+        return "/group/edit";
+    }
+
 
 }

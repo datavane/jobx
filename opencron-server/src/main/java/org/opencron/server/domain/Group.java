@@ -31,10 +31,14 @@ public class Group {
     )
     private Set<Agent> agents = new HashSet<Agent>(0);
 
+
     private Date createTime;
 
     @Transient
     private String userName;//显示用户名的冗余字段
+
+    @Transient
+    private Long agentCount;
 
     public Long getGroupId() {
         return groupId;
@@ -90,5 +94,13 @@ public class Group {
 
     public void setAgents(Set<Agent> agents) {
         this.agents = agents;
+    }
+
+    public Long getAgentCount() {
+        return agentCount;
+    }
+
+    public void setAgentCount(Long agentCount) {
+        this.agentCount = agentCount;
     }
 }

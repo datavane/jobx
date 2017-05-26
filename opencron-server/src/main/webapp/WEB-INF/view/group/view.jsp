@@ -59,7 +59,7 @@
                 <c:forEach var="g" items="${pageBean.result}" varStatus="index">
                     <tr>
                         <td><center>${g.groupName}</center></td>
-                        <td>${fn:length(g.agents)}</td>
+                        <td>${g.agentCount}</td>
                         <td>${g.userName}</td>
                         <td><fmt:formatDate value="${g.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                         <td>${g.comment}</td>
@@ -68,7 +68,7 @@
                                 <a href="${contextPath}/group/editpage?groupId=${g.groupId}&csrf=${csrf}" title="编辑">
                                     <i class="glyphicon glyphicon-pencil"></i>
                                 </a>&nbsp;&nbsp;
-                                <a href="${contextPath}/groupd/etail?groupId=${g.groupId}&csrf=${csrf}" title="查看详情">
+                                <a href="${contextPath}/groupd/detail?groupId=${g.groupId}&csrf=${csrf}" title="查看详情">
                                     <i class="glyphicon glyphicon-eye-open"></i>
                                 </a>
                             </center>
