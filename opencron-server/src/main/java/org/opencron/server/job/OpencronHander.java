@@ -35,11 +35,8 @@ import org.opencron.common.rpc.codec.RpcEncoder;
 import org.opencron.common.rpc.core.ChannelWrapper;
 import org.opencron.common.rpc.core.InvokeCallback;
 import org.opencron.common.rpc.core.RpcFuture;
-import org.opencron.common.rpc.model.Action;
 import org.opencron.common.rpc.model.Request;
 import org.opencron.common.rpc.model.Response;
-import org.opencron.common.utils.CommonUtils;
-import org.opencron.server.domain.Agent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -75,7 +72,7 @@ public class OpencronHander {
 
     private ScheduledThreadPoolExecutor scheduledThreadPoolExecutor;
 
-    public void start (List<Agent> agents) {
+    public void start () {
 
         bootstrap.group(group).channel(NioSocketChannel.class)
                 .option(ChannelOption.TCP_NODELAY, true)
@@ -106,22 +103,6 @@ public class OpencronHander {
             }
         }, 500, 500, TimeUnit.MILLISECONDS);
 
-        //开始连接所有的Agent...
-        if (CommonUtils.notEmpty(agents)) {
-            for (Agent agent:agents) {
-                try {
-                    Request request = Request.request(agent.getIp(), agent.getPort(), Action.PING, agent.getPassword());
-                    Response response = this.sendSync(request, 1000 * 5, TimeUnit.MILLISECONDS);
-                    if(!response.isSuccess()) {
-                        String addr = request.getHostName()+":"+request.getPort();
-                        channelTable.remove(addr);
-                        logger.info("<<<<<<<ping error>>>>>>>>>@ {}",agent.getIp());
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
     }
 
     public Response sendSync(final Request request, long timeout, TimeUnit unit) throws Exception {
