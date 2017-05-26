@@ -20,8 +20,6 @@
  */
 package org.opencron.common.rpc.model;
 
-import org.opencron.common.rpc.core.IdGenerator;
-
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;

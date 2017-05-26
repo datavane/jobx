@@ -32,12 +32,9 @@ import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.codec.LengthFieldPrepender;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
-import io.netty.handler.timeout.IdleStateHandler;
 import org.junit.runners.model.InitializationError;
 import org.opencron.common.rpc.codec.RpcDecoder;
 import org.opencron.common.rpc.codec.RpcEncoder;
-import org.opencron.common.rpc.core.ConnectionHandler;
-import org.opencron.common.rpc.model.Opencron;
 import org.opencron.common.rpc.model.Request;
 import org.opencron.common.rpc.model.Response;
 import org.opencron.common.utils.IOUtils;
@@ -54,7 +51,6 @@ import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.security.AccessControlException;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
 import static org.opencron.common.utils.CommonUtils.isEmpty;
 
@@ -188,7 +184,6 @@ public class Bootstrap implements Serializable {
                                     new LengthFieldPrepender(4),
                                     new RpcDecoder(Request.class), //
                                     new RpcEncoder(Response.class), //
-                                    new IdleStateHandler(Opencron.readerIdleTimeSeconds, Opencron.writerIdleTimeSeconds, Opencron.allIdleTimeSeconds, TimeUnit.SECONDS),
                                     new AgentHandler(password));
                         }
                     });

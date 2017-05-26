@@ -30,15 +30,12 @@ import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.codec.LengthFieldPrepender;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
-import io.netty.handler.timeout.IdleStateHandler;
 import org.opencron.common.rpc.codec.RpcDecoder;
 import org.opencron.common.rpc.codec.RpcEncoder;
 import org.opencron.common.rpc.core.ChannelWrapper;
 import org.opencron.common.rpc.core.InvokeCallback;
-import org.opencron.common.rpc.core.ConnectionHandler;
 import org.opencron.common.rpc.core.RpcFuture;
 import org.opencron.common.rpc.model.Action;
-import org.opencron.common.rpc.model.Opencron;
 import org.opencron.common.rpc.model.Request;
 import org.opencron.common.rpc.model.Response;
 import org.opencron.common.utils.CommonUtils;
@@ -91,8 +88,6 @@ public class OpencronHander {
                                 new LengthFieldPrepender(4),
                                 new RpcDecoder(Response.class), //
                                 new RpcEncoder(Request.class), //
-                                new IdleStateHandler(Opencron.readerIdleTimeSeconds, Opencron.writerIdleTimeSeconds, Opencron.allIdleTimeSeconds, TimeUnit.SECONDS),
-                                new ConnectionHandler(),
                                 new OpencronHandler());
                     }
                 });

@@ -31,6 +31,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -40,6 +41,9 @@ import java.util.List;
 public class OpencronTask implements InitializingBean {
 
     private final Logger logger = LoggerFactory.getLogger(OpencronTask.class);
+
+    @Autowired
+    private AgentService agentService;
 
     @Autowired
     private ExecuteService executeService;
@@ -57,22 +61,20 @@ public class OpencronTask implements InitializingBean {
     private SchedulerService schedulerService;
 
     @Autowired
-    private AgentService agentService;
-
-    @Autowired
-    private OpencronHander opencronHander;
+    private OpencronMonitor opencronMonitor;
 
     @Override
     public void afterPropertiesSet() throws Exception {
         configService.initDataBase();
         //检测所有的agent...
         clearCache();
-        opencronHander.start(agentService.getAll());
+        //通知所有的agent,启动心跳检测...
+        opencronMonitor.start();
         schedulerService.initQuartz(executeService);
         schedulerService.initCrontab();
     }
 
-    //@Scheduled(cron = "0/5 * * * * ?")
+    @Scheduled(cron = "0/5 * * * * ?")
     public void reExecuteJob() {
         logger.info("[opencron] reExecuteIob running...");
         final List<Record> records = recordService.getReExecuteRecord();

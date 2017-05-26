@@ -36,8 +36,11 @@ import java.beans.PropertyDescriptor;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.InetSocketAddress;
+import java.net.Socket;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static org.opencron.common.utils.CommonUtils.*;
 
@@ -61,6 +64,8 @@ public class AgentHandler extends SimpleChannelInboundHandler<Request> implement
     private AgentMonitor agentMonitor;
 
     private Response response;
+
+    private Map<String, HeartBeat> heartBeatMap = new ConcurrentHashMap<String, HeartBeat>(0);
 
     public AgentHandler(String password) {
         this.password = password;
@@ -123,6 +128,25 @@ public class AgentHandler extends SimpleChannelInboundHandler<Request> implement
             this.response = errorPasswordResponse(request);
             return;
         }
+
+        //非直连
+        if ( CommonUtils.isEmpty(request.getParams().get("proxy")) ) {
+            String hostName = Globals.OPENCRON_SOCKET_ADDRESS.split(":")[0];
+            int serverPort = Integer.parseInt(request.getParams().get("serverPort"));
+
+            HeartBeat heartBeat = heartBeatMap.get(hostName);
+            if (heartBeat == null) {
+                try {
+                    heartBeat = new HeartBeat(hostName, serverPort, request.getHostName());
+                    heartBeat.start();
+                    heartBeatMap.put(hostName, heartBeat);
+                    logger.info("[opencron]:ping ip:{},port:{}", hostName, serverPort);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
         this.response = Response.response(request).setSuccess(true).setExitCode(Opencron.StatusCode.SUCCESS_EXIT.getValue()).end();
     }
 
@@ -531,6 +555,82 @@ public class AgentHandler extends SimpleChannelInboundHandler<Request> implement
             }
         }
         return false;
+    }
+
+    class HeartBeat {
+
+        private String serverIp;
+        private String clientIp;
+        private Socket socket;
+        private boolean running = false;
+        private long lastSendTime;
+
+        public HeartBeat(String serverIp, int port, String clientIp) throws IOException {
+            this.serverIp = serverIp;
+            this.clientIp = clientIp;
+            socket = new Socket(serverIp, port);
+            socket.setKeepAlive(true);
+        }
+
+        public void start() throws IOException {
+            running = true;
+            lastSendTime = System.currentTimeMillis();
+            new Thread(new KeepAliveWatchDog()).start();
+        }
+
+        public void stop() throws IOException {
+            if (running) {
+                running = false;
+                this.socket.close();
+                heartBeatMap.remove(serverIp);
+                logger.info("[opencron]:heartBeat: stoped " + this.serverIp);
+            }
+        }
+
+        public void sendMessage(Object obj) throws IOException {
+            ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
+            outputStream.writeObject(obj);
+            outputStream.flush();
+        }
+
+        class KeepAliveWatchDog implements Runnable {
+
+            long checkDelay = 5;
+
+            long keepAliveDelay = 1000*5;
+
+            public void run() {
+                while (running) {
+                    if (System.currentTimeMillis() - lastSendTime > keepAliveDelay) {
+                        lastSendTime = System.currentTimeMillis();
+                        try {
+                            HeartBeat.this.sendMessage(HeartBeat.this.clientIp);
+                        } catch (IOException e) {
+                            logger.debug("[opencron]:heartbeat error:{}", e.getMessage());
+                            try {
+                                int tryIndex = 0;
+                                boolean autoReg = false;
+                                //失联后自动发起注册...
+                                while (!autoReg||tryIndex<3) {
+                                    autoReg = register();
+                                    ++tryIndex;
+                                }
+                                HeartBeat.this.stop();
+                            } catch (Exception e1) {
+                                logger.debug("[opencron]:heartbeat error:{}", e1.getMessage());
+                            }
+                        }
+                    } else {
+                        try {
+                            Thread.sleep(checkDelay);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        }
+
     }
 
 }

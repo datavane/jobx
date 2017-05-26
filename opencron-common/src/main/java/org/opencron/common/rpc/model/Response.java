@@ -26,8 +26,6 @@
  */
 package org.opencron.common.rpc.model;
 
-import org.opencron.common.rpc.core.IdGenerator;
-
 import java.util.Date;
 import java.util.Map;
 

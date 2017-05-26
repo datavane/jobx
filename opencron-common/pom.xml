@@ -39,12 +39,6 @@
             <artifactId>httpclient</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>com.caucho</groupId>
-            <artifactId>hessian</artifactId>
-        </dependency>
-
-
         <!-- Spring -->
         <dependency>
             <groupId>org.springframework</groupId>
