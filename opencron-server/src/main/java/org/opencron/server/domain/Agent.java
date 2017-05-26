@@ -229,6 +229,21 @@ public class Agent implements Serializable {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Agent agent = (Agent) o;
+
+        return getAgentId().equals(agent.getAgentId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getAgentId().hashCode();
+    }
+
+    @Override
     public String toString() {
         return "Agent{" +
                 "agentId=" + agentId +
@@ -247,6 +262,7 @@ public class Agent implements Serializable {
                 ", comment='" + comment + '\'' +
                 ", updateTime=" + updateTime +
                 ", proxy=" + proxy +
+                ", groups=" + groups +
                 ", taskCount=" + taskCount +
                 ", users=" + users +
                 '}';
