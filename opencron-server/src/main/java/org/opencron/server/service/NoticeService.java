@@ -62,7 +62,7 @@ public class NoticeService {
     @PostConstruct
     public void initConfig() throws Exception {
         Configuration configuration = new Configuration();
-        File file = new File(getClass().getClassLoader().getResource("/").getPath().replace("classes","common"));
+        File file = new File(getClass().getClassLoader().getResource("/").getPath().replace("classes","layouts"));
         configuration.setDirectoryForTemplateLoading(file);
         configuration.setDefaultEncoding("UTF-8");
         this.template = configuration.getTemplate("email.template");

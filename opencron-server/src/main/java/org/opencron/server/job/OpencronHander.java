@@ -79,8 +79,7 @@ public class OpencronHander {
                 .option(ChannelOption.SO_KEEPALIVE, true)
                 .handler(new ChannelInitializer<SocketChannel>() {
                     @Override
-                    public void initChannel(SocketChannel ch)
-                            throws Exception {
+                    public void initChannel(SocketChannel ch) throws Exception {
                         ch.pipeline().addLast(new LengthFieldBasedFrameDecoder(1<<20, 0, 4, 0, 4),
                                 new LengthFieldPrepender(4),
                                 new RpcDecoder(Response.class), //

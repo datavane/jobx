@@ -57,11 +57,14 @@ public class AgentController extends BaseController {
     @RequestMapping("/view")
     public String queryAllAgent(HttpSession session, HttpServletRequest request, Model model, PageBean pageBean) {
         agentService.getOwnerAgent(session, pageBean);
-        if (request.getParameter("refresh") != null) {
-            return "/agent/refresh";
-        }
         model.addAttribute("connAgents", agentService.getAgentByConnType(Opencron.ConnType.CONN));
         return "/agent/view";
+    }
+
+    @RequestMapping("/refresh")
+    public String refreshAgent(HttpSession session, HttpServletRequest request, Model model, PageBean pageBean) {
+        agentService.getOwnerAgent(session, pageBean);
+        return "/agent/refresh";
     }
 
     @RequestMapping("/checkname")

@@ -35,11 +35,8 @@
     <bean id="jsonHttpMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
 
     <mvc:annotation-driven/>
-    <mvc:resources mapping="/css/**" location="/css/"/>
-    <mvc:resources mapping="/fonts/**" location="/fonts/"/>
-    <mvc:resources mapping="/img/**" location="/img/"/>
-    <mvc:resources mapping="/js/**" location="/js/"/>
-    <mvc:resources mapping="/upload/**" location="/upload/"/>
+    <mvc:resources mapping="/static/**" location="/static/"/>
+    <mvc:resources mapping="/favicon.ico" location="/favicon.ico"/>
     <mvc:default-servlet-handler/>
 
     <mvc:interceptors>

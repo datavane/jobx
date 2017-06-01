@@ -96,7 +96,7 @@ public class RecordController extends BaseController {
     }
 
     @RequestMapping("/running")
-    public String queryRunning(HttpSession session, HttpServletRequest request, PageBean pageBean, RecordVo recordVo, String queryTime, Model model) {
+    public String queryRunning(HttpSession session, HttpServletRequest request, PageBean pageBean, RecordVo recordVo, String queryTime, Model model,String refresh) {
 
         model.addAttribute("agents", agentService.getOwnerAgents(session));
 
@@ -117,11 +117,13 @@ public class RecordController extends BaseController {
             model.addAttribute("execType", recordVo.getExecType());
         }
         recordService.query(session, pageBean, recordVo, queryTime, false);
-
-        if (request.getParameter("refresh") != null) {
-            return "/record/refresh";
-        }
         return "/record/running";
+    }
+
+    @RequestMapping("/refresh")
+    public String refresh(HttpSession session, HttpServletRequest request, PageBean pageBean, RecordVo recordVo, String queryTime, Model model) {
+        this.queryRunning(session,request,pageBean,recordVo,queryTime,model,"refresh");
+        return "/record/refresh";
     }
 
     @RequestMapping("/detail")

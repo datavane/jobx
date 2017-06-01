@@ -85,6 +85,12 @@ public class HomeController extends BaseController {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
+
+    @RequestMapping("/")
+    public String login() {
+        return "/home/login";
+    }
+
     @RequestMapping("/home")
     public String index(HttpSession session, Model model) {
 
