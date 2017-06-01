@@ -335,8 +335,8 @@
 					<li <c:if test="${fn:contains(uri,'/job/view')}">class="active"</c:if>>
 						<a href="${contextPath}/job/view?csrf=${csrf}" class="<c:if test="${fn:contains(uri,'/job/view')}">active</c:if>">作业列表</a>
 					</li>
-					<li <c:if test="${fn:contains(uri,'/exec')}">class="active"</c:if>>
-						<a href="${contextPath}/job/goexec?csrf=${csrf}" class="<c:if test="${fn:contains(uri,'/exec')}">active</c:if>">现场执行</a>
+					<li <c:if test="${fn:contains(uri,'/goexec')}">class="active"</c:if>>
+						<a href="${contextPath}/job/goexec?csrf=${csrf}" class="<c:if test="${fn:contains(uri,'/goexec')}">active</c:if>">现场执行</a>
 					</li>
 				</ul>
 			</li>
