@@ -78,7 +78,7 @@
     height: 72px;
     display: block;
     z-index: 150009;
-    background: url(../img/loadinfo.gif) center top no-repeat;
+    background: url(/static/img/loadinfo.gif) center top no-repeat;
 }
 
 .piro_title {

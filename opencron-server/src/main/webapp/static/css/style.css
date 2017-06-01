@@ -1,32 +1,32 @@
 @font-face {
     font-family: 'open-sans-semibold';
-    src: url('../fonts/opan-sans/OpenSans-Semibold-webfont.eot');
-    src: url('../fonts/opan-sans/OpenSans-Semibold-webfont.eot?#iefix') format('embedded-opentype'),
-    url('../fonts/opan-sans/OpenSans-Semibold-webfont.woff') format('woff'),
-    url('../fonts/opan-sans/OpenSans-Semibold-webfont.ttf') format('truetype'),
-    url('../fonts/opan-sans/OpenSans-Semibold-webfont.svg#open_sanssemibold') format('svg');
+    src: url('/static/fonts/opan-sans/OpenSans-Semibold-webfont.eot');
+    src: url('/static/fonts/opan-sans/OpenSans-Semibold-webfont.eot?#iefix') format('embedded-opentype'),
+    url('/static/fonts/opan-sans/OpenSans-Semibold-webfont.woff') format('woff'),
+    url('/static/fonts/opan-sans/OpenSans-Semibold-webfont.ttf') format('truetype'),
+    url('/static/fonts/opan-sans/OpenSans-Semibold-webfont.svg#open_sanssemibold') format('svg');
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'open-sans-light';
-    src: url('../fonts/opan-sans/OpenSans-Light-webfont.eot');
-    src: url('../fonts/opan-sans/OpenSans-Light-webfont.eot?#iefix') format('embedded-opentype'),
-    url('../fonts/opan-sans/OpenSans-Light-webfont.woff') format('woff'),
-    url('../fonts/opan-sans/OpenSans-Light-webfont.ttf') format('truetype'),
-    url('../fonts/opan-sans/OpenSans-Light-webfont.svg#open_sanslight') format('svg');
+    src: url('/static/fonts/opan-sans/OpenSans-Light-webfont.eot');
+    src: url('/static/fonts/opan-sans/OpenSans-Light-webfont.eot?#iefix') format('embedded-opentype'),
+    url('/static/fonts/opan-sans/OpenSans-Light-webfont.woff') format('woff'),
+    url('/static/fonts/opan-sans/OpenSans-Light-webfont.ttf') format('truetype'),
+    url('/static/fonts/opan-sans/OpenSans-Light-webfont.svg#open_sanslight') format('svg');
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'open-sans-regular';
-    src: url('../fonts/opan-sans/OpenSans-Regular-webfont.eot');
-    src: url('../fonts/opan-sans/OpenSans-Regular-webfont.eot?#iefix') format('embedded-opentype'),
-    url('../fonts/opan-sans/OpenSans-Regular-webfont.woff') format('woff'),
-    url('../fonts/opan-sans/OpenSans-Regular-webfont.ttf') format('truetype'),
-    url('../fonts/opan-sans/OpenSans-Regular-webfont.svg#open_sansregular') format('svg');
+    src: url('/static/fonts/opan-sans/OpenSans-Regular-webfont.eot');
+    src: url('/static/fonts/opan-sans/OpenSans-Regular-webfont.eot?#iefix') format('embedded-opentype'),
+    url('/static/fonts/opan-sans/OpenSans-Regular-webfont.woff') format('woff'),
+    url('/static/fonts/opan-sans/OpenSans-Regular-webfont.ttf') format('truetype'),
+    url('/static/fonts/opan-sans/OpenSans-Regular-webfont.svg#open_sansregular') format('svg');
     font-weight: normal;
     font-style: normal;
 }
@@ -34,9 +34,9 @@
 @font-face {
     font-family: 'ios7-icon';
     src:
-            url('../fonts/icons/icon.woff') format('woff'),
-            url('../fonts/icons/icon.ttf') format('truetype'),
-            url('../fonts/icons/icon.svg#open_sansregular') format('svg');
+            url('/static/fonts/icons/icon.woff') format('woff'),
+            url('/static/fonts/icons/icon.ttf') format('truetype'),
+            url('/static/fonts/icons/icon.svg#open_sansregular') format('svg');
     font-weight: normal;
     font-style: normal;
 }
@@ -656,7 +656,7 @@ hr {
     background-color: transparent;
     background-position: center;
     background-repeat: no-repeat;
-    background-image: url(../img/icon/tile-actions.png);
+    background-image: url(/static/img/icon/tile-actions.png);
 }
 
 .tile-config > a:hover {
@@ -1906,7 +1906,7 @@ a.list-group-item.active > .badge,
     Templates Skins for Desktop
 -----------------------------------------------------------*/
 #skin-cloth {
-    background: url(../img/body/cloth.png);
+    background: url(/static/img/body/cloth.png);
 }
 
 @media (min-width: 1200px) {
@@ -1919,7 +1919,7 @@ a.list-group-item.active > .badge,
     /* List views */
     .sortable.todo-list .media {
         padding-left: 20px;
-        background: url(../img/sort.png) no-repeat 8px 11px;
+        background: url(/static/img/sort.png) no-repeat 8px 11px;
     }
 }
 
@@ -1994,80 +1994,80 @@ a.list-group-item.active > .badge,
     }
 
     #skin-blur-violate {
-        background-image: url(../img/body/violate.jpg);
+        background-image: url(/static/img/body/violate.jpg);
     }
 
     #skin-blur-lights {
-        background-image: url(../img/body/lights.jpg);
+        background-image: url(/static/img/body/lights.jpg);
     }
 
     #skin-blur-orange {
-        background-image: url(../img/body/orange.jpg);
+        background-image: url(/static/img/body/orange.jpg);
     }
 
 
     #skin-blur-2 {
-        background-image: url(../img/body/2.jpg);
+        background-image: url(/static/img/body/2.jpg);
     }
 
 
     #skin-blur-3 {
-        background-image: url(../img/body/3.jpg);
+        background-image: url(/static/img/body/3.jpg);
     }
 
 
     #skin-blur-4 {
-        background-image: url(../img/body/4.jpg);
+        background-image: url(/static/img/body/4.jpg);
     }
 
 
     #skin-blur-5 {
-        background-image: url(../img/body/5.jpg);
+        background-image: url(/static/img/body/5.jpg);
     }
 
 
     #skin-blur-6 {
-        background-image: url(../img/body/6.jpg);
+        background-image: url(/static/img/body/6.jpg);
     }
 
     #skin-blur-city {
-        background-image: url(../img/body/city.jpg);
+        background-image: url(/static/img/body/city.jpg);
     }
 
     #skin-blur-greenish {
-        background-image: url(../img/body/greenish.jpg);
+        background-image: url(/static/img/body/greenish.jpg);
     }
 
     #skin-blur-night {
-        background-image: url(../img/body/night.jpg);
+        background-image: url(/static/img/body/night.jpg);
     }
 
     #skin-blur-sunny {
-        background-image: url(../img/body/sunny.jpg);
+        background-image: url(/static/img/body/sunny.jpg);
     }
 
     #skin-blur-blue {
-        background-image: url(../img/body/blue.jpg);
+        background-image: url(/static/img/body/blue.jpg);
     }
 
     #skin-blur-chrome {
-        background-image: url(../img/body/chrome.jpg);
+        background-image: url(/static/img/body/chrome.jpg);
     }
 
     #skin-blur-ocean {
-        background-image: url(../img/body/ocean.jpg);
+        background-image: url(/static/img/body/ocean.jpg);
     }
 
     #skin-blur-sunset {
-        background-image: url(../img/body/sunset.jpg);
+        background-image: url(/static/img/body/sunset.jpg);
     }
 
     #skin-blur-yellow {
-        background-image: url(../img/body/yellow.jpg);
+        background-image: url(/static/img/body/yellow.jpg);
     }
 
     #skin-blur-kiwi {
-        background-image: url(../img/body/kiwi.jpg);
+        background-image: url(/static/img/body/kiwi.jpg);
     }
 
     /* Sidebar */
@@ -2431,7 +2431,7 @@ a.list-group-item.active > .badge,
         border: 0;
         font-size: 0px;
         background-color: transparent;
-        background-image: url(../img/icon/search.png);
+        background-image: url(/static/img/icon/search.png);
         background-repeat: no-repeat;
         background-position: center;
     }
@@ -2444,7 +2444,7 @@ a.list-group-item.active > .badge,
         background-color: #000;
         margin-top: -10px;
         height: 50px;
-        background: #000 url(../img/icon/search.png) no-repeat 10px;
+        background: #000 url(/static/img/icon/search.png) no-repeat 10px;
         padding-left: 43px;
         font-size: 14px;
     }

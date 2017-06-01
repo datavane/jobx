@@ -1,0 +1,182 @@
+/* Font Icons */
+.icon {
+    display: inline-block;
+    font-family: 'ios7-icon';
+    -webkit-text-rendering: geometricPrecision;
+    -moz-text-rendering: geometricPrecision;
+    -ms-text-rendering: geometricPrecision;
+    -o-text-rendering: geometricPrecision;
+    text-rendering: geometricPrecision;
+    -webkit-font-smoothing: antialiased;
+    -moz-font-smoothing: antialiased;
+    -ms-font-smoothing: antialiased;
+    -o-font-smoothing: antialiased;
+    font-smoothing: antialiased;
+    font-style: normal;
+    text-shadow: none;
+}
+
+[class*="sa-"] {
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* Left Menu */
+[class*="sa-side-"] {
+    width: 44px;
+    height: 44px;
+}
+
+.sa-side-home { background-image: url(/static/img/icon/home.png); }
+.sa-side-typography { background-image: url(/static/img/icon/typography.png); }
+.sa-side-widget { background-image: url(/static/img/icon/widgets.png); }
+.sa-side-table { background-image: url(/static/img/icon/table.png); }
+.sa-side-form { background-image: url(/static/img/icon/form.png); }
+.sa-side-ui { background-image: url(/static/img/icon/ui.png); }
+.sa-side-folder { background-image: url(/static/img/icon/folder.png); }
+.sa-side-calendar { background-image: url(/static/img/icon/calendar.png); }
+.sa-side-page { background-image: url(/static/img/icon/pages.png); }
+.sa-side-chart { background-image: url(/static/img/icon/chart.png); }
+.sa-side-photos { background-image: url(/static/img/icon/photos.png); }
+.sa-side-users { background-image: url(/static/img/icon/user.png); }
+.sa-side-config { background-image: url(/static/img/icon/config.png); }
+
+/* Top Menu */
+[class*="sa-top-"] {
+    width: 40px;
+    height: 48px;
+    float: left;
+}
+.sa-top-message { background-image: url(/static/img/icon/message.png); }
+.sa-top-updates { background-image: url(/static/img/icon/updates.png); }
+
+/* Editor */
+[class*="editor-"] {
+   width: 13px;
+   height: 22px;
+   background-position: center;
+   background-repeat: no-repeat;
+   float: left;
+}
+.editor-text { background-image: url(/static/img/editor/text.png); }
+.editor-bold { background-image: url(/static/img/editor/bold.png); }
+.editor-italic { background-image: url(/static/img/editor/italic.png); }
+.editor-underline { background-image: url(/static/img/editor/underline.png); }
+.editor-unstyle { background-image: url(/static/img/editor/unstyle.png); }
+.editor-unlist { background-image: url(/static/img/editor/unlist.png); }
+.editor-orderlist { background-image: url(/static/img/editor/orderlist.png); }
+.editor-align { background-image: url(/static/img/editor/align.png); }
+.editor-line-height { background-image: url(/static/img/editor/line-height.png); }
+.editor-table { background-image: url(/static/img/editor/table.png); }
+.editor-link { background-image: url(/static/img/editor/link.png); }
+.editor-picture { background-image: url(/static/img/editor/picture.png); }
+.editor-video { background-image: url(/static/img/editor/video.png); }
+.editor-full-screen { background-image: url(/static/img/editor/full-screen.png); }
+.editor-code { background-image: url(/static/img/editor/code.png); }
+.editor-help { background-image: url(/static/img/editor/help.png); }
+.editor-font { background-image: url(/static/img/editor/font.png); }
+.editor-heading { background-image: url(/static/img/editor/heading.png); }
+
+/* List Icons */
+[class*="sa-list-"] {
+    display: inline-block;
+    height: 21px;
+    width: 21px;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.sa-list-add { background-image: url(/static/img/icon/add.png); }
+.sa-list-refresh { background-image: url(/static/img/icon/refresh.png); }
+.sa-list-move { background-image: url(/static/img/icon/move.png); }
+.sa-list-delete { background-image: url(/static/img/icon/delete.png); }
+.sa-list-back { background-image: url(/static/img/icon/back.png); }
+.sa-list-forwad { background-image: url(/static/img/icon/forwad.png); }
+.sa-list-day { background-image: url(/static/img/icon/day.png); }
+.sa-list-week { background-image: url(/static/img/icon/week.png); }
+.sa-list-month { background-image: url(/static/img/icon/month.png); }
+.sa-list-spam { background-image: url(/static/img/icon/spam.png); }
+.sa-list-archive { background-image: url(/static/img/icon/archive.png); }
+
+
+/* Others */
+#menu-toggle { background-image: url(/static/img/icon/menu.png); }
+
+/* Form */
+.sa-plus {
+    width: 13px;
+    height: 13px;
+    background-image: url(/static/img/icon/plus-sm.png);
+    display: inline-block;
+}
+
+/* For Higher DPI */
+@media
+only screen and (-webkit-min-device-pixel-ratio: 1.25),
+only screen and (   min--moz-device-pixel-ratio: 1.25),
+only screen and (     -o-min-device-pixel-ratio: 2/1),
+only screen and (        min-device-pixel-ratio: 1.25),
+only screen and (                min-resolution: 120dpi),
+only screen and (                min-resolution: 1.25dppx) {
+
+    /* Left Menu */
+    .sa-side-typography, .sa-side-widget, .sa-side-table, .sa-side-ui, .sa-side-folder { background-size: 23px 21px; }
+
+    .sa-side-home { background-image: url(/static/img/icon/home@2x.png); background-size: 25px 25px; }
+    .sa-side-typography { background-image: url(/static/img/icon/typography@2x.png); }
+    .sa-side-widget { background-image: url(/static/img/icon/widgets@2x.png); }
+    .sa-side-table { background-image: url(/static/img/icon/table@2x.png); }
+    .sa-side-form { background-image: url(/static/img/icon/form@2x.png); background-size: 19px 25px; }
+    .sa-side-ui { background-image: url(/static/img/icon/ui@2x.png);  }
+    .sa-side-folder { background-image: url(/static/img/icon/folder@2x.png); }
+    .sa-side-calendar { background-image: url(/static/img/icon/calendar@2x.png); background-size: 23px 23px; }
+    .sa-side-page { background-image: url(/static/img/icon/pages@2x.png); background-size: 25px 21px; }
+    .sa-side-chart { background-image: url(/static/img/icon/chart@2x.png); background-size: 24px 19px; }
+    .sa-side-photos { background-image: url(/static/img/icon/photos@2x.png); background-size: 23px 19px; }
+    
+    /* Top Menu */
+    .sa-top-message { background-image: url(/static/img/icon/message@2x.png); background-size: 25px 17px; }
+    .sa-top-updates { background-image: url(/static/img/icon/updates@2x.png); background-size: 25px 25px; }
+
+    /* Editor */
+    .editor-text { background-image: url(/static/img/editor/text@2x.png); background-size: 11px 13px; }
+    .editor-bold { background-image: url(/static/img/editor/bold@2x.png); background-size:  10px 13px;}
+    .editor-italic { background-image: url(/static/img/editor/italic@2x.png); background-size: 5px 13px; }
+    .editor-underline { background-image: url(/static/img/editor/underline@2x.png); background-size: 10px 13px; }
+    .editor-unstyle { background-image: url(/static/img/editor/unstyle@2x.png); background-size: 11px 13px; }
+    .editor-unlist { background-image: url(/static/img/editor/unlist@2x.png); background-size: 13px 13px; }
+    .editor-orderlist { background-image: url(/static/img/editor/orderlist@2x.png); background-size: 13px 13px; }
+    .editor-align { background-image: url(/static/img/editor/align@2x.png); background-size: 13px 13px; }
+    .editor-line-height { background-image: url(/static/img/editor/line-height@2x.png); background-size: 11px 13px; }
+    .editor-table { background-image: url(/static/img/editor/table@2x.png); background-size: 13px 13px; }
+    .editor-link { background-image: url(/static/img/editor/link@2x.png); background-size: 9px 13px; }
+    .editor-picture { background-image: url(/static/img/editor/picture@2x.png); background-size: 13px 13px; }
+    .editor-video { background-image: url(/static/img/editor/video@2x.png); background-size: 13px 13px; }
+    .editor-full-screen { background-image: url(/static/img/editor/full-screen@2x.png); background-size: 13px 13px; }
+    .editor-code { background-image: url(/static/img/editor/code@2x.png); background-size: 10px 13px;}
+    .editor-help { background-image: url(/static/img/editor/help@2x.png); background-size: 10px 13px; }
+    .editor-font { background-image: url(/static/img/editor/font@2x.png); background-size: 10px 13px; }
+    .editor-heading { background-image: url(/static/img/editor/heading@2x.png); background-size: 10px 13px; }
+
+    /* List Icons */    
+    .sa-list-add { background-image: url(/static/img/icon/add@2x.png); background-size: 19px 19px;  }
+    .sa-list-refresh { background-image: url(/static/img/icon/refresh@2x.png); background-size: 18px 19px; }
+    .sa-list-move { background-image: url(/static/img/icon/move@2x.png); background-size: 19px 19px; }
+    .sa-list-delete { background-image: url(/static/img/icon/delete@2x.png); background-size: 15px 19px; }
+    .sa-list-back { background-image: url(/static/img/icon/back@2x.png); background-size: 12px 21px; }
+    .sa-list-forwad { background-image: url(/static/img/icon/forwad@2x.png); background-size: 12px 21px; }
+    .sa-list-day { background-image: url(/static/img/icon/day@2x.png); background-size: 21px 21px; }
+    .sa-list-week { background-image: url(/static/img/icon/week@2x.png); background-size: 21px 21px; }
+    .sa-list-month { background-image: url(/static/img/icon/month@2x.png); background-size: 21px 21px; }
+    .sa-list-spam { background-image: url(/static/img/icon/spam@2x.png); background-size: 17px 17px; }
+    .sa-list-archive { background-image: url(/static/img/icon/archive@2x.png); background-size: 17px 17px; }
+
+    /* Form */
+    .sa-plus { background-image: url(/static/img/icon/plus-sm@2x.png); background-size: 13px 13px; }
+    
+    /* Others */
+    #menu-toggle { background-image: url(/static/img/icon/menu@2x.png); background-size: 18px 13px; }
+    .main-search { background-image: url(/static/img/icon/search@2x.png); background-size: 25px 25px; }
+    .tile-config > .tile-menu { background-image: url(/static/img/icon/tile-actions@2x.png); background-size: 13px 3px; }
+    .message-search:not(:focus) { background-image: url(/static/img/icon/search@2x.png); background-size: 25px 25px; }
+}
