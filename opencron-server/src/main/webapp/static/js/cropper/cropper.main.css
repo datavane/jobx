@@ -20,7 +20,7 @@
 }
 
 .upload-add {
-  background-image: url("../../img/add.png");
+  background-image: url("/static/img/add.png");
   background-size: 100% 100%;
   float: left;
   height: 25px;
@@ -142,7 +142,7 @@
   right: 0;
   bottom: 0;
   left: 0;
-  background: #fff url("../../img/uploading.gif") no-repeat center center;
+  background: #fff url("/static/img/uploading.gif") no-repeat center center;
   opacity: .75;
   filter: alpha(opacity=75);
   z-index: 9999999;

@@ -8,7 +8,7 @@
  * Licensed under the BSD 3-Clause
  * https://github.com/kartik-v/bootstrap-fileinput/blob/master/LICENSE.md
  */
-$image-path: "'../img" !default;
+$image-path: "'/static/img" !default;
 $preview-size: 160px !default;
 
 .file-loading {

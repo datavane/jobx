@@ -17,59 +17,59 @@ $(document).ready(function(){
 				'<div class="modal-body">' +
 				    '<div class="row template-skins">' +
 					'<a data-skin="skin-cloth" class="col-sm-2 col-xs-4" href="">' +
-					'<img src="'+contextPath+'/img/skin-cloth.jpg" alt="">' +
+					'<img src="'+contextPath+'/static/img/skin-cloth.jpg" alt="">' +
 					'</a>' +
 					'<a data-skin="skin-blur-violate" class="col-sm-2 col-xs-4" href="">' +
-					    '<img src="'+contextPath+'/img/skin-violate.jpg" alt="">' +
+					    '<img src="'+contextPath+'/static/img/skin-violate.jpg" alt="">' +
 					'</a>' +
 					'<a data-skin="skin-blur-lights" class="col-sm-2 col-xs-4" href="">' +
-					    '<img src="'+contextPath+'/img/skin-lights.jpg" alt="">' +
+					    '<img src="'+contextPath+'/static/img/skin-lights.jpg" alt="">' +
 					'</a>' +
 					'<a data-skin="skin-blur-orange" class="col-sm-2 col-xs-4" href="">' +
-						'<img src="'+contextPath+'/img/skin-orange.jpg" alt="">' +
+						'<img src="'+contextPath+'/static/img/skin-orange.jpg" alt="">' +
 					'</a>' +
 					'<a data-skin="skin-blur-2" class="col-sm-2 col-xs-4" href="">' +
-						'<img src="'+contextPath+'/img/skin-2.jpg" alt="">' +
+						'<img src="'+contextPath+'/static/img/skin-2.jpg" alt="">' +
 					'</a>' +
 					'<a data-skin="skin-blur-4" class="col-sm-2 col-xs-4" href="">' +
-						'<img src="'+contextPath+'/img/skin-4.jpg" alt="">' +
+						'<img src="'+contextPath+'/static/img/skin-4.jpg" alt="">' +
 					'</a>' +
 					'<a data-skin="skin-blur-5" class="col-sm-2 col-xs-4" href="">' +
-						'<img src="'+contextPath+'/img/skin-5.jpg" alt="">' +
+						'<img src="'+contextPath+'/static/img/skin-5.jpg" alt="">' +
 					'</a>' +
 					'<a data-skin="skin-blur-6" class="col-sm-2 col-xs-4" href="">' +
-						'<img src="'+contextPath+'/img/skin-6.jpg" alt="">' +
+						'<img src="'+contextPath+'/static/img/skin-6.jpg" alt="">' +
 					'</a>' +
 					'<a data-skin="skin-blur-city" class="col-sm-2 col-xs-4" href="">' +
-					    '<img src="'+contextPath+'/img/skin-city.jpg" alt="">' +
+					    '<img src="'+contextPath+'/static/img/skin-city.jpg" alt="">' +
 					'</a>' +
 					'<a data-skin="skin-blur-greenish" class="col-sm-2 col-xs-4" href="">' +
-					    '<img src="'+contextPath+'/img/skin-greenish.jpg" alt="">' +
+					    '<img src="'+contextPath+'/static/img/skin-greenish.jpg" alt="">' +
 					'</a>' +
 					'<a data-skin="skin-blur-night" class="col-sm-2 col-xs-4" href="">' +
-					    '<img src="'+contextPath+'/img/skin-night.jpg" alt="">' +
+					    '<img src="'+contextPath+'/static/img/skin-night.jpg" alt="">' +
 					'</a>' +
 					'<a data-skin="skin-blur-blue" class="col-sm-2 col-xs-4" href="">' +
-					    '<img src="'+contextPath+'/img/skin-blue.jpg" alt="">' +
+					    '<img src="'+contextPath+'/static/img/skin-blue.jpg" alt="">' +
 					'</a>' +
 					'<a data-skin="skin-blur-sunny" class="col-sm-2 col-xs-4" href="">' +
-					    '<img src="'+contextPath+'/img/skin-sunny.jpg" alt="">' +
+					    '<img src="'+contextPath+'/static/img/skin-sunny.jpg" alt="">' +
 					'</a>' +
 
 					'<a data-skin="skin-blur-chrome" class="col-sm-2 col-xs-4" href="">' +
-					    '<img src="'+contextPath+'/img/skin-chrome.jpg" alt="">' +
+					    '<img src="'+contextPath+'/static/img/skin-chrome.jpg" alt="">' +
 					'</a>' +
 					'<a data-skin="skin-blur-ocean" class="col-sm-2 col-xs-4" href="">' +
-					    '<img src="'+contextPath+'/img/skin-ocean.jpg" alt="">' +
+					    '<img src="'+contextPath+'/static/img/skin-ocean.jpg" alt="">' +
 					'</a>' +
 					'<a data-skin="skin-blur-sunset" class="col-sm-2 col-xs-4" href="">' +
-					    '<img src="'+contextPath+'/img/skin-sunset.jpg" alt="">' +
+					    '<img src="'+contextPath+'/static/img/skin-sunset.jpg" alt="">' +
 					'</a>' +
 					'<a data-skin="skin-blur-yellow" class="col-sm-2 col-xs-4" href="">' +
-					    '<img src="'+contextPath+'/img/skin-yellow.jpg" alt="">' +
+					    '<img src="'+contextPath+'/static/img/skin-yellow.jpg" alt="">' +
 					'</a>' +
 					'<a  data-skin="skin-blur-kiwi"class="col-sm-2 col-xs-4" href="">' +
-					    '<img src="'+contextPath+'/img/skin-kiwi.jpg" alt="">' +
+					    '<img src="'+contextPath+'/static/img/skin-kiwi.jpg" alt="">' +
 					'</a>' +
 				    '</div>' +
 				'</div>' +
