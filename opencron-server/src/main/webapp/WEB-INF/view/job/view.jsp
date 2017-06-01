@@ -6,7 +6,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <jsp:include page="/WEB-INF/common/resource.jsp"/>
 
     <style type="text/css">
         .opencron_command {
@@ -351,7 +350,7 @@
 
                                     if (job.execType == "0") {
                                         $("#execType_" + job.jobId).html('<center><font color="green">自动</font></center>');
-                                        $("#cronType_" + job.jobId).html(job.cronType == "0" ? '<img width="70px" src="${contextPath}/img/crontab_ico.png">' : '<img width="70px" src="${contextPath}/img/quartz_ico.png">');
+                                        $("#cronType_" + job.jobId).html(job.cronType == "0" ? '<img width="70px" src="${contextPath}/static/img/crontab_ico.png">' : '<img width="70px" src="${contextPath}/static/img/quartz_ico.png">');
                                         $("#cronExp_" + job.jobId).html(escapeHtml(job.cronExp));
                                     } else {
                                         $("#execType_" + job.jobId).html('<center><font color="red">手动</font></center>');
@@ -682,12 +681,12 @@
     </script>
 </head>
 
-<jsp:include page="/WEB-INF/common/top.jsp"/>
+<body>
 
 <section id="content" class="container">
 
     <!-- Messages Drawer -->
-    <jsp:include page="/WEB-INF/common/message.jsp"/>
+    <jsp:include page="/WEB-INF/layouts/message.jsp"/>
 
     <!-- Breadcrumb -->
     <ol class="breadcrumb hidden-xs">
@@ -831,10 +830,10 @@
                             </c:when>
                             <c:otherwise>
                                 <c:if test="${r.cronType eq 0}">
-                                    <img width="70px" src="${contextPath}/img/crontab_ico.png">
+                                    <img width="70px" src="${contextPath}/static/img/crontab_ico.png">
                                 </c:if>
                                 <c:if test="${r.cronType eq 1}">
-                                    <img width="70px" src="${contextPath}/img/quartz_ico.png">
+                                    <img width="70px" src="${contextPath}/static/img/quartz_ico.png">
                                 </c:if>
                             </c:otherwise>
                         </c:choose>
@@ -1103,8 +1102,9 @@
     </div>
 
 </section>
-<br/><br/>
 
-<jsp:include page="/WEB-INF/common/footer.jsp"/>
+</body>
+
+</html>
 
 

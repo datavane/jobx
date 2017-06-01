@@ -11,7 +11,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <jsp:include page="/WEB-INF/common/resource.jsp"/>
+    <jsp:include page="/WEB-INF/layouts/resource.jsp"/>
 
     <style type="text/css">
         .error_image {
@@ -51,7 +51,7 @@
             $(".fa-wechat").click(function () {
                 swal({
                     title: "",
-                    imageUrl:"${contextPath}/img/wechat_qr.jpg",
+                    imageUrl:"${contextPath}/static/img/wechat_qr.jpg",
                     text: "请扫描二维码,添加作者微信反馈您的问题",
                     showCancelButton: false,
                     closeOnConfirm: false,
@@ -61,13 +61,13 @@
         })
     </script>
 </head>
-<jsp:include page="/WEB-INF/common/top.jsp"/>
+<jsp:include page="/WEB-INF/layouts/top.jsp"/>
 
 <!-- Content -->
 <section id="content" class="container">
 
     <!-- Messages Drawer -->
-    <jsp:include page="/WEB-INF/common/message.jsp"/>
+    <jsp:include page="/WEB-INF/layouts/message.jsp"/>
 
     <!-- Breadcrumb -->
     <ol class="breadcrumb hidden-xs">
@@ -78,7 +78,7 @@
     </ol>
     <h4 class="page-title"><i class="glyphicon glyphicon-remove"></i>&nbsp;出错啦</h4>
     <div class="block-area" id="defaultStyle">
-        <div class="error_image"><img src="${contextPath}/img/500.png" width="320px"></div>
+        <div class="error_image"><img src="${contextPath}/static/img/500.png" width="320px"></div>
         <div class="error_content">出错啦!您可能通过以下方式联系开发者</div>
         <ul class="error_contact">
             <li class="fa fa-wechat"></li>
@@ -102,4 +102,4 @@
 </section>
 <br/><br/>
 
-<jsp:include page="/WEB-INF/common/footer.jsp"/>
+<jsp:include page="/WEB-INF/layouts/footer.jsp"/>

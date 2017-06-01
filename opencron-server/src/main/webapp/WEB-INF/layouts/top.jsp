@@ -2,20 +2,140 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
-<%
-	String port = request.getServerPort() == 80 ? "" : (":"+request.getServerPort());
-	String path = request.getContextPath().replaceAll("/$","");
-	String contextPath = request.getScheme()+"://"+request.getServerName()+port+path;
-	pageContext.setAttribute("contextPath",contextPath);
-	request.setAttribute("uri",request.getRequestURI());
-%>
+<script type="text/javascript">
+    $(document).ready(function() {
 
-<body id="skin-blur-ocean">
+        <c:if test="${fn:contains(uri,'/notice/')}">
+        $("#msg-icon").remove();
+        </c:if>
+
+        if($.isMobile()){
+            $("#time").remove();
+            $("#change-img").remove();
+        }else {
+            $("#profile-pic").mouseover(function () {
+                $("#change-img").show();
+            }).mouseout(function () {
+                $("#change-img").hide();
+            });
+
+            $("#change-img").mouseover(function () {
+                $(this).show();
+            }).mouseout(function () {
+                $(this).hide();
+            });
+        }
+
+        var skin = $.cookie("opencron_skin");
+        if(skin) {
+            $('body').attr('id', skin);
+        }
+
+        $('body').on('click', '.template-skins > a', function(e){
+            e.preventDefault();
+            var skin = $(this).data('skin');
+            $('body').attr('id', skin);
+            $('#changeSkin').modal('hide');
+            $.cookie("opencron_skin", skin, {
+                expires : 30,
+                domain:document.domain,
+                path:"/"
+            });
+        });
+
+
+        $.ajax({
+            headers:{"csrf":"${csrf}"},
+            type:"POST",
+            url: "${contextPath}/notice/uncount",
+            dataType: "html",
+            success: function (data) {
+                if (data != "0"){
+                    $(".n-count").text(data);
+                    $("#msg-icon").show();
+                    $.ajax({
+                        headers:{"csrf":"${csrf}"},
+                        type:"POST",
+                        url: "${contextPath}/notice/unread",
+                        dataType: "html",
+                        success: function (data) {
+                            $("#msgList").html(data);
+                        }
+                    });
+                }else {
+                    $("#messages").remove();
+                    $(".n-count").remove();
+                    $("#toggle_message").css({"padding":"10px 0px 0"});
+                    $("#msg-icon").click(function () {
+                        window.location.href="${contextPath}/notice/view?csrf=${csrf}";
+                    })
+                    $("#msg-icon").show();
+                }
+            }
+        });
+
+        if (!$.isMobile()) {
+            $.ajax({
+                headers:{"csrf":"${csrf}"},
+                type: "POST",
+                url: "${contextPath}/progress",
+                dataType: "json",
+                success: function (data) {
+                    if (data != null) {
+                        $(".opencron-progress").show();
+                        var job_type = parseInt(parseFloat(data.auto / (data.auto + data.operator)) * 100);
+                        if (isNaN(job_type)) {
+                            $("#progress_type").css("width", "0%");
+                        } else {
+                            $("#progress_type").attr("data-original-title", job_type+"%").css("width", job_type + "%").next();
+
+                            $("#progress_type").attr("data-original-title", job_type+"%").css("width", job_type + "%");
+                        }
+
+                        var job_category = parseInt(parseFloat(data.singleton / (data.singleton + data.flow)) * 100);
+                        if (isNaN(job_category)) {
+                            $("#progress_category").attr("data-original-title", 0).css("width", "0%");
+                        } else {
+                            $("#progress_category").attr("data-original-title", job_category+"%").css("width", job_category + "%");
+                        }
+
+                        var job_model = parseInt(parseFloat(data.crontab / (data.crontab + data.quartz)) * 100);
+                        if (isNaN(job_model)) {
+                            $("#progress_model").attr("data-original-title", 0).css("width", "0%");
+                        } else {
+                            $("#progress_model").attr("data-original-title", job_model+"%").css("width", job_model + "%");
+                        }
+
+                        var job_rerun = parseInt(parseFloat((data.success + data.failure + data.killed - data.rerun) / (data.success + data.failure + data.killed)) * 100);
+                        if (isNaN(job_rerun)) {
+                            $("#progress_rerun").attr("data-original-title", 0).css("width", "0%");
+                        } else {
+                            $("#progress_rerun").attr("data-original-title", job_rerun+"%").css("width", job_rerun + "%");
+                        }
+
+                        var job_status = parseInt(parseFloat(data.success / (data.success + data.failure + data.killed)) * 100);
+                        if (isNaN(job_status)) {
+                            $("#progress_status").attr("data-original-title", 0).css("width", "0%");
+                        } else {
+                            $("#progress_status").attr("data-original-title", job_status+"%").css("width", job_status + "%");
+                        }
+
+                    }else {
+                        $(".opencron-progress").remove();
+                    }
+                }
+            });
+        }else {
+            $(".opencron-progress").remove();
+        }
+    });
+</script>
+
 <div id="mask" class="mask"></div>
 <header id="header">
 	<a href="" id="menu-toggle" style="background-image: none"><i class="icon">&#61773;</i></a>
 	<a id="log1" href="${contextPath}/home?csrf=${csrf}" class="logo pull-left"><div style="float: left; width: 165px; margin-top: 5px; margin-left: 14px">
-		<img src="${contextPath}/img/opencron.png">
+		<img src="${contextPath}/static/img/opencron.png">
 	</div>
 	</a>
 	<div class="media-body">
@@ -115,7 +235,7 @@
 			<!-- Profile Menu -->
 			<div class="text-center s-widget m-b-25 dropdown" id="profile-menu">
 				<a href="" id="header-img" data-toggle="dropdown" class="animated a-hover">
-					<img class="profile-pic" id="profile-pic" width="140px;" height="140px;"  onerror="javascript:this.src='${contextPath}/img/profile-pic.jpg'" src="${contextPath}/upload/${opencron_user.userId}${opencron_user.picExtName}?<%=System.currentTimeMillis()%>">
+					<img class="profile-pic" id="profile-pic" width="140px;" height="140px;"  onerror="javascript:this.src='${contextPath}/static/img/profile-pic.jpg'" src="${contextPath}/upload/${opencron_user.userId}${opencron_user.picExtName}?<%=System.currentTimeMillis()%>">
 					<div class="change-text" id="change-img" href="javascript:void(0);">更换头像</div>
 				</a>
 				<h4 class="m-0">${opencron_user.userName}</h4>

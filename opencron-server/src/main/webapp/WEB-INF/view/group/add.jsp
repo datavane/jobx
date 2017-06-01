@@ -6,11 +6,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <jsp:include page="/WEB-INF/common/resource.jsp"/>
 
-    <link rel="stylesheet" href="${contextPath}/js/bootstrap-select/bootstrap-select.css">
-    <script src="${contextPath}/js/bootstrap-select/bootstrap-select.js"></script>
-    <script src="${contextPath}/js/bootstrap-select/bootstrap-select-lang.js"></script>
+    <link rel="stylesheet" href="${contextPath}/static/js/bootstrap-select/bootstrap-select.css">
+    <script src="${contextPath}/static/js/bootstrap-select/bootstrap-select.js"></script>
+    <script src="${contextPath}/static/js/bootstrap-select/bootstrap-select-lang.js"></script>
 
     <style type="text/css">
         .dropdown-menu {
@@ -103,13 +102,13 @@
     </script>
 
 </head>
-<jsp:include page="/WEB-INF/common/top.jsp"/>
 
+<body>
 <!-- Content -->
 <section id="content" class="container">
 
     <!-- Messages Drawer -->
-    <jsp:include page="/WEB-INF/common/message.jsp"/>
+    <jsp:include page="/WEB-INF/layouts/message.jsp"/>
 
     <!-- Breadcrumb -->
     <ol class="breadcrumb hidden-xs">
@@ -180,6 +179,8 @@
     </div>
 
 </section>
-<br/><br/>
 
-<jsp:include page="/WEB-INF/common/footer.jsp"/>
+</body>
+
+</html>
+

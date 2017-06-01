@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sitemesh>
+	<mime-type>text/html</mime-type>
+	<mime-type>application/vnd.wap.xhtml+xml</mime-type>
+	<mime-type>application/xhtml+xml</mime-type>
+
+	<mapping path="/*" decorator="/WEB-INF/layouts/decorators.jsp" />
+
+	<mapping path="/" exclue="true"/>
+	<mapping path="/agent/refresh" exclue="true"/>
+	<mapping path="/record/refresh" exclue="true"/>
+	<mapping path="/notice/unread" exclue="true"/>
+	<mapping path="/notice/uncount" exclue="true"/>
+
+	<mapping path="/WEB-INF/view/error/*.jsp" exclue="true"/>
+	<mapping path="/terminal/open" exclue="true"/>
+	<mapping path="/terminal/reopen" exclue="true"/>
+
+</sitemesh>

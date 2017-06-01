@@ -12,8 +12,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <jsp:include page="/WEB-INF/common/resource.jsp"/>
-    <link rel="shortcut icon" href="${contextPath}/img/terminal.png"/>
+    <jsp:include page="/WEB-INF/layouts/resource.jsp"/>
+    <link rel="shortcut icon" href="${contextPath}/static/img/terminal.png"/>
     <style type="text/css">
         .error_msg {
             color: red;

@@ -12,7 +12,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <link rel="shortcut icon" href="${contextPath}/img/favicon.ico?resId=${resourceId}" />
+    <link rel="shortcut icon" href="${contextPath}/static/img/favicon.ico?resId=${resourceId}" />
     <title>Opencron 404</title>
     <style style="text/css">
         * {
@@ -170,7 +170,7 @@
 
 <body>
 <div class="whole">
-    <img src="${contextPath}/img/back.jpg" />
+    <img src="${contextPath}/static/img/back.jpg" />
     <div class="mask"></div>
 </div>
 <div class="b">

@@ -6,7 +6,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <jsp:include page="/WEB-INF/common/resource.jsp"/>
 
     <script type="text/javascript">
 
@@ -164,7 +163,7 @@
                 proxyId = $("#proxyAgent").val();
             }
 
-            $("#pingResult").html("<img src='${contextPath}/img/icon-loader.gif'> <font color='#2fa4e7'>检测中...</font>");
+            $("#pingResult").html("<img src='${contextPath}/static/img/icon-loader.gif'> <font color='#2fa4e7'>检测中...</font>");
             $.ajax({
                 headers: {"csrf": "${csrf}"},
                 type: "POST",
@@ -312,160 +311,160 @@
     </script>
 
 </head>
-<jsp:include page="/WEB-INF/common/top.jsp"/>
 
+<body>
 <!-- Content -->
-<section id="content" class="container">
+    <section id="content" class="container">
 
-    <!-- Messages Drawer -->
-    <jsp:include page="/WEB-INF/common/message.jsp"/>
+        <!-- Messages Drawer -->
+        <jsp:include page="/WEB-INF/layouts/message.jsp"/>
 
-    <!-- Breadcrumb -->
-    <ol class="breadcrumb hidden-xs">
-        <li class="icon">&#61753;</li>
-        当前位置：
-        <li><a href="">opencron</a></li>
-        <li><a href="">执行器管理</a></li>
-        <li><a href="">添加执行器</a></li>
-    </ol>
-    <h4 class="page-title"><i aria-hidden="true" class="fa fa-plus"></i>&nbsp;添加执行器</h4>
+        <!-- Breadcrumb -->
+        <ol class="breadcrumb hidden-xs">
+            <li class="icon">&#61753;</li>
+            当前位置：
+            <li><a href="">opencron</a></li>
+            <li><a href="">执行器管理</a></li>
+            <li><a href="">添加执行器</a></li>
+        </ol>
+        <h4 class="page-title"><i aria-hidden="true" class="fa fa-plus"></i>&nbsp;添加执行器</h4>
 
-    <div style="float: right;margin-top: 5px">
-        <a onclick="goback();" class="btn btn-sm m-t-10" style="margin-right: 16px;margin-bottom: -4px"><i
-                class="fa fa-mail-reply" aria-hidden="true"></i>&nbsp;返回</a>
-    </div>
-
-    <div class="block-area" id="basic">
-        <div class="tile p-15">
-            <form class="form-horizontal" role="form" id="agent" action="${contextPath}/agent/add" method="post"></br>
-                <input type="hidden" name="csrf" value="${csrf}">
-                <input type="hidden" name="machineId" id="machineId" value="">
-                <div class="form-group">
-                    <label for="name" class="col-lab control-label"><i class="glyphicon glyphicon-leaf"></i>&nbsp;&nbsp;执行器名：</label>
-                    <div class="col-md-10">
-                        <input type="text" class="form-control input-sm" id="name" name="name">
-                        <span class="tips" id="checkName"><b>*&nbsp;</b>执行器名称必填</span>
-                    </div>
-                </div>
-                <br>
-
-                <c:if test="${empty connAgents}">
-                    <!--默认为直连-->
-                    <input type="hidden" name="proxy" value="0">
-                </c:if>
-                <c:if test="${!empty connAgents}">
-                    <div class="form-group">
-                        <label class="col-lab control-label"><i class="glyphicon glyphicon-transfer"></i>&nbsp;&nbsp;连接类型：</label>&nbsp;&nbsp;&nbsp;
-                        <div class="col-md-10">
-                            <label onclick="hideProxy()" for="proxy0" class="radio-label"><input type="radio"
-                                                                                                 name="proxy" value="0"
-                                                                                                 id="proxy0" checked>直连</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <label onclick="showProxy()" for="proxy1" class="radio-label"><input type="radio"
-                                                                                                 name="proxy" value="1"
-                                                                                                 id="proxy1">代理&nbsp;&nbsp;&nbsp;</label>
-                            </br><span class="tips"><b>*&nbsp;</b>直连:直接连接目标执行器,代理:通过其他执行器代理连接目标执行器</span>
-                        </div>
-                    </div>
-                    <br>
-
-                    <div class="form-group proxy" style="display: none;">
-                        <label for="proxyAgent" class="col-lab control-label"><i class="glyphicon glyphicon-leaf"></i>&nbsp;&nbsp;代&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;理：</label>
-                        <div class="col-md-10">
-                            <select id="proxyAgent" name="proxyAgent" class="form-control input-sm">
-                                <c:forEach var="d" items="${connAgents}">
-                                    <option value="${d.agentId}">${d.ip}&nbsp;(${d.name})</option>
-                                </c:forEach>
-                            </select>
-                        </div>
-                    </div>
-                    <br>
-                </c:if>
-
-                <div class="form-group">
-                    <label for="ip" class="col-lab control-label"><i class="glyphicon glyphicon-tag"></i>&nbsp;&nbsp;机&nbsp;&nbsp;器&nbsp;&nbsp;IP：</label>
-                    <div class="col-md-10">
-                        <input type="text" class="form-control input-sm" id="ip" name="ip">
-                        <span class="tips"><b>*&nbsp;</b>执行器IP地址只能为点分十进制方式表示,如192.168.0.1</span>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="tips" id="checkIp"></span>
-                    </div>
-                </div>
-                <br>
-
-                <div class="form-group">
-                    <label for="password" class="col-lab control-label"><i class="glyphicon glyphicon-lock"></i>&nbsp;&nbsp;连接密码：</label>
-                    <div class="col-md-10">
-                        <input type="text" class="form-control input-sm" id="password" name="password">
-                        <span class="tips"><b>*&nbsp;</b>连接密码必填,调用执行器的权限依据</span>
-                    </div>
-                </div>
-                <br>
-
-                <div class="form-group">
-                    <label for="port" class="col-lab control-label"><i class="glyphicon glyphicon-question-sign"></i>&nbsp;&nbsp;端&nbsp;&nbsp;口&nbsp;&nbsp;号：</label>
-                    <div class="col-md-10">
-                        <input type="text" class="form-control input-sm" id="port" name="port">
-                        <span class="tips"><b>*&nbsp;</b>执行器端口号只能是数字，范围从0到65535</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <a href="#" onclick="pingCheck()"><i class="glyphicon glyphicon-signal"></i>&nbsp;检测通信</a>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="tips" id="pingResult"></span>
-                    </div>
-                </div>
-                <br>
-
-                <div class="form-group">
-                    <label class="col-lab control-label"><i class="glyphicon glyphicon-warning-sign"></i>&nbsp;&nbsp;失联报警：</label>&nbsp;&nbsp;&nbsp;
-                    <div class="col-md-10">
-                        <label onclick="showContact()" for="warning1" class="radio-label"><input type="radio"
-                                                                                                 name="warning"
-                                                                                                 value="1" id="warning1"
-                                                                                                 checked>是&nbsp;&nbsp;&nbsp;</label>
-                        <label onclick="hideContact()" for="warning0" class="radio-label"><input type="radio"
-                                                                                                 name="warning"
-                                                                                                 value="0"
-                                                                                                 id="warning0">否</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        </br><span class="tips"><b>*&nbsp;</b>执行器通信不正常时是否发信息报警</span>
-                    </div>
-                </div>
-                <br>
-
-                <div class="form-group contact">
-                    <label for="mobiles" class="col-lab control-label"><i class="glyphicon glyphicon-comment"></i>&nbsp;&nbsp;报警手机：</label>
-                    <div class="col-md-10">
-                        <input type="text" class="form-control input-sm" id="mobiles" name="mobiles">
-                        <span class="tips"><b>*&nbsp;</b>执行器通信不正常时将发送短信给此手机</span>
-                    </div>
-                </div>
-                <br>
-
-                <div class="form-group contact">
-                    <label for="email" class="col-lab control-label"><i class="glyphicon glyphicon-envelope"></i>&nbsp;&nbsp;报警邮箱：</label>
-                    <div class="col-md-10">
-                        <input type="text" class="form-control input-sm" id="email" name="emailAddress">
-                        <span class="tips"><b>*&nbsp;</b>执行器通信不正常时将发送报告给此邮箱</span>
-                    </div>
-                </div>
-                <br>
-
-                <div class="form-group">
-                    <label for="comment" class="col-lab control-label"><i class="glyphicon glyphicon-magnet"></i>&nbsp;&nbsp;描&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;述：</label>
-                    <div class="col-md-10">
-                        <textarea class="form-control input-sm" id="comment" name="comment"></textarea>
-                    </div>
-                </div>
-                <br>
-
-                <div class="form-group">
-                    <div class="col-md-offset-1 col-md-10">
-                        <button type="button" onclick="save()" class="btn btn-sm m-t-10"><i class="icon">&#61717;</i>&nbsp;保存
-                        </button>&nbsp;&nbsp;
-                        <button type="button" onclick="history.back()" class="btn btn-sm m-t-10"><i class="icon">&#61740;</i>&nbsp;取消
-                        </button>
-                    </div>
-                </div>
-            </form>
+        <div style="float: right;margin-top: 5px">
+            <a onclick="goback();" class="btn btn-sm m-t-10" style="margin-right: 16px;margin-bottom: -4px"><i
+                    class="fa fa-mail-reply" aria-hidden="true"></i>&nbsp;返回</a>
         </div>
-    </div>
 
-</section>
-<br/><br/>
+        <div class="block-area" id="basic">
+            <div class="tile p-15">
+                <form class="form-horizontal" role="form" id="agent" action="${contextPath}/agent/add" method="post"></br>
+                    <input type="hidden" name="csrf" value="${csrf}">
+                    <input type="hidden" name="machineId" id="machineId" value="">
+                    <div class="form-group">
+                        <label for="name" class="col-lab control-label"><i class="glyphicon glyphicon-leaf"></i>&nbsp;&nbsp;执行器名：</label>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control input-sm" id="name" name="name">
+                            <span class="tips" id="checkName"><b>*&nbsp;</b>执行器名称必填</span>
+                        </div>
+                    </div>
+                    <br>
 
-<jsp:include page="/WEB-INF/common/footer.jsp"/>
+                    <c:if test="${empty connAgents}">
+                        <!--默认为直连-->
+                        <input type="hidden" name="proxy" value="0">
+                    </c:if>
+                    <c:if test="${!empty connAgents}">
+                        <div class="form-group">
+                            <label class="col-lab control-label"><i class="glyphicon glyphicon-transfer"></i>&nbsp;&nbsp;连接类型：</label>&nbsp;&nbsp;&nbsp;
+                            <div class="col-md-10">
+                                <label onclick="hideProxy()" for="proxy0" class="radio-label"><input type="radio"
+                                                                                                     name="proxy" value="0"
+                                                                                                     id="proxy0" checked>直连</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <label onclick="showProxy()" for="proxy1" class="radio-label"><input type="radio"
+                                                                                                     name="proxy" value="1"
+                                                                                                     id="proxy1">代理&nbsp;&nbsp;&nbsp;</label>
+                                </br><span class="tips"><b>*&nbsp;</b>直连:直接连接目标执行器,代理:通过其他执行器代理连接目标执行器</span>
+                            </div>
+                        </div>
+                        <br>
+
+                        <div class="form-group proxy" style="display: none;">
+                            <label for="proxyAgent" class="col-lab control-label"><i class="glyphicon glyphicon-leaf"></i>&nbsp;&nbsp;代&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;理：</label>
+                            <div class="col-md-10">
+                                <select id="proxyAgent" name="proxyAgent" class="form-control input-sm">
+                                    <c:forEach var="d" items="${connAgents}">
+                                        <option value="${d.agentId}">${d.ip}&nbsp;(${d.name})</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                        </div>
+                        <br>
+                    </c:if>
+
+                    <div class="form-group">
+                        <label for="ip" class="col-lab control-label"><i class="glyphicon glyphicon-tag"></i>&nbsp;&nbsp;机&nbsp;&nbsp;器&nbsp;&nbsp;IP：</label>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control input-sm" id="ip" name="ip">
+                            <span class="tips"><b>*&nbsp;</b>执行器IP地址只能为点分十进制方式表示,如192.168.0.1</span>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="tips" id="checkIp"></span>
+                        </div>
+                    </div>
+                    <br>
+
+                    <div class="form-group">
+                        <label for="password" class="col-lab control-label"><i class="glyphicon glyphicon-lock"></i>&nbsp;&nbsp;连接密码：</label>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control input-sm" id="password" name="password">
+                            <span class="tips"><b>*&nbsp;</b>连接密码必填,调用执行器的权限依据</span>
+                        </div>
+                    </div>
+                    <br>
+
+                    <div class="form-group">
+                        <label for="port" class="col-lab control-label"><i class="glyphicon glyphicon-question-sign"></i>&nbsp;&nbsp;端&nbsp;&nbsp;口&nbsp;&nbsp;号：</label>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control input-sm" id="port" name="port">
+                            <span class="tips"><b>*&nbsp;</b>执行器端口号只能是数字，范围从0到65535</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <a href="#" onclick="pingCheck()"><i class="glyphicon glyphicon-signal"></i>&nbsp;检测通信</a>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="tips" id="pingResult"></span>
+                        </div>
+                    </div>
+                    <br>
+
+                    <div class="form-group">
+                        <label class="col-lab control-label"><i class="glyphicon glyphicon-warning-sign"></i>&nbsp;&nbsp;失联报警：</label>&nbsp;&nbsp;&nbsp;
+                        <div class="col-md-10">
+                            <label onclick="showContact()" for="warning1" class="radio-label"><input type="radio"
+                                                                                                     name="warning"
+                                                                                                     value="1" id="warning1"
+                                                                                                     checked>是&nbsp;&nbsp;&nbsp;</label>
+                            <label onclick="hideContact()" for="warning0" class="radio-label"><input type="radio"
+                                                                                                     name="warning"
+                                                                                                     value="0"
+                                                                                                     id="warning0">否</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            </br><span class="tips"><b>*&nbsp;</b>执行器通信不正常时是否发信息报警</span>
+                        </div>
+                    </div>
+                    <br>
+
+                    <div class="form-group contact">
+                        <label for="mobiles" class="col-lab control-label"><i class="glyphicon glyphicon-comment"></i>&nbsp;&nbsp;报警手机：</label>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control input-sm" id="mobiles" name="mobiles">
+                            <span class="tips"><b>*&nbsp;</b>执行器通信不正常时将发送短信给此手机</span>
+                        </div>
+                    </div>
+                    <br>
+
+                    <div class="form-group contact">
+                        <label for="email" class="col-lab control-label"><i class="glyphicon glyphicon-envelope"></i>&nbsp;&nbsp;报警邮箱：</label>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control input-sm" id="email" name="emailAddress">
+                            <span class="tips"><b>*&nbsp;</b>执行器通信不正常时将发送报告给此邮箱</span>
+                        </div>
+                    </div>
+                    <br>
+
+                    <div class="form-group">
+                        <label for="comment" class="col-lab control-label"><i class="glyphicon glyphicon-magnet"></i>&nbsp;&nbsp;描&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;述：</label>
+                        <div class="col-md-10">
+                            <textarea class="form-control input-sm" id="comment" name="comment"></textarea>
+                        </div>
+                    </div>
+                    <br>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-1 col-md-10">
+                            <button type="button" onclick="save()" class="btn btn-sm m-t-10"><i class="icon">&#61717;</i>&nbsp;保存
+                            </button>&nbsp;&nbsp;
+                            <button type="button" onclick="history.back()" class="btn btn-sm m-t-10"><i class="icon">&#61740;</i>&nbsp;取消
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </section>
+
+</body>
+</html>

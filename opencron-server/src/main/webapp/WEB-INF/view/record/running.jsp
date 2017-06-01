@@ -7,8 +7,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <jsp:include page="/WEB-INF/common/resource.jsp"/>
-
     <style type="text/css">
         .opencron_command{display: none;overflow:hidden; text-overflow:ellipsis; white-space: nowrap;}
     </style>
@@ -31,9 +29,8 @@
                 $.ajax({
                     headers:{"csrf":"${csrf}"},
                     type:"POST",
-                    url:"${contextPath}/record/running",
+                    url:"${contextPath}/record/refresh",
                     data:{
-                        "refresh":1,
                         "size":"${size}",
                         "queryTime":"${queryTime}",
                         "agentId":"${agentId}",
@@ -125,13 +122,14 @@
 
     </script>
 </head>
-<jsp:include page="/WEB-INF/common/top.jsp"/>
+
+<body>
 
 <!-- Content -->
 <section id="content" class="container">
 
     <!-- Messages Drawer -->
-    <jsp:include page="/WEB-INF/common/message.jsp"/>
+    <jsp:include page="/WEB-INF/layouts/message.jsp"/>
 
     <!-- Breadcrumb -->
     <ol class="breadcrumb hidden-xs">
@@ -141,7 +139,7 @@
         <li><a href="#">调度记录</a></li>
         <li><a href="#">正在运行</a></li>
     </ol>
-    <h4 class="page-title"><i aria-hidden="true" class="fa fa-play-circle"></i>&nbsp;正在运行&nbsp;&nbsp;<span id="highlight" style="font-size: 14px"><img src='${contextPath}/img/icon-loader.gif' style="width: 14px;height: 14px">&nbsp;调度作业持续进行中...</span></h4>
+    <h4 class="page-title"><i aria-hidden="true" class="fa fa-play-circle"></i>&nbsp;正在运行&nbsp;&nbsp;<span id="highlight" style="font-size: 14px"><img src='${contextPath}/static/img/icon-loader.gif' style="width: 14px;height: 14px">&nbsp;调度作业持续进行中...</span></h4>
     <div class="block-area" id="defaultStyle">
 
         <div>
@@ -263,6 +261,7 @@
     </div>
 
 </section>
-<br/><br/>
 
-<jsp:include page="/WEB-INF/common/footer.jsp"/>
+</body>
+
+</html>

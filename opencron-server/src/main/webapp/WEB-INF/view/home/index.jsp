@@ -5,14 +5,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <jsp:include page="/WEB-INF/common/resource.jsp"/>
-
-    <script src="${contextPath}/js/echarts.min.js?resId=${resourceId}"></script>
-    <script src="${contextPath}/js/highcharts/js/highcharts.js?resId=${resourceId}"></script>
-    <script src="${contextPath}/js/highcharts/js/highcharts-more.js?resId=${resourceId}"></script>
-    <script src="${contextPath}/js/highcharts/js/highcharts-3d.js?resId=${resourceId}"></script>
-    <script src="${contextPath}/js/highcharts/js/modules/exporting.js?resId=${resourceId}"></script>
-    <script src="${contextPath}/js/home.js?resId=${resourceId}"></script>
+    <script src="${contextPath}/static/js/echarts.min.js?resId=${resourceId}"></script>
+    <script src="${contextPath}/static/js/highcharts/js/highcharts.js?resId=${resourceId}"></script>
+    <script src="${contextPath}/static/js/highcharts/js/highcharts-more.js?resId=${resourceId}"></script>
+    <script src="${contextPath}/static/js/highcharts/js/highcharts-3d.js?resId=${resourceId}"></script>
+    <script src="${contextPath}/static/js/highcharts/js/modules/exporting.js?resId=${resourceId}"></script>
+    <script src="${contextPath}/static/js/home.js?resId=${resourceId}"></script>
 
     <style type="text/css">
 
@@ -203,14 +201,16 @@
 
         });
     </script>
+
 </head>
 
-<jsp:include page="/WEB-INF/common/top.jsp"/>
+<body>
+
 <!-- Content -->
 <section id="content" class="container">
 
     <!-- Messages Drawer -->
-    <jsp:include page="/WEB-INF/common/message.jsp"/>
+    <jsp:include page="/WEB-INF/layouts/message.jsp"/>
 
     <!-- Breadcrumb -->
     <ol class="breadcrumb hidden-xs">
@@ -663,5 +663,6 @@
 --%>
 </section>
 
-<jsp:include page="/WEB-INF/common/footer.jsp"/>
+</body>
+</html>
 

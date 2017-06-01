@@ -6,8 +6,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <jsp:include page="/WEB-INF/common/resource.jsp"/>
-    <script type="text/javascript" src="${contextPath}/js/clipboard.js?resId=${resourceId}"></script> <!-- jQuery Library -->
+    <script type="text/javascript" src="${contextPath}/static/js/clipboard.js?resId=${resourceId}"></script> <!-- jQuery Library -->
 
     <script type="text/javascript">
         function showContact() {
@@ -61,9 +60,8 @@
                 $.ajax({
                     headers:{"csrf":"${csrf}"},
                     type: "POST",
-                    url: "${contextPath}/agent/view",
+                    url: "${contextPath}/agent/refresh",
                     data: {
-                        "refresh": 1,
                         "pageNo":${pageBean.pageNo},
                         "pageSize":${pageBean.pageSize},
                         "order":"${pageBean.order}",
@@ -558,7 +556,7 @@
                 return false;
             }
 
-            $("#pingResult").html("<img src='${contextPath}/img/icon-loader.gif'> <font color='#2fa4e7'>检测中...</font>");
+            $("#pingResult").html("<img src='${contextPath}/static/img/icon-loader.gif'> <font color='#2fa4e7'>检测中...</font>");
 
             $.ajax({
                 headers:{"csrf":"${csrf}"},
@@ -628,13 +626,13 @@
     </style>
 
 </head>
-<jsp:include page="/WEB-INF/common/top.jsp"/>
 
+<body>
 <!-- Content -->
 <section id="content" class="container">
 
     <!-- Messages Drawer -->
-    <jsp:include page="/WEB-INF/common/message.jsp"/>
+    <jsp:include page="/WEB-INF/layouts/message.jsp"/>
 
     <!-- Breadcrumb -->
     <ol class="breadcrumb hidden-xs">
@@ -645,7 +643,7 @@
     </ol>
     <h4 class="page-title"><i class="fa fa-desktop" aria-hidden="true"></i>&nbsp;执行器管理&nbsp;&nbsp;<span id="highlight"
                                                                                                         style="font-size: 14px"><img
-            src='${contextPath}/img/icon-loader.gif' style="width: 14px;height: 14px">&nbsp;通信监测持续进行中...</span></h4>
+            src='${contextPath}/static/img/icon-loader.gif' style="width: 14px;height: 14px">&nbsp;通信监测持续进行中...</span></h4>
     <div class="block-area" id="defaultStyle">
         <div>
             <div style="float: left">
@@ -941,6 +939,7 @@
     </div>
 
 </section>
-<br/><br/>
 
-<jsp:include page="/WEB-INF/common/footer.jsp"/>
+</body>
+
+</html>
