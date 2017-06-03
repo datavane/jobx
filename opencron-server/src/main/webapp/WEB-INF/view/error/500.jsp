@@ -11,8 +11,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <jsp:include page="/WEB-INF/layouts/resource.jsp"/>
-
     <style type="text/css">
         .error_image {
             float: left;
@@ -61,45 +59,45 @@
         })
     </script>
 </head>
-<jsp:include page="/WEB-INF/layouts/top.jsp"/>
 
-<!-- Content -->
-<section id="content" class="container">
+<body>
+    <!-- Content -->
+    <section id="content" class="container">
+        <!-- Messages Drawer -->
+        <jsp:include page="/WEB-INF/layouts/message.jsp"/>
 
-    <!-- Messages Drawer -->
-    <jsp:include page="/WEB-INF/layouts/message.jsp"/>
+        <!-- Breadcrumb -->
+        <ol class="breadcrumb hidden-xs">
+            <li class="icon">&#61753;</li>
+            当前位置：
+            <li><a href="">opencron</a></li>
+            <li><a href="">出错啦</a></li>
+        </ol>
+        <h4 class="page-title"><i class="glyphicon glyphicon-remove"></i>&nbsp;出错啦</h4>
+        <div class="block-area" id="defaultStyle">
+            <div class="error_image"><img src="${contextPath}/static/img/500.png" width="320px"></div>
+            <div class="error_content">出错啦!您可能通过以下方式联系开发者</div>
+            <ul class="error_contact">
+                <li class="fa fa-wechat"></li>
+                <a href="tencent://message/?uin=123322242&Site=121ask.com&Menu=yes"> <li class="fa fa-qq"></li></a>
+                <a href="https://github.com/wolfboys/opencron/issues" target="_blank"><li class="fa fa-github" style="font-size:48px"></li></a>
+                <a href="mailto:benjobs@qq.com" target="_blank"><li class="fa fa-envelope"></li></a>
+            </ul>
 
-    <!-- Breadcrumb -->
-    <ol class="breadcrumb hidden-xs">
-        <li class="icon">&#61753;</li>
-        当前位置：
-        <li><a href="">opencron</a></li>
-        <li><a href="">出错啦</a></li>
-    </ol>
-    <h4 class="page-title"><i class="glyphicon glyphicon-remove"></i>&nbsp;出错啦</h4>
-    <div class="block-area" id="defaultStyle">
-        <div class="error_image"><img src="${contextPath}/static/img/500.png" width="320px"></div>
-        <div class="error_content">出错啦!您可能通过以下方式联系开发者</div>
-        <ul class="error_contact">
-            <li class="fa fa-wechat"></li>
-            <a href="tencent://message/?uin=123322242&Site=121ask.com&Menu=yes"> <li class="fa fa-qq"></li></a>
-            <a href="https://github.com/wolfboys/opencron/issues" target="_blank"><li class="fa fa-github" style="font-size:48px"></li></a>
-            <a href="mailto:benjobs@qq.com" target="_blank"><li class="fa fa-envelope"></li></a>
-        </ul>
-
-        <div class="tile" id="error">
-            <div class="listview narrow">
-                <div class="media">
-                    <i class="fa fa-eye"></i>&nbsp;<a href="#">错误详情</a>
-                </div>
-                <div class="media text-left whiter l-100">
-                    <pre class="preCore">${error}</pre>
+            <div class="tile" id="error">
+                <div class="listview narrow">
+                    <div class="media">
+                        <i class="fa fa-eye"></i>&nbsp;<a href="#">错误详情</a>
+                    </div>
+                    <div class="media text-left whiter l-100">
+                        <pre class="preCore">${error}</pre>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
+</body>
+</html>
 
-</section>
-<br/><br/>
 
-<jsp:include page="/WEB-INF/layouts/footer.jsp"/>
+

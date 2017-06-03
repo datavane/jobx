@@ -14,7 +14,7 @@
     <meta charset="utf-8">
     <link rel="shortcut icon" href="${contextPath}/static/img/favicon.ico?resId=${resourceId}" />
     <title>Opencron 404</title>
-    <style style="text/css">
+    <style type="text/css">
         * {
             margin: 0;
             padding: 0;

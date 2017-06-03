@@ -82,18 +82,15 @@ public class HomeController extends BaseController {
     @Autowired
     private UserService userService;
 
-
     private Logger logger = LoggerFactory.getLogger(getClass());
 
-
     @RequestMapping("/")
-    public String login() {
+    public String index() {
         return "/home/login";
     }
 
     @RequestMapping("/home")
-    public String index(HttpSession session, Model model) {
-
+    public String home(HttpSession session, Model model) {
         /**
          * agent...
          */

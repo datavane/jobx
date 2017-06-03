@@ -6,7 +6,6 @@
     String contextPath = request.getScheme()+"://"+request.getServerName()+port+path;
     pageContext.setAttribute("contextPath",contextPath);
 %>
-
     <title>opencron</title>
     <meta name="format-detection" content="telephone=no">
     <meta name="description" content="opencron">
