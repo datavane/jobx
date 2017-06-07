@@ -54,7 +54,7 @@
             <tbody>
                 <c:forEach var="g" items="${pageBean.result}" varStatus="index">
                     <tr>
-                        <td><center>${g.groupName}</center></td>
+                        <td>${g.groupName}</td>
                         <td>${g.agentCount}</td>
                         <td>${g.userName}</td>
                         <td><fmt:formatDate value="${g.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
