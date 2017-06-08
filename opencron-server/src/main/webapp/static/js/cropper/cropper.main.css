@@ -81,7 +81,7 @@
   width:auto;
   height: 300px;
   border:1px solid rgba(200, 200, 200, 0.25);
-  border-radius: 5px !important;
+  border-radius: 1px !important;
   margin-top: 15px;
   overflow: hidden;
 }

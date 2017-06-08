@@ -135,7 +135,7 @@ img {
     cursor: pointer;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.22);
     font-family: open-sans-regular;
-    border-radius: 2px 0px 0px 2px !important;
+    border-radius: 1px 0px 0px 1px !important;
     line-height: 20px;
     width: 34px;
     white-space: nowrap;
@@ -384,7 +384,7 @@ blockquote small {
     position: absolute;
     text-align: center;
     padding: 2px 3px 3px;
-    border-radius: 2px !important;
+    border-radius: 1px !important;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.06);
     margin: 7px 0 0 -10px;
     font-style: normal;
@@ -482,7 +482,7 @@ ul.menu-item a.active {
     padding: 11px 10px 0;
     position: relative;
     vertical-align: top;
-    border-radius:2px;
+    border-radius:1px;
 }
 
 .shortcut > i {
@@ -520,7 +520,7 @@ ul.menu-item a.active {
     padding: 35px 0 0 0;
     height: 120px;
     overflow: hidden;
-    border-radius:2px;
+    border-radius:1px;
 }
 
 .quick-stats h2 {
@@ -617,7 +617,7 @@ hr {
 .tile {
     position: relative;
     margin-bottom: 15px;
-    border-radius: 2px;
+    border-radius: 1px;
 
 }
 
@@ -1174,12 +1174,23 @@ hr {
     font-weight:lighter;
 }
 
-.table > thead > tr > th:first-child {
-    border-top-left-radius:2px;
+/*.table > thead > tr > th:first-child {
+    border-top-left-radius:1px;
 }
 
 .table > thead > tr > th:last-child {
-    border-top-right-radius:2px;
+    border-top-right-radius:1px;
+}*/
+
+.pagination > li:first-child > a, .pagination > li:first-child > span {
+    border-bottom-left-radius: 25px;
+    border-top-left-radius: 25px;
+    margin-left: 0;
+}
+
+.pagination > li:last-child > a, .pagination > li:last-child > span {
+    border-top-right-radius:25px;
+    border-bottom-right-radius:25px;
 }
 
 .table td, .table th {
@@ -1214,7 +1225,7 @@ hr {
 }
 
 select{
-    border-radius: 2px;
+    border-radius: 1px;
 }
 
 /* Breadcrumb */
@@ -1323,6 +1334,10 @@ select{
     padding: 0;
 }
 
+.modal-content{
+    border-radius: 1px;
+}
+
 .modal-content, .dark {
     background: rgba(0, 0, 0, 0.68);
     border: 0;
@@ -1407,6 +1422,7 @@ select{
 }
 
 .close:hover {
+    transform: rotate(180deg);
     opacity: 1 !important;
 }
 
@@ -1793,7 +1809,7 @@ a.list-group-item.active > .badge,
     font-size: 12px;
     padding: 5px 12px 5px;
     display: inline-block;
-    border-radius: 2px;
+    border-radius: 1px;
 }
 
 .s-widget-body {
@@ -1869,7 +1885,7 @@ a.list-group-item.active > .badge,
     border: 0;
     padding: 7px 10px;
     background: rgba(0,0,0,0.35);
-    border-radius: 2px 0px 0px 2px !important;
+    border-radius: 1px 0px 0px 1px !important;
 }
 
 #error-page {
@@ -2106,7 +2122,7 @@ a.list-group-item.active > .badge,
      }*/
 
     .table {
-        border-radius: 2px;
+        border-radius: 1px;
     }
 
     .table > thead > tr > th {
@@ -2494,7 +2510,7 @@ a.list-group-item.active > .badge,
 .card-container .card .front {
     backface-visibility: hidden;
     background-color: rgba(0, 0, 0, 0.40);
-    border-radius: 2px;
+    border-radius: 1px;
     height: 138px;
     left: 0;
     padding: 10px;
@@ -2564,7 +2580,7 @@ a.list-group-item.active > .badge,
 
 .progress-list .status {
     background-color: #f2f2f2;
-    border-radius: 2px;
+    border-radius: 1px;
     color: white;
     display: inline-block;
     font-size: 10px;
@@ -2633,7 +2649,7 @@ a.list-group-item.active > .badge,
 
 .table-custom > thead > tr > th::after {
     background-color: rgba(113, 113, 113, 0.5);
-    border-radius: 4px;
+    border-radius: 1px;
     content: "";
     display: block;
     height: 4px;

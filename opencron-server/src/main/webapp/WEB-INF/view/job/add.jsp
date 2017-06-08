@@ -18,7 +18,7 @@
 
         .subJobUl li{
             background-color: rgba(0,0,0,0.3);
-            border-radius: 4px;
+            border-radius: 1px;
             height: 26px;
             list-style: outside none none;
             margin-top: -27px;

@@ -1,9 +1,9 @@
 .Wdate{
 	border:#eaeaea 1px solid;
 	height:11px;
-	background:#f5f7f9 url(./datePicker.png) no-repeat 80px;
+	background:#f5f7f9 url(datePicker.png) no-repeat 80px;
 	padding:5px 9px 5px 0;
-	border-radius:2px;
+	border-radius:1px;
 	box-sizing:content-box;
 }
 

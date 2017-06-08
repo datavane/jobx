@@ -338,16 +338,16 @@
 
     <div class="block-area col-xs-12" id="record-report" style="margin-bottom: 15px;">
         <div class="textured2 col-xs-12" style="padding: 0;">
-            <div class="block-color col-xs-12" style="position:relative;border-radius: 2px;border-bottom-left-radius:0px;border-bottom-right-radius: 0px;margin-bottom:0px;">
+            <div class="block-color col-xs-12" style="position:relative;border-radius: 1px;border-bottom-left-radius:0px;border-bottom-right-radius: 0px;margin-bottom:0px;">
                 <div class="tile-title" >
                     <i aria-hidden="true" class="fa fa-bar-chart"></i>&nbsp;执行报告
                 </div>
                 <div id="timeopter">
                     <div style="float: right;margin-bottom: 0px;margin-top: -10px;margin-right:10px;">
                         <label for="startTime" class="label-self">时间&nbsp;: </label>
-                        <input type="text" style="border-radius: 2px;width: 90px" id="startTime" name="startTime" value="${startTime}" onfocus="WdatePicker({onpicked:function(){},dateFmt:'yyyy-MM-dd'})" class="Wdate select-self"/>
+                        <input type="text" style="border-radius: 1px;width: 90px" id="startTime" name="startTime" value="${startTime}" onfocus="WdatePicker({onpicked:function(){},dateFmt:'yyyy-MM-dd'})" class="Wdate select-self"/>
                         <label for="endTime" class="label-self">&nbsp;至&nbsp;</label>
-                        <input type="text" style="border-radius: 2px;width: 90px" id="endTime" name="endTime" value="${endTime}" onfocus="WdatePicker({onpicked:function(){},dateFmt:'yyyy-MM-dd'})" class="Wdate select-self"/>&nbsp;
+                        <input type="text" style="border-radius: 1px;width: 90px" id="endTime" name="endTime" value="${endTime}" onfocus="WdatePicker({onpicked:function(){},dateFmt:'yyyy-MM-dd'})" class="Wdate select-self"/>&nbsp;
                         <button id="queryChart" class="btn btn-default btn-sm" style="vertical-align:top;height: 25px;" type="button"><i class="glyphicon glyphicon-search"></i>查询</button>
                     </div>
                 </div>
@@ -441,7 +441,7 @@
                 <div class="tile " style="background: none">
                     <h2 class="tile-title" style="width: 100%;background:rgba(0,0,0,0.40);border-top-left-radius:2px;border-top-right-radius:2px;"><i aria-hidden="true" class="fa fa-area-chart"></i>&nbsp;系统概况</h2>
                     <div class="tile-config dropdown" style="float: right;">
-                        <select class="form-control input-sm m-b-10" style="width: 120px;border-radius: 2px;" id="agentId">
+                        <select class="form-control input-sm m-b-10" style="width: 120px;border-radius: 1px;" id="agentId">
                             <c:forEach var="w" items="${agents}">
                                 <c:if test="${w.status eq true}">
                                     <option value="${w.agentId}" ${w.agentId eq agentId ? 'selected' : ''}>${w.name}</option>

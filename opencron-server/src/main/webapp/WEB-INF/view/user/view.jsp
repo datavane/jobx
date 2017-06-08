@@ -188,7 +188,7 @@
 
             <c:forEach var="u" items="${pageBean.result}" varStatus="index">
                 <tr>
-                    <td><center>${u.userName}</center></td>
+                    <td>${u.userName}</td>
                     <td>${u.roleName}</td>
                     <td>${u.realName}</td>
                     <td>${u.contact}</td>
