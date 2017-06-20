@@ -13,7 +13,7 @@
             $.ajax({
                 headers:{"csrf":"${csrf}"},
                 type:"POST",
-                url:"${contextPath}/user/pwdpage",
+                url:"${contextPath}/user/get.do",
                 data:{"id":id},
                 success : function(obj) {
                     $("#pwdform")[0].reset();
@@ -68,7 +68,7 @@
             $.ajax({
                 headers:{"csrf":"${csrf}"},
                 type:"POST",
-                url:"${contextPath}/user/editpwd",
+                url:"${contextPath}/user/pwd.do",
                 data:{
                     "id":id,
                     "pwd0":calcMD5(pwd0),
@@ -101,7 +101,7 @@
         $(document).ready(function(){
             $("#size").change(function(){
                 var pageSize = $("#size").val();
-                window.location.href = "${contextPath}/user/view?pageSize="+pageSize+"&csrf=${csrf}";
+                window.location.href = "${contextPath}/user/view.htm?pageSize="+pageSize+"&csrf=${csrf}";
             });
 
             $("#pwd1").change(function(){
@@ -168,7 +168,7 @@
         </div>
 
         <div style="float: right;margin-top: -10px">
-            <a href="${contextPath}/user/addpage?csrf=${csrf}" class="btn btn-sm m-t-10" style="margin-left: 50px;margin-bottom: 8px"><i class="icon">&#61943;</i>添加</a>
+            <a href="${contextPath}/user/add.htm?csrf=${csrf}" class="btn btn-sm m-t-10" style="margin-left: 50px;margin-bottom: 8px"><i class="icon">&#61943;</i>添加</a>
         </div>
 
         <table class="table tile textured">
@@ -199,10 +199,10 @@
                             <a href="#" onclick="editPwd('${u.userId}')" title="修改密码">
                                 <i class="glyphicon glyphicon-lock"></i>
                             </a>&nbsp;&nbsp;
-                            <a href="${contextPath}/user/editpage?id=${u.userId}&csrf=${csrf}" title="编辑资料">
+                            <a href="${contextPath}/user/edit.htm?id=${u.userId}&csrf=${csrf}" title="编辑资料">
                                 <i class="glyphicon glyphicon-pencil"></i>
                             </a>&nbsp;&nbsp;
-                            <a href="${contextPath}/user/detail?userId=${u.userId}&csrf=${csrf}" title="查看详情">
+                            <a href="${contextPath}/user/detail.htm?userId=${u.userId}&csrf=${csrf}" title="查看详情">
                                 <i class="glyphicon glyphicon-eye-open"></i>
                             </a>
                         </center>
@@ -212,7 +212,7 @@
             </tbody>
         </table>
 
-        <cron:pager href="${contextPath}/user/view?csrf=${csrf}" id="${pageBean.pageNo}" size="${pageBean.pageSize}" total="${pageBean.totalCount}"/>
+        <cron:pager href="${contextPath}/user/view.htm?csrf=${csrf}" id="${pageBean.pageNo}" size="${pageBean.pageSize}" total="${pageBean.totalCount}"/>
 
     </div>
 

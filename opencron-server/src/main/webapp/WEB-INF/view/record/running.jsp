@@ -29,7 +29,7 @@
                 $.ajax({
                     headers:{"csrf":"${csrf}"},
                     type:"POST",
-                    url:"${contextPath}/record/refresh",
+                    url:"${contextPath}/record/refresh.htm",
                     data:{
                         "size":"${size}",
                         "queryTime":"${queryTime}",
@@ -65,7 +65,7 @@
             var agentId = $("#agentId").val();
             var jobId = $("#jobId").val();
             var execType = $("#execType").val();
-            window.location.href = "${contextPath}/record/running?queryTime=" + queryTime + "&agentId=" + agentId + "&jobId=" + jobId + "&execType=" + execType + "&pageSize=" + pageSize+"&csrf=${csrf}";
+            window.location.href = "${contextPath}/record/running.htm?queryTime=" + queryTime + "&agentId=" + agentId + "&jobId=" + jobId + "&execType=" + execType + "&pageSize=" + pageSize+"&csrf=${csrf}";
         }
 
         function killJob(id){
@@ -81,7 +81,7 @@
                 $.ajax({
                     headers:{"csrf":"${csrf}"},
                     type:"POST",
-                    url:"${contextPath}/record/kill",
+                    url:"${contextPath}/record/kill.do",
                     data:{"recordId":id}
                 });
                 alertMsg("结束请求已发送");
@@ -102,14 +102,14 @@
                 $.ajax({
                     headers:{"csrf":"${csrf}"},
                     type:"POST",
-                    url:"${contextPath}/record/kill",
+                    url:"${contextPath}/record/kill.do",
                     data:{"recordId":id},
                     success:function(result){
                         if (result == "true"){
                             $.ajax({
                                 headers:{"csrf":"${csrf}"},
                                 type:"POST",
-                                url:"${contextPath}/job/execute",
+                                url:"${contextPath}/job/execute.do",
                                 data:{"id":jobId}
                             });
                         }
@@ -206,9 +206,9 @@
                 <tr>
                     <td>
                         <c:if test="${empty r.jobName}">batchJob</c:if>
-                        <c:if test="${!empty r.jobName}"><a href="${contextPath}/job/detail?id=${r.jobId}&csrf=${csrf}">${r.jobName}</a></c:if>
+                        <c:if test="${!empty r.jobName}"><a href="${contextPath}/job/detail.htm?id=${r.jobId}&csrf=${csrf}">${r.jobName}</a></c:if>
                     </td>
-                    <td><a href="${contextPath}/agent/detail?id=${r.agentId}&csrf=${csrf}">${r.agentName}</a></td>
+                    <td><a href="${contextPath}/agent/detail.htm?id=${r.agentId}&csrf=${csrf}">${r.agentName}</a></td>
                     <td>
                         <div class="progress progress-striped progress-success active" style="margin-top:3px;width: 80%;height: 14px;" >
                             <div style="width:100%;height: 100%;" class="progress-bar">
@@ -256,7 +256,7 @@
             </tbody>
         </table>
 
-        <cron:pager href="${contextPath}/record/running?queryTime=${queryTime}&agentId=${agentId}&jobId=${jobId}&execType=${execType}&csrf=${csrf}" id="${pageBean.pageNo}" size="${pageBean.pageSize}" total="${pageBean.totalCount}"/>
+        <cron:pager href="${contextPath}/record/running.htm?queryTime=${queryTime}&agentId=${agentId}&jobId=${jobId}&execType=${execType}&csrf=${csrf}" id="${pageBean.pageNo}" size="${pageBean.pageSize}" total="${pageBean.totalCount}"/>
 
     </div>
 

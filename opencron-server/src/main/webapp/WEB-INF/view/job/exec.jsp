@@ -40,7 +40,7 @@
                         $.ajax({
                             headers:{"csrf":"${csrf}"},
                             type:"POST",
-                            url:"${contextPath}/job/batchexec",
+                            url:"${contextPath}/job/batchexec.do",
                             data:{
                                 "command":$.base64.encode(cmd),
                                 "agentIds":ids

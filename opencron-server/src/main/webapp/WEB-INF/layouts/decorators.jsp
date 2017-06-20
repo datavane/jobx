@@ -10,6 +10,7 @@
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
+
 <head>
 
     <jsp:include page="/WEB-INF/layouts/resource.jsp"/>
@@ -44,7 +45,7 @@
                 $.ajax({
                     headers:{"csrf":"${csrf}"},
                     type: "POST",
-                    url: "${contextPath}/progress",
+                    url: "${contextPath}/progress.do",
                     dataType: "json",
                     success: function (data) {
                         if (data != null) {
@@ -114,7 +115,7 @@
             $.ajax({
                 headers:{"csrf":"${csrf}"},
                 type:"POST",
-                url: "${contextPath}/notice/uncount",
+                url: "${contextPath}/notice/uncount.do",
                 dataType: "html",
                 success: function (data) {
                     if (data != "0"){
@@ -123,7 +124,7 @@
                         $.ajax({
                             headers:{"csrf":"${csrf}"},
                             type:"POST",
-                            url: "${contextPath}/notice/unread",
+                            url: "${contextPath}/notice/unread.htm",
                             dataType: "html",
                             success: function (data) {
                                 $("#msgList").html(data);
@@ -134,7 +135,7 @@
                         $(".n-count").remove();
                         $("#toggle_message").css({"padding":"10px 0px 0"});
                         $("#msg-icon").click(function () {
-                            window.location.href="${contextPath}/notice/view?csrf=${csrf}";
+                            window.location.href="${contextPath}/notice/view.htm?csrf=${csrf}";
                         })
                         $("#msg-icon").show();
                     }
@@ -151,7 +152,7 @@
 
     <header id="header">
         <a href="" id="menu-toggle" style="background-image: none"><i class="icon">&#61773;</i></a>
-        <a id="log1" href="${contextPath}/home?csrf=${csrf}" class="logo pull-left"><div style="float: left; width: 165px; margin-top: 5px; margin-left: 14px">
+        <a id="log1" href="${contextPath}/dashboard.htm?csrf=${csrf}" class="logo pull-left"><div style="float: left; width: 165px; margin-top: 5px; margin-left: 14px">
             <img src="${contextPath}/static/img/opencron.png">
         </div>
         </a>
@@ -178,7 +179,7 @@
         <div class="modal fade" id="avatar-modal" aria-hidden="true" aria-labelledby="avatar-modal-label" role="dialog" tabindex="-1">
             <div class="modal-dialog modal-md">
                 <div class="modal-content">
-                    <form class="avatar-form" name="picform" action="${contextPath}/headpic/upload" enctype="multipart/form-data" method="post">
+                    <form class="avatar-form" name="picform" action="${contextPath}/headpic/upload.do" enctype="multipart/form-data" method="post">
                         <input type="hidden" name="csrf" value="${csrf}">
                         <input name="userId" type="hidden" value="${opencron_user.userId}">
                         <div class="modal-header">
@@ -292,6 +293,7 @@
     </section>
 
 </body>
+
 </html>
 
 

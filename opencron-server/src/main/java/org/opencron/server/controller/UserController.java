@@ -25,7 +25,6 @@ import com.alibaba.fastjson.JSON;
 import org.opencron.server.job.OpencronTools;
 import org.opencron.server.service.AgentService;
 import org.opencron.server.tag.PageBean;
-import org.opencron.common.utils.WebUtils;
 import org.opencron.server.domain.Role;
 import org.opencron.server.domain.User;
 import org.opencron.server.service.UserService;
@@ -34,6 +33,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -55,13 +55,13 @@ public class UserController extends BaseController {
     @Autowired
     private AgentService agentService;
 
-    @RequestMapping("/view")
+    @RequestMapping("/view.htm")
     public String queryUser(PageBean pageBean) {
         userService.queryUser(pageBean);
         return "/user/view";
     }
 
-    @RequestMapping("/detail")
+    @RequestMapping("/detail.htm")
     public String detail(Long userId, Model model) {
         User user = userService.queryUserById(userId);
         if (user == null) {
@@ -71,25 +71,25 @@ public class UserController extends BaseController {
         return "/user/detail";
     }
 
-    @RequestMapping("addpage")
-    public String addPage(Model model) {
+    @RequestMapping("add.htm")
+    public String add(Model model) {
         List<Role> role = userService.getRoleGroup();
         model.addAttribute("role", role);
         model.addAttribute("agents", agentService.getAll());
         return "/user/add";
     }
 
-    @RequestMapping("add")
+    @RequestMapping(value = "add.do",method= RequestMethod.POST)
     public String add(HttpSession session, User user) {
         userService.addUser(user);
-        return "redirect:/user/view?csrf=" + OpencronTools.getCSRF(session);
+        return "redirect:/user/view.htm?csrf=" + OpencronTools.getCSRF(session);
     }
 
-    @RequestMapping("/editpage")
+    @RequestMapping("/edit.htm")
     public String editPage(HttpSession session, Model model, Long id) {
         if (!OpencronTools.isPermission(session)
                 && !OpencronTools.getUserId(session).equals(id)) {
-            return "redirect:/user/detail?csrf=" + OpencronTools.getCSRF(session);
+            return "redirect:/user/detail.htm?csrf=" + OpencronTools.getCSRF(session);
         }
 
         User user = userService.queryUserById(id);
@@ -102,7 +102,7 @@ public class UserController extends BaseController {
         return "/user/edit";
     }
 
-    @RequestMapping("/edit")
+    @RequestMapping(value = "/edit.do",method= RequestMethod.POST)
     public String edit(HttpSession session, User user) throws SchedulerException {
         User user1 = userService.getUserById(user.getUserId());
         if (notEmpty(user.getRoleId()) && OpencronTools.isPermission(session)) {
@@ -115,24 +115,24 @@ public class UserController extends BaseController {
         user1.setQq(user.getQq());
         user1.setModifyTime(new Date());
         userService.updateUser(user1);
-        return "redirect:/user/view?csrf=" + OpencronTools.getCSRF(session);
+        return "redirect:/user/view.htm?csrf=" + OpencronTools.getCSRF(session);
     }
 
-    @RequestMapping("/pwdpage")
-    public void pwdPage(HttpServletResponse response, Long id) {
+    @RequestMapping("/get.html")
+    public void get(HttpServletResponse response, Long id) {
         User user = userService.queryUserById(id);
-        WebUtils.writeJson(response, JSON.toJSONString(user));
+        writeJson(response, JSON.toJSONString(user));
     }
 
-    @RequestMapping("/editpwd")
-    public void editPwd(HttpServletResponse response, Long id, String pwd0, String pwd1, String pwd2) {
+    @RequestMapping(value = "/pwd.do",method= RequestMethod.POST)
+    public void pwd(HttpServletResponse response, Long id, String pwd0, String pwd1, String pwd2) {
         String result = userService.editPwd(id, pwd0, pwd1, pwd2);
-        WebUtils.writeHtml(response, result);
+        writeHtml(response, result);
     }
 
-    @RequestMapping("/checkname")
+    @RequestMapping(value = "/checkname.do",method= RequestMethod.POST)
     public void checkName(HttpServletResponse response, String name) {
         boolean result = userService.existsName(name);
-        WebUtils.writeHtml(response, result ? "false" : "true");
+        writeHtml(response, result ? "false" : "true");
     }
 }

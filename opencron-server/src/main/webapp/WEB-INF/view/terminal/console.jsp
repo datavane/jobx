@@ -49,7 +49,7 @@
                 <li class="dropdown">
                     <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" title="常用操作"><i aria-hidden="true" class="fa fa-server"></i>&nbsp;操作<b class="caret"></b></a>
                     <ul class="dropdown-menu" >
-                        <li><a href="${contextPath}/terminal/reopen?token=${token}&csrf=${csrf}" target="_blank" title="克隆会话">&nbsp;克隆会话</a></li>
+                        <li><a href="${contextPath}/terminal/reopen.htm?token=${token}&csrf=${csrf}" target="_blank" title="克隆会话">&nbsp;克隆会话</a></li>
                         <li><a href="javascript:upload()" title="上传文件">&nbsp;上传文件</a></li>
                     </ul>
                 </li>
@@ -58,7 +58,7 @@
                     <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" title="打开终端"><i aria-hidden="true" class="fa fa-folder-open-o"></i>&nbsp;打开<b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <c:forEach var="t" items="${terms}">
-                            <li><a href="${contextPath}/terminal/ssh2?id=${t.id}&csrf=${csrf}" target="_blank">${t.name}(${t.host})</a></li>
+                            <li><a href="${contextPath}/terminal/ssh2.htm?id=${t.id}&csrf=${csrf}" target="_blank">${t.name}(${t.host})</a></li>
                         </c:forEach>
                     </ul>
                 </li>
@@ -130,7 +130,7 @@
             language: 'zh',
             showPreview : true,
             browseOnZoneClick:false,
-            uploadUrl : '${contextPath}/terminal/upload',
+            uploadUrl : '${contextPath}/terminal/upload.do',
             removeLabel : "删除",
             showCaption: true, //是否显示标题,
             dropZoneEnabled:true,

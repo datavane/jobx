@@ -528,7 +528,7 @@ public class AgentHandler extends SimpleChannelInboundHandler<Request> implement
 
     public boolean register() {
         if (CommonUtils.notEmpty(Globals.OPENCRON_SERVER)) {
-            String url = Globals.OPENCRON_SERVER+"/agent/autoreg";
+            String url = Globals.OPENCRON_SERVER+"/agent/autoreg.do";
             String mac = MacUtils.getMacAddress();
             String agentPassword = IOUtils.readText(Globals.OPENCRON_PASSWORD_FILE, "UTF-8").trim().toLowerCase();
 

@@ -26,7 +26,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.opencron.common.rpc.model.Opencron;
-import org.opencron.common.utils.WebUtils;
 import org.opencron.server.domain.Record;
 import org.opencron.server.service.*;
 import org.opencron.server.tag.PageBean;
@@ -35,6 +34,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import static org.opencron.common.utils.CommonUtils.notEmpty;
 
@@ -62,7 +62,7 @@ public class RecordController extends BaseController {
      * @param model
      * @return
      */
-    @RequestMapping("/done")
+    @RequestMapping("/done.htm")
     public String queryDone(HttpSession session, PageBean pageBean, RecordVo recordVo, String queryTime, Model model) {
 
         model.addAttribute("agents", agentService.getOwnerAgents(session));
@@ -95,7 +95,7 @@ public class RecordController extends BaseController {
         return "/record/done";
     }
 
-    @RequestMapping("/running")
+    @RequestMapping("/running.htm")
     public String queryRunning(HttpSession session, HttpServletRequest request, PageBean pageBean, RecordVo recordVo, String queryTime, Model model,String refresh) {
 
         model.addAttribute("agents", agentService.getOwnerAgents(session));
@@ -120,13 +120,13 @@ public class RecordController extends BaseController {
         return "/record/running";
     }
 
-    @RequestMapping("/refresh")
+    @RequestMapping("/refresh.htm")
     public String refresh(HttpSession session, HttpServletRequest request, PageBean pageBean, RecordVo recordVo, String queryTime, Model model) {
         this.queryRunning(session,request,pageBean,recordVo,queryTime,model,"refresh");
         return "/record/refresh";
     }
 
-    @RequestMapping("/detail")
+    @RequestMapping("/detail.htm")
     public String showDetail(Model model, Long id) {
         RecordVo recordVo = recordService.getDetailById(id);
         if (recordVo == null) {
@@ -136,7 +136,7 @@ public class RecordController extends BaseController {
         return "/record/detail";
     }
 
-    @RequestMapping("/kill")
+    @RequestMapping(value = "/kill.do",method= RequestMethod.POST)
     public void kill(HttpSession session, HttpServletResponse response, Long recordId) {
         Record record = recordService.get(recordId);
         if (Opencron.RunStatus.RERUNNING.getStatus().equals(record.getStatus())) {
@@ -148,7 +148,7 @@ public class RecordController extends BaseController {
         }
         if (!jobService.checkJobOwner(session, record.getUserId())) return;
         Boolean flag = executeService.killJob(record);
-        WebUtils.writeHtml(response, flag.toString());
+        writeHtml(response, flag.toString());
     }
 
 }

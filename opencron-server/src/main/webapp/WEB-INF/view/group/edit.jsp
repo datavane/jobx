@@ -74,7 +74,7 @@
                 $.ajax({
                     headers: {"csrf": "${csrf}"},
                     type: "POST",
-                    url: "${contextPath}/group/checkname",
+                    url: "${contextPath}/group/checkname.do",
                     data: {
                         "groupName": $("#groupName").val()
                     },
@@ -126,7 +126,7 @@
 
         <div class="block-area" id="basic">
             <div class="tile p-15">
-                <form class="form-horizontal" role="form" id="agent" action="${contextPath}/group/save" method="post" onsubmit="return save()"></br>
+                <form class="form-horizontal" role="form" id="agent" action="${contextPath}/group/save.do" method="post" onsubmit="return save()"></br>
                     <input type="hidden" name="csrf" value="${csrf}">
                     <input type="hidden" name="groupId" value="${group.groupId}">
                     <div class="form-group">

@@ -59,7 +59,7 @@
             self.term.resize(self.offset.cols, self.offset.rows);
             $.ajax({
                 headers: {"csrf": self.args[1]},
-                url: '/terminal/resize',
+                url: '/terminal/resize.do',
                 data: {
                     "token": self.args[0],
                     "cols": self.offset.cols,
@@ -108,7 +108,8 @@
         var sendInput = $("#sendInput").val();
         if (sendInput && sendInput.length > 0) {
             $.ajax({
-                url: '/terminal/sendAll?token=' + self.args[0] + "&csrf=" + self.args[1] + '&cmd=' + encodeURIComponent(encodeURIComponent(sendInput)),
+                type:'POST',
+                url: '/terminal/sendAll.do?token=' + self.args[0] + "&csrf=" + self.args[1] + '&cmd=' + encodeURIComponent(encodeURIComponent(sendInput)),
                 cache: false
             });
             $("#sendInput").val('');
@@ -192,7 +193,8 @@
 
     //同步到后台服务器
     $.ajax({
-        url: '/terminal/theme?token=' + this.args[0] + "&csrf=" + this.args[1] + '&theme=' + this.themeName,
+        type:'POST',
+        url: '/terminal/theme.do?token=' + this.args[0] + "&csrf=" + this.args[1] + '&theme=' + this.themeName,
         cache: false
     });
 };

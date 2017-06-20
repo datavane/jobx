@@ -29,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpSession;
 
@@ -45,28 +46,28 @@ public class ConfigController extends BaseController {
     @Autowired
     private RecordService recordService;
 
-    @RequestMapping("/view")
+    @RequestMapping("/view.htm")
     public String settings(Model model) {
         model.addAttribute("config", configService.getSysConfig());
         return "config/view";
     }
 
-    @RequestMapping("/editpage")
+    @RequestMapping("/edit.htm")
     public String editPage(Model model) {
         model.addAttribute("config", configService.getSysConfig());
         return "config/edit";
     }
 
-    @RequestMapping("/edit")
+    @RequestMapping(value = "/edit.do",method= RequestMethod.POST)
     public String edit(HttpSession session, Config config) {
         config.setConfigId(configService.getSysConfig().getConfigId());
         config.setTemplate(config.getTemplate());
         config.setSendUrl(config.getSendUrl());
         configService.update(config);
-        return "redirect:/config/view?csrf=" + OpencronTools.getCSRF(session);
+        return "redirect:/config/view.htm?csrf=" + OpencronTools.getCSRF(session);
     }
 
-    @RequestMapping("/clear")
+    @RequestMapping(value = "/clear.do",method= RequestMethod.POST)
     public void clearRecord(String startTime, String endTime) {
         recordService.deleteRecordBetweenTime(startTime, endTime);
     }

@@ -7,7 +7,7 @@
 	<mapping path="/*" decorator="/WEB-INF/layouts/decorators.jsp" />
 
 	<mapping path="/" exclue="true"/>
-	<mapping path="/agent/refresh" exclue="true"/>
+	<mapping path="/agent/refresh.htm" exclue="true"/>
 	<mapping path="/record/refresh" exclue="true"/>
 	<mapping path="/notice/unread" exclue="true"/>
 	<mapping path="/notice/uncount" exclue="true"/>

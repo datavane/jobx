@@ -10,7 +10,7 @@
     <script src="${contextPath}/static/js/highcharts/js/highcharts-more.js?resId=${resourceId}"></script>
     <script src="${contextPath}/static/js/highcharts/js/highcharts-3d.js?resId=${resourceId}"></script>
     <script src="${contextPath}/static/js/highcharts/js/modules/exporting.js?resId=${resourceId}"></script>
-    <script src="${contextPath}/static/js/home.js?resId=${resourceId}"></script>
+    <script src="${contextPath}/static/js/dashboard.js?resId=${resourceId}"></script>
 
     <style type="text/css">
 
@@ -226,7 +226,7 @@
         <!-- cards -->
         <div class="row cards">
             <div class="card-container col-lg-3 col-sm-6 col-sm-12">
-                <div class="card hover" onclick="javascript:window.location.href='${contextPath}/agent/view?csrf=${csrf}'">
+                <div class="card hover" onclick="javascript:window.location.href='${contextPath}/agent/view.htm?csrf=${csrf}'">
                     <div class="front count">
                         <div class="media">
                             <span class="pull-left"><i style="font-size: 60px;margin-top: 0px;" aria-hidden="true" class="fa fa-desktop"></i></span>
@@ -253,7 +253,7 @@
             </div>
 
             <div class="card-container col-lg-3 col-sm-6 col-sm-12">
-                <div class="card hover" onclick="javascript:window.location.href='${contextPath}/job/view?csrf=${csrf}'">
+                <div class="card hover" onclick="javascript:window.location.href='${contextPath}/job/view.htm?csrf=${csrf}'">
                     <div class="front count">
                         <div class="media">
                             <span class="pull-left"><i style="font-size: 60px;margin-top: 1px;" aria-hidden="true" class="fa fa-tasks"></i></span>
@@ -280,7 +280,7 @@
             </div>
 
             <div class="card-container col-lg-3 col-sm-6 col-sm-12">
-                <div class="card hover" onclick="javascript:window.location.href='${contextPath}/record/done?success=1&csrf=${csrf}'">
+                <div class="card hover" onclick="javascript:window.location.href='${contextPath}/record/done.htm?success=1&csrf=${csrf}'">
                     <div class="front count">
                         <div class="media">
                             <span class="pull-left"><i style="font-size: 60px;margin-top: 0px;" class="fa fa-thumbs-o-up" aria-hidden="true"></i></span>
@@ -306,7 +306,7 @@
             </div>
 
             <div class="card-container col-lg-3 col-sm-6 col-sm-12">
-                <div class="card hover" onclick="javascript:window.location.href='${contextPath}/record/done?success=0&csrf=${csrf}'">
+                <div class="card hover" onclick="javascript:window.location.href='${contextPath}/record/done.htm?success=0&csrf=${csrf}'">
                     <div class="front count">
                         <div class="media">
                             <span class="pull-left"><i style="font-size: 60px;margin-top: -3px;" class="fa fa-thumbs-o-down" aria-hidden="true"></i></span>

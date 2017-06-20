@@ -68,7 +68,7 @@
             $.ajax({
                 headers: {"csrf": "${csrf}"},
                 type: "POST",
-                url: "${contextPath}/agent/checkhost",
+                url: "${contextPath}/agent/checkhost.do",
                 data: {
                     "ip": ip
                 },
@@ -78,7 +78,7 @@
                         $.ajax({
                             headers: {"csrf": "${csrf}"},
                             type: "POST",
-                            url: "${contextPath}/agent/checkname",
+                            url: "${contextPath}/agent/checkname.do",
                             data: {
                                 "name": name
                             },
@@ -87,7 +87,7 @@
                                     $.ajax({
                                         headers: {"csrf": "${csrf}"},
                                         type: "POST",
-                                        url: "${contextPath}/verify/ping",
+                                        url: "${contextPath}/verify/ping.do",
                                         data: {
                                             "proxy": proxy || 0,
                                             "proxyId": proxyId,
@@ -167,7 +167,7 @@
             $.ajax({
                 headers: {"csrf": "${csrf}"},
                 type: "POST",
-                url: "${contextPath}/verify/ping",
+                url: "${contextPath}/verify/ping.do",
                 data: {
                     "proxy": proxy || 0,
                     "proxyId": proxyId,
@@ -181,7 +181,7 @@
                         $.ajax({
                             headers: {"csrf": "${csrf}"},
                             type: "POST",
-                            url: "${contextPath}/verify/guid",
+                            url: "${contextPath}/verify/guid.do",
                             data: {
                                 "proxy": proxy || 0,
                                 "proxyId": proxyId,
@@ -224,7 +224,7 @@
                         $.ajax({
                             headers: {"csrf": "${csrf}"},
                             type: "POST",
-                            url: "${contextPath}/agent/checkhost",
+                            url: "${contextPath}/agent/checkhost.do",
                             data: {
                                 "ip": $("#ip").val()
                             },
@@ -254,7 +254,7 @@
                 $.ajax({
                     headers: {"csrf": "${csrf}"},
                     type: "POST",
-                    url: "${contextPath}/agent/checkname",
+                    url: "${contextPath}/agent/checkname.do",
                     data: {
                         "name": $("#name").val()
                     },
@@ -336,7 +336,7 @@
 
         <div class="block-area" id="basic">
             <div class="tile p-15">
-                <form class="form-horizontal" role="form" id="agent" action="${contextPath}/agent/add" method="post"></br>
+                <form class="form-horizontal" role="form" id="agent" action="${contextPath}/agent/add.do" method="post"></br>
                     <input type="hidden" name="csrf" value="${csrf}">
                     <input type="hidden" name="machineId" id="machineId" value="">
                     <div class="form-group">

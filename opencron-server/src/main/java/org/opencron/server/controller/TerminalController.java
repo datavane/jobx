@@ -23,7 +23,6 @@ package org.opencron.server.controller;
 
 import com.alibaba.fastjson.JSON;
 import org.opencron.common.utils.CommonUtils;
-import org.opencron.common.utils.WebUtils;
 import org.opencron.server.domain.Terminal;
 import org.opencron.server.job.OpencronTools;
 import org.opencron.server.domain.User;
@@ -34,6 +33,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -57,7 +57,7 @@ public class TerminalController extends BaseController {
     @Autowired
     private TerminalService termService;
 
-    @RequestMapping("/ssh")
+    @RequestMapping(value = "/ssh.do",method= RequestMethod.POST)
     public void ssh(HttpSession session, HttpServletResponse response, Terminal terminal) throws Exception {
         User user = OpencronTools.getUser(session);
 
@@ -71,15 +71,14 @@ public class TerminalController extends BaseController {
             terminal.setUser(user);
             TerminalContext.put(token, terminal);
             OpencronTools.setSshSessionId(session, token);
-            WebUtils.writeJson(response, String.format(json, "success", "/terminal/open?token=" + token + "&csrf=" + OpencronTools.getCSRF(session)));
+            writeJson(response, String.format(json, "success", "/terminal/open.htm?token=" + token + "&csrf=" + OpencronTools.getCSRF(session)));
         } else {
             //重新输入密码进行认证...
-            WebUtils.writeJson(response, String.format(json, authStatus.status, "null"));
-            return;
+            writeJson(response, String.format(json, authStatus.status, "null"));
         }
     }
 
-    @RequestMapping("/ssh2")
+    @RequestMapping("/ssh2.htm")
     public String ssh2(HttpSession session, Terminal terminal) throws Exception {
         User user = OpencronTools.getUser(session);
 
@@ -91,35 +90,35 @@ public class TerminalController extends BaseController {
             terminal.setUser(user);
             TerminalContext.put(token, terminal);
             OpencronTools.setSshSessionId(session, token);
-            return "redirect:/terminal/open?token=" + token + "&csrf=" + OpencronTools.getCSRF(session);
+            return "redirect:/terminal/open.htm?token=" + token + "&csrf=" + OpencronTools.getCSRF(session);
         } else {
             //重新输入密码进行认证...
-            return "redirect:/terminal/open?id=" + terminal.getId() + "&csrf=" + OpencronTools.getCSRF(session);
+            return "redirect:/terminal/open.htm?id=" + terminal.getId() + "&csrf=" + OpencronTools.getCSRF(session);
         }
 
     }
 
-    @RequestMapping("/detail")
+    @RequestMapping(value = "/detail.do",method= RequestMethod.POST)
     public void detail(HttpServletResponse response, Terminal terminal) throws Exception {
         terminal = termService.getById(terminal.getId());
-        WebUtils.writeJson(response, JSON.toJSONString(terminal));
+        writeJson(response, JSON.toJSONString(terminal));
     }
 
-    @RequestMapping("/exists")
+    @RequestMapping(value = "/exists.do",method= RequestMethod.POST)
     public void exists(HttpSession session, HttpServletResponse response, Terminal terminal) throws Exception {
         User user = OpencronTools.getUser(session);
         boolean exists = termService.exists(user.getUserId(), terminal.getHost());
-        WebUtils.writeHtml(response, exists ? "true" : "false");
+        writeHtml(response, exists ? "true" : "false");
     }
 
-    @RequestMapping("/view")
+    @RequestMapping("/view.htm")
     public String view(HttpSession session, PageBean pageBean, Model model) throws Exception {
         pageBean = termService.getPageBeanByUser(pageBean, OpencronTools.getUserId(session));
         model.addAttribute("pageBean", pageBean);
         return "/terminal/view";
     }
 
-    @RequestMapping("/open")
+    @RequestMapping("/open.htm")
     public String open(HttpServletRequest request, String token, Long id) throws Exception {
         //登陆失败
         if (token == null && id != null) {
@@ -139,28 +138,28 @@ public class TerminalController extends BaseController {
         return "/terminal/error";
     }
 
-    @RequestMapping("/reopen")
+    @RequestMapping("/reopen.htm")
     public String reopen(HttpSession session, String token) throws Exception {
         Terminal terminal = (Terminal) OpencronTools.CACHE.get(token);
         if (terminal != null) {
             token = CommonUtils.uuid();
             TerminalContext.put(token, terminal);
             session.setAttribute(OpencronTools.SSH_SESSION_ID, token);
-            return "redirect:/terminal/open?token=" + token + "&csrf=" + OpencronTools.getCSRF(session);
+            return "redirect:/terminal/open.htm?token=" + token + "&csrf=" + OpencronTools.getCSRF(session);
         }
         return "/terminal/error";
     }
 
-    @RequestMapping("/resize")
+    @RequestMapping(value = "/resize.do",method= RequestMethod.POST)
     public void resize(HttpServletResponse response, String token, Integer cols, Integer rows, Integer width, Integer height) throws Exception {
         TerminalClient terminalClient = TerminalSession.get(token);
         if (terminalClient != null) {
             terminalClient.resize(cols, rows, width, height);
         }
-        WebUtils.writeHtml(response, "");
+        writeHtml(response, "");
     }
 
-    @RequestMapping("/sendAll")
+    @RequestMapping(value = "/sendAll.do",method= RequestMethod.POST)
     public void sendAll(String token, String cmd) throws Exception {
         cmd = URLDecoder.decode(cmd, "UTF-8");
         TerminalClient terminalClient = TerminalSession.get(token);
@@ -172,16 +171,16 @@ public class TerminalController extends BaseController {
         }
     }
 
-    @RequestMapping("/theme")
+    @RequestMapping(value = "/theme.do",method= RequestMethod.POST)
     public void theme(HttpServletResponse response, String token, String theme) throws Exception {
         TerminalClient terminalClient = TerminalSession.get(token);
         if (terminalClient != null) {
             termService.theme(terminalClient.getTerminal(), theme);
         }
-        WebUtils.writeHtml(response, "");
+        writeHtml(response, "");
     }
 
-    @RequestMapping("/upload")
+    @RequestMapping(value = "/upload.do",method= RequestMethod.POST)
     public void upload(HttpSession httpSession, HttpServletResponse response, String token, @RequestParam(value = "file", required = false) MultipartFile[] file, String path) {
         TerminalClient terminalClient = TerminalSession.get(token);
         boolean success = true;
@@ -205,11 +204,11 @@ public class TerminalController extends BaseController {
                 }
             }
         }
-        WebUtils.writeJson(response, String.format("{\"success\":\"%s\"}", success ? "true" : "false"));
+        writeJson(response, String.format("{\"success\":\"%s\"}", success ? "true" : "false"));
     }
 
 
-    @RequestMapping("/save")
+    @RequestMapping(value = "/save.do",method= RequestMethod.POST)
     public void save(HttpSession session, HttpServletResponse response, Terminal term) throws Exception {
         Terminal.AuthStatus authStatus = termService.auth(term);
         if (authStatus.equals(Terminal.AuthStatus.SUCCESS)) {
@@ -217,14 +216,14 @@ public class TerminalController extends BaseController {
             term.setUserId(user.getUserId());
             termService.merge(term);
         }
-        WebUtils.writeHtml(response, authStatus.status);
+        writeHtml(response, authStatus.status);
     }
 
 
-    @RequestMapping("/del")
-    public void del(HttpSession session, HttpServletResponse response, Terminal term) throws Exception {
+    @RequestMapping(value = "/delete.do",method= RequestMethod.POST)
+    public void delete(HttpSession session, HttpServletResponse response, Terminal term) throws Exception {
         String message = termService.delete(session, term.getId());
-        WebUtils.writeHtml(response, message);
+        writeHtml(response, message);
     }
 
 }

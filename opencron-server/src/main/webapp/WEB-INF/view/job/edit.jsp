@@ -66,7 +66,7 @@
                 $.ajax({
                     headers:{"csrf":"${csrf}"},
                     type:"POST",
-                    url:"${contextPath}/job/checkname",
+                    url:"${contextPath}/job/checkname.do",
                     data:{
                         "jobId":jobId,
                         "name":jobName,
@@ -108,7 +108,7 @@
                 $.ajax({
                     headers:{"csrf":"${csrf}"},
                     type:"POST",
-                    url:"${contextPath}/verify/exp",
+                    url:"${contextPath}/verify/exp.do",
                     data:{
                         "cronType":cronType,
                         "cronExp":cronExp
@@ -252,7 +252,7 @@
             $.ajax({
                 headers:{"csrf":"${csrf}"},
                 type:"POST",
-                url:"${contextPath}/job/checkname",
+                url:"${contextPath}/job/checkname.do",
                 data:{
                     "jobId":jobId,
                     "name":jobName,
@@ -264,7 +264,7 @@
                             $.ajax({
                                 headers:{"csrf":"${csrf}"},
                                 type:"POST",
-                                url:"${contextPath}/verify/exp",
+                                url:"${contextPath}/verify/exp.do",
                                 data:{
                                     "cronType":cronType,
                                     "cronExp":cronExp
@@ -356,7 +356,7 @@
             $.ajax({
                 headers:{"csrf":"${csrf}"},
                 type:"POST",
-                url:"${contextPath}/job/checkname",
+                url:"${contextPath}/job/checkname.do",
                 data:{
                     "jobId":$("#jobId1").val(),
                     "name":jobName,
@@ -499,7 +499,7 @@
 
     <div class="block-area" id="basic">
         <div class="tile p-15">
-            <form class="form-horizontal" role="form" id="job" action="${contextPath}/job/save" method="post"><br>
+            <form class="form-horizontal" role="form" id="job" action="${contextPath}/job/save.do" method="post"><br>
                 <input type="hidden" name="csrf" value="${csrf}">
                 <input type="hidden" id="jobId" name="jobId" value="${job.jobId}">
                 <input type="hidden" name="userId" value="${job.userId}">

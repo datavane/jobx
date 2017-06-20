@@ -45,14 +45,14 @@
             $.ajax({
                 headers: {"csrf": "${csrf}"},
                 type: "POST",
-                url: "${contextPath}/job/canrun",
+                url: "${contextPath}/job/canrun.do",
                 data: {"id": id},
                 success: function (data) {
                     if (!eval("(" + data + ")")) {
                         $.ajax({
                             headers: {"csrf": "${csrf}"},
                             type: "POST",
-                            url: "${contextPath}/job/editsingle",
+                            url: "${contextPath}/job/editsingle.do",
                             data: {"id": id},
                             success: function (obj) {
                                 $("#jobform")[0].reset();
@@ -151,11 +151,11 @@
             $.ajax({
                 headers: {"csrf": "${csrf}"},
                 type: "POST",
-                url: "${contextPath}/job/canrun",
+                url: "${contextPath}/job/canrun.do",
                 data: {"id": id},
                 success: function (data) {
                     if (!eval("(" + data + ")")) {
-                        window.location.href = "${contextPath}/job/editflow?id=" + id + "&csrf=${csrf}";
+                        window.location.href = "${contextPath}/job/editflow.htm?id=" + id + "&csrf=${csrf}";
                     } else {
                         alert("当前作业或其子作业正在运行中,暂时不能编辑!");
                     }
@@ -286,7 +286,7 @@
                 $.ajax({
                     headers: {"csrf": "${csrf}"},
                     type: "POST",
-                    url: "${contextPath}/verify/exp",
+                    url: "${contextPath}/verify/exp.do",
                     data: {
                         "cronType": cronType,
                         "cronExp": cronExp
@@ -312,7 +312,7 @@
             $.ajax({
                 headers: {"csrf": "${csrf}"},
                 type: "POST",
-                url: "${contextPath}/job/checkname",
+                url: "${contextPath}/job/checkname.do",
                 data: {
                     "id": job.jobId,
                     "name": job.jobName
@@ -323,7 +323,7 @@
                         $.ajax({
                             headers: {"csrf": "${csrf}"},
                             type: "POST",
-                            url: "${contextPath}/job/edit",
+                            url: "${contextPath}/job/edit.do",
                             data: {
                                 "jobId": job.jobId,
                                 "cronType": job.cronType,
@@ -433,7 +433,7 @@
                 $.ajax({
                     headers: {"csrf": "${csrf}"},
                     type: "POST",
-                    url: "${contextPath}/job/checkname",
+                    url: "${contextPath}/job/checkname.do",
                     data: {
                         "id": $("#id").val(),
                         "name": $("#jobName").val()
@@ -468,7 +468,7 @@
                 $.ajax({
                     headers: {"csrf": "${csrf}"},
                     type: "POST",
-                    url: "${contextPath}/verify/exp",
+                    url: "${contextPath}/verify/exp.do",
                     data: {
                         "cronType": cronType,
                         "cronExp": cronExp
@@ -502,14 +502,14 @@
             var jobType = $("#jobType").val();
             var execType = $("#execType").val();
             var redo = $("#redo").val();
-            window.location.href = "${contextPath}/job/view?agentId=" + agentId + "&cronType=" + cronType + "&jobType=" + jobType + "&execType=" + execType + "&redo=" + redo + "&pageSize=" + pageSize + "&csrf=${csrf}";
+            window.location.href = "${contextPath}/job/view.htm?agentId=" + agentId + "&cronType=" + cronType + "&jobType=" + jobType + "&execType=" + execType + "&redo=" + redo + "&pageSize=" + pageSize + "&csrf=${csrf}";
         }
 
         function executeJob(id) {
             $.ajax({
                 headers: {"csrf": "${csrf}"},
                 type: "POST",
-                url: "${contextPath}/job/canrun",
+                url: "${contextPath}/job/canrun.do",
                 data: {"id": id},
                 success: function (data) {
                     if (!eval("(" + data + ")")) {
@@ -524,7 +524,7 @@
                             $.ajax({
                                 headers: {"csrf": "${csrf}"},
                                 type: "POST",
-                                url: "${contextPath}/job/execute",
+                                url: "${contextPath}/job/execute.do",
                                 data: {"id": id}
                             });
                             alertMsg("该作业已启动,正在执行中.");
@@ -563,7 +563,7 @@
             $.ajax({
                 headers: {"csrf": "${csrf}"},
                 type: "POST",
-                url: "${contextPath}/job/canrun",
+                url: "${contextPath}/job/canrun.do",
                 data: {"id": id},
                 success: function (data) {
                     if (!eval("(" + data + ")")) {
@@ -571,7 +571,7 @@
                         $.ajax({
                             headers: {"csrf": "${csrf}"},
                             type: "POST",
-                            url: "${contextPath}/job/editsingle",
+                            url: "${contextPath}/job/editsingle.do",
                             data: {"id": id},
                             success: function (obj) {
                                 $("#cmdform")[0].reset();
@@ -611,7 +611,7 @@
             $.ajax({
                 headers: {"csrf": "${csrf}"},
                 type: "POST",
-                url: "${contextPath}/job/editcmd",
+                url: "${contextPath}/job/editcmd.do",
                 data: {
                     "jobId": jobId,
                     "command": toBase64(command)
@@ -648,7 +648,7 @@
                 $.ajax({
                     headers: {"csrf": "${csrf}"},
                     type: "POST",
-                    url: "${contextPath}/job/checkDelete",
+                    url: "${contextPath}/job/checkdel.do",
                     data: {"id": id},
                     success: function (data) {
                         if (data == "error") {
@@ -659,7 +659,7 @@
                             $.ajax({
                                 headers: {"csrf": "${csrf}"},
                                 type: "POST",
-                                url: "${contextPath}/job/delete",
+                                url: "${contextPath}/job/delete.do",
                                 data: {"id": id},
                                 success: function (data) {
                                     if (data == "true") {
@@ -753,7 +753,7 @@
                     <option value="0" ${redo eq 0 ? 'selected' : ''}>否</option>
                 </select>
 
-                <a href="${contextPath}/job/addpage?csrf=${csrf}" class="btn btn-sm m-t-10"
+                <a href="${contextPath}/job/add.htm?csrf=${csrf}" class="btn btn-sm m-t-10"
                    style="margin-left: 20px;margin-bottom: 8px"><i class="icon">&#61943;</i>添加</a>
             </div>
         </div>
@@ -795,9 +795,9 @@
                             </c:forEach>
                         </td>
                     </c:if>
-                    <td><a href="${contextPath}/agent/detail?id=${r.agentId}&csrf=${csrf}">${r.agentName}</a></td>
+                    <td><a href="${contextPath}/agent/detail.htm?id=${r.agentId}&csrf=${csrf}">${r.agentName}</a></td>
                     <c:if test="${permission eq true}">
-                        <td><a href="${contextPath}/user/detail?userId=${r.userId}&csrf=${csrf}">${r.operateUname}</a>
+                        <td><a href="${contextPath}/user/detail.htm?userId=${r.userId}&csrf=${csrf}">${r.operateUname}</a>
                         </td>
                     </c:if>
                     <c:if test="${permission eq false}">
@@ -878,7 +878,7 @@
                                 <a href="#" onclick="remove('${r.jobId}')" title="删除">
                                     <i aria-hidden="true" class="fa fa-times"></i>
                                 </a>&nbsp;&nbsp;
-                                <a href="${contextPath}/job/detail?id=${r.jobId}&csrf=${csrf}" title="查看详情">
+                                <a href="${contextPath}/job/detail.htm?id=${r.jobId}&csrf=${csrf}" title="查看详情">
                                     <i class="glyphicon glyphicon-eye-open"></i>
                                 </a>
                             </div>
@@ -889,11 +889,11 @@
                 <c:if test="${r.jobType eq 1}">
                     <c:forEach var="c" items="${r.children}" varStatus="index">
                         <tr class="child${r.jobId} trGroup${r.flowId}" style="display: none;">
-                            <td><a href="${contextPath}/agent/detail?id=${c.agentId}&csrf=${csrf}">${c.agentName}</a>
+                            <td><a href="${contextPath}/agent/detail.htm?id=${c.agentId}&csrf=${csrf}">${c.agentName}</a>
                             </td>
                             <c:if test="${permission eq true}">
                                 <td>
-                                    <a href="${contextPath}/user/detail?userId=${c.userId}&csrf=${csrf}">${c.operateUname}</a>
+                                    <a href="${contextPath}/user/detail.htm?userId=${c.userId}&csrf=${csrf}">${c.operateUname}</a>
                                 </td>
                             </c:if>
                             <c:if test="${permission eq false}">
@@ -922,7 +922,7 @@
                             <td>
                                 <center>
                                     <div class="visible-md visible-lg hidden-sm hidden-xs action-buttons">
-                                        <a href="${contextPath}/job/detail?id=${c.jobId}&csrf=${csrf}" title="查看详情">
+                                        <a href="${contextPath}/job/detail.htm?id=${c.jobId}&csrf=${csrf}" title="查看详情">
                                             <i class="glyphicon glyphicon-eye-open"></i>
                                         </a>
                                     </div>
@@ -935,7 +935,7 @@
             </tbody>
         </table>
 
-        <cron:pager href="${contextPath}/job/view?agentId=${agentId}&execType=${execType}&redo=${redo}&csrf=${csrf}"
+        <cron:pager href="${contextPath}/job/view.htm?agentId=${agentId}&execType=${execType}&redo=${redo}&csrf=${csrf}"
                     id="${pageBean.pageNo}" size="${pageBean.pageSize}" total="${pageBean.totalCount}"/>
 
     </div>

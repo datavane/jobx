@@ -153,7 +153,7 @@
             $.ajax({
                 headers:{"csrf":"${csrf}"},
                 type:"POST",
-                url:"${contextPath}/job/checkname",
+                url:"${contextPath}/job/checkname.do",
                 data:{
                     "name":jobName,
                     "agentId":$("#agentId").val()
@@ -164,7 +164,7 @@
                             $.ajax({
                                 headers:{"csrf":"${csrf}"},
                                 type:"POST",
-                                url:"${contextPath}/verify/exp",
+                                url:"${contextPath}/verify/exp.do",
                                 data:{
                                     "cronType":cronType,
                                     "cronExp":cronExp
@@ -254,7 +254,7 @@
                 $.ajax({
                     headers:{"csrf":"${csrf}"},
                     type:"POST",
-                    url:"${contextPath}/job/checkname",
+                    url:"${contextPath}/job/checkname.do",
                     data:{
                         "name":$("#jobName").val(),
                         "agentId":$("#agentId").val()
@@ -295,7 +295,7 @@
                 $.ajax({
                     headers:{"csrf":"${csrf}"},
                     type:"POST",
-                    url:"${contextPath}/verify/exp",
+                    url:"${contextPath}/verify/exp.do",
                     data:{
                         "cronType":cronType,
                         "cronExp":cronExp
@@ -385,7 +385,7 @@
             $.ajax({
                 headers:{"csrf":"${csrf}"},
                 type:"POST",
-                url:"${contextPath}/job/checkname",
+                url:"${contextPath}/job/checkname.do",
                 data:{
                     "name":jobName,
                     "agentId":$("#agentId").val()
@@ -540,7 +540,7 @@
 
     <div class="block-area" id="basic">
         <div class="tile p-15 textured">
-            <form class="form-horizontal" role="form" id="job" action="${contextPath}/job/save" method="post"></br>
+            <form class="form-horizontal" role="form" id="job" action="${contextPath}/job/save.do" method="post"></br>
                 <input type="hidden" name="csrf" value="${csrf}">
                 <input type="hidden" name="command" id="command">
                 <div class="form-group">

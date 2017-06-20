@@ -35,13 +35,13 @@ import org.opencron.server.job.OpencronTools;
 import org.opencron.server.service.ExecuteService;
 import org.opencron.server.tag.PageBean;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.opencron.common.utils.WebUtils;
 import org.opencron.server.domain.Agent;
 import org.opencron.server.service.AgentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 
 @Controller
@@ -54,52 +54,52 @@ public class AgentController extends BaseController {
     @Autowired
     private ExecuteService executeService;
 
-    @RequestMapping("/view")
+    @RequestMapping("/view.htm")
     public String queryAllAgent(HttpSession session, HttpServletRequest request, Model model, PageBean pageBean) {
         agentService.getOwnerAgent(session, pageBean);
         model.addAttribute("connAgents", agentService.getAgentByConnType(Opencron.ConnType.CONN));
         return "/agent/view";
     }
 
-    @RequestMapping("/refresh")
+    @RequestMapping("/refresh.htm")
     public String refreshAgent(HttpSession session, HttpServletRequest request, Model model, PageBean pageBean) {
         agentService.getOwnerAgent(session, pageBean);
         return "/agent/refresh";
     }
 
-    @RequestMapping("/checkname")
+    @RequestMapping(value = "/checkname.do",method= RequestMethod.POST)
     public void checkName(HttpServletResponse response, Long id, String name) {
         boolean exists = agentService.existsName(id, name);
-        WebUtils.writeHtml(response, exists ? "false" : "true");
+        writeHtml(response, exists ? "false" : "true");
     }
 
-    @RequestMapping("/checkDelete")
+    @RequestMapping(value = "/checkdel.do",method= RequestMethod.POST)
     public void checkDelete(HttpServletResponse response, Long id) {
         String result = agentService.checkDelete(id);
-        WebUtils.writeHtml(response, result);
+        writeHtml(response, result);
     }
 
-    @RequestMapping("/delete")
+    @RequestMapping(value = "/delete.do",method= RequestMethod.POST)
     public void delete(HttpServletResponse response, Long id) {
         agentService.delete(id);
-        WebUtils.writeHtml(response, "true");
+        writeHtml(response, "true");
     }
 
-    @RequestMapping("/checkhost")
+    @RequestMapping(value = "/checkhost.do",method= RequestMethod.POST)
     public void checkhost(HttpServletResponse response, Long id, String ip) {
         boolean exists = agentService.existshost(id, ip);
-        WebUtils.writeHtml(response, exists ? "false" : "true");
+        writeHtml(response, exists ? "false" : "true");
     }
 
 
-    @RequestMapping("/addpage")
+    @RequestMapping("/add.htm")
     public String addPage(Model model) {
         List<Agent> agentList = agentService.getAgentByConnType(Opencron.ConnType.CONN);
         model.addAttribute("connAgents", agentList);
         return "/agent/add";
     }
 
-    @RequestMapping("/add")
+    @RequestMapping(value = "/add.do",method= RequestMethod.POST)
     public String add(HttpSession session, Agent agent) {
         if (!agent.getWarning()) {
             agent.setMobiles(null);
@@ -116,15 +116,15 @@ public class AgentController extends BaseController {
         agent.setDeleted(false);
         agent.setUpdateTime(new Date());
         agentService.merge(agent);
-        return "redirect:/agent/view?csrf=" + OpencronTools.getCSRF(session);
+        return "redirect:/agent/view.htm?csrf=" + OpencronTools.getCSRF(session);
     }
 
-    @RequestMapping("/autoreg")
+    @RequestMapping(value = "/autoreg.do",method= RequestMethod.POST)
     public synchronized void autoReg(HttpServletRequest request, HttpServletResponse response, Agent agent, String key) {
-        String ip = WebUtils.getIp(request);
+        String ip = getIp(request);
         String format = "{status:'%d',message:'%s'}";
         if (ip == null) {
-            WebUtils.writeJson(response, String.format(format,500,"can't get agent'ip"));
+            writeJson(response, String.format(format,500,"can't get agent'ip"));
             return;
         }
 
@@ -132,12 +132,12 @@ public class AgentController extends BaseController {
         String serverAutoRegKey = PropertyPlaceholder.get("opencron.autoRegKey");
         if (CommonUtils.notEmpty(serverAutoRegKey)) {
             if (CommonUtils.isEmpty(key) || !key.equals(serverAutoRegKey)) {
-                WebUtils.writeJson(response, String.format(format,400,"auto register key error!"));
+                writeJson(response, String.format(format,400,"auto register key error!"));
             }
         }
 
         if (agent.getMachineId()==null) {
-            WebUtils.writeJson(response, String.format(format,500,"can't get agent'macaddress"));
+            writeJson(response, String.format(format,500,"can't get agent'macaddress"));
             return;
         }
 
@@ -146,7 +146,7 @@ public class AgentController extends BaseController {
         if (dbAgent!=null) {
             dbAgent.setIp(ip);
             agentService.merge(dbAgent);
-            WebUtils.writeJson(response, String.format(format, 200, ip));
+            writeJson(response, String.format(format, 200, ip));
         }else {
             //新的机器，需要自动注册.
             agent.setIp(ip);
@@ -161,20 +161,20 @@ public class AgentController extends BaseController {
             agent.setDeleted(false);
             agent.setUpdateTime(new Date());
             agentService.merge(agent);
-            WebUtils.writeJson(response, String.format(format,200,ip));
+            writeJson(response, String.format(format,200,ip));
         }
     }
 
-    @RequestMapping("/editpage")
-    public void editPage(HttpServletResponse response, Long id) {
+    @RequestMapping(value = "/get.do",method= RequestMethod.POST)
+    public void get(HttpServletResponse response, Long id) {
         Agent agent = agentService.getAgent(id);
         if (agent == null) {
-            WebUtils.write404(response);
+            write404(response);
         }
-        WebUtils.writeJson(response, JSON.toJSONString(agent));
+        writeJson(response, JSON.toJSONString(agent));
     }
 
-    @RequestMapping("/edit")
+    @RequestMapping(value = "/edit.do",method= RequestMethod.POST)
     public void edit(HttpServletResponse response, Agent agent) {
         Agent agent1 = agentService.getAgent(agent.getAgentId());
         agent1.setName(agent.getName());
@@ -193,22 +193,16 @@ public class AgentController extends BaseController {
         agent1.setComment(agent.getComment());
         agent1.setUpdateTime(new Date());
         agentService.merge(agent1);
-        WebUtils.writeHtml(response, "true");
+        writeHtml(response, "true");
     }
 
-    @RequestMapping("/pwdpage")
-    public void pwdPage(HttpServletResponse response, Long id) {
-        Agent agent = agentService.getAgent(id);
-        WebUtils.writeJson(response, JSON.toJSONString(agent));
-    }
-
-    @RequestMapping("/editpwd")
-    public void editPwd(HttpServletResponse response,Boolean type, Long id, String pwd0, String pwd1, String pwd2) {
+    @RequestMapping(value = "/pwd.do",method= RequestMethod.POST)
+    public void pwd(HttpServletResponse response,Boolean type, Long id, String pwd0, String pwd1, String pwd2) {
         String result = agentService.editPwd(id,type,pwd0, pwd1, pwd2);
-        WebUtils.writeHtml(response, result);
+        writeHtml(response, result);
     }
 
-    @RequestMapping("/detail")
+    @RequestMapping("/detail.htm")
     public String showDetail(Model model, Long id) {
         Agent agent = agentService.getAgent(id);
         if (agent == null) {
@@ -218,16 +212,16 @@ public class AgentController extends BaseController {
         return "/agent/detail";
     }
 
-    @RequestMapping("/getConnAgents")
+    @RequestMapping(value = "/getConnAgents.do",method= RequestMethod.POST)
     public void getConnAgents(HttpServletResponse response) {
         List<Agent> agents = agentService.getAgentByConnType(Opencron.ConnType.CONN);
-        WebUtils.writeJson(response, JSON.toJSONString(agents));
+        writeJson(response, JSON.toJSONString(agents));
     }
 
-    @RequestMapping("/path")
+    @RequestMapping(value = "/path.do",method= RequestMethod.POST)
     public void getPath(HttpServletResponse response,Long agentId) {
         Agent agent = agentService.getAgent(agentId);
         String path = executeService.path(agent);
-        WebUtils.writeHtml(response,path==null?"":path+"/.password");
+        writeHtml(response,path==null?"":path+"/.password");
     }
 }

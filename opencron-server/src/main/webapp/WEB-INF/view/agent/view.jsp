@@ -38,7 +38,7 @@
         $(document).ready(function () {
             $("#size").change(function () {
                 var pageSize = $("#size").val();
-                window.location.href = "${contextPath}/agent/view?pageSize=" + pageSize+"&csrf=${csrf}";
+                window.location.href = "${contextPath}/agent/view.htm?pageSize=" + pageSize+"&csrf=${csrf}";
             });
 
             var clipboard = new Clipboard('#copy-btn');
@@ -60,7 +60,7 @@
                 $.ajax({
                     headers:{"csrf":"${csrf}"},
                     type: "POST",
-                    url: "${contextPath}/agent/refresh",
+                    url: "${contextPath}/agent/refresh.htm",
                     data: {
                         "pageNo":${pageBean.pageNo},
                         "pageSize":${pageBean.pageSize},
@@ -99,7 +99,7 @@
                 $.ajax({
                     headers:{"csrf":"${csrf}"},
                     type: "POST",
-                    url: "${contextPath}/agent/checkname",
+                    url: "${contextPath}/agent/checkname.do",
                     data: {
                         "id": $("#id").val(),
                         "name": $("#name").val()
@@ -143,7 +143,7 @@
             $.ajax({
                 headers:{"csrf":"${csrf}"},
                 type: "POST",
-                url: "${contextPath}/agent/editpage",
+                url: "${contextPath}/agent/get.do",
                 data: {"id": id},
                 success: function (obj) {
                     $("#agentform")[0].reset();
@@ -270,7 +270,7 @@
             $.ajax({
                 headers:{"csrf":"${csrf}"},
                 type: "POST",
-                url: "${contextPath}/agent/checkname",
+                url: "${contextPath}/agent/checkname.do",
                 data: {
                     "id": id,
                     "name": name
@@ -281,7 +281,7 @@
                             $.ajax({
                                 headers:{"csrf":"${csrf}"},
                                 type: "POST",
-                                url: "${contextPath}/verify/ping",
+                                url: "${contextPath}/verify/ping.do",
                                 data: {
                                     headers:{"csrf":"${csrf}"},
                                     "proxy": proxy,
@@ -323,7 +323,7 @@
             $.ajax({
                 headers:{"csrf":"${csrf}"},
                 type: "POST",
-                url: "${contextPath}/agent/edit",
+                url: "${contextPath}/agent/edit.do",
                 data: {
                     "proxy": proxy,
                     "proxyAgent": $("#proxyAgent").val(),
@@ -368,7 +368,7 @@
             $.ajax({
                 headers:{"csrf":"${csrf}"},
                 type: "POST",
-                url: "${contextPath}/agent/getConnAgents",
+                url: "${contextPath}/agent/getConnAgents.do",
                 success: function (obj) {
                     if (obj != null) {
                         $("#proxyAgent").empty();
@@ -385,7 +385,7 @@
             $.ajax({
                 headers:{"csrf":"${csrf}"},
                 type: "POST",
-                url: "${contextPath}/agent/pwdpage",
+                url: "${contextPath}/agent/get.do",
                 data: {"id": id},
                 success: function (obj) {
                     $("#pwdform")[0].reset();
@@ -416,7 +416,7 @@
                 $.ajax({
                     headers:{"csrf":"${csrf}"},
                     type:"POST",
-                    url:"${contextPath}/agent/checkDelete",
+                    url:"${contextPath}/agent/checkdel.do",
                     data:{"id":id},
                     success:function (data) {
                         if(data == "error"){
@@ -427,7 +427,7 @@
                             $.ajax({
                                 headers:{"csrf":"${csrf}"},
                                 type:"POST",
-                                url:"${contextPath}/agent/delete",
+                                url:"${contextPath}/agent/delete.do",
                                 data:{"id":id},
                                 success:function () {
                                     alertMsg("删除执行器成功");
@@ -471,7 +471,7 @@
             $.ajax({
                 headers:{"csrf":"${csrf}"},
                 type: "POST",
-                url: "${contextPath}/agent/editpwd",
+                url: "${contextPath}/agent/pwd.do",
                 data: {
                     "id": id,
                     "type":window.errorAgentPwd>=3,
@@ -561,7 +561,7 @@
             $.ajax({
                 headers:{"csrf":"${csrf}"},
                 type: "POST",
-                url: "${contextPath}/verify/ping",
+                url: "${contextPath}/verify/ping.do",
                 data: {
                     "proxy": proxy,
                     "proxyId": $("#proxyAgent").val(),
@@ -584,7 +584,7 @@
         }
 
         function sortPage(field) {
-            location.href="${contextPath}/agent/view?pageNo=${pageBean.pageNo}&pageSize=${pageBean.pageSize}&orderBy="+field+"&order="+("${pageBean.order}"=="asc"?"desc":"asc")+"&csrf=${csrf}";
+            location.href="${contextPath}/agent/view.htm?pageNo=${pageBean.pageNo}&pageSize=${pageBean.pageSize}&orderBy="+field+"&order="+("${pageBean.order}"=="asc"?"desc":"asc")+"&csrf=${csrf}";
         }
 
         function inputPwd() {
@@ -599,7 +599,7 @@
             $.ajax({
                 headers:{"csrf":"${csrf}"},
                 type: "POST",
-                url: "${contextPath}/agent/path",
+                url: "${contextPath}/agent/path.do",
                 data: { "agentId": id },
                 dataType:"html",
                 success:function(result) {
@@ -658,7 +658,7 @@
             </div>
             <c:if test="${permission eq true}">
                 <div style="float: right;margin-top: -10px">
-                    <a href="${contextPath}/agent/addpage?csrf=${csrf}" class="btn btn-sm m-t-10"
+                    <a href="${contextPath}/agent/add.htm?csrf=${csrf}" class="btn btn-sm m-t-10"
                        style="margin-left: 50px;margin-bottom: 8px"><i class="icon">&#61943;</i>添加</a>
                 </div>
             </c:if>
@@ -745,7 +745,7 @@
                         <center>
                             <div class="visible-md visible-lg hidden-sm hidden-xs action-buttons">
 
-                                <a href="${contextPath}/job/addpage?id=${w.agentId}&csrf=${csrf}" title="新任务">
+                                <a href="${contextPath}/job/add.htm?id=${w.agentId}&csrf=${csrf}" title="新任务">
                                     <i aria-hidden="true" class="fa fa-plus-square-o"></i>
                                 </a>&nbsp;&nbsp;
                                 <c:if test="${permission eq true}">
@@ -759,7 +759,7 @@
                                         <i aria-hidden="true" class="fa fa-times"></i>
                                     </a>&nbsp;&nbsp;
                                 </c:if>
-                                <a href="${contextPath}/agent/detail?id=${w.agentId}&csrf=${csrf}" title="查看详情">
+                                <a href="${contextPath}/agent/detail.htm?id=${w.agentId}&csrf=${csrf}" title="查看详情">
                                     <i aria-hidden="true" class="fa fa-eye"></i>
                                 </a>
                             </div>
@@ -771,7 +771,7 @@
             </tbody>
         </table>
 
-        <cron:pager href="${contextPath}/agent/view?csrf=${csrf}" id="${pageBean.pageNo}" size="${pageBean.pageSize}"
+        <cron:pager href="${contextPath}/agent/view.htm?csrf=${csrf}" id="${pageBean.pageNo}" size="${pageBean.pageSize}"
                    total="${pageBean.totalCount}"/>
 
     </div>

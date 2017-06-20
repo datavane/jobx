@@ -14,7 +14,7 @@
     <script type="text/javascript">
 
         <c:if test="${!empty opencron_user}">
-            window.location.href="${contextPath}/home?csrf=${csrf}";
+            window.location.href="${contextPath}/dashboard.htm?csrf=${csrf}";
         </c:if>
 
         $(document).ready(function(){
@@ -358,7 +358,7 @@
 
             $.ajax({
                 type: "POST",
-                url: "${contextPath}/login",
+                url: "${contextPath}/login.do",
                 data: data,
                 success: function (data) {
                     if(data.msg){
@@ -423,7 +423,7 @@
             $.ajax({
                 headers:{"csrf":$("#csrf").val()},
                 type:"POST",
-                url:"${contextPath}/user/editpwd",
+                url:"${contextPath}/user/pwd.do",
                 data:{
                     "id":id,
                     "pwd0":calcMD5($("#password").val()),

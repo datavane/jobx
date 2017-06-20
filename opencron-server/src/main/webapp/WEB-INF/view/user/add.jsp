@@ -66,7 +66,7 @@
             $.ajax({
                 headers:{"csrf":"${csrf}"},
                 type:"POST",
-                url:"${contextPath}/user/checkname",
+                url:"${contextPath}/user/checkname.do",
                 data:{
                     "name":name
                 },
@@ -96,7 +96,7 @@
                 $.ajax({
                     headers:{"csrf":"${csrf}"},
                     type:"POST",
-                    url:"${contextPath}/user/checkname",
+                    url:"${contextPath}/user/checkname.do",
                     data:{
                         "name":$("#name").val()
                     },
@@ -222,7 +222,7 @@
 
     <div class="block-area" id="basic">
         <div class="tile p-15">
-            <form class="form-horizontal" role="form" id="user" action="${contextPath}/user/add" method="post"><br>
+            <form class="form-horizontal" role="form" id="user" action="${contextPath}/user/add.do" method="post"><br>
                 <input type="hidden" name="csrf" value="${csrf}">
                 <div class="form-group">
                     <label for="name" class="col-lab control-label"><i class="glyphicon glyphicon-user"></i>&nbsp;&nbsp;用&nbsp;&nbsp;户&nbsp;&nbsp;名：</label>

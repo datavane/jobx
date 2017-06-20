@@ -21,9 +21,9 @@
 				</a>
 				<h4 class="m-0">${opencron_user.userName}</h4>
 				<ul class="dropdown-menu profile-menu">
-					<li><a href="${contextPath}/user/detail?userId=${opencron_user.userId}&csrf=${csrf}">个人信息</a> <i class="icon left">&#61903;</i><i class="icon right">&#61815;</i></li>
-					<li><a href="${contextPath}/notice/view?csrf=${csrf}">通知&nbsp;&&nbsp;消息</a> <i class="icon left">&#61903;</i><i class="icon right">&#61815;</i></li>
-					<li><a href="${contextPath}/logout?csrf=${csrf}">退出登录</a> <i class="icon left">&#61903;</i><i class="icon right">&#61815;</i></li>
+					<li><a href="${contextPath}/user/detail.htm?userId=${opencron_user.userId}&csrf=${csrf}">个人信息</a> <i class="icon left">&#61903;</i><i class="icon right">&#61815;</i></li>
+					<li><a href="${contextPath}/notice/view.htm?csrf=${csrf}">通知&nbsp;&&nbsp;消息</a> <i class="icon left">&#61903;</i><i class="icon right">&#61815;</i></li>
+					<li><a href="${contextPath}/logout.htm?csrf=${csrf}">退出登录</a> <i class="icon left">&#61903;</i><i class="icon right">&#61815;</i></li>
 				</ul>
 			</div>
 
@@ -86,8 +86,8 @@
 		<!-- Side Menu -->
 		<ul class="list-unstyled side-menu">
 
-			<li class="<c:if test="${fn:contains(uri,'/home')}">active</c:if>">
-				<a href="${contextPath}/home?csrf=${csrf}">
+			<li class="<c:if test="${fn:contains(uri,'/dashboard')}">active</c:if>">
+				<a href="${contextPath}/dashboard.htm?csrf=${csrf}">
 					<i aria-hidden="true" class="fa fa-tachometer"></i><span class="menu-item">作业报告</span>
 				</a>
 			</li>
@@ -98,10 +98,10 @@
 				</a>
 				<ul class="list-unstyled menu-item">
 					<li <c:if test="${fn:contains(uri,'/group')}">class="active"</c:if>>
-						<a href="${contextPath}/group/view?csrf=${csrf}" class="<c:if test="${fn:contains(uri,'/group')}">active</c:if>">分组管理</a>
+						<a href="${contextPath}/group/view.htm?csrf=${csrf}" class="<c:if test="${fn:contains(uri,'/group')}">active</c:if>">分组管理</a>
 					</li>
 					<li <c:if test="${fn:contains(uri,'/view')}">class="active"</c:if>>
-						<a href="${contextPath}/agent/view?csrf=${csrf}" class="<c:if test="${fn:contains(uri,'/agent')}">active</c:if>">执行器管理</a>
+						<a href="${contextPath}/agent/view.htm?csrf=${csrf}" class="<c:if test="${fn:contains(uri,'/agent')}">active</c:if>">执行器管理</a>
 					</li>
 				</ul>
 			</li>
@@ -112,10 +112,10 @@
 				</a>
 				<ul class="list-unstyled menu-item">
 					<li <c:if test="${fn:contains(uri,'/job/view')}">class="active"</c:if>>
-						<a href="${contextPath}/job/view?csrf=${csrf}" class="<c:if test="${fn:contains(uri,'/job/view')}">active</c:if>">作业列表</a>
+						<a href="${contextPath}/job/view.htm?csrf=${csrf}" class="<c:if test="${fn:contains(uri,'/job/view')}">active</c:if>">作业列表</a>
 					</li>
 					<li <c:if test="${fn:contains(uri,'/goexec')}">class="active"</c:if>>
-						<a href="${contextPath}/job/goexec?csrf=${csrf}" class="<c:if test="${fn:contains(uri,'/goexec')}">active</c:if>">现场执行</a>
+						<a href="${contextPath}/job/goexec.htm?csrf=${csrf}" class="<c:if test="${fn:contains(uri,'/goexec')}">active</c:if>">现场执行</a>
 					</li>
 				</ul>
 			</li>
@@ -126,28 +126,28 @@
 				</a>
 				<ul class="list-unstyled menu-item">
 					<li <c:if test="${fn:contains(uri,'/running')}">class="active"</c:if>>
-						<a href="${contextPath}/record/running?csrf=${csrf}" class="<c:if test="${fn:contains(uri,'running')}">active</c:if>">正在运行</a>
+						<a href="${contextPath}/record/running.htm?csrf=${csrf}" class="<c:if test="${fn:contains(uri,'running')}">active</c:if>">正在运行</a>
 					</li>
 					<li <c:if test="${fn:contains(uri,'/done')}">class="active"</c:if>>
-						<a href="${contextPath}/record/done?csrf=${csrf}" class="<c:if test="${fn:contains(uri,'done')}">active</c:if>">已完成</a>
+						<a href="${contextPath}/record/done.htm?csrf=${csrf}" class="<c:if test="${fn:contains(uri,'done')}">active</c:if>">已完成</a>
 					</li>
 				</ul>
 			</li>
 
 			<li class="<c:if test="${fn:contains(uri,'/terminal')}">active</c:if>">
-				<a href="${contextPath}/terminal/view?csrf=${csrf}">
+				<a href="${contextPath}/terminal/view.htm?csrf=${csrf}">
 					<i aria-hidden="true" class="fa fa-terminal"></i><span class="menu-item">WEB终端</span>
 				</a>
 			</li>
 
 			<c:if test="${permission eq true}">
 				<li <c:if test="${fn:contains(uri,'/user')}">class="active"</c:if>>
-					<a href="${contextPath}/user/view?csrf=${csrf}">
+					<a href="${contextPath}/user/view.htm?csrf=${csrf}">
 						<i class="fa fa-user" aria-hidden="true"></i></i><span class="menu-item">用户管理</span>
 					</a>
 				</li>
 				<li <c:if test="${fn:contains(uri,'/config')}">class="active"</c:if>>
-					<a href="${contextPath}/config/view?csrf=${csrf}">
+					<a href="${contextPath}/config/view.htm?csrf=${csrf}">
 						<i aria-hidden="true" class="fa fa-cog"></i><span class="menu-item">系统设置</span>
 					</a>
 				</li>

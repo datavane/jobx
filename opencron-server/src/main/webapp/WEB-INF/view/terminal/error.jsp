@@ -189,7 +189,7 @@
             $.ajax({
                 headers:{"csrf":"${csrf}"},
                 type: "POST",
-                url: "${contextPath}/terminal/save",
+                url: "${contextPath}/terminal/save.do",
                 data: {
                     "id": ${terminal.id},
                     "name": name,
@@ -204,7 +204,7 @@
                     $("#sshform")[0].reset();
                     console.log(status)
                     if (status == "success") {
-                        window.location.href="${contextPath}/terminal/ssh2?id=${terminal.id}&csrf=${csrf}";
+                        window.location.href="${contextPath}/terminal/ssh2.htm?id=${terminal.id}&csrf=${csrf}";
                     } else {
                         window.setTimeout(function () {
                             $("#sshModal").modal("show");

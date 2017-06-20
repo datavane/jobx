@@ -21,7 +21,6 @@
 
 package org.opencron.server.controller;
 
-import org.opencron.common.utils.WebUtils;
 import org.opencron.server.domain.Agent;
 import org.opencron.server.domain.Group;
 import org.opencron.server.job.OpencronTools;
@@ -32,6 +31,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -48,26 +48,35 @@ public class GroupController extends BaseController {
     @Autowired
     private AgentService agentService;
 
-    @RequestMapping("/view")
+    @RequestMapping("/view.htm")
     public String view(PageBean pageBean) {
         groupService.getGroupPage(pageBean);
         return "/group/view";
     }
 
-    @RequestMapping("/addpage")
+    @RequestMapping("/add.htm")
     public String add(Model model) {
         List<Group> groups = groupService.getGroupforAgent();
         model.addAttribute("groups",groups);
         return "/group/add";
     }
 
-    @RequestMapping("/checkname")
-    public void checkname(Long id, String groupName, HttpServletResponse response) {
-        boolean exists = groupService.existsName(id, groupName);
-        WebUtils.writeHtml(response, exists ? "false" : "true");
+    @RequestMapping("/edit.htm")
+    public String edit(Long groupId,Model model) {
+        Group group = groupService.getById(groupId);
+        List<Group> groups = groupService.getGroupforAgent();
+        model.addAttribute("group",group);
+        model.addAttribute("groups",groups);
+        return "/group/edit";
     }
 
-    @RequestMapping("/save")
+    @RequestMapping(value = "/checkname.do",method= RequestMethod.POST)
+    public void checkname(Long id, String groupName, HttpServletResponse response) {
+        boolean exists = groupService.existsName(id, groupName);
+        writeHtml(response, exists ? "false" : "true");
+    }
+
+    @RequestMapping(value = "/save.do",method= RequestMethod.POST)
     public String save(HttpSession session,Group group, String agentIds){
         group.setCreateTime(new Date());
         group.setUserId(OpencronTools.getUserId(session));
@@ -75,16 +84,7 @@ public class GroupController extends BaseController {
         List<Agent> agents = agentService.getAgentByIds(agentIds);
         group.getAgents().addAll(agents);
         groupService.merge(group);
-        return "redirect:/group/view?csrf=" + OpencronTools.getCSRF(session);
-    }
-
-    @RequestMapping("/editpage")
-    public String edit(Long groupId,Model model) {
-        Group group = groupService.getById(groupId);
-        List<Group> groups = groupService.getGroupforAgent();
-        model.addAttribute("group",group);
-        model.addAttribute("groups",groups);
-        return "/group/edit";
+        return "redirect:/group/view.htm?csrf=" + OpencronTools.getCSRF(session);
     }
 
 

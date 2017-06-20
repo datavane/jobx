@@ -25,7 +25,6 @@ package org.opencron.server.handler;
 
 import org.opencron.common.utils.CommonUtils;
 import org.opencron.common.utils.StringUtils;
-import org.opencron.common.utils.WebUtils;
 import org.opencron.server.domain.User;
 import org.opencron.server.job.OpencronTools;
 import org.slf4j.Logger;
@@ -75,15 +74,17 @@ public class SecurityHandlerInterceptor extends HandlerInterceptorAdapter {
             return super.preHandle(request, response, handler);
         }
 
+        String port = request.getServerPort() == 80 ? "" : (":"+request.getServerPort());
+        String path = request.getContextPath().replaceAll("/$","");
+        String urlPath = request.getScheme()+"://"+request.getServerName()+port+path;
+
         String referer = request.getHeader("referer");
-        if (referer != null && !referer.startsWith(WebUtils.getWebUrlPath(request))) {
+        if (referer != null && !referer.startsWith(urlPath)) {
             response.sendRedirect("/");
             logger.info("[opencron]Bad request,redirect to login page");
             OpencronTools.invalidSession(session);
             return false;
         }
-
-
 
         try {
             User user = OpencronTools.getUser(session);

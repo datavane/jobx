@@ -21,7 +21,7 @@
         $(document).ready(function () {
             $("#size").change(function () {
                 var pageSize = $("#size").val();
-                window.location.href="${contextPath}/terminal/view?pageNo=${pageBean.pageNo}&pageSize="+pageSize+"&orderBy=${pageBean.orderBy}&order=${pageBean.order}&csrf=${csrf}";
+                window.location.href="${contextPath}/terminal/view.htm?pageNo=${pageBean.pageNo}&pageSize="+pageSize+"&orderBy=${pageBean.orderBy}&order=${pageBean.order}&csrf=${csrf}";
             });
         });
 
@@ -29,8 +29,8 @@
             $.ajax({
                 headers:{"csrf":"${csrf}"},
                 type: "POST",
-                url: "${contextPath}/terminal/ssh",
-                data: "id=" + id,
+                url: "${contextPath}/terminal/ssh.do",
+                data: {"id":id},
                 dataType: "html",
                 success: function (data) {
                     if(data.indexOf("login")>-1){
@@ -79,7 +79,7 @@
                                 $.ajax({
                                     headers:{"csrf":"${csrf}"},
                                     type: "POST",
-                                    url: "${contextPath}/terminal/detail",
+                                    url: "${contextPath}/terminal/detail.do",
                                     data: "id="+id,
                                     dataType: "JSON",
                                     success: function (json) {
@@ -114,7 +114,7 @@
             $.ajax({
                 headers:{"csrf":"${csrf}"},
                 type: "POST",
-                url: "${contextPath}/terminal/detail",
+                url: "${contextPath}/terminal/detail.do",
                 data: "id="+id,
                 dataType: "json",
                 success: function (json) {
@@ -142,7 +142,7 @@
                 $.ajax({
                     headers:{"csrf":"${csrf}"},
                     type: "POST",
-                    url: "${contextPath}/terminal/del",
+                    url: "${contextPath}/terminal/delete.do",
                     data: "id="+id,
                     dataType: "html",
                     success: function (message) {
@@ -239,7 +239,7 @@
                 $.ajax({
                     headers:{"csrf":"${csrf}"},
                     type: "POST",
-                    url: "${contextPath}/terminal/exists",
+                    url: "${contextPath}/terminal/exists.do",
                     data: {
                         "host":host
                     },
@@ -249,7 +249,7 @@
                             $.ajax({
                                 headers:{"csrf":"${csrf}"},
                                 type: "POST",
-                                url: "${contextPath}/terminal/save",
+                                url: "${contextPath}/terminal/save.do",
                                 data: {
                                     "name":name,
                                     "userName": user,
@@ -278,7 +278,7 @@
                 $.ajax({
                     headers:{"csrf":"${csrf}"},
                     type: "POST",
-                    url: "${contextPath}/terminal/save",
+                    url: "${contextPath}/terminal/save.do",
                     data: {
                         "id":$("#sshid").val(),
                         "name":name,
@@ -324,7 +324,7 @@
         }
 
         function sortPage(field) {
-            location.href="${contextPath}/terminal/view?pageNo=${pageBean.pageNo}&pageSize=${pageBean.pageSize}&orderBy="+field+"&order="+("${pageBean.order}"=="asc"?"desc":"asc")+"&csrf=${csrf}";
+            location.href="${contextPath}/terminal/view.htm?pageNo=${pageBean.pageNo}&pageSize=${pageBean.pageSize}&orderBy="+field+"&order="+("${pageBean.order}"=="asc"?"desc":"asc")+"&csrf=${csrf}";
         }
 
     </script>
@@ -464,7 +464,7 @@
             </tbody>
         </table>
 
-        <cron:pager href="${contextPath}/terminal/view?csrf=${csrf}" id="${pageBean.pageNo}" size="${pageBean.pageSize}" total="${pageBean.totalCount}"/>
+        <cron:pager href="${contextPath}/terminal/view.htm?csrf=${csrf}" id="${pageBean.pageNo}" size="${pageBean.pageSize}" total="${pageBean.totalCount}"/>
 
     </div>
 

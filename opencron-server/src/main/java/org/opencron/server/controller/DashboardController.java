@@ -40,6 +40,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -59,7 +60,7 @@ import static org.opencron.common.utils.CommonUtils.notEmpty;
  * Created by ChenHui on 2016/2/17.
  */
 @Controller
-public class HomeController extends BaseController {
+public class DashboardController extends BaseController {
 
     @Autowired
     private HomeService homeService;
@@ -89,7 +90,7 @@ public class HomeController extends BaseController {
         return "/home/login";
     }
 
-    @RequestMapping("/home")
+    @RequestMapping("/dashboard.htm")
     public String home(HttpSession session, Model model) {
         /**
          * agent...
@@ -137,7 +138,7 @@ public class HomeController extends BaseController {
         return "/home/index";
     }
 
-    @RequestMapping("/record")
+    @RequestMapping("/record.htm")
     public void record(HttpSession session, HttpServletResponse response, String startTime, String endTime) {
         if (isEmpty(startTime)) {
             startTime = DateUtils.getCurrDayPrevDay(7);
@@ -148,24 +149,24 @@ public class HomeController extends BaseController {
         //成功失败折线图数据
         List<ChartVo> voList = recordService.getRecord(session, startTime, endTime);
         if (isEmpty(voList)) {
-            WebUtils.writeJson(response, "null");
+            writeJson(response, "null");
         } else {
-            WebUtils.writeJson(response, JSON.toJSONString(voList));
+            writeJson(response, JSON.toJSONString(voList));
         }
     }
 
-    @RequestMapping("/progress")
+    @RequestMapping(value = "/progress.do",method= RequestMethod.POST)
     public void progress(HttpSession session, HttpServletResponse response) {
         //成功失败折线图数据
         ChartVo chartVo = recordService.getAsProgress(session);
         if (isEmpty(chartVo)) {
-            WebUtils.writeJson(response, "null");
+            writeJson(response, "null");
         } else {
-            WebUtils.writeJson(response, JSON.toJSONString(chartVo));
+            writeJson(response, JSON.toJSONString(chartVo));
         }
     }
 
-    @RequestMapping("/monitor")
+    @RequestMapping(value = "/monitor.do",method= RequestMethod.POST)
     public void port(HttpServletResponse response, Long agentId) throws Exception {
         Agent agent = agentService.getAgent(agentId);
         Response req = executeService.monitor(agent);
@@ -178,20 +179,20 @@ public class HomeController extends BaseController {
         if (agent.getProxy().equals(Opencron.ConnType.CONN.getType())) {
             String port = req.getResult().get("port");
             String url = String.format("http://%s:%s", agent.getIp(), port);
-            WebUtils.writeHtml(response, String.format(format, agent.getProxy(), url));
+            writeHtml(response, String.format(format, agent.getProxy(), url));
         } else {//代理
-            WebUtils.writeHtml(response, String.format(format, agent.getProxy(), JSON.toJSONString(req.getResult())));
+            writeHtml(response, String.format(format, agent.getProxy(), JSON.toJSONString(req.getResult())));
         }
     }
 
-    @RequestMapping("/login")
+    @RequestMapping(value = "/login.do",method= RequestMethod.POST)
     public void login(HttpSession session, HttpServletRequest request, HttpServletResponse response, HttpSession httpSession, @RequestParam String username, @RequestParam String password) throws Exception {
 
         //用户信息验证
         int status = homeService.checkLogin(request, username, password);
 
         if (status == 500) {
-            WebUtils.writeJson(response, "{\"msg\":\"用户名密码错误\"}");
+            writeJson(response, "{\"msg\":\"用户名密码错误\"}");
             return;
         }
         if (status == 200) {
@@ -208,7 +209,7 @@ public class HomeController extends BaseController {
             String format = "{\"status\":\"%s\",\"%s\":\"%s\",\"%s\":\"%s\"}";
 
             if (user.getUserName().equals("opencron") && user.getPassword().equals(hashPass)) {
-                WebUtils.writeJson(response, String.format(format, "edit", "userId", user.getUserId(), "csrf", csrf));
+                writeJson(response, String.format(format, "edit", "userId", user.getUserId(), "csrf", csrf));
                 return;
             }
 
@@ -216,21 +217,21 @@ public class HomeController extends BaseController {
                 String name = user.getUserId() + "_140" + user.getPicExtName();
                 String path = httpSession.getServletContext().getRealPath(File.separator) + "upload" + File.separator + name;
                 IOUtils.writeFile(new File(path), user.getHeaderpic().getBinaryStream());
-                user.setHeaderPath(WebUtils.getWebUrlPath(request) + "/upload/" + name);
+                user.setHeaderPath(getWebUrlPath(request) + "/upload/" + name);
             }
-            WebUtils.writeJson(response, String.format(format, "success", "url", "/home?csrf=" + csrf, "csrf", csrf));
+            writeJson(response, String.format(format, "success", "url", "/dashboard.htm?csrf=" + csrf, "csrf", csrf));
             return;
         }
     }
 
 
-    @RequestMapping("/logout")
+    @RequestMapping("/logout.htm")
     public String logout(HttpSession httpSession) throws Exception {
         OpencronTools.invalidSession(httpSession);
         return "redirect:/";
     }
 
-    @RequestMapping("/headpic/upload")
+    @RequestMapping(value = "/headpic/upload.do",method= RequestMethod.POST)
     public void upload(@RequestParam(value = "file", required = false) MultipartFile file, Long userId, String data, HttpServletRequest request, HttpSession httpSession, HttpServletResponse response) throws Exception {
 
         String extensionName = null;
@@ -246,14 +247,14 @@ public class HomeController extends BaseController {
 
         //检查后缀
         if (!".BMP,.JPG,.JPEG,.PNG,.GIF".contains(extensionName.toUpperCase())) {
-            WebUtils.writeJson(response, String.format(errorFormat, "格式错误,请上传(bmp,jpg,jpeg,png,gif)格式的图片"));
+            writeJson(response, String.format(errorFormat, "格式错误,请上传(bmp,jpg,jpeg,png,gif)格式的图片"));
             return;
         }
 
         User user = userService.getUserById(userId);
 
         if (user == null) {
-            WebUtils.writeJson(response, String.format(errorFormat, "用户信息获取失败"));
+            writeJson(response, String.format(errorFormat, "用户信息获取失败"));
             return;
         }
 
@@ -271,14 +272,14 @@ public class HomeController extends BaseController {
             //检查文件是不是图片
             Image image = ImageIO.read(picFile);
             if (image == null) {
-                WebUtils.writeJson(response, String.format(errorFormat, "格式错误,正确的图片"));
+                writeJson(response, String.format(errorFormat, "格式错误,正确的图片"));
                 picFile.delete();
                 return;
             }
 
             //检查文件大小
             if (picFile.length() / 1024 / 1024 > 5) {
-                WebUtils.writeJson(response, String.format(errorFormat, "文件错误,上传图片大小不能超过5M"));
+                writeJson(response, String.format(errorFormat, "文件错误,上传图片大小不能超过5M"));
                 picFile.delete();
                 return;
             }
@@ -290,13 +291,13 @@ public class HomeController extends BaseController {
             userService.uploadimg(picFile, userId);
             userService.updateUser(user);
 
-            String contextPath = WebUtils.getWebUrlPath(request);
+            String contextPath = getWebUrlPath(request);
             String imgPath = contextPath + "/upload/" + picName + "?" + System.currentTimeMillis();
             user.setHeaderPath(imgPath);
             user.setHeaderpic(null);
             httpSession.setAttribute(OpencronTools.LOGIN_USER, user);
 
-            WebUtils.writeJson(response, String.format(successFormat, imgPath));
+            writeJson(response, String.format(successFormat, imgPath));
             logger.info(" upload file successful @ " + picName);
         } catch (Exception e) {
             e.printStackTrace();
@@ -305,7 +306,7 @@ public class HomeController extends BaseController {
     }
 
 
-    @RequestMapping("/notice/view")
+    @RequestMapping("/notice/view.htm")
     public String log(HttpSession session, Model model, PageBean pageBean, Long agentId, String sendTime) {
         model.addAttribute("agents", agentService.getOwnerAgents(session));
         if (notEmpty(agentId)) {
@@ -319,10 +320,10 @@ public class HomeController extends BaseController {
     }
 
 
-    @RequestMapping("/notice/uncount")
+    @RequestMapping(value = "/notice/uncount.do",method= RequestMethod.POST)
     public void uncount(HttpSession session, HttpServletResponse response) {
         Long count = homeService.getUnReadCount(session);
-        WebUtils.writeHtml(response, count.toString());
+        writeHtml(response, count.toString());
     }
 
     /**
@@ -331,13 +332,13 @@ public class HomeController extends BaseController {
      * @param model
      * @return
      */
-    @RequestMapping("/notice/unread")
+    @RequestMapping("/notice/unread.htm")
     public String nuread(HttpSession session, Model model) {
         model.addAttribute("message", homeService.getUnReadMessage(session));
         return "notice/info";
     }
 
-    @RequestMapping("/notice/detail")
+    @RequestMapping("/notice/detail.htm")
     public String detail(Model model, Long logId) {
         Log log = homeService.getLogDetail(logId);
         if (log == null) {
