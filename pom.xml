@@ -107,7 +107,7 @@
                 <groupId>com.corundumstudio.socketio</groupId>
                 <artifactId>netty-socketio</artifactId>
                 <version>1.7.12</version>
-                <exclusions>
+                <!--<exclusions>
                     <exclusion>
                         <groupId>io.netty</groupId>
                         <artifactId>netty-buffer</artifactId>
@@ -136,7 +136,7 @@
                         <groupId>io.netty</groupId>
                         <artifactId>netty-transport-native-epoll</artifactId>
                     </exclusion>
-                </exclusions>
+                </exclusions>-->
             </dependency>
 
             <dependency>

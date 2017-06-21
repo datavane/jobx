@@ -10,8 +10,8 @@
     <script src="${contextPath}/static/js/highcharts/js/highcharts-more.js?resId=${resourceId}"></script>
     <script src="${contextPath}/static/js/highcharts/js/highcharts-3d.js?resId=${resourceId}"></script>
     <script src="${contextPath}/static/js/highcharts/js/modules/exporting.js?resId=${resourceId}"></script>
-    <script src="${contextPath}/static/js/socket/socket.io.js?resId=${resourceId}"></script>
-    <script src="${contextPath}/static/js/socket/websocket.js?resId=${resourceId}"></script>
+
+    <script src="${contextPath}/static/js/socket.io.js?resId=${resourceId}"></script>
     <script src="${contextPath}/static/js/dashboard.js?resId=${resourceId}"></script>
 
     <style type="text/css">
