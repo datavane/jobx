@@ -257,7 +257,7 @@ case "$1" in
             else
                 #.password file already exists but empty
                if [ x`cat "$OPENCRON_BASE/.password"` = x"" ];then
-                  OPENCRON_PASSWORD=opencron;
+                  OPENCRON_PASSWORD="opencron";
                   echo "opencron password not input,will be used password:opencron"
                fi
             fi

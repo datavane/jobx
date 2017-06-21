@@ -147,7 +147,7 @@ public class Bootstrap implements Serializable {
         port = Integer.valueOf(Integer.parseInt(Globals.OPENCRON_PORT));
         String inputPassword = Globals.OPENCRON_PASSWORD;
         if (notEmpty(inputPassword)) {
-            Globals.OPENCRON_PASSWORD_FILE.deleteOnExit();
+            Globals.OPENCRON_PASSWORD_FILE.delete();
             this.password = DigestUtils.md5Hex(inputPassword).toLowerCase();
             IOUtils.writeText(Globals.OPENCRON_PASSWORD_FILE, this.password, CHARSET);
         } else {
@@ -167,7 +167,7 @@ public class Bootstrap implements Serializable {
 
             if (writeDefault) {
                 this.password = DigestUtils.md5Hex(Globals.OPENCRON_DEFPASSWORD).toLowerCase();
-                Globals.OPENCRON_PASSWORD_FILE.deleteOnExit();
+                Globals.OPENCRON_PASSWORD_FILE.delete();
                 IOUtils.writeText(Globals.OPENCRON_PASSWORD_FILE, this.password, CHARSET);
             }
         }
@@ -363,7 +363,7 @@ public class Bootstrap implements Serializable {
             /**
              * delete pid file...
              */
-            Globals.OPENCRON_PID_FILE.deleteOnExit();
+            Globals.OPENCRON_PID_FILE.delete();
             System.exit(0);
         }
     }
