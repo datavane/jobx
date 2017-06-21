@@ -41,9 +41,7 @@
                 window.location.href = "${contextPath}/agent/view.htm?pageSize=" + pageSize+"&csrf=${csrf}";
             });
 
-            var clipboard = new Clipboard('#copy-btn');
-
-            clipboard.on('success', function(e) {
+            new Clipboard('#copy-btn').on('success', function(e) {
                 e.clearSelection();
                 $("#copy-btn").text("已复制");
                 setTimeout(function () {
