@@ -125,15 +125,15 @@ public class SecurityHandlerInterceptor extends HandlerInterceptorAdapter {
 
     private boolean verifyCSRF(HttpServletRequest request) {
 
-        String requstCSRF = OpencronTools.getCSRF(request);
-        if (CommonUtils.isEmpty(requstCSRF)) {
+        String requestCSRF = OpencronTools.getCSRF(request);
+        if (CommonUtils.isEmpty(requestCSRF)) {
             return false;
         }
         String sessionCSRF = OpencronTools.getCSRF(request.getSession());
         if (CommonUtils.isEmpty(sessionCSRF)) {
             return false;
         }
-        return requstCSRF.equals(sessionCSRF);
+        return requestCSRF.equals(sessionCSRF);
     }
 
 

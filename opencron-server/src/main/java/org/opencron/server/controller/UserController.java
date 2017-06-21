@@ -118,7 +118,7 @@ public class UserController extends BaseController {
         return "redirect:/user/view.htm?csrf=" + OpencronTools.getCSRF(session);
     }
 
-    @RequestMapping("/get.html")
+    @RequestMapping(value = "/get.do",method= RequestMethod.POST)
     public void get(HttpServletResponse response, Long id) {
         User user = userService.queryUserById(id);
         writeJson(response, JSON.toJSONString(user));

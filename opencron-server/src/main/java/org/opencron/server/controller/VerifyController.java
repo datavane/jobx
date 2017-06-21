@@ -78,6 +78,8 @@ public class VerifyController extends BaseController {
             }
         }
         boolean ping = executeService.ping(agent);
+
+
         if (ping) {
             writeHtml(response,"true");
         } else {

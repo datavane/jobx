@@ -10,6 +10,8 @@
     <script src="${contextPath}/static/js/highcharts/js/highcharts-more.js?resId=${resourceId}"></script>
     <script src="${contextPath}/static/js/highcharts/js/highcharts-3d.js?resId=${resourceId}"></script>
     <script src="${contextPath}/static/js/highcharts/js/modules/exporting.js?resId=${resourceId}"></script>
+    <script src="${contextPath}/static/js/socket/socket.io.js?resId=${resourceId}"></script>
+    <script src="${contextPath}/static/js/socket/websocket.js?resId=${resourceId}"></script>
     <script src="${contextPath}/static/js/dashboard.js?resId=${resourceId}"></script>
 
     <style type="text/css">
@@ -107,6 +109,10 @@
 
             //跨时段查询任务运行比例
             opencronChart.query();
+
+            //系统实时监控
+            opencronChart.monitor();
+
 
             $("#queryChart").click(function () {
                 opencronChart.query();
