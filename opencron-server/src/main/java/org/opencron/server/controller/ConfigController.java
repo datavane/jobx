@@ -21,6 +21,8 @@
 
 package org.opencron.server.controller;
 
+import org.opencron.common.utils.DigestUtils;
+import org.opencron.common.utils.StringUtils;
 import org.opencron.server.domain.Config;
 import org.opencron.server.job.OpencronTools;
 import org.opencron.server.service.ConfigService;
@@ -61,8 +63,8 @@ public class ConfigController extends BaseController {
     @RequestMapping(value = "/edit.do",method= RequestMethod.POST)
     public String edit(HttpSession session, Config config) {
         config.setConfigId(configService.getSysConfig().getConfigId());
-        config.setTemplate(config.getTemplate());
-        config.setSendUrl(config.getSendUrl());
+        config.setTemplate(DigestUtils.passBase64(config.getTemplate()));
+        config.setSendUrl(DigestUtils.passBase64(config.getSendUrl()));
         configService.update(config);
         return "redirect:/config/view.htm?csrf=" + OpencronTools.getCSRF(session);
     }

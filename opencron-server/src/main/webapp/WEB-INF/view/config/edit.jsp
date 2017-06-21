@@ -56,8 +56,14 @@
                 alert("时间间隔必须为数字!");
                 return false;
             }
+
+            $("#sendUrl").val(toBase64(sendUrl));
+            $("#template").val(toBase64($("#template").val()));
+
             $("#config").submit();
         }
+
+
 
     </script>
 
@@ -125,7 +131,7 @@
                 <div class="form-group">
                     <label for="sendUrl" class="col-lab control-label"><i class="glyphicon glyphicon-font"></i>&nbsp;&nbsp;发信URL：</label>
                     <div class="col-md-10">
-                        <textarea class="form-control input-sm" id="sendUrl" name="sendUrl">${config.sendUrl}</textarea>
+                        <textarea class="form-control input-sm" id="sendUrl" name="sendUrl"> ${cron:escapeHtml(config.sendUrl)}</textarea>
                         <span class="tips"><b>*&nbsp;</b>短信发送服务所需的URL</span>
                     </div>
                 </div><br>
@@ -133,7 +139,7 @@
                 <div class="form-group">
                     <label for="template" class="col-lab control-label"><i class="glyphicon glyphicon-list-alt"></i>&nbsp;&nbsp;短信模板：</label>
                     <div class="col-md-10">
-                        <textarea class="form-control input-sm" id="template" name="template">${config.template}</textarea>
+                        <textarea class="form-control input-sm" id="template" name="template"> ${cron:escapeHtml(config.template)}</textarea>
                         <span class="tips"><b>*&nbsp;</b>运营商规定的企业发送短信格式模板</span>
                     </div>
                 </div><br>

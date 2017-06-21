@@ -87,7 +87,7 @@
             </tr>
             <tr>
                 <td class="item"><i class="glyphicon glyphicon-font"></i>&nbsp;发信URL：</td>
-                <td>${config.sendUrl}</td>
+                <td> ${cron:escapeHtml(config.sendUrl)}</td>
             </tr>
             <tr>
                 <td class="item"><i class="glyphicon glyphicon-time"></i>&nbsp;发送间隔：</td>
@@ -98,7 +98,7 @@
             <tr>
                 <td class="item"><i class="glyphicon glyphicon-list-alt"></i>&nbsp;短信模板：</td>
                 <td>
-                    ${config.template}
+                    ${cron:escapeHtml(config.template)}
                 </td>
             </tr>
             <tr>
