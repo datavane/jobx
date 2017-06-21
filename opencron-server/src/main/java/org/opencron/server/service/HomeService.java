@@ -21,7 +21,7 @@
 
 package org.opencron.server.service;
 
-import org.opencron.common.rpc.model.Opencron;
+import org.opencron.common.job.Opencron;
 import org.opencron.common.utils.PropertyPlaceholder;
 import org.opencron.server.dao.QueryDao;
 import org.opencron.server.domain.Log;

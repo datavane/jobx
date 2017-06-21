@@ -8,9 +8,9 @@
 
 	<mapping path="/" exclue="true"/>
 	<mapping path="/agent/refresh.htm" exclue="true"/>
-	<mapping path="/record/refresh" exclue="true"/>
-	<mapping path="/notice/unread" exclue="true"/>
-	<mapping path="/notice/uncount" exclue="true"/>
+	<mapping path="/record/refresh.htm" exclue="true"/>
+	<mapping path="/notice/unread.do" exclue="true"/>
+	<mapping path="/notice/uncount.do" exclue="true"/>
 
 	<mapping path="/WEB-INF/view/error/*.jsp" exclue="true"/>
 	<mapping path="/terminal/open" exclue="true"/>

@@ -24,8 +24,7 @@ package org.opencron.server.controller;
 import java.util.*;
 
 import com.alibaba.fastjson.JSON;
-import org.opencron.common.rpc.model.Opencron;
-import org.opencron.common.rpc.model.Opencron.ExecType;
+import org.opencron.common.job.Opencron;
 import org.opencron.common.utils.DigestUtils;
 import org.opencron.common.utils.StringUtils;
 import org.opencron.server.domain.Job;
@@ -286,7 +285,7 @@ public class JobController extends BaseController {
         //手动执行
         Long userId = OpencronTools.getUserId(session);
         job.setUserId(userId);
-        job.setExecType(ExecType.OPERATOR.getStatus());
+        job.setExecType(Opencron.ExecType.OPERATOR.getStatus());
         job.setAgent(agentService.getAgent(job.getAgentId()));
         try {
             this.executeService.executeJob(job);

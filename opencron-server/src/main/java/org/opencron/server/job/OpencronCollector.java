@@ -21,11 +21,11 @@
 
 package org.opencron.server.job;
 
+import it.sauronsoftware.cron4j.*;
+import org.opencron.common.job.Opencron;
+import org.opencron.common.utils.CommonUtils;
 import org.opencron.server.service.ExecuteService;
 import org.opencron.server.service.JobService;
-import it.sauronsoftware.cron4j.*;
-import org.opencron.common.rpc.model.Opencron;
-import org.opencron.common.utils.CommonUtils;
 import org.opencron.server.vo.JobVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

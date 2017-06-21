@@ -27,7 +27,9 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import org.opencron.common.rpc.model.Opencron;
+import static org.opencron.common.job.Opencron.*;
+
+import org.opencron.common.job.Opencron;
 import org.opencron.server.dao.QueryDao;
 import org.opencron.server.domain.Job;
 import org.opencron.server.domain.User;
@@ -35,7 +37,6 @@ import org.opencron.server.domain.Agent;
 import org.opencron.server.job.OpencronTools;
 import org.opencron.server.tag.PageBean;
 
-import static org.opencron.common.rpc.model.Opencron.*;
 
 import org.opencron.common.utils.CommonUtils;
 import org.opencron.server.vo.JobVo;

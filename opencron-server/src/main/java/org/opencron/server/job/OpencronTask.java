@@ -22,10 +22,10 @@
 
 package org.opencron.server.job;
 
-import org.opencron.server.service.*;
-import org.opencron.common.rpc.model.Opencron;
+import org.opencron.common.job.Opencron;
 import org.opencron.common.utils.CommonUtils;
 import org.opencron.server.domain.Record;
+import org.opencron.server.service.*;
 import org.opencron.server.vo.JobVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,12 +69,12 @@ public class OpencronTask implements InitializingBean {
         //检测所有的agent...
         clearCache();
         //通知所有的agent,启动心跳检测...
-        //opencronMonitor.start();
-        //schedulerService.initQuartz(executeService);
-        //schedulerService.initCrontab();
+        opencronMonitor.start();
+        schedulerService.initQuartz(executeService);
+        schedulerService.initCrontab();
     }
 
-   // @Scheduled(cron = "0/5 * * * * ?")
+    @Scheduled(cron = "0/5 * * * * ?")
     public void reExecuteJob() {
         logger.info("[opencron] reExecuteIob running...");
         final List<Record> records = recordService.getReExecuteRecord();

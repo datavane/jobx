@@ -13,11 +13,16 @@ public final class Globals {
     /**
      * port
      */
-    public static final String OPENCRON_PORT = System.getProperty("opencron.port","1577");
+    public static final String OPENCRON_PORT = System.getProperty("opencron.port");
     /**
      * password
      */
-    public static final String OPENCRON_PASSWORD = System.getProperty("opencron.password","opencron");
+    public static final String OPENCRON_PASSWORD = System.getProperty("opencron.password");
+
+    /**
+     * agent default password
+     */
+    public static final String OPENCRON_DEFPASSWORD = "opencron";
 
     /**
      * serverurl
@@ -31,7 +36,7 @@ public final class Globals {
     /**
      * pid
      */
-    public static final File OPENCRON_PID_FILE = new File(System.getProperty("opencron.pid","/var/run/opencron.pid"));
+    public static final File OPENCRON_PID_FILE = new File(System.getProperty("opencron.pid"));
 
     /**
      * password file
@@ -51,6 +56,5 @@ public final class Globals {
 
 
     public static String OPENCRON_SOCKET_ADDRESS;
-
 
 }

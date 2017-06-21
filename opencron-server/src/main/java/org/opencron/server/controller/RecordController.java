@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.opencron.common.rpc.model.Opencron;
+import org.opencron.common.job.Opencron;
 import org.opencron.server.domain.Record;
 import org.opencron.server.service.*;
 import org.opencron.server.tag.PageBean;

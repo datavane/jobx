@@ -21,7 +21,7 @@
 
 package org.opencron.server.domain;
 
-import org.opencron.common.rpc.model.Opencron;
+import org.opencron.common.job.Opencron;
 import org.opencron.common.utils.CommonUtils;
 import org.opencron.server.vo.JobVo;
 

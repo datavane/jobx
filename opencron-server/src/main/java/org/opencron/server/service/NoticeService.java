@@ -22,13 +22,13 @@
 
 package org.opencron.server.service;
 
+import org.opencron.common.job.Opencron;
 import org.opencron.server.domain.Config;
 import org.opencron.server.domain.Log;
 import org.opencron.server.domain.User;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import org.apache.commons.mail.HtmlEmail;
-import org.opencron.common.rpc.model.Opencron;
 import org.opencron.common.utils.CommonUtils;
 import org.opencron.common.utils.DateUtils;
 import org.opencron.common.utils.HttpUtils;

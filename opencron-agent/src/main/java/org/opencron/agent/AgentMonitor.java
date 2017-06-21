@@ -27,8 +27,11 @@ import com.corundumstudio.socketio.SocketIOClient;
 import com.corundumstudio.socketio.SocketIOServer;
 import com.corundumstudio.socketio.listener.ConnectListener;
 import com.corundumstudio.socketio.listener.DisconnectListener;
-import org.opencron.common.rpc.model.Monitor;
-import org.opencron.common.utils.*;
+import org.opencron.common.job.Monitor;
+import org.opencron.common.utils.CommandUtils;
+import org.opencron.common.utils.DateUtils;
+import org.opencron.common.utils.LoggerFactory;
+import org.opencron.common.utils.ReflectUitls;
 import org.slf4j.Logger;
 
 import java.lang.reflect.Field;
@@ -41,9 +44,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static org.opencron.common.utils.CommonUtils.*;
-
 import static org.opencron.common.utils.CommandUtils.executeShell;
+import static org.opencron.common.utils.CommonUtils.toLong;
 
 /**
  * Created by benjobs on 16/4/7.

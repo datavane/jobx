@@ -21,11 +21,11 @@
 
 package org.opencron.server.controller;
 
-import org.opencron.common.rpc.model.Opencron;
+import org.opencron.common.job.Opencron;
 import org.opencron.server.domain.Agent;
+import it.sauronsoftware.cron4j.SchedulingPattern;
 import org.opencron.server.service.AgentService;
 import org.opencron.server.service.ExecuteService;
-import it.sauronsoftware.cron4j.SchedulingPattern;
 import org.quartz.CronExpression;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

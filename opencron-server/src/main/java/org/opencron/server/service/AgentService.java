@@ -24,13 +24,13 @@ package org.opencron.server.service;
 
 import java.util.*;
 
+import org.opencron.common.job.Opencron;
 import org.opencron.common.utils.CommonUtils;
 import org.opencron.server.dao.QueryDao;
 import org.opencron.server.domain.User;
 import org.opencron.server.job.OpencronTools;
 import org.opencron.server.tag.PageBean;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.opencron.common.rpc.model.Opencron;
 import org.opencron.server.domain.Agent;
 import org.opencron.server.vo.JobVo;
 import org.quartz.SchedulerException;

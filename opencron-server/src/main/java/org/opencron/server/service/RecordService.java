@@ -22,10 +22,10 @@
 
 package org.opencron.server.service;
 
+import org.opencron.common.job.Opencron;
 import org.opencron.server.dao.QueryDao;
 import org.opencron.server.domain.Record;
 import org.opencron.server.job.OpencronTools;
-import org.opencron.common.rpc.model.Opencron;
 import org.opencron.server.domain.User;
 import org.opencron.server.tag.PageBean;
 import org.opencron.server.vo.ChartVo;

@@ -22,7 +22,7 @@
 
 package org.opencron.server.vo;
 
-import org.opencron.common.rpc.model.Opencron;
+import org.opencron.common.job.Opencron;
 import org.opencron.server.domain.User;
 import org.opencron.server.domain.Agent;
 

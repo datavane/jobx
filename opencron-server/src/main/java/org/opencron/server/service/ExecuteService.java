@@ -23,16 +23,14 @@
 package org.opencron.server.service;
 
 import org.opencron.common.exception.PingException;
-import static org.opencron.common.rpc.model.Opencron.*;
-
-import org.opencron.common.rpc.model.Action;
-import org.opencron.common.rpc.model.Request;
-import org.opencron.common.rpc.model.Response;
+import org.opencron.common.job.Action;
+import org.opencron.common.job.Request;
+import org.opencron.common.job.Response;
 import org.opencron.common.utils.ParamsMap;
 import org.opencron.server.domain.Record;
 import org.opencron.server.domain.Agent;
 import org.opencron.server.domain.User;
-import org.opencron.server.job.OpencronHander;
+import org.opencron.server.job.OpencronCaller;
 import org.opencron.server.job.OpencronMonitor;
 import org.opencron.server.vo.JobVo;
 import com.mysql.jdbc.PacketTooBigException;
@@ -46,7 +44,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.TimeUnit;
+
+import static org.opencron.common.job.Opencron.*;
 
 @Service
 public class ExecuteService implements Job {
@@ -63,7 +62,7 @@ public class ExecuteService implements Job {
     private NoticeService noticeService;
 
     @Autowired
-    private OpencronHander opencronHander;
+    private OpencronCaller opencronCaller;
 
     @Autowired
     private AgentService agentService;
@@ -94,7 +93,6 @@ public class ExecuteService implements Job {
     public boolean executeJob(final JobVo job) {
 
         JobType jobType = JobType.getJobType(job.getJobType());
-
         switch (jobType) {
             case SINGLETON:
                 return executeSingleJob(job, job.getUserId());//单一任务
@@ -421,8 +419,7 @@ public class ExecuteService implements Job {
                                 recordService.merge(cord);
                                 job = jobService.getJobVoById(cord.getJobId());
                                 //向远程机器发送kill指令
-                                Request request = Request.request(job.getIp(), job.getPort(), Action.KILL, job.getPassword()).putParam("pid", cord.getPid());
-                                opencronHander.sendOneway(request,1000*5, TimeUnit.MILLISECONDS);
+                                opencronCaller.call(Request.request(job.getIp(), job.getPort(), Action.KILL, job.getPassword()).putParam("pid", cord.getPid()), job.getAgent());
                                 cord.setStatus(RunStatus.STOPED.getStatus());
                                 cord.setEndTime(new Date());
                                 recordService.merge(cord);
@@ -458,13 +455,8 @@ public class ExecuteService implements Job {
      * 向执行器发送请求，并封装响应结果
      */
     private Response responseToRecord(final JobVo job, final Record record) throws Exception {
-
-        Request request = Request.request(job.getIp(), job.getPort(), Action.EXECUTE, job.getPassword())
-                .putParam("command", job.getCommand())
-                .putParam("pid", record.getPid())
-                .putParam("timeout", job.getTimeout() + "");
-
-        Response response = opencronHander.sendSync(request,1000,TimeUnit.MILLISECONDS);
+        Response response = opencronCaller.call(Request.request(job.getIp(), job.getPort(), Action.EXECUTE, job.getPassword())
+                .putParam("command", job.getCommand()).putParam("pid", record.getPid()).putParam("timeout", job.getTimeout() + ""), job.getAgent());
         logger.info("[opencron]:execute response:{}", response.toString());
         record.setReturnCode(response.getExitCode());
         record.setMessage(response.getMessage());
@@ -520,8 +512,7 @@ public class ExecuteService implements Job {
 
     public boolean ping(Agent agent) {
         try {
-            Request request = Request.request(agent.getIp(), agent.getPort(), Action.PING, agent.getPassword()).putParam("serverPort", OpencronMonitor.port + "");
-            Response response = opencronHander.sendSync(request,1000 * 5,TimeUnit.MILLISECONDS);
+            Response response = opencronCaller.call(Request.request(agent.getIp(), agent.getPort(), Action.PING, agent.getPassword()).putParam("serverPort", OpencronMonitor.port + ""), agent);
             return response!=null && response.isSuccess();
         } catch (Exception e) {
             logger.error("[opencron]ping failed,host:{},port:{}", agent.getIp(), agent.getPort());
@@ -531,8 +522,7 @@ public class ExecuteService implements Job {
 
     public String guid(Agent agent) {
         try {
-            Request request = Request.request(agent.getIp(), agent.getPort(), Action.GUID,agent.getPassword());
-            Response response = opencronHander.sendSync(request,1000,TimeUnit.MILLISECONDS);
+            Response response = opencronCaller.call(Request.request(agent.getIp(), agent.getPort(), Action.GUID,agent.getPassword()), agent);
             return response.getMessage();
         } catch (Exception e) {
             logger.error("[opencron]getguid failed,host:{},port:{}", agent.getIp(), agent.getPort());
@@ -542,8 +532,7 @@ public class ExecuteService implements Job {
 
     public String path(Agent agent) {
         try {
-            Request request = Request.request(agent.getIp(), agent.getPort(), Action.PATH,null);
-            Response response = opencronHander.sendSync(request,1000,TimeUnit.MILLISECONDS);
+            Response response = opencronCaller.call(Request.request(agent.getIp(), agent.getPort(), Action.PATH,null), agent);
             return response.getMessage();
         } catch (Exception e) {
             logger.error("[opencron]ping failed,host:{},port:{}", agent.getIp(), agent.getPort());
@@ -557,8 +546,8 @@ public class ExecuteService implements Job {
     public boolean password(Agent agent, final String newPassword) {
         boolean ping = false;
         try {
-            Request request = Request.request(agent.getIp(), agent.getPort(), Action.PASSWORD, agent.getPassword()).putParam("newPassword", newPassword);
-            Response response = opencronHander.sendSync(request,1000,TimeUnit.MILLISECONDS);
+            Response response = opencronCaller.call(Request.request(agent.getIp(), agent.getPort(), Action.PASSWORD, agent.getPassword())
+                    .putParam("newPassword", newPassword), agent);
             ping = response.isSuccess();
         } catch (Exception e) {
             e.printStackTrace();
@@ -570,11 +559,9 @@ public class ExecuteService implements Job {
      * 监测执行器运行状态
      */
     public Response monitor(Agent agent) throws Exception {
-
-        Request request = Request.request(agent.getIp(), agent.getPort(), Action.MONITOR, agent.getPassword())
-                .setParams(ParamsMap.instance().fill("connType", ConnType.getByType(agent.getProxy()).getName()));
-
-        return opencronHander.sendSync(request,1000,TimeUnit.MILLISECONDS);
+        return opencronCaller.call(
+                Request.request(agent.getIp(), agent.getPort(), Action.MONITOR, agent.getPassword())
+                        .setParams(ParamsMap.instance().fill("connType", ConnType.getByType(agent.getProxy()).getName())), agent);
     }
 
     /**

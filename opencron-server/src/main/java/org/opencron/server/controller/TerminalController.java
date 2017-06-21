@@ -24,10 +24,10 @@ package org.opencron.server.controller;
 import com.alibaba.fastjson.JSON;
 import org.opencron.common.utils.CommonUtils;
 import org.opencron.server.domain.Terminal;
-import org.opencron.server.job.OpencronTools;
 import org.opencron.server.domain.User;
-import org.opencron.server.service.TerminalService;
 
+import org.opencron.server.job.OpencronTools;
+import org.opencron.server.service.TerminalService;
 import org.opencron.server.tag.PageBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

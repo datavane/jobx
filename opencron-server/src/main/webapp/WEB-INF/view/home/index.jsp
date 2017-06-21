@@ -431,7 +431,7 @@
         </div>
     </div>
 
- <%--   <h4 class="page-title" ><i class="icon">&#61881;</i> &nbsp;监控概况</h4>
+    <h4 class="page-title" ><i class="icon">&#61881;</i> &nbsp;监控概况</h4>
     <!-- Main Widgets -->
     <div class="block-area" id="monitor" style="margin-top: 0px">
 
@@ -660,7 +660,6 @@
             </div>
         </div>
     </div>
---%>
 </section>
 
 </body>

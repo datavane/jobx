@@ -63,7 +63,7 @@ public class OpencronMonitor implements Serializable {
 
     private Thread connWatchDog;
 
-    private long keepAliveDelay = 1000 * 5;//10秒一次心跳
+    private long keepAliveDelay = 1000 * 10;//10秒一次心跳
 
     @Autowired
     private AgentService agentService;
@@ -76,9 +76,6 @@ public class OpencronMonitor implements Serializable {
 
     @Autowired
     private ExecuteService executeService;
-
-    @Autowired
-    private OpencronHander opencronHander;
 
     /**
      * 要处理客户端发来的对象，并返回一个对象，可实现该接口。
@@ -104,7 +101,6 @@ public class OpencronMonitor implements Serializable {
         if (running) return;
         running = true;
         connWatchDog = new Thread(new ConnWatchDog());
-        opencronHander.start();
         connWatchDog.start();
 
         new Timer().schedule(new TimerTask() {

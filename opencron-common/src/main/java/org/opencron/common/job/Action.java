@@ -20,9 +20,9 @@
  */
 
 
-package org.opencron.common.rpc.model;
+package org.opencron.common.job;
 
-public enum Action {
+public enum Action implements org.apache.thrift.TEnum {
   PING(0),
   PATH(1),
   MONITOR(2),
@@ -35,7 +35,7 @@ public enum Action {
 
   private final int value;
 
-  Action(int value) {
+  private Action(int value) {
     this.value = value;
   }
 
@@ -76,7 +76,7 @@ public enum Action {
   }
 
   public static Action findByName(String name) {
-    for (Action action:Action.values()) {
+    for (Action action: Action.values()) {
       if (action.name().equalsIgnoreCase(name)) {
         return action;
       }

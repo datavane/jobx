@@ -19,12 +19,13 @@
  * under the License.
  */
 
-package org.opencron.common.rpc.model;
+package org.opencron.common.job;
 
 import com.alibaba.fastjson.annotation.JSONType;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by benjobs on 16/4/7.

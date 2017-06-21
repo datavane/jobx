@@ -22,8 +22,8 @@
 package org.opencron.server.controller;
 
 import com.alibaba.fastjson.JSON;
-import org.opencron.common.rpc.model.Opencron;
-import org.opencron.common.rpc.model.Response;
+import org.opencron.common.job.Opencron;
+import org.opencron.common.job.Response;
 import org.opencron.common.utils.*;
 import org.opencron.server.domain.Agent;
 import org.opencron.server.domain.Job;
