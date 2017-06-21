@@ -11,6 +11,8 @@
 	<mapping path="/notice/unread.htm" exclue="true"/>
 	<mapping path="/terminal/open.htm" exclue="true"/>
 	<mapping path="/terminal/reopen.htm" exclue="true"/>
+	<mapping path="/terminal.ws" exclue="true"/>
+	<mapping path="/terminal.js" exclue="true"/>
 	<mapping path="/WEB-INF/view/error/*.jsp" exclue="true"/>
 
 </sitemesh>
