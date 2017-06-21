@@ -43,7 +43,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.Semaphore;
 
 import static org.opencron.common.job.Opencron.*;
 
@@ -179,28 +182,32 @@ public class ExecuteService implements Job {
      */
     private boolean executeSameTimeJob(final long groupId, final Queue<JobVo> jobQueue) {
         final List<Boolean> result = new ArrayList<Boolean>(0);
-        Thread jobThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                for (final JobVo jobVo : jobQueue) {
-                    //如果子任务是并行(则启动多线程,所有子任务同时执行)
-                    Thread thread = new Thread(new Runnable() {
-                        public void run() {
-                            result.add(doFlowJob(jobVo, groupId));
-                        }
-                    });
-                    thread.start();
+
+        final Semaphore semaphore = new Semaphore(jobQueue.size());
+        ExecutorService exec = Executors.newCachedThreadPool();
+
+        for (final JobVo jobVo : jobQueue) {
+            Runnable task = new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        semaphore.acquire();
+                        result.add(doFlowJob(jobVo, groupId));
+                        semaphore.release();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
-        });
-        jobThread.start();
-        //确保所有的现场执行作业都全部执行完毕,拿到返回的执行结果。检查并行任务中有是否失败的...
-        try {
-            jobThread.join();
-        } catch (InterruptedException e) {
-            logger.error("[opencron] job rumModel with SAMETIME error:{}", e.getMessage());
+            };
+            exec.submit(task);
         }
-        return !result.contains(false);
+        exec.shutdown();
+        while (true) {
+            if (exec.isTerminated()) {
+                logger.info("[opencron]SameTimeJob,All doned!");
+                return !result.contains(false);
+            }
+        }
     }
 
     /**
@@ -288,30 +295,34 @@ public class ExecuteService implements Job {
      * 多执行器同时 现场执行过程
      */
     public void batchExecuteJob(final Long userId, String command, String agentIds) {
-        final Queue<JobVo> jobQueue = new LinkedBlockingQueue<JobVo>();
-
         String[] arrayIds = agentIds.split(";");
+        final Semaphore semaphore = new Semaphore(arrayIds.length);
+        ExecutorService exec = Executors.newCachedThreadPool();
+
         for (String agentId : arrayIds) {
             Agent agent = agentService.getAgent(Long.parseLong(agentId));
-            JobVo jobVo = new JobVo(userId, command, agent);
-            jobQueue.add(jobVo);
-        }
+            final JobVo jobVo = new JobVo(userId, command, agent);
 
-        Thread jobThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                for (final JobVo jobVo : jobQueue) {
-                    //如果批量现场执行(则启动多线程,所有任务同时执行)
-                    Thread thread = new Thread(new Runnable() {
-                        public void run() {
-                            executeSingleJob(jobVo, userId);
-                        }
-                    });
-                    thread.start();
+            Runnable task = new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        semaphore.acquire();
+                        executeSingleJob(jobVo, userId);
+                        semaphore.release();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
+            };
+            exec.submit(task);
+        }
+        exec.shutdown();
+        while (true) {
+            if (exec.isTerminated()) {
+                logger.info("[opencron]batchExecuteJob doned!");
             }
-        });
-        jobThread.start();
+        }
     }
 
     /**
@@ -404,52 +415,53 @@ public class ExecuteService implements Job {
         }
 
         final List<Boolean> result = new ArrayList<Boolean>(0);
-        Thread jobThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                for (final Record cord : recordQueue) {
-                    //如果kill并行任务(则启动多线程,所有任务同时kill)
-                    Thread thread = new Thread(new Runnable() {
-                        public void run() {
-                            //临时的改成停止中...
-                            cord.setStatus(RunStatus.STOPPING.getStatus());//停止中
-                            cord.setSuccess(ResultStatus.KILLED.getStatus());//被杀.
-                            JobVo job = null;
-                            try {
-                                recordService.merge(cord);
-                                job = jobService.getJobVoById(cord.getJobId());
-                                //向远程机器发送kill指令
-                                opencronCaller.call(Request.request(job.getIp(), job.getPort(), Action.KILL, job.getPassword()).putParam("pid", cord.getPid()), job.getAgent());
-                                cord.setStatus(RunStatus.STOPED.getStatus());
-                                cord.setEndTime(new Date());
-                                recordService.merge(cord);
-                                loggerInfo("killed successful :jobName:{} at ip:{},port:{},pid:{}", job, cord.getPid());
-                            } catch (Exception e) {
-                                if (e instanceof PacketTooBigException) {
-                                    noticeService.notice(job, PACKETTOOBIG_ERROR);
-                                    loggerError("killed error:jobName:%s at ip:%s,port:%d,pid:%s", job, cord.getPid() + " failed info: " + PACKETTOOBIG_ERROR, e);
-                                }
-                                noticeService.notice(job, null);
-                                loggerError("killed error:jobName:%s at ip:%s,port:%d,pid:%s", job, cord.getPid() + " failed info: " + e.getMessage(), e);
-                                result.add(false);
-                            }
+
+        final Semaphore semaphore = new Semaphore(recordQueue.size());
+        ExecutorService exec = Executors.newCachedThreadPool();
+
+        for (final Record cord : recordQueue) {
+            Runnable task = new Runnable() {
+                @Override
+                public void run() {
+                    JobVo job = null;
+                    try {
+                        semaphore.acquire();
+                        //临时的改成停止中...
+                        cord.setStatus(RunStatus.STOPPING.getStatus());//停止中
+                        cord.setSuccess(ResultStatus.KILLED.getStatus());//被杀.
+                        recordService.merge(cord);
+                        job = jobService.getJobVoById(cord.getJobId());
+                        //向远程机器发送kill指令
+                        opencronCaller.call(Request.request(job.getIp(), job.getPort(), Action.KILL, job.getPassword()).putParam("pid", cord.getPid()), job.getAgent());
+                        cord.setStatus(RunStatus.STOPED.getStatus());
+                        cord.setEndTime(new Date());
+                        recordService.merge(cord);
+                        loggerInfo("killed successful :jobName:{} at ip:{},port:{},pid:{}", job, cord.getPid());
+                    } catch (Exception e) {
+                        if (e instanceof PacketTooBigException) {
+                            noticeService.notice(job, PACKETTOOBIG_ERROR);
+                            loggerError("killed error:jobName:%s at ip:%s,port:%d,pid:%s", job, cord.getPid() + " failed info: " + PACKETTOOBIG_ERROR, e);
                         }
-                    });
-                    thread.start();
+                        noticeService.notice(job, null);
+                        loggerError("killed error:jobName:%s at ip:%s,port:%d,pid:%s", job, cord.getPid() + " failed info: " + e.getMessage(), e);
+
+                        logger.error("[opencron] job rumModel with SAMETIME error:{}", e.getMessage());
+
+                        result.add(false);
+                    }
+                    semaphore.release();
                 }
-            }
-        });
-        jobThread.start();
-
-        //确保所有的kill任务都执行完毕,拿到返回的执行结果。检查kill任务中有是否失败的...
-        try {
-            jobThread.join();
-        } catch (InterruptedException e) {
-            logger.error("[opencron] kill job with error:{}", e.getMessage());
+            };
+            exec.submit(task);
         }
-        return !result.contains(false);
+        exec.shutdown();
+        while (true) {
+            if (exec.isTerminated()) {
+                logger.info("[opencron] SAMETIMEjob done!");
+                return !result.contains(false);
+            }
+        }
     }
-
 
     /**
      * 向执行器发送请求，并封装响应结果
