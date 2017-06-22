@@ -288,7 +288,7 @@
                                     "port": port,
                                     "password": password
                                 },
-                                dataType:"html",
+                                dataType:"JSON",
                                 success: function (data) {
                                     if (data) {
                                         canSave(proxy, id, name, port, warning, mobiles, email);
@@ -564,7 +564,7 @@
                     "port": port,
                     "password": password
                 },
-                dataType:"html",
+                dataType:"JSON",
                 success: function (data) {
                     if (data) {
                         $("#pingResult").html("<font color='green'>" + '<i class="glyphicon glyphicon-ok-sign"></i>&nbsp;通信正常' + "</font>");

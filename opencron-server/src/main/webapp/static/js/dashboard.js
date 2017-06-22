@@ -47,7 +47,7 @@ function OpencronChart() {
         },
         dataType: "json",
         success: function (data) {
-            if (data != null) {
+            if (data.length>0) {
                 $("#overview_loader").hide();
                 $("#record-report-havedata").show();
                 $("#record-report-nodata").hide();

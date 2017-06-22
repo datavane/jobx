@@ -31,12 +31,11 @@
                 type: "POST",
                 url: "${contextPath}/terminal/ssh.do",
                 data: {"id":id},
-                dataType: "html",
-                success: function (data) {
-                    if(data.indexOf("login")>-1){
+                dataType: "JSON",
+                success: function (json) {
+                    if(json.indexOf("login")>-1){
                         window.location.href="${contextPath}";
                     }
-                    var json = eval("(" + data + ")");
                     if (json.status == "authfail" || json.status == "keyauthfail") {
                         if (type == 2) {
                             alert("用户名密码错误,登录失败");
@@ -116,7 +115,7 @@
                 type: "POST",
                 url: "${contextPath}/terminal/detail.do",
                 data: "id="+id,
-                dataType: "json",
+                dataType: "JSON",
                 success: function (json) {
                     $("#sshid").val(id);
                     $("#sshuser").val(json.user);
@@ -144,9 +143,9 @@
                     type: "POST",
                     url: "${contextPath}/terminal/delete.do",
                     data: "id="+id,
-                    dataType: "html",
+                    dataType: "JSON",
                     success: function (message) {
-                        if (message == "true") {
+                        if (message) {
                             alertMsg("删除成功!");
                             $("#tr_" + id).remove();
                         }else {
@@ -243,7 +242,7 @@
                     data: {
                         "host":host
                     },
-                    dataType: "html",
+                    dataType: "JSON",
                     success: function (status) {
                         if(!status){
                             $.ajax({

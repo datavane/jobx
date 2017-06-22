@@ -95,7 +95,7 @@
                                             "port": port,
                                             "password": calcMD5(password)
                                         },
-                                        dataType:"html",
+                                        dataType:"JSON",
                                         success: function (data) {
                                             if (data) {
                                                 $("#agent").submit();
@@ -175,7 +175,7 @@
                     "port": port,
                     "password": calcMD5(password)
                 },
-                dataType:"html",
+                dataType:"JSON",
                 success: function (data) {
                     if (data) {
                         $.ajax({

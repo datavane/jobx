@@ -46,7 +46,7 @@
                     headers:{"csrf":"${csrf}"},
                     type: "POST",
                     url: "${contextPath}/progress.do",
-                    dataType: "json",
+                    dataType: "JSON",
                     success: function (data) {
                         if (data) {
                             $(".opencron-progress").show();
@@ -116,7 +116,7 @@
                 headers:{"csrf":"${csrf}"},
                 type:"POST",
                 url: "${contextPath}/notice/uncount.do",
-                dataType: "html",
+                dataType: "JSON",
                 success: function (data) {
                     if (data){
                         $(".n-count").text(data);
