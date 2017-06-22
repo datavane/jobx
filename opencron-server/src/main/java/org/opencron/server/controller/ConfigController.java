@@ -66,6 +66,10 @@ public class ConfigController extends BaseController {
         cfg.setConfigId(configService.getSysConfig().getConfigId());
         cfg.setTemplate(DigestUtils.passBase64(config.getTemplate()));
         cfg.setSendUrl(DigestUtils.passBase64(config.getSendUrl()));
+        cfg.setPassword(config.getPassword());
+        cfg.setSmtpHost(config.getSmtpHost());
+        cfg.setSpaceTime(config.getSpaceTime());
+        cfg.setSmtpPort(config.getSmtpPort());
         configService.update(cfg);
         return "redirect:/config/view.htm?csrf=" + OpencronTools.getCSRF(session);
     }
