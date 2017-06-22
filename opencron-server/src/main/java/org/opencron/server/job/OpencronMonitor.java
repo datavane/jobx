@@ -63,7 +63,7 @@ public class OpencronMonitor implements Serializable {
 
     private Thread connWatchDog;
 
-    private long keepAliveDelay = 1000 * 10;//10秒一次心跳
+    private long keepAliveDelay = 1000 * 5;//5秒一次心跳
 
     @Autowired
     private AgentService agentService;

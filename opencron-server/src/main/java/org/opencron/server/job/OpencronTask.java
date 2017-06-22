@@ -74,7 +74,7 @@ public class OpencronTask implements InitializingBean {
         schedulerService.initCrontab();
     }
 
-    //@Scheduled(cron = "0/5 * * * * ?")
+    @Scheduled(cron = "0/5 * * * * ?")
     public void reExecuteJob() {
         logger.info("[opencron] reExecuteIob running...");
         final List<Record> records = recordService.getReExecuteRecord();

@@ -74,7 +74,7 @@
                 },
                 success: function (data) {
 
-                    if (data == "true") {
+                    if (data) {
                         $.ajax({
                             headers: {"csrf": "${csrf}"},
                             type: "POST",
@@ -83,7 +83,7 @@
                                 "name": name
                             },
                             success: function (data) {
-                                if (data == "true") {
+                                if (data) {
                                     $.ajax({
                                         headers: {"csrf": "${csrf}"},
                                         type: "POST",
@@ -229,7 +229,7 @@
                                 "ip": $("#ip").val()
                             },
                             success: function (data) {
-                                if (data == "true") {
+                                if (data) {
                                     $("#checkIp").html("<font color='green'>" + '<i class="glyphicon glyphicon-ok-sign"></i>&nbsp;执行器IP可用' + "</font>");
                                     return false;
                                 } else {
@@ -259,7 +259,7 @@
                         "name": $("#name").val()
                     },
                     success: function (data) {
-                        if (data == "true") {
+                        if (data) {
                             $("#checkName").html("<font color='green'>" + '<i class="glyphicon glyphicon-ok-sign"></i>&nbsp;执行器名可用' + "</font>");
                             return false;
                         } else {

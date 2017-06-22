@@ -27,7 +27,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.alibaba.fastjson.JSON;
 import org.opencron.common.job.Opencron;
 import org.opencron.common.utils.CommonUtils;
 import org.opencron.common.utils.PropertyPlaceholder;
@@ -42,6 +41,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 
 @Controller
@@ -55,42 +55,41 @@ public class AgentController extends BaseController {
     private ExecuteService executeService;
 
     @RequestMapping("/view.htm")
-    public String queryAllAgent(HttpSession session, HttpServletRequest request, Model model, PageBean pageBean) {
+    public String queryAllAgent(HttpSession session, Model model, PageBean pageBean) {
         agentService.getOwnerAgent(session, pageBean);
         model.addAttribute("connAgents", agentService.getAgentByConnType(Opencron.ConnType.CONN));
         return "/agent/view";
     }
 
     @RequestMapping("/refresh.htm")
-    public String refreshAgent(HttpSession session, HttpServletRequest request, Model model, PageBean pageBean) {
+    public String refreshAgent(HttpSession session,PageBean pageBean) {
         agentService.getOwnerAgent(session, pageBean);
         return "/agent/refresh";
     }
 
     @RequestMapping(value = "/checkname.do",method= RequestMethod.POST)
-    public void checkName(HttpServletResponse response, Long id, String name) {
-        boolean exists = agentService.existsName(id, name);
-        writeHtml(response, exists ? "false" : "true");
+    @ResponseBody
+    public boolean checkName(Long id, String name) {
+        return !agentService.existsName(id, name);
     }
 
     @RequestMapping(value = "/checkdel.do",method= RequestMethod.POST)
-    public void checkDelete(HttpServletResponse response, Long id) {
-        String result = agentService.checkDelete(id);
-        writeHtml(response, result);
+    @ResponseBody
+    public String checkDelete(Long id) {
+       return agentService.checkDelete(id);
     }
 
     @RequestMapping(value = "/delete.do",method= RequestMethod.POST)
-    public void delete(HttpServletResponse response, Long id) {
+    @ResponseBody
+    public void delete(Long id) {
         agentService.delete(id);
-        writeHtml(response, "true");
     }
 
     @RequestMapping(value = "/checkhost.do",method= RequestMethod.POST)
-    public void checkhost(HttpServletResponse response, Long id, String ip) {
-        boolean exists = agentService.existshost(id, ip);
-        writeHtml(response, exists ? "false" : "true");
+    @ResponseBody
+    public boolean checkhost(Long id, String ip) {
+        return  !agentService.existshost(id, ip);
     }
-
 
     @RequestMapping("/add.htm")
     public String addPage(Model model) {
@@ -166,16 +165,18 @@ public class AgentController extends BaseController {
     }
 
     @RequestMapping(value = "/get.do",method= RequestMethod.POST)
-    public void get(HttpServletResponse response, Long id) {
+    @ResponseBody
+    public Agent get(HttpServletResponse response, Long id) {
         Agent agent = agentService.getAgent(id);
         if (agent == null) {
             write404(response);
         }
-        writeJson(response, JSON.toJSONString(agent));
+        return agent;
     }
 
     @RequestMapping(value = "/edit.do",method= RequestMethod.POST)
-    public void edit(HttpServletResponse response, Agent agent) {
+    @ResponseBody
+    public void edit(Agent agent) {
         Agent agent1 = agentService.getAgent(agent.getAgentId());
         agent1.setName(agent.getName());
         agent1.setProxy(agent.getProxy());
@@ -193,13 +194,12 @@ public class AgentController extends BaseController {
         agent1.setComment(agent.getComment());
         agent1.setUpdateTime(new Date());
         agentService.merge(agent1);
-        writeHtml(response, "true");
     }
 
     @RequestMapping(value = "/pwd.do",method= RequestMethod.POST)
-    public void pwd(HttpServletResponse response,Boolean type, Long id, String pwd0, String pwd1, String pwd2) {
-        String result = agentService.editPwd(id,type,pwd0, pwd1, pwd2);
-        writeHtml(response, result);
+    @ResponseBody
+    public String pwd(Boolean type, Long id, String pwd0, String pwd1, String pwd2) {
+        return agentService.editPwd(id,type,pwd0, pwd1, pwd2);
     }
 
     @RequestMapping("/detail.htm")
@@ -213,15 +213,16 @@ public class AgentController extends BaseController {
     }
 
     @RequestMapping(value = "/getConnAgents.do",method= RequestMethod.POST)
-    public void getConnAgents(HttpServletResponse response) {
-        List<Agent> agents = agentService.getAgentByConnType(Opencron.ConnType.CONN);
-        writeJson(response, JSON.toJSONString(agents));
+    @ResponseBody
+    public List<Agent> getConnAgents() {
+       return agentService.getAgentByConnType(Opencron.ConnType.CONN);
     }
 
     @RequestMapping(value = "/path.do",method= RequestMethod.POST)
-    public void getPath(HttpServletResponse response,Long agentId) {
+    @ResponseBody
+    public String getPath(Long agentId) {
         Agent agent = agentService.getAgent(agentId);
         String path = executeService.path(agent);
-        writeHtml(response,path==null?"":path+"/.password");
+        return path==null?"":path+"/.password";
     }
 }

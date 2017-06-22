@@ -103,7 +103,7 @@
                         "name": $("#name").val()
                     },
                     success: function (data) {
-                        if (data == "true") {
+                        if (data) {
                             $("#checkName").html("<font color='green'>" + '<i class="glyphicon glyphicon-ok-sign"></i>&nbsp;执行器名可用' + "</font>");
                             return false;
                         } else {
@@ -274,7 +274,7 @@
                     "name": name
                 },
                 success: function (data) {
-                    if (data == "true") {
+                    if (data) {
                         if (status == 1) {
                             $.ajax({
                                 headers:{"csrf":"${csrf}"},
@@ -306,7 +306,7 @@
                             return false;
                         }
                     } else {
-                        alert("用户已存在!");
+                        alert("执行器名称已存在!");
                         return false;
                     }
                 },
@@ -333,27 +333,24 @@
                     "emailAddress": email,
                     "comment":$("#comment").val()
                 },
-                success: function (data) {
-                    if (data == "true") {
-                        $('#agentModal').modal('hide');
-                        alertMsg("修改成功");
-                        $("#name_" + id).html(escapeHtml(name));
-                        $("#port_" + id).html(port);
-                        if (warning == "0") {
-                            $("#warning_" + id).html('<span class="label label-default" style="color: red;font-weight:bold">&nbsp;&nbsp;否&nbsp;&nbsp;</span>');
-                        } else {
-                            $("#warning_" + id).html('<span class="label label-warning" style="color: white;font-weight:bold">&nbsp;&nbsp;是&nbsp;&nbsp;</span>');
-                        }
-                        if (proxy == "0") {
-                            $("#connType_" + id).html("直连");
-                        } else {
-                            $("#connType_" + id).html("代理");
-                        }
-                        flushConnAgents();
-                        return false;
+                success: function () {
+                    $('#agentModal').modal('hide');
+                    alertMsg("修改成功");
+                    $("#name_" + id).html(escapeHtml(name));
+                    $("#port_" + id).html(port);
+                    if (warning == "0") {
+                        $("#warning_" + id).html('<span class="label label-default" style="color: red;font-weight:bold">&nbsp;&nbsp;否&nbsp;&nbsp;</span>');
                     } else {
-                        alert("修改失败");
+                        $("#warning_" + id).html('<span class="label label-warning" style="color: white;font-weight:bold">&nbsp;&nbsp;是&nbsp;&nbsp;</span>');
                     }
+                    if (proxy == "0") {
+                        $("#connType_" + id).html("直连");
+                    } else {
+                        $("#connType_" + id).html("代理");
+                    }
+                    flushConnAgents();
+                    return false;
+
                 },
                 error: function () {
                     alert("网络繁忙请刷新页面重试!");
