@@ -21,6 +21,7 @@
 
 package org.opencron.server.controller;
 
+import com.alibaba.fastjson.JSON;
 import org.opencron.server.job.OpencronTools;
 import org.opencron.server.service.AgentService;
 import org.opencron.server.service.UserService;
@@ -36,6 +37,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.List;
@@ -119,9 +121,9 @@ public class UserController extends BaseController {
     }
 
     @RequestMapping(value = "/get.do",method= RequestMethod.POST)
-    @ResponseBody
-    public User get(Long id) {
-        return userService.queryUserById(id);
+    public void get(HttpServletResponse response, Long id) {
+        User user = userService.queryUserById(id);
+        writeJson(response, JSON.toJSONString(user));
     }
 
     @RequestMapping(value = "/pwd.do",method= RequestMethod.POST)
