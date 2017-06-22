@@ -23,6 +23,7 @@ package org.opencron.server.controller;
 
 import java.util.*;
 
+import com.alibaba.fastjson.JSON;
 import org.opencron.common.job.Opencron;
 import org.opencron.common.utils.DigestUtils;
 import org.opencron.common.utils.StringUtils;
@@ -213,15 +214,14 @@ public class JobController extends BaseController {
         return "redirect:/job/view.htm?csrf=" + OpencronTools.getCSRF(session);
     }
 
-    @RequestMapping(value = "/editsingle.do",method= RequestMethod.POST)
-    @ResponseBody
-    public JobVo editSingleJob(HttpSession session, HttpServletResponse response, Long id) {
+    @RequestMapping("/editsingle")
+    public void editSingleJob(HttpSession session, HttpServletResponse response, Long id) {
         JobVo job = jobService.getJobVoById(id);
         if (job == null) {
             writeJson(response, "404");
         }
-        if (!jobService.checkJobOwner(session, job.getUserId())) return null;
-        return job;
+        if (!jobService.checkJobOwner(session, job.getUserId())) return;
+        writeJson(response, JSON.toJSONString(job));
     }
 
     @RequestMapping("/editflow.htm")
