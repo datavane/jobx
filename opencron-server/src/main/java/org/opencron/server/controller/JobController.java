@@ -214,7 +214,7 @@ public class JobController extends BaseController {
         return "redirect:/job/view.htm?csrf=" + OpencronTools.getCSRF(session);
     }
 
-    @RequestMapping("/editsingle")
+    @RequestMapping("/editsingle.do")
     public void editSingleJob(HttpSession session, HttpServletResponse response, Long id) {
         JobVo job = jobService.getJobVoById(id);
         if (job == null) {
