@@ -243,7 +243,7 @@ case "$1" in
         done
 
         if [ -z "$OPENCRON_PORT" ];then
-            OPENCRON_PORT=5329;
+            OPENCRON_PORT=1577;
             echo "opencron port not input,will be used port:5329"
         elif [ $OPENCRON_PORT -lt 0 ] || [ $OPENCRON_PORT -gt 65535 ];then
             echo "port error,muse be between 0 and 65535!"
