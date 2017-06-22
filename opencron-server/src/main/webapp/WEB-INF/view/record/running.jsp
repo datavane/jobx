@@ -105,7 +105,7 @@
                     url:"${contextPath}/record/kill.do",
                     data:{"recordId":id},
                     success:function(result){
-                        if (result == "true"){
+                        if (result){
                             $.ajax({
                                 headers:{"csrf":"${csrf}"},
                                 type:"POST",

@@ -245,7 +245,7 @@
                     },
                     dataType: "html",
                     success: function (status) {
-                        if(status=="false"){
+                        if(!status){
                             $.ajax({
                                 headers:{"csrf":"${csrf}"},
                                 type: "POST",

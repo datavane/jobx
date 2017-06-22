@@ -97,7 +97,7 @@
                                         },
                                         dataType:"html",
                                         success: function (data) {
-                                            if (data == "true") {
+                                            if (data) {
                                                 $("#agent").submit();
                                                 return;
                                             } else {
@@ -177,7 +177,7 @@
                 },
                 dataType:"html",
                 success: function (data) {
-                    if (data == "true") {
+                    if (data) {
                         $.ajax({
                             headers: {"csrf": "${csrf}"},
                             type: "POST",

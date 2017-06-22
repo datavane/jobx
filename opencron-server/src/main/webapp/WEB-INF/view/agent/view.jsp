@@ -290,7 +290,7 @@
                                 },
                                 dataType:"html",
                                 success: function (data) {
-                                    if (data == "true") {
+                                    if (data) {
                                         canSave(proxy, id, name, port, warning, mobiles, email);
                                         return false;
                                     } else {
@@ -566,7 +566,7 @@
                 },
                 dataType:"html",
                 success: function (data) {
-                    if (data == "true") {
+                    if (data) {
                         $("#pingResult").html("<font color='green'>" + '<i class="glyphicon glyphicon-ok-sign"></i>&nbsp;通信正常' + "</font>");
                     } else {
                         $("#pingResult").html("<font color='red'>" + '<i class="glyphicon glyphicon-remove-sign"></i>&nbsp;通信失败' + "</font>");

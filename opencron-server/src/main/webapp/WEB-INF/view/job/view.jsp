@@ -48,7 +48,7 @@
                 url: "${contextPath}/job/canrun.do",
                 data: {"id": id},
                 success: function (data) {
-                    if (!eval("(" + data + ")")) {
+                    if (!data) {
                         $.ajax({
                             headers: {"csrf": "${csrf}"},
                             type: "POST",
@@ -154,7 +154,7 @@
                 url: "${contextPath}/job/canrun.do",
                 data: {"id": id},
                 success: function (data) {
-                    if (!eval("(" + data + ")")) {
+                    if (!data) {
                         window.location.href = "${contextPath}/job/editflow.htm?id=" + id + "&csrf=${csrf}";
                     } else {
                         alert("当前作业或其子作业正在运行中,暂时不能编辑!");
@@ -292,7 +292,7 @@
                         "cronExp": cronExp
                     },
                     success: function (data) {
-                        if (data == "true") {
+                        if (data) {
                             doSave(jobObj);
                         } else {
                             alert("时间规则语法错误!");
@@ -341,7 +341,7 @@
                                 "timeout": job.timeout
                             },
                             success: function (data) {
-                                if (data == "true") {
+                                if (data) {
                                     $('#jobModal').modal('hide');
                                     alertMsg("修改成功");
 
@@ -474,7 +474,7 @@
                         "cronExp": cronExp
                     },
                     success: function (data) {
-                        if (data == "true") {
+                        if (data) {
                             $("#checkcronExp").html("<font color='green'>" + '<i class="glyphicon glyphicon-ok-sign"></i>&nbsp;语法正确' + "</font>");
                             return;
                         } else {
@@ -512,7 +512,7 @@
                 url: "${contextPath}/job/canrun.do",
                 data: {"id": id},
                 success: function (data) {
-                    if (!eval("(" + data + ")")) {
+                    if (!data) {
                         swal({
                             title: "",
                             text: "您确定要执行这个作业吗？",
@@ -566,7 +566,7 @@
                 url: "${contextPath}/job/canrun.do",
                 data: {"id": id},
                 success: function (data) {
-                    if (!eval("(" + data + ")")) {
+                    if (!data) {
 
                         $.ajax({
                             headers: {"csrf": "${csrf}"},
@@ -617,7 +617,7 @@
                     "command": toBase64(command)
                 },
                 success: function (data) {
-                    if (data == "true") {
+                    if (data) {
                         $('#cmdModal').modal('hide');
                         alertMsg("修改成功");
                         $("#command_" + jobId).attr("title", command);

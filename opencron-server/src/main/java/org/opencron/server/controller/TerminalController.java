@@ -21,7 +21,6 @@
 
 package org.opencron.server.controller;
 
-import com.alibaba.fastjson.JSON;
 import org.opencron.common.utils.CommonUtils;
 import org.opencron.server.domain.Terminal;
 import org.opencron.server.domain.User;
@@ -35,6 +34,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -99,16 +99,16 @@ public class TerminalController extends BaseController {
     }
 
     @RequestMapping(value = "/detail.do",method= RequestMethod.POST)
-    public void detail(HttpServletResponse response, Terminal terminal) throws Exception {
-        terminal = termService.getById(terminal.getId());
-        writeJson(response, JSON.toJSONString(terminal));
+    @ResponseBody
+    public Terminal detail(Terminal terminal) throws Exception {
+        return termService.getById(terminal.getId());
     }
 
     @RequestMapping(value = "/exists.do",method= RequestMethod.POST)
-    public void exists(HttpSession session, HttpServletResponse response, Terminal terminal) throws Exception {
+    @ResponseBody
+    public boolean exists(HttpSession session,Terminal terminal) throws Exception {
         User user = OpencronTools.getUser(session);
-        boolean exists = termService.exists(user.getUserId(), terminal.getHost());
-        writeHtml(response, exists ? "true" : "false");
+        return termService.exists(user.getUserId(), terminal.getHost());
     }
 
     @RequestMapping("/view.htm")
@@ -156,7 +156,6 @@ public class TerminalController extends BaseController {
         if (terminalClient != null) {
             terminalClient.resize(cols, rows, width, height);
         }
-        writeHtml(response, "");
     }
 
     @RequestMapping(value = "/sendAll.do",method= RequestMethod.POST)
@@ -172,12 +171,11 @@ public class TerminalController extends BaseController {
     }
 
     @RequestMapping(value = "/theme.do",method= RequestMethod.POST)
-    public void theme(HttpServletResponse response, String token, String theme) throws Exception {
+    public void theme(String token, String theme) throws Exception {
         TerminalClient terminalClient = TerminalSession.get(token);
         if (terminalClient != null) {
             termService.theme(terminalClient.getTerminal(), theme);
         }
-        writeHtml(response, "");
     }
 
     @RequestMapping(value = "/upload.do",method= RequestMethod.POST)
@@ -209,7 +207,8 @@ public class TerminalController extends BaseController {
 
 
     @RequestMapping(value = "/save.do",method= RequestMethod.POST)
-    public String save(HttpSession session, HttpServletResponse response, Terminal term) throws Exception {
+    @ResponseBody
+    public String save(HttpSession session,Terminal term) throws Exception {
         Terminal.AuthStatus authStatus = termService.auth(term);
         if (authStatus.equals(Terminal.AuthStatus.SUCCESS)) {
             User user = OpencronTools.getUser(session);
@@ -221,7 +220,8 @@ public class TerminalController extends BaseController {
 
 
     @RequestMapping(value = "/delete.do",method= RequestMethod.POST)
-    public String delete(HttpSession session, HttpServletResponse response, Terminal term) throws Exception {
+    @ResponseBody
+    public String delete(HttpSession session, Terminal term) throws Exception {
         return termService.delete(session, term.getId());
     }
 

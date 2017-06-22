@@ -23,7 +23,6 @@ package org.opencron.server.controller;
 
 import java.util.*;
 
-import com.alibaba.fastjson.JSON;
 import org.opencron.common.job.Opencron;
 import org.opencron.common.utils.DigestUtils;
 import org.opencron.common.utils.StringUtils;
@@ -215,13 +214,14 @@ public class JobController extends BaseController {
     }
 
     @RequestMapping(value = "/editsingle.do",method= RequestMethod.POST)
-    public void editSingleJob(HttpSession session, HttpServletResponse response, Long id) {
+    @ResponseBody
+    public JobVo editSingleJob(HttpSession session, HttpServletResponse response, Long id) {
         JobVo job = jobService.getJobVoById(id);
         if (job == null) {
             writeJson(response, "404");
         }
-        if (!jobService.checkJobOwner(session, job.getUserId())) return;
-        writeJson(response, JSON.toJSONString(job));
+        if (!jobService.checkJobOwner(session, job.getUserId())) return null;
+        return job;
     }
 
     @RequestMapping("/editflow.htm")
@@ -240,9 +240,10 @@ public class JobController extends BaseController {
 
 
     @RequestMapping(value = "/edit.do",method= RequestMethod.POST)
-    public void edit(HttpSession session, HttpServletResponse response, Job job) throws SchedulerException {
+    @ResponseBody
+    public boolean edit(HttpSession session,Job job) throws SchedulerException {
         Job dbJob = jobService.getJob(job.getJobId());
-        if (!jobService.checkJobOwner(session, dbJob.getUserId())) return;
+        if (!jobService.checkJobOwner(session, dbJob.getUserId())) return false;
         dbJob.setExecType(job.getExecType());
         dbJob.setCronType(job.getCronType());
         dbJob.setCronExp(job.getCronExp());
@@ -260,24 +261,26 @@ public class JobController extends BaseController {
         dbJob.setUpdateTime(new Date());
         jobService.merge(dbJob);
         schedulerService.syncJobTigger(dbJob.getJobId(), executeService);
-        writeHtml(response, "true");
+        return true;
     }
 
     @RequestMapping(value = "/editcmd.do",method= RequestMethod.POST)
-    public void editCmd(HttpSession session, HttpServletResponse response, Long jobId, String command) throws SchedulerException {
+    @ResponseBody
+    public boolean editCmd(HttpSession session,Long jobId, String command) throws SchedulerException {
         command = DigestUtils.passBase64(command);
         Job dbJob = jobService.getJob(jobId);
-        if (!jobService.checkJobOwner(session, dbJob.getUserId())) return;
+        if (!jobService.checkJobOwner(session, dbJob.getUserId())) return false;
         dbJob.setCommand(command);
         dbJob.setUpdateTime(new Date());
         jobService.merge(dbJob);
         schedulerService.syncJobTigger(Opencron.JobType.FLOW.getCode().equals(dbJob.getJobType()) ? dbJob.getFlowId() : dbJob.getJobId(), executeService);
-        writeHtml(response, "true");
+        return true;
     }
 
     @RequestMapping(value = "/canrun.do",method= RequestMethod.POST)
-    public void canRun(Long id, HttpServletResponse response) {
-        writeJson(response, recordService.isRunning(id).toString());
+    @ResponseBody
+    public boolean canRun(Long id) {
+        return recordService.isRunning(id);
     }
 
     @RequestMapping(value = "/execute.do",method= RequestMethod.POST)

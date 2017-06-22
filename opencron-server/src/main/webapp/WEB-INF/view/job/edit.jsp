@@ -114,7 +114,7 @@
                         "cronExp":cronExp
                     },
                     success:function(data){
-                        if (data == "true"){
+                        if (data){
                             $("#checkcronExp").html("<font color='green'>" + '<i class="glyphicon glyphicon-ok-sign"></i>&nbsp;语法正确' + "</font>");
                             return;
                         }else {
@@ -270,7 +270,7 @@
                                     "cronExp":cronExp
                                 },
                                 success:function(data){
-                                    if (data == "true"){
+                                    if (data){
                                         codeCommand();
                                         $("#job").submit();
                                         return false;

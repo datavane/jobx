@@ -39,10 +39,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
@@ -140,7 +137,8 @@ public class DashboardController extends BaseController {
     }
 
     @RequestMapping("/record.do")
-    public List<ChartVo> record(HttpSession session, HttpServletResponse response, String startTime, String endTime) {
+    @ResponseBody
+    public List<ChartVo> record(HttpSession session,String startTime, String endTime) {
         if (isEmpty(startTime)) {
             startTime = DateUtils.getCurrDayPrevDay(7);
         }
@@ -157,7 +155,8 @@ public class DashboardController extends BaseController {
     }
 
     @RequestMapping(value = "/progress.do",method= RequestMethod.POST)
-    public ChartVo progress(HttpSession session, HttpServletResponse response) {
+    @ResponseBody
+    public ChartVo progress(HttpSession session) {
         //成功失败折线图数据
         ChartVo chartVo = recordService.getAsProgress(session);
         if (isEmpty(chartVo)) {
@@ -168,6 +167,7 @@ public class DashboardController extends BaseController {
     }
 
     @RequestMapping(value = "/monitor.do",method= RequestMethod.POST)
+    @ResponseBody
     public String port(Long agentId) throws Exception {
         Agent agent = agentService.getAgent(agentId);
         Response req = executeService.monitor(agent);
@@ -322,7 +322,8 @@ public class DashboardController extends BaseController {
 
 
     @RequestMapping(value = "/notice/uncount.do",method= RequestMethod.POST)
-    public Long uncount(HttpSession session, HttpServletResponse response) {
+    @ResponseBody
+    public Long uncount(HttpSession session) {
         return homeService.getUnReadCount(session);
     }
 

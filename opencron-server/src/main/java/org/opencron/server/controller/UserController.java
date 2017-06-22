@@ -21,7 +21,6 @@
 
 package org.opencron.server.controller;
 
-import com.alibaba.fastjson.JSON;
 import org.opencron.server.job.OpencronTools;
 import org.opencron.server.service.AgentService;
 import org.opencron.server.service.UserService;
@@ -37,7 +36,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.List;
@@ -91,7 +89,7 @@ public class UserController extends BaseController {
     public String editPage(HttpSession session, Model model,@PathVariable("id") Long id) {
         if (!OpencronTools.isPermission(session)
                 && !OpencronTools.getUserId(session).equals(id)) {
-            return "redirect:/user/detail.htm?csrf=" + OpencronTools.getCSRF(session);
+            return  String.format("redirect:/user/detail/%d.htm?csrf=%s",id,OpencronTools.getCSRF(session));
         }
 
         User user = userService.queryUserById(id);
@@ -121,15 +119,15 @@ public class UserController extends BaseController {
     }
 
     @RequestMapping(value = "/get.do",method= RequestMethod.POST)
-    public void get(HttpServletResponse response, Long id) {
-        User user = userService.queryUserById(id);
-        writeJson(response, JSON.toJSONString(user));
+    @ResponseBody
+    public User get(Long id) {
+        return userService.queryUserById(id);
     }
 
     @RequestMapping(value = "/pwd.do",method= RequestMethod.POST)
-    public void pwd(HttpServletResponse response, Long id, String pwd0, String pwd1, String pwd2) {
-        String result = userService.editPwd(id, pwd0, pwd1, pwd2);
-        writeHtml(response, result);
+    @ResponseBody
+    public String pwd(Long id, String pwd0, String pwd1, String pwd2) {
+        return userService.editPwd(id, pwd0, pwd1, pwd2);
     }
 
     @RequestMapping(value = "/checkname.do",method= RequestMethod.POST)

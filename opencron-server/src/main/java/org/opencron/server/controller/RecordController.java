@@ -22,7 +22,6 @@
 package org.opencron.server.controller;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.opencron.common.job.Opencron;
@@ -36,6 +35,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import static org.opencron.common.utils.CommonUtils.notEmpty;
 
@@ -138,7 +138,8 @@ public class RecordController extends BaseController {
     }
 
     @RequestMapping(value = "/kill.do",method= RequestMethod.POST)
-    public void kill(HttpSession session, HttpServletResponse response, Long recordId) {
+    @ResponseBody
+    public boolean kill(HttpSession session, Long recordId) {
         Record record = recordService.get(recordId);
         if (Opencron.RunStatus.RERUNNING.getStatus().equals(record.getStatus())) {
             //父记录临时改为停止中
@@ -147,9 +148,8 @@ public class RecordController extends BaseController {
             //得到当前正在重跑的子记录
             record = recordService.getReRunningSubJob(recordId);
         }
-        if (!jobService.checkJobOwner(session, record.getUserId())) return;
-        Boolean flag = executeService.killJob(record);
-        writeHtml(response, flag.toString());
+        if (!jobService.checkJobOwner(session, record.getUserId())) return false;
+        return executeService.killJob(record);
     }
 
 }

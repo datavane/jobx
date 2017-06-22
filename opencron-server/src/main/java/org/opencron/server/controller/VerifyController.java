@@ -33,6 +33,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -49,15 +50,17 @@ public class VerifyController extends BaseController {
     private AgentService agentService;
 
     @RequestMapping(value = "/exp.do",method= RequestMethod.POST)
-    public void validateCronExp(Integer cronType, String cronExp, HttpServletResponse response) {
+    @ResponseBody
+    public boolean validateCronExp(Integer cronType, String cronExp) {
         boolean pass = false;
         if (cronType == 0) pass = SchedulingPattern.validate(cronExp);
         if (cronType == 1) pass = CronExpression.isValidExpression(cronExp);
-        writeHtml(response, pass ? "true" : "false");
+        return pass;
     }
 
     @RequestMapping(value = "/ping.do",method= RequestMethod.POST)
-    public void validatePing(int proxy, Long proxyId, String ip, Integer port, String password, HttpServletResponse response) {
+    @ResponseBody
+    public boolean validatePing(int proxy, Long proxyId, String ip, Integer port, String password) {
         Agent agent = new Agent();
         agent.setProxy(proxy);
         agent.setIp(ip);
@@ -69,8 +72,7 @@ public class VerifyController extends BaseController {
             if (proxyId != null) {
                 Agent proxyAgent = agentService.getAgent(proxyId);
                 if (proxyAgent == null) {
-                    writeHtml(response,"false");
-                    return;
+                    return false;
                 }
                 agent.setProxyAgent(proxyId);
                 //需要代理..
@@ -79,17 +81,15 @@ public class VerifyController extends BaseController {
         }
         boolean ping = executeService.ping(agent);
 
-
-        if (ping) {
-            writeHtml(response,"true");
-        } else {
+        if (!ping) {
             logger.error(String.format("validate ip:%s,port:%s cannot ping!", agent.getIp(), port));
-            writeHtml(response,"false");
         }
+        return ping;
     }
 
     @RequestMapping(value = "/guid.do",method= RequestMethod.POST)
-    public void getGuid(int proxy, Long proxyId, String ip, Integer port, String password, HttpServletResponse response) {
+    @ResponseBody
+    public String getGuid(int proxy, Long proxyId, String ip, Integer port, String password, HttpServletResponse response) {
         Agent agent = new Agent();
         agent.setProxy(proxy);
         agent.setIp(ip);
@@ -101,15 +101,13 @@ public class VerifyController extends BaseController {
             if (proxyId != null) {
                 Agent proxyAgent = agentService.getAgent(proxyId);
                 if (proxyAgent == null) {
-                    writeHtml(response,"");
-                    return;
+                    return null;
                 }
                 agent.setProxyAgent(proxyId);
                 //需要代理..
                 agent.setProxy(Opencron.ConnType.PROXY.getType());
             }
         }
-        String guid = executeService.guid(agent);
-        writeHtml(response,guid);
+       return executeService.guid(agent);
     }
 }
