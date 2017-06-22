@@ -48,6 +48,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.awt.*;
 import java.io.File;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -148,7 +149,7 @@ public class DashboardController extends BaseController {
         //成功失败折线图数据
         List<ChartVo> voList = recordService.getRecord(session, startTime, endTime);
         if (isEmpty(voList)) {
-            return null;
+            return Collections.emptyList();
         } else {
             return voList;
         }

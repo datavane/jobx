@@ -284,9 +284,10 @@ public class JobController extends BaseController {
     }
 
     @RequestMapping(value = "/execute.do",method= RequestMethod.POST)
-    public void remoteExecute(HttpSession session, Long id) {
+    @ResponseBody
+    public boolean remoteExecute(HttpSession session, Long id) {
         JobVo job = jobService.getJobVoById(id);//找到要执行的任务
-        if (!jobService.checkJobOwner(session, job.getUserId())) return;
+        if (!jobService.checkJobOwner(session, job.getUserId())) return false;
         //手动执行
         Long userId = OpencronTools.getUserId(session);
         job.setUserId(userId);
@@ -297,6 +298,7 @@ public class JobController extends BaseController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return true;
     }
 
     @RequestMapping("/goexec.htm")
@@ -306,7 +308,8 @@ public class JobController extends BaseController {
     }
 
     @RequestMapping(value = "/batchexec.do",method= RequestMethod.POST)
-    public void batchExec(HttpSession session, String command, String agentIds) {
+    @ResponseBody
+    public boolean batchExec(HttpSession session, String command, String agentIds) {
         if (notEmpty(agentIds) && notEmpty(command)) {
             command = DigestUtils.passBase64(command);
             Long userId = OpencronTools.getUserId(session);
@@ -316,6 +319,7 @@ public class JobController extends BaseController {
                 e.printStackTrace();
             }
         }
+        return true;
     }
 
     @RequestMapping("/detail/{id}.htm")

@@ -151,15 +151,18 @@ public class TerminalController extends BaseController {
     }
 
     @RequestMapping(value = "/resize.do",method= RequestMethod.POST)
-    public void resize(HttpServletResponse response, String token, Integer cols, Integer rows, Integer width, Integer height) throws Exception {
+    @ResponseBody
+    public boolean resize(String token, Integer cols, Integer rows, Integer width, Integer height) throws Exception {
         TerminalClient terminalClient = TerminalSession.get(token);
         if (terminalClient != null) {
             terminalClient.resize(cols, rows, width, height);
         }
+        return true;
     }
 
     @RequestMapping(value = "/sendAll.do",method= RequestMethod.POST)
-    public void sendAll(String token, String cmd) throws Exception {
+    @ResponseBody
+    public boolean sendAll(String token, String cmd) throws Exception {
         cmd = URLDecoder.decode(cmd, "UTF-8");
         TerminalClient terminalClient = TerminalSession.get(token);
         if (terminalClient != null) {
@@ -168,6 +171,7 @@ public class TerminalController extends BaseController {
                 client.write(cmd);
             }
         }
+        return true;
     }
 
     @RequestMapping(value = "/theme.do",method= RequestMethod.POST)
