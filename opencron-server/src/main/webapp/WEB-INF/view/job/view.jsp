@@ -319,7 +319,7 @@
                 },
                 success: function (data) {
 
-                    if (data == "true") {
+                    if (data) {
                         $.ajax({
                             headers: {"csrf": "${csrf}"},
                             type: "POST",
@@ -439,7 +439,7 @@
                         "name": $("#jobName").val()
                     },
                     success: function (data) {
-                        if (data == "true") {
+                        if (data) {
                             $("#checkJobName").html("<font color='green'>" + '<i class="glyphicon glyphicon-ok-sign"></i>&nbsp;作业名称可用' + "</font>");
                             return false;
                         } else {
@@ -662,7 +662,7 @@
                                 url: "${contextPath}/job/delete.do",
                                 data: {"id": id},
                                 success: function (data) {
-                                    if (data == "true") {
+                                    if (data) {
                                         alertMsg("删除作业成功");
                                         location.reload();
                                     } else {
@@ -795,9 +795,9 @@
                             </c:forEach>
                         </td>
                     </c:if>
-                    <td><a href="${contextPath}/agent/detail.htm?id=${r.agentId}&csrf=${csrf}">${r.agentName}</a></td>
+                    <td><a href="${contextPath}/agent/detail/${r.agentId}.htm?csrf=${csrf}">${r.agentName}</a></td>
                     <c:if test="${permission eq true}">
-                        <td><a href="${contextPath}/user/detail.htm?userId=${r.userId}&csrf=${csrf}">${r.operateUname}</a>
+                        <td><a href="${contextPath}/user/detail/${r.userId}.htm?csrf=${csrf}">${r.operateUname}</a>
                         </td>
                     </c:if>
                     <c:if test="${permission eq false}">
@@ -878,7 +878,7 @@
                                 <a href="#" onclick="remove('${r.jobId}')" title="删除">
                                     <i aria-hidden="true" class="fa fa-times"></i>
                                 </a>&nbsp;&nbsp;
-                                <a href="${contextPath}/job/detail.htm?id=${r.jobId}&csrf=${csrf}" title="查看详情">
+                                <a href="${contextPath}/job/detail/${r.jobId}.htm?csrf=${csrf}" title="查看详情">
                                     <i class="glyphicon glyphicon-eye-open"></i>
                                 </a>
                             </div>
@@ -889,11 +889,11 @@
                 <c:if test="${r.jobType eq 1}">
                     <c:forEach var="c" items="${r.children}" varStatus="index">
                         <tr class="child${r.jobId} trGroup${r.flowId}" style="display: none;">
-                            <td><a href="${contextPath}/agent/detail.htm?id=${c.agentId}&csrf=${csrf}">${c.agentName}</a>
+                            <td><a href="${contextPath}/agent/detail/${c.agentId}.htm?csrf=${csrf}">${c.agentName}</a>
                             </td>
                             <c:if test="${permission eq true}">
                                 <td>
-                                    <a href="${contextPath}/user/detail.htm?userId=${c.userId}&csrf=${csrf}">${c.operateUname}</a>
+                                    <a href="${contextPath}/user/detail/${c.userId}.htm?csrf=${csrf}">${c.operateUname}</a>
                                 </td>
                             </c:if>
                             <c:if test="${permission eq false}">
@@ -922,7 +922,7 @@
                             <td>
                                 <center>
                                     <div class="visible-md visible-lg hidden-sm hidden-xs action-buttons">
-                                        <a href="${contextPath}/job/detail.htm?id=${c.jobId}&csrf=${csrf}" title="查看详情">
+                                        <a href="${contextPath}/job/detail/${c.jobId}.htm?csrf=${csrf}" title="查看详情">
                                             <i class="glyphicon glyphicon-eye-open"></i>
                                         </a>
                                     </div>

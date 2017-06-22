@@ -96,7 +96,7 @@
                     <td>${log.sendTime}</td>
                     <td>
                         <center>
-                            <a href="${contextPath}/notice/detail.htm?logId=${log.logId}&csrf=${csrf}" title="查看详情">
+                            <a href="${contextPath}/notice/detail/${log.logId}.htm?csrf=${csrf}" title="查看详情">
                                 <i class="glyphicon glyphicon-eye-open"></i>
                             </a>
                         </center>

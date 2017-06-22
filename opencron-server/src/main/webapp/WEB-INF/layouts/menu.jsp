@@ -21,7 +21,7 @@
 				</a>
 				<h4 class="m-0">${opencron_user.userName}</h4>
 				<ul class="dropdown-menu profile-menu">
-					<li><a href="${contextPath}/user/detail.htm?userId=${opencron_user.userId}&csrf=${csrf}">个人信息</a> <i class="icon left">&#61903;</i><i class="icon right">&#61815;</i></li>
+					<li><a href="${contextPath}/user/detail/${opencron_user.userId}.htm?csrf=${csrf}">个人信息</a> <i class="icon left">&#61903;</i><i class="icon right">&#61815;</i></li>
 					<li><a href="${contextPath}/notice/view.htm?csrf=${csrf}">通知&nbsp;&&nbsp;消息</a> <i class="icon left">&#61903;</i><i class="icon right">&#61815;</i></li>
 					<li><a href="${contextPath}/logout.htm?csrf=${csrf}">退出登录</a> <i class="icon left">&#61903;</i><i class="icon right">&#61815;</i></li>
 				</ul>

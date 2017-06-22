@@ -39,6 +39,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -138,8 +139,8 @@ public class DashboardController extends BaseController {
         return "/home/index";
     }
 
-    @RequestMapping("/record.htm")
-    public void record(HttpSession session, HttpServletResponse response, String startTime, String endTime) {
+    @RequestMapping("/record.do")
+    public List<ChartVo> record(HttpSession session, HttpServletResponse response, String startTime, String endTime) {
         if (isEmpty(startTime)) {
             startTime = DateUtils.getCurrDayPrevDay(7);
         }
@@ -149,25 +150,25 @@ public class DashboardController extends BaseController {
         //成功失败折线图数据
         List<ChartVo> voList = recordService.getRecord(session, startTime, endTime);
         if (isEmpty(voList)) {
-            writeJson(response, "null");
+            return null;
         } else {
-            writeJson(response, JSON.toJSONString(voList));
+            return voList;
         }
     }
 
     @RequestMapping(value = "/progress.do",method= RequestMethod.POST)
-    public void progress(HttpSession session, HttpServletResponse response) {
+    public ChartVo progress(HttpSession session, HttpServletResponse response) {
         //成功失败折线图数据
         ChartVo chartVo = recordService.getAsProgress(session);
         if (isEmpty(chartVo)) {
-            writeJson(response, "null");
-        } else {
-            writeJson(response, JSON.toJSONString(chartVo));
+            return null;
         }
+
+        return chartVo;
     }
 
     @RequestMapping(value = "/monitor.do",method= RequestMethod.POST)
-    public void port(HttpServletResponse response, Long agentId) throws Exception {
+    public String port(Long agentId) throws Exception {
         Agent agent = agentService.getAgent(agentId);
         Response req = executeService.monitor(agent);
         /**
@@ -179,9 +180,9 @@ public class DashboardController extends BaseController {
         if (agent.getProxy().equals(Opencron.ConnType.CONN.getType())) {
             String port = req.getResult().get("port");
             String url = String.format("http://%s:%s", agent.getIp(), port);
-            writeHtml(response, String.format(format, agent.getProxy(), url));
+            return String.format(format, agent.getProxy(), url);
         } else {//代理
-            writeHtml(response, String.format(format, agent.getProxy(), JSON.toJSONString(req.getResult())));
+            return String.format(format, agent.getProxy(), JSON.toJSONString(req.getResult()));
         }
     }
 
@@ -321,9 +322,8 @@ public class DashboardController extends BaseController {
 
 
     @RequestMapping(value = "/notice/uncount.do",method= RequestMethod.POST)
-    public void uncount(HttpSession session, HttpServletResponse response) {
-        Long count = homeService.getUnReadCount(session);
-        writeHtml(response, count.toString());
+    public Long uncount(HttpSession session, HttpServletResponse response) {
+        return homeService.getUnReadCount(session);
     }
 
     /**
@@ -338,8 +338,8 @@ public class DashboardController extends BaseController {
         return "notice/info";
     }
 
-    @RequestMapping("/notice/detail.htm")
-    public String detail(Model model, Long logId) {
+    @RequestMapping("/notice/detail/{logId}.htm")
+    public String detail(Model model,@PathVariable("logId") Long logId) {
         Log log = homeService.getLogDetail(logId);
         if (log == null) {
             return "/error/404";

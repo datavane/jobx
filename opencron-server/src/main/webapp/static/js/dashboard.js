@@ -40,7 +40,7 @@ function OpencronChart() {
     $.ajax({
         headers:{"csrf":self.csrf},
         type: "POST",
-        url: self.path + "/record.htm",
+        url: self.path + "/record.do",
         data: {
             "startTime": $("#startTime").val(),
             "endTime": $("#endTime").val()

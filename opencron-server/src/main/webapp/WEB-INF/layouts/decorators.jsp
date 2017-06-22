@@ -48,7 +48,7 @@
                     url: "${contextPath}/progress.do",
                     dataType: "json",
                     success: function (data) {
-                        if (data != null) {
+                        if (data) {
                             $(".opencron-progress").show();
                             var job_type = parseInt(parseFloat(data.auto / (data.auto + data.operator)) * 100);
                             if (isNaN(job_type)) {
@@ -118,7 +118,7 @@
                 url: "${contextPath}/notice/uncount.do",
                 dataType: "html",
                 success: function (data) {
-                    if (data != "0"){
+                    if (data){
                         $(".n-count").text(data);
                         $("#msg-icon").show();
                         $.ajax({

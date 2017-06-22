@@ -39,8 +39,10 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -98,31 +100,31 @@ public class JobController extends BaseController {
     /**
      * 同一台执行器上不能有重复名字的job
      *
-     * @param response
      * @param jobId
      * @param agentId
      * @param name
      */
     @RequestMapping(value = "/checkname.do",method= RequestMethod.POST)
-    public void checkName(HttpServletResponse response, Long jobId, Long agentId, String name) {
-        boolean result = jobService.existsName(jobId, agentId, name);
-        writeHtml(response, result ? "false" : "true");
+    @ResponseBody
+    public boolean checkName(Long jobId, Long agentId, String name) {
+        return !jobService.existsName(jobId, agentId, name);
     }
 
     @RequestMapping(value = "/checkdel.do",method= RequestMethod.POST)
-    public void checkDelete(HttpServletResponse response, Long id) {
-        String result = jobService.checkDelete(id);
-        writeHtml(response, result);
+    @ResponseBody
+    public String checkDelete(Long id) {
+        return jobService.checkDelete(id);
     }
 
     @RequestMapping(value = "/delete.do",method= RequestMethod.POST)
-    public void delete(HttpServletResponse response, Long id) {
+    @ResponseBody
+    public boolean delete(Long id) {
         try {
             jobService.delete(id);
-            writeHtml(response, "true");
+            return true;
         } catch (SchedulerException e) {
-            writeHtml(response, "false");
             e.printStackTrace();
+            return false;
         }
     }
 
@@ -313,8 +315,8 @@ public class JobController extends BaseController {
         }
     }
 
-    @RequestMapping("/detail.htm")
-    public String showDetail(HttpSession session, Model model, Long id) {
+    @RequestMapping("/detail/{id}.htm")
+    public String showDetail(HttpSession session, Model model,@PathVariable("id") Long id) {
         JobVo jobVo = jobService.getJobVoById(id);
         if (jobVo == null) {
             return "/error/404";

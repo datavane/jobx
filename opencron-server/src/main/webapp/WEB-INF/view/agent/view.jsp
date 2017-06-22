@@ -754,7 +754,7 @@
                                         <i aria-hidden="true" class="fa fa-times"></i>
                                     </a>&nbsp;&nbsp;
                                 </c:if>
-                                <a href="${contextPath}/agent/detail.htm?id=${w.agentId}&csrf=${csrf}" title="查看详情">
+                                <a href="${contextPath}/agent/detail/${w.agentId}.htm?csrf=${csrf}" title="查看详情">
                                     <i aria-hidden="true" class="fa fa-eye"></i>
                                 </a>
                             </div>

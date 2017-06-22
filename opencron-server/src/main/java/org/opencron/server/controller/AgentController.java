@@ -39,6 +39,7 @@ import org.opencron.server.domain.Agent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -202,8 +203,8 @@ public class AgentController extends BaseController {
         return agentService.editPwd(id,type,pwd0, pwd1, pwd2);
     }
 
-    @RequestMapping("/detail.htm")
-    public String showDetail(Model model, Long id) {
+    @RequestMapping("/detail/{id}.htm")
+    public String showDetail(Model model,@PathVariable("id") Long id) {
         Agent agent = agentService.getAgent(id);
         if (agent == null) {
             return "/error/404";

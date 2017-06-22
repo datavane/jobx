@@ -14,9 +14,9 @@
     <tr>
         <td>
             <c:if test="${empty r.jobName}">batchJob</c:if>
-            <c:if test="${!empty r.jobName}"><a href="${contextPath}/job/detail.htm?id=${r.jobId}&csrf=${csrf}">${r.jobName}</a></c:if>
+            <c:if test="${!empty r.jobName}"><a href="${contextPath}/job/detail/${r.jobId}.htm?csrf=${csrf}">${r.jobName}</a></c:if>
         </td>
-        <td><a href="${contextPath}/agent/detail.htm?id=${r.agentId}&csrf=${csrf}">${r.agentName}</a></td>
+        <td><a href="${contextPath}/agent/detail/${r.agentId}.htm?csrf=${csrf}">${r.agentName}</a></td>
         <td>
             <div class="progress progress-striped progress-success active" style="margin-top:3px;width: 80%;height: 14px;" >
                 <div style="width:100%;height: 100%;" class="progress-bar">

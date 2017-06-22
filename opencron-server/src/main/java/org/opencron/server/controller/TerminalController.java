@@ -209,21 +209,20 @@ public class TerminalController extends BaseController {
 
 
     @RequestMapping(value = "/save.do",method= RequestMethod.POST)
-    public void save(HttpSession session, HttpServletResponse response, Terminal term) throws Exception {
+    public String save(HttpSession session, HttpServletResponse response, Terminal term) throws Exception {
         Terminal.AuthStatus authStatus = termService.auth(term);
         if (authStatus.equals(Terminal.AuthStatus.SUCCESS)) {
             User user = OpencronTools.getUser(session);
             term.setUserId(user.getUserId());
             termService.merge(term);
         }
-        writeHtml(response, authStatus.status);
+        return authStatus.status;
     }
 
 
     @RequestMapping(value = "/delete.do",method= RequestMethod.POST)
-    public void delete(HttpSession session, HttpServletResponse response, Terminal term) throws Exception {
-        String message = termService.delete(session, term.getId());
-        writeHtml(response, message);
+    public String delete(HttpSession session, HttpServletResponse response, Terminal term) throws Exception {
+        return termService.delete(session, term.getId());
     }
 
 }

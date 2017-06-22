@@ -79,7 +79,7 @@
                         "groupName": $("#groupName").val()
                     },
                     success: function (data) {
-                        if (data == "true") {
+                        if (data) {
                             $("#checkName").html("<font color='green'>" + '<i class="glyphicon glyphicon-ok-sign"></i>&nbsp;执行器组名可用' + "</font>");
                             return false;
                         } else {

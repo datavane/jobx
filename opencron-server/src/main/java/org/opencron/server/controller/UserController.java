@@ -32,8 +32,10 @@ import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -61,8 +63,8 @@ public class UserController extends BaseController {
         return "/user/view";
     }
 
-    @RequestMapping("/detail.htm")
-    public String detail(Long userId, Model model) {
+    @RequestMapping("/detail/{userId}.htm")
+    public String detail(@PathVariable("userId") Long userId, Model model) {
         User user = userService.queryUserById(userId);
         if (user == null) {
             return "/error/404";
@@ -85,8 +87,8 @@ public class UserController extends BaseController {
         return "redirect:/user/view.htm?csrf=" + OpencronTools.getCSRF(session);
     }
 
-    @RequestMapping("/edit.htm")
-    public String editPage(HttpSession session, Model model, Long id) {
+    @RequestMapping("/edit/{id}.htm")
+    public String editPage(HttpSession session, Model model,@PathVariable("id") Long id) {
         if (!OpencronTools.isPermission(session)
                 && !OpencronTools.getUserId(session).equals(id)) {
             return "redirect:/user/detail.htm?csrf=" + OpencronTools.getCSRF(session);
@@ -131,8 +133,8 @@ public class UserController extends BaseController {
     }
 
     @RequestMapping(value = "/checkname.do",method= RequestMethod.POST)
-    public void checkName(HttpServletResponse response, String name) {
-        boolean result = userService.existsName(name);
-        writeHtml(response, result ? "false" : "true");
+    @ResponseBody
+    public boolean checkName(String name) {
+        return !userService.existsName(name);
     }
 }

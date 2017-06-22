@@ -73,7 +73,7 @@
                         "agentId":$("#agentId").val()
                     },
                     success:function(data){
-                        if (data == "true"){
+                        if (data){
                             $("#checkJobName").html("<font color='green'>" + '<i class="glyphicon glyphicon-ok-sign"></i>&nbsp;作业名称可用' + "</font>");
                             return false;
                         }else {
@@ -259,7 +259,7 @@
                     "agentId":$("#agentId").val()
                 },
                 success:function(data){
-                    if (data == "true"){
+                    if (data){
                         if (execType == 0 && cronExp){
                             $.ajax({
                                 headers:{"csrf":"${csrf}"},
@@ -364,7 +364,7 @@
                 },
 
                 success:function(data) {
-                    if (data == "false"){
+                    if (!data){
                         alert("作业名称已存在!");
                         return false;
                     }else {

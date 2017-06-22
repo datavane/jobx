@@ -21,7 +21,7 @@
         </div>
         <div class="media-body">
             <small class="text-muted">opencron告警 - <fmt:formatDate value="${m.sendTime}" pattern="yyyy-MM-dd HH:mm:ss"/></small><br>
-            <a class="t-overflow" href="${contextPath}/notice/detail.htm?logId=${m.logId}&csrf=${csrf}">${cron:escapeHtml(m.message)}</a>
+            <a class="t-overflow" href="${contextPath}/notice/detail/${m.logId}.htm?csrf=${csrf}">${cron:escapeHtml(m.message)}</a>
         </div>
     </div>
 

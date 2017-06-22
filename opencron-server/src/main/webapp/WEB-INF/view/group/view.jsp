@@ -61,10 +61,10 @@
                         <td>${g.comment}</td>
                         <td>
                             <center>
-                                <a href="${contextPath}/group/edit.htm?groupId=${g.groupId}&csrf=${csrf}" title="编辑">
+                                <a href="${contextPath}/group/edit/${g.groupId}.htm?csrf=${csrf}" title="编辑">
                                     <i class="glyphicon glyphicon-pencil"></i>
                                 </a>&nbsp;&nbsp;
-                                <a href="${contextPath}/groupd/detail.htm?groupId=${g.groupId}&csrf=${csrf}" title="查看详情">
+                                <a href="${contextPath}/groupd/detail/${g.groupId}.htm?csrf=${csrf}" title="查看详情">
                                     <i class="glyphicon glyphicon-eye-open"></i>
                                 </a>
                             </center>

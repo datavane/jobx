@@ -71,7 +71,7 @@
                     "name":name
                 },
                 success:function(data){
-                    if (data == "true"){
+                    if (data){
                         $("#user").submit();
                         return false;
                     }else {
@@ -101,7 +101,7 @@
                         "name":$("#name").val()
                     },
                     success:function(data){
-                        if (data == "true"){
+                        if (data){
                             $("#checkname").html("<font color='green'>" + '<i class="glyphicon glyphicon-ok-sign"></i>&nbsp;用户名可用' + "</font>");
                             return false;
                         }else {

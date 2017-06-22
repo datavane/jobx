@@ -199,10 +199,10 @@
                             <a href="#" onclick="editPwd('${u.userId}')" title="修改密码">
                                 <i class="glyphicon glyphicon-lock"></i>
                             </a>&nbsp;&nbsp;
-                            <a href="${contextPath}/user/edit.htm?id=${u.userId}&csrf=${csrf}" title="编辑资料">
+                            <a href="${contextPath}/user/edit/${u.userId}.htm?csrf=${csrf}" title="编辑资料">
                                 <i class="glyphicon glyphicon-pencil"></i>
                             </a>&nbsp;&nbsp;
-                            <a href="${contextPath}/user/detail.htm?userId=${u.userId}&csrf=${csrf}" title="查看详情">
+                            <a href="${contextPath}/user/detail/${u.userId}.htm?csrf=${csrf}" title="查看详情">
                                 <i class="glyphicon glyphicon-eye-open"></i>
                             </a>
                         </center>

@@ -351,7 +351,7 @@
                                             <i aria-hidden="true" class="fa fa-chevron-down groupIcon_${r.groupId}" redoOpen="off" id="redoIcon_${r.recordId}"></i>
                                         </a>&nbsp;&nbsp;
                                     </c:if>
-                                    <a href="${contextPath}/record/detail.htm?id=${r.recordId}&csrf=${csrf}" title="查看详情">
+                                    <a href="${contextPath}/record/detail/${r.recordId}.htm?csrf=${csrf}" title="查看详情">
                                         <i class="glyphicon glyphicon-eye-open"></i>
                                     </a>&nbsp;&nbsp;
                                 </div>
@@ -388,7 +388,7 @@
                                 <td class="${index.count eq 1 ? (r.redoCount eq index.count ? "redo-last" : "redo-last-top") : (r.redoCount eq index.count ? "redo-last-bottom" : "")}" >
                                     <center>
                                         <div class="visible-md visible-lg hidden-sm hidden-xs action-buttons">
-                                                <a href="${contextPath}/record/detail.htm?id=${rc.recordId}&csrf=${csrf}" title="查看详情">
+                                                <a href="${contextPath}/record/detail/${rc.recordId}.htm?csrf=${csrf}" title="查看详情">
                                                     <i class="glyphicon glyphicon-eye-open"></i>
                                                 </a>&nbsp;&nbsp;
                                         </div>
@@ -434,7 +434,7 @@
                                                     <i aria-hidden="true" class="fa fa-chevron-down groupIcon_${r.groupId}" redoOpen="off" id="redoIcon_${t.recordId}"></i>
                                                 </a>&nbsp;&nbsp;
                                             </c:if>
-                                            <a href="${contextPath}/record/detail.htm?id=${t.recordId}&csrf=${csrf}" title="查看详情">
+                                            <a href="${contextPath}/record/detail/${t.recordId}.htm?csrf=${csrf}" title="查看详情">
                                                 <i class="glyphicon glyphicon-eye-open"></i>
                                             </a>&nbsp;&nbsp;
                                         </div>
@@ -468,7 +468,7 @@
                                         <td class="${index.count eq 1 ? (t.redoCount eq index.count ? "redo-last" : "redo-last-top") : (t.redoCount eq index.count ? "redo-last-bottom" : "")}" >
                                             <center>
                                                 <div class="visible-md visible-lg hidden-sm hidden-xs action-buttons">
-                                                        <a href="${contextPath}/record/detail.htm?id=${tc.recordId}&csrf=${csrf}" title="查看详情">
+                                                        <a href="${contextPath}/record/detail/${tc.recordId}.htm?csrf=${csrf}" title="查看详情">
                                                             <i class="glyphicon glyphicon-eye-open"></i>
                                                         </a>&nbsp;&nbsp;
                                                 </div>

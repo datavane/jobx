@@ -298,7 +298,6 @@ public class ExecuteService implements Job {
         String[] arrayIds = agentIds.split(";");
         final Semaphore semaphore = new Semaphore(arrayIds.length);
         ExecutorService exec = Executors.newCachedThreadPool();
-
         for (String agentId : arrayIds) {
             Agent agent = agentService.getAgent(Long.parseLong(agentId));
             final JobVo jobVo = new JobVo(userId, command, agent);
@@ -321,6 +320,7 @@ public class ExecuteService implements Job {
         while (true) {
             if (exec.isTerminated()) {
                 logger.info("[opencron]batchExecuteJob doned!");
+                break;
             }
         }
     }

@@ -33,6 +33,7 @@ import org.opencron.server.vo.RecordVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -96,7 +97,7 @@ public class RecordController extends BaseController {
     }
 
     @RequestMapping("/running.htm")
-    public String queryRunning(HttpSession session, HttpServletRequest request, PageBean pageBean, RecordVo recordVo, String queryTime, Model model,String refresh) {
+    public String queryRunning(HttpSession session, PageBean pageBean, RecordVo recordVo, String queryTime, Model model,String refresh) {
 
         model.addAttribute("agents", agentService.getOwnerAgents(session));
 
@@ -122,12 +123,12 @@ public class RecordController extends BaseController {
 
     @RequestMapping("/refresh.htm")
     public String refresh(HttpSession session, HttpServletRequest request, PageBean pageBean, RecordVo recordVo, String queryTime, Model model) {
-        this.queryRunning(session,request,pageBean,recordVo,queryTime,model,"refresh");
+        this.queryRunning(session,pageBean,recordVo,queryTime,model,"refresh");
         return "/record/refresh";
     }
 
-    @RequestMapping("/detail.htm")
-    public String showDetail(Model model, Long id) {
+    @RequestMapping("/detail/{id}.htm")
+    public String showDetail(Model model,@PathVariable("id") Long id) {
         RecordVo recordVo = recordService.getDetailById(id);
         if (recordVo == null) {
             return "/error/404";

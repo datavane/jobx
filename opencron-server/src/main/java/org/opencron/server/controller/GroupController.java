@@ -32,6 +32,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -71,9 +72,9 @@ public class GroupController extends BaseController {
     }
 
     @RequestMapping(value = "/checkname.do",method= RequestMethod.POST)
-    public void checkname(Long id, String groupName, HttpServletResponse response) {
-        boolean exists = groupService.existsName(id, groupName);
-        writeHtml(response, exists ? "false" : "true");
+    @ResponseBody
+    public boolean checkname(Long id, String groupName) {
+        return  !groupService.existsName(id, groupName);
     }
 
     @RequestMapping(value = "/save.do",method= RequestMethod.POST)
