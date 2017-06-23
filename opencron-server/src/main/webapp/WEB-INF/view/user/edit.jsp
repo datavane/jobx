@@ -151,7 +151,7 @@
                 <div class="form-group">
                     <label for="role" class="col-lab control-label"><i class="glyphicon glyphicon-random"></i>&nbsp;&nbsp;用户角色：</label>
                     <div class="col-md-10">
-                        <select id="role" name="roleId" class="form-control m-b-10 input-sm">
+                        <select style="height: 30px;" id="role" name="roleId" class="form-control m-b-10 input-sm">
                             <c:forEach var="r" items="${role}">
                                 <option value="${r.roleId}" ${r.roleId eq u.roleId ? 'selected' : ''}>${r.roleName}</option>
                             </c:forEach>
