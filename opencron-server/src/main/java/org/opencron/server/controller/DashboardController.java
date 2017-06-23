@@ -46,7 +46,7 @@ import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.awt.*;
+import java.awt.Image;
 import java.io.File;
 import java.util.Collections;
 import java.util.Date;
