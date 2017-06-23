@@ -31,6 +31,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
 
@@ -75,8 +76,10 @@ public class ConfigController extends BaseController {
     }
 
     @RequestMapping(value = "/clear.do",method= RequestMethod.POST)
-    public void clearRecord(String startTime, String endTime) {
+    @ResponseBody
+    public boolean clearRecord(String startTime, String endTime) {
         recordService.deleteRecordBetweenTime(startTime, endTime);
+        return true;
     }
 
 }
