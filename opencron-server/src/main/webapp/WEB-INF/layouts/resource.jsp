@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="${contextPath}/static/css/animate.min.css?resId=${resourceId}" />
     <link rel="stylesheet" href="${contextPath}/static/css/font-awesome.css?resId=${resourceId}" />
     <link rel="stylesheet" href="${contextPath}/static/css/font-awesome-ie7.min.css?resId=${resourceId}" />
+    <link rel="stylesheet" href="${contextPath}/static/css/font-material.css?resId=${resourceId}" />
     <link rel="stylesheet" href="${contextPath}/static/css/form.css?resId=${resourceId}" />
 
     <link rel="stylesheet" href="${contextPath}/static/css/calendar.css?resId=${resourceId}" />

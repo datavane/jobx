@@ -89,3 +89,32 @@ b{color: red;}
 .block-color{
     background-color: rgba(0,0,0,0.3);
 }
+
+.btn-float {
+    background-color: rgba(0, 0, 0, 0);
+    border: medium none rgba(0, 0, 0, 0);
+    border-radius: 50%;
+    height: 30px;
+    width: 30px;
+}
+
+.btn-float:hover {
+    background-color: rgba(200, 200, 255, 0.4);
+    box-shadow: 0 2px 7px rgba(0, 0, 0, 0.18);
+}
+
+.btn-float i {
+    font-size: 16px;
+    -webkit-transition: all;
+    -moz-transition: all;
+    -o-transition: all;
+    transition: all;
+    -webkit-transition-duration: 500ms;
+    transition-duration: 500ms;
+}
+.btn-float:hover i {
+    -webkit-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+}

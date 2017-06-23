@@ -31,7 +31,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" onclick="closeWin();" aria-hidden="true">&times;</button>
+                <button class="close btn-float" data-dismiss="modal" aria-hidden="true" onclick="closeWin();"><i class="md md-close"></i></button>
                 <h4 id="sshTitle" style="color: red;font-size: 13px;">用户名密码错误</h4>
             </div>
             <div class="modal-body">
