@@ -50,7 +50,7 @@ public class GroupService {
     private AgentService agentService;
 
     public PageBean<Group> getGroupPage(PageBean pageBean) {
-        pageBean = queryDao.getPageBySql(pageBean,Group.class,"SELECT G.*,U.userName FROM T_GROUP AS G INNER JOIN T_USER AS U ON G.userId=u.userId");
+        pageBean = queryDao.getPageBySql(pageBean,Group.class,"SELECT G.*,U.userName FROM T_GROUP AS G INNER JOIN T_USER AS U ON G.userId=U.userId");
         List<Group> groups = pageBean.getResult();
         if (CommonUtils.notEmpty(groups)) {
             String sql = "SELECT COUNT(1) FROM T_AGENT_GROUP WHERE groupId=?";
