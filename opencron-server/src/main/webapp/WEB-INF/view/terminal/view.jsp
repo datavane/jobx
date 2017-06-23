@@ -33,7 +33,7 @@
                 data: {"id":id},
                 dataType: "JSON",
                 success: function (json) {
-                    if(json.indexOf("login")>-1){
+                    if(json&&json.toString().indexOf("login")>-1){
                         window.location.href="${contextPath}";
                     }
                     if (json.status == "authfail" || json.status == "keyauthfail") {
