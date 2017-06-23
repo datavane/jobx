@@ -641,7 +641,7 @@
             src='${contextPath}/static/img/icon-loader.gif' style="width: 14px;height: 14px">&nbsp;通信监测持续进行中...</span></h4>
     <div class="block-area" id="defaultStyle">
         <div>
-            <div style="float: left;width: 50px;margin-bottom: 8px">
+            <div style="float:left;">
                 <label >
                     每页 <select size="1" class="select-opencron" id="size" style="width: 50px;">
                     <option value="15">15</option>
