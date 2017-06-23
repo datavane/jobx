@@ -43,7 +43,7 @@
         <div>
             <div style="float: left">
                 <label>
-                    每页 <select size="1" class="select-self" id="size" style="width: 50px;">
+                    每页 <select size="1" class="select-opencron" id="size" style="width: 50px;">
                     <option value="15">15</option>
                     <option value="30" ${pageBean.pageSize eq 30 ? 'selected' : ''}>30</option>
                     <option value="50" ${pageBean.pageSize eq 50 ? 'selected' : ''}>50</option>
@@ -54,7 +54,7 @@
 
             <div style="float: right;margin-top: -10px">
                 <label for="agentId">执行器：</label>
-                <select id="agentId" name="agentId" class="select-self" style="width: 120px;">
+                <select id="agentId" name="agentId" class="select-opencron" style="width: 120px;">
                     <option value="">全部</option>
                     <c:forEach var="w" items="${agents}">
                         <option value="${w.agentId}" ${w.agentId eq agentId ? 'selected' : ''}>${w.name}</option>
@@ -62,7 +62,7 @@
                 </select>
                 &nbsp;
                 <label for="sendTime">发送时间：</label>
-                <input type="text" id="sendTime" name="sendTime" value="${sendTime}" onfocus="WdatePicker({onpicked:function(){doUrl(); },dateFmt:'yyyy-MM-dd'})" class="Wdate select-self" style="width: 90px"/>
+                <input type="text" id="sendTime" name="sendTime" value="${sendTime}" onfocus="WdatePicker({onpicked:function(){doUrl(); },dateFmt:'yyyy-MM-dd'})" class="Wdate select-opencron" style="width: 90px"/>
                 
                 <button type="button" onclick="history.back()" class="btn btn-sm m-t-10" style="margin-left: 50px;margin-bottom: 8px"><i class="icon">&#61740;</i>&nbsp;返回</button>
             </div>

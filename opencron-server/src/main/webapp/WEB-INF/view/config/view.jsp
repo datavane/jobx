@@ -105,9 +105,9 @@
                 <td class="item"><i class='glyphicon glyphicon-trash'></i>&nbsp;清理记录：</td>
                 <td>
                     <label for="startTime" class="label-self">时间&nbsp;: </label>
-                    <input type="text" style="width: 90px" id="startTime" name="startTime" value="${startTime}" onfocus="WdatePicker({onpicked:function(){},dateFmt:'yyyy-MM-dd'})" class="Wdate select-self"/>
+                    <input type="text" style="width: 90px" id="startTime" name="startTime" value="${startTime}" onfocus="WdatePicker({onpicked:function(){},dateFmt:'yyyy-MM-dd'})" class="Wdate select-opencron"/>
                     <label for="endTime" class="label-self">&nbsp;至&nbsp;</label>
-                    <input type="text" style="width: 90px" id="endTime" name="endTime" value="${endTime}" onfocus="WdatePicker({onpicked:function(){},dateFmt:'yyyy-MM-dd'})" class="Wdate select-self"/>&nbsp;
+                    <input type="text" style="width: 90px" id="endTime" name="endTime" value="${endTime}" onfocus="WdatePicker({onpicked:function(){},dateFmt:'yyyy-MM-dd'})" class="Wdate select-opencron"/>&nbsp;
                     <button onclick="clearRecord()" class="btn btn-default btn-sm" style="vertical-align:top;height: 25px;" type="button"><i class="glyphicon glyphicon-trash"></i>&nbsp;清理</button><span class="tips">&nbsp;&nbsp;&nbsp;（<b>*&nbsp;</b>此操作会删除选定时间段内的任务记录，请谨慎执行）</span>
                 </td>
             </tr>

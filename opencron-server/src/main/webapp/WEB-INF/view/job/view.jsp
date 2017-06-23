@@ -703,7 +703,7 @@
         <div>
             <div style="float: left">
                 <label>
-                    每页 <select size="1" class="select-self" id="size" style="width: 50px;">
+                    每页 <select size="1" class="select-opencron" id="size" style="width: 50px;">
                     <option value="15">15</option>
                     <option value="30" ${pageBean.pageSize eq 30 ? 'selected' : ''}>30</option>
                     <option value="50" ${pageBean.pageSize eq 50 ? 'selected' : ''}>50</option>
@@ -714,7 +714,7 @@
 
             <div style="float: right;margin-top: -10px">
                 <label for="agentId">执行器：</label>
-                <select id="agentId" name="agentId" class="select-self" style="width: 110px;">
+                <select id="agentId" name="agentId" class="select-opencron" style="width: 110px;">
                     <option value="">全部</option>
                     <c:forEach var="d" items="${agents}">
                         <option value="${d.agentId}" ${d.agentId eq agentId ? 'selected' : ''}>${d.name}</option>
@@ -723,7 +723,7 @@
 
                 &nbsp;&nbsp;&nbsp;
                 <label for="cronType">规则类型：</label>
-                <select id="cronType" name="cronType" class="select-self" style="width: 80px;">
+                <select id="cronType" name="cronType" class="select-opencron" style="width: 80px;">
                     <option value="">全部</option>
                     <option value="0" ${cronType eq 0 ? 'selected' : ''}>crontab</option>
                     <option value="1" ${cronType eq 1 ? 'selected' : ''}>quartz</option>
@@ -731,7 +731,7 @@
 
                 &nbsp;&nbsp;&nbsp;
                 <label for="jobType">作业类型：</label>
-                <select id="jobType" name="jobType" class="select-self" style="width: 80px;">
+                <select id="jobType" name="jobType" class="select-opencron" style="width: 90px;">
                     <option value="">全部</option>
                     <option value="0" ${jobType eq 0 ? 'selected' : ''}>单一作业</option>
                     <option value="1" ${jobType eq 1 ? 'selected' : ''}>流程作业</option>
@@ -739,7 +739,7 @@
 
                 &nbsp;&nbsp;&nbsp;
                 <label for="execType">运行模式：</label>
-                <select id="execType" name="execType" class="select-self" style="width: 80px;">
+                <select id="execType" name="execType" class="select-opencron" style="width: 80px;">
                     <option value="">全部</option>
                     <option value="1" ${execType eq 1 ? 'selected' : ''}>手动</option>
                     <option value="0" ${execType eq 0 ? 'selected' : ''}>自动</option>
@@ -747,7 +747,7 @@
                 &nbsp;&nbsp;&nbsp;
 
                 <label for="redo">重跑：</label>
-                <select id="redo" name="redo" class="select-self" style="width: 80px;">
+                <select id="redo" name="redo" class="select-opencron" style="width: 80px;">
                     <option value="">全部</option>
                     <option value="1" ${redo eq 1 ? 'selected' : ''}>是</option>
                     <option value="0" ${redo eq 0 ? 'selected' : ''}>否</option>

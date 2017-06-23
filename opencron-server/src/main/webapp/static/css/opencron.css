@@ -1,19 +1,18 @@
 .highcharts-button{
     display: none;
 }
-.select-self{
-    background-color:rgba(0,0,0,0.4)!important;
-    border: 1px solid rgba(0,0,0,0.3)!important;
-    height: 23px;
+.select-opencron {
+    background-color: rgba(0, 0, 0, 0.1)!important;
+    border: 1px solid rgba(255, 255, 255, 0.28)!important;
+    padding-left: 3px!important;
 }
-.select-self > option{
+.select-opencron > option{
     background-color: #d9edf7;
 }
 .input-sm{
     width: 75.333%;
     margin-bottom: 5px;
 }
-
 .radio-label{
     margin-top: 7px;
 }

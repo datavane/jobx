@@ -74,10 +74,12 @@ select:not([multiple]){
    text-overflow: '';
    line-height: normal !important;
    background-image: url(/static/img/select-bg.png);
-    -webkit-background-size: 15px 6px;
-    background-size: 15px 6px;
+   -webkit-background-size: 15px 6px;
+   background-size: 15px 6px;
    background-repeat: no-repeat;
    background-position: right center;
+   padding:1px;
+   height: 24px;
 }
 
 .ie9 select:not([multiple]){

@@ -26,7 +26,7 @@
 
         <div style="float: left">
             <label>
-                每页 <select size="1" class="select-self" id="size" style="width: 50px;">
+                每页 <select size="1" class="select-opencron" id="size" style="width: 50px;">
                 <option value="15">15</option>
                 <option value="30" ${pageBean.pageSize eq 30 ? 'selected' : ''}>30</option>
                 <option value="50" ${pageBean.pageSize eq 50 ? 'selected' : ''}>50</option>

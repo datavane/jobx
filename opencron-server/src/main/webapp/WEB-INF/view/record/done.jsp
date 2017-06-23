@@ -202,7 +202,7 @@
         <div>
             <div style="float: left">
                 <label>
-                    每页 <select size="1" class="select-self" id="size" style="width: 50px;">
+                    每页 <select size="1" class="select-opencron" id="size" style="width: 50px;">
                     <option value="15">15</option>
                     <option value="30" ${pageBean.pageSize eq 30 ? 'selected' : ''}>30</option>
                     <option value="50" ${pageBean.pageSize eq 50 ? 'selected' : ''}>50</option>
@@ -213,7 +213,7 @@
 
             <div style="float: right;margin-bottom: 10px">
                 <label for="agentId">执行器：</label>
-                <select id="agentId" name="agentId" class="select-self" style="width: 110px;">
+                <select id="agentId" name="agentId" class="select-opencron" style="width: 110px;">
                     <option value="">全部</option>
                     <c:forEach var="d" items="${agents}">
                         <option value="${d.agentId}" ${d.agentId eq agentId ? 'selected' : ''}>${d.name}</option>
@@ -221,7 +221,7 @@
                 </select>
                 &nbsp;&nbsp;&nbsp;
                 <label for="jobId">任务名称：</label>
-                <select id="jobId" name="jobId" class="select-self" style="width: 110px;">
+                <select id="jobId" name="jobId" class="select-opencron" style="width: 110px;">
                     <option value="">全部</option>
                     <c:forEach var="t" items="${jobs}">
                         <option value="${t.jobId}" ${t.jobId eq jobId ? 'selected' : ''}>${t.jobName}&nbsp;</option>
@@ -229,7 +229,7 @@
                 </select>
                 &nbsp;&nbsp;&nbsp;
                 <label for="success">执行状态：</label>
-                <select id="success" name="success" class="select-self" style="width: 80px;">
+                <select id="success" name="success" class="select-opencron" style="width: 80px;">
                     <option value="">全部</option>
                     <option value="1" ${success eq 1 ? 'selected' : ''}>成功</option>
                     <option value="0" ${success eq 0 ? 'selected' : ''}>失败</option>
@@ -238,7 +238,7 @@
                 </select>
                 &nbsp;&nbsp;&nbsp;
                 <label for="execType">执行方式：</label>
-                <select id="execType" name="execType" class="select-self" style="width: 80px;">
+                <select id="execType" name="execType" class="select-opencron" style="width: 80px;">
                     <option value="">全部</option>
                     <option value="0" ${execType eq 0 ? 'selected' : ''}>自动</option>
                     <option value="1" ${execType eq 1 ? 'selected' : ''}>手动</option>
@@ -247,7 +247,7 @@
                 </select>
                 &nbsp;&nbsp;&nbsp;
                 <label for="queryTime">开始时间：</label>
-                <input type="text" id="queryTime" name="queryTime" value="${queryTime}" onfocus="WdatePicker({onpicked:function(){doUrl(); },dateFmt:'yyyy-MM-dd'})" class="Wdate select-self" style="width: 90px"/>
+                <input type="text" id="queryTime" name="queryTime" value="${queryTime}" onfocus="WdatePicker({onpicked:function(){doUrl(); },dateFmt:'yyyy-MM-dd'})" class="Wdate select-opencron" style="width: 90px"/>
             </div>
         </div>
 
