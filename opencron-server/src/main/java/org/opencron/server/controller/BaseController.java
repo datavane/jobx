@@ -31,7 +31,7 @@ import java.beans.PropertyEditorSupport;
 /**
  * Created by benjobs on 2017/2/10.
  */
-public abstract class BaseController extends WebUtils {
+public abstract class BaseController {
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {

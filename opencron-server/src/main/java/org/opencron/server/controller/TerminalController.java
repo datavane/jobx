@@ -46,6 +46,7 @@ import java.net.URLDecoder;
 import java.util.List;
 
 import static org.opencron.server.service.TerminalService.*;
+import static org.opencron.common.utils.WebUtils.*;
 
 /**
  * benjobs..
@@ -61,7 +62,7 @@ public class TerminalController extends BaseController {
     public void ssh(HttpSession session, HttpServletResponse response, Terminal terminal) throws Exception {
         User user = OpencronTools.getUser(session);
 
-        String json = "{status:'%s',url:'%s'}";
+        String json = "{\"status\":\"%s\",\"url\":\"%s\"}";
 
         terminal = termService.getById(terminal.getId());
         Terminal.AuthStatus authStatus = termService.auth(terminal);

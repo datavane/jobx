@@ -285,10 +285,10 @@ blockquote small {
 }
 
 #top-menu .tm-icon > a {
-    padding:10px 8px 0;
-    white-space: nowrap;
-    height:60px;
     float: left;
+    height: 60px;
+    padding: 10px 15px 0;
+    white-space: nowrap;
 }
 
 #top-menu .tm-icon > a:hover, #top-menu .tm-icon > a:focus {

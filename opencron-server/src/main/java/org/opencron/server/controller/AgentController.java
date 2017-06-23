@@ -44,6 +44,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import static org.opencron.common.utils.WebUtils.*;
+
 
 @Controller
 @RequestMapping("/agent")
@@ -122,7 +124,7 @@ public class AgentController extends BaseController {
     @RequestMapping(value = "/autoreg.do",method= RequestMethod.POST)
     public synchronized void autoReg(HttpServletRequest request, HttpServletResponse response, Agent agent, String key) {
         String ip = getIp(request);
-        String format = "{status:'%d',message:'%s'}";
+        String format = "{\"status\":%d,\"message\":\"%s\"}";
         if (ip == null) {
             writeJson(response, String.format(format,500,"can't get agent'ip"));
             return;
@@ -171,6 +173,7 @@ public class AgentController extends BaseController {
         Agent agent = agentService.getAgent(id);
         if (agent == null) {
             write404(response);
+            return null;
         }
         return agent;
     }

@@ -66,7 +66,7 @@ public class WebUtils implements Serializable{
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
         response.setStatus(404);
-        write(response, "{status:404}");
+        write(response, "{\"status\":404}");
     }
 
     private static void write(HttpServletResponse response, String content) {

@@ -49,6 +49,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import static org.opencron.common.utils.CommonUtils.notEmpty;
+import static org.opencron.common.utils.WebUtils.*;
 
 @Controller
 @RequestMapping("/job")
@@ -218,7 +219,8 @@ public class JobController extends BaseController {
     public void editSingleJob(HttpSession session, HttpServletResponse response, Long id) {
         JobVo job = jobService.getJobVoById(id);
         if (job == null) {
-            writeJson(response, "404");
+            write404(response);
+            return;
         }
         if (!jobService.checkJobOwner(session, job.getUserId())) return;
         writeJson(response, JSON.toJSONString(job));
