@@ -96,10 +96,11 @@ b{color: red;}
     border-radius: 50%;
     height: 30px;
     width: 30px;
+    margin-top: 4px!important;
 }
 
 .btn-float:hover {
-    background-color: rgba(200, 200, 255, 0.4);
+    background-color: rgba(255, 255, 255, 0.6);
     box-shadow: 0 2px 7px rgba(0, 0, 0, 0.18);
 }
 

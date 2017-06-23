@@ -79,7 +79,7 @@ select:not([multiple]){
    background-repeat: no-repeat;
    background-position: right center;
    padding:1px;
-   height: 24px;
+   height: 28px;
 }
 
 .ie9 select:not([multiple]){

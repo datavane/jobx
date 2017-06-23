@@ -183,7 +183,7 @@
                         <input type="hidden" name="csrf" value="${csrf}">
                         <input name="userId" type="hidden" value="${opencron_user.userId}">
                         <div class="modal-header">
-                            <button class="close btn-float" data-dismiss="modal" aria-hidden="true"><i class="md md-close"></i></button>
+                            <button class="close btn-float" style="margin-top:-7px!important;margin-right:-11px;" data-dismiss="modal" aria-hidden="true"><i class="md md-close"></i></button>
                             <h4 class="modal-title" id="avatar-modal-label">更改图像</h4>
                         </div>
                         <div class="modal-body">
