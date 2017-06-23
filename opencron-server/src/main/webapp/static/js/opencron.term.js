@@ -59,15 +59,16 @@
             self.term.resize(self.offset.cols, self.offset.rows);
             $.ajax({
                 headers: {"csrf": self.args[1]},
+                type:'POST',
                 url: '/terminal/resize.do',
                 data: {
                     "token": self.args[0],
                     "cols": self.offset.cols,
                     "rows": self.offset.rows,
                     "width": self.offset.width,
-                    "heigh": self.offset.heigh
-                },
-                cache: false
+                    "heigh": self.offset.heigh,
+                    "jsid":new Date().getTime()
+                }
             });
         }
     });
@@ -108,9 +109,14 @@
         var sendInput = $("#sendInput").val();
         if (sendInput && sendInput.length > 0) {
             $.ajax({
+                headers:{"csrf":self.args[1]},
                 type:'POST',
-                url: '/terminal/sendAll.do?token=' + self.args[0] + "&csrf=" + self.args[1] + '&cmd=' + encodeURIComponent(encodeURIComponent(sendInput)),
-                cache: false
+                url: '/terminal/sendAll.do',
+                data:{
+                    "token":self.args[0],
+                    "cmd":encodeURIComponent(encodeURIComponent(sendInput)),
+                    "jsid":new Date()
+                }
             });
             $("#sendInput").val('');
         }
@@ -193,8 +199,13 @@
 
     //同步到后台服务器
     $.ajax({
-        type:'POST',
-        url: '/terminal/theme.do?token=' + this.args[0] + "&csrf=" + this.args[1] + '&theme=' + this.themeName,
-        cache: false
+        headers:{"csrf":this.args[1]},
+        type:"POST",
+        url:"/terminal/theme.do",
+        data:{
+            "token":this.args[0],
+            "theme": this.themeName,
+            "jsid":new Date().getTime()
+        }
     });
 };

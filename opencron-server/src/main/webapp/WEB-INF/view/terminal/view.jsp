@@ -142,7 +142,7 @@
                     headers:{"csrf":"${csrf}"},
                     type: "POST",
                     url: "${contextPath}/terminal/delete.do",
-                    data: "id="+id,
+                    data: {"id":id},
                     dataType: "JSON",
                     success: function (message) {
                         if (message) {
