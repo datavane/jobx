@@ -11,7 +11,7 @@ $(document).ready(function(){
 			'<div class="modal-dialog modal-lg">' +
 			    '<div class="modal-content">' +
 				'<div class="modal-header">' +
-				    '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>' +
+        		'<button class="close btn-float" style="margin-top:-7px!important;margin-right:-11px;" data-dismiss="modal" aria-hidden="true"><i class="md md-close"></i></button>'+
 				    '<h4 class="modal-title">更换主题</h4>' +
 				'</div>' +
 				'<div class="modal-body">' +
