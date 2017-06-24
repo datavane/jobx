@@ -749,10 +749,10 @@
                 <th>执行器</th>
                 <th>作业人</th>
                 <th>执行命令</th>
-                <th>作业类型</th>
-                <th>运行模式</th>
-                <th>规则类型</th>
-                <th>时间规则</th>
+                <th><center>作业类型</center></th>
+                <th><center>运行模式</center></th>
+                <th><center>规则类型</center></th>
+                <th><center>时间规则</center></th>
                 <th>
                     <center>
                         <i class="icon-time bigger-110 hidden-480"></i>
