@@ -27,6 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.alibaba.fastjson.JSON;
 import org.opencron.common.job.Opencron;
 import org.opencron.common.utils.CommonUtils;
 import org.opencron.common.utils.PropertyPlaceholder;
@@ -168,14 +169,13 @@ public class AgentController extends BaseController {
     }
 
     @RequestMapping(value = "/get.do",method= RequestMethod.POST)
-    @ResponseBody
-    public Agent get(HttpServletResponse response, Long id) {
+    public void get(HttpServletResponse response, Long id) {
         Agent agent = agentService.getAgent(id);
         if (agent == null) {
             write404(response);
-            return null;
+            return;
         }
-        return agent;
+        writeJson(response, JSON.toJSONString(agent));
     }
 
     @RequestMapping(value = "/edit.do",method= RequestMethod.POST)

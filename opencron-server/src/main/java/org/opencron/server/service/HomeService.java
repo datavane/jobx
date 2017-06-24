@@ -97,15 +97,12 @@ public class HomeService {
         String sql = "SELECT L.*,W.name AS agentName FROM T_LOG AS L " +
                 "LEFT JOIN T_AGENT AS W " +
                 "ON L.agentId = W.agentId " +
-                "WHERE 1=1 ";
+                "WHERE L.userId = " + OpencronTools.getUserId(session);
         if (notEmpty(agentId)) {
             sql += " AND L.agentId = " + agentId;
         }
         if (notEmpty(sendTime)) {
             sql += " AND L.sendTime LIKE '" + sendTime + "%' ";
-        }
-        if (!OpencronTools.isPermission(session)) {
-            sql += " AND L.userId = " + OpencronTools.getUserId(session);
         }
         sql += " ORDER BY L.sendTime DESC";
         queryDao.getPageBySql(pageBean, LogVo.class, sql);
@@ -113,24 +110,18 @@ public class HomeService {
     }
 
     public List<LogVo> getUnReadMessage(HttpSession session) {
-        String sql = "SELECT * FROM T_LOG WHERE isRead=0 AND type=2 ";
-        if (!OpencronTools.isPermission(session)) {
-            sql += " and userId = " + OpencronTools.getUserId(session);
-        }
+        String sql = "SELECT * FROM T_LOG WHERE isRead=0 AND type=?  and userId = ? ORDER BY sendTime DESC LIMIT 5 ";
         sql += " ORDER BY sendTime DESC LIMIT 5";
-        return queryDao.sqlQuery(LogVo.class, sql);
+        return queryDao.sqlQuery(LogVo.class, sql,Opencron.MsgType.WEBSITE.getValue(),OpencronTools.getUserId(session));
     }
 
     public Long getUnReadCount(HttpSession session) {
-        String sql = "SELECT COUNT(1) FROM T_LOG WHERE isRead=0 AND type=2 ";
-        if (!OpencronTools.isPermission(session)) {
-            sql += " and userId = " + OpencronTools.getUserId(session);
-        }
-        return queryDao.getCountBySql(sql);
+        String sql = "SELECT COUNT(1) FROM T_LOG WHERE isRead=0 AND type=? and userId = ?";
+        return queryDao.getCountBySql(sql,Opencron.MsgType.WEBSITE.getValue(),OpencronTools.getUserId(session));
     }
 
-    
     public void saveLog(Log log) {
+        log.setLogId(null);
         queryDao.merge(log);
     }
 
@@ -138,11 +129,9 @@ public class HomeService {
         return queryDao.get(Log.class, logId);
     }
 
-    
     public void updateAfterRead(Long logId) {
         String sql = "UPDATE T_LOG SET isRead = 1 WHERE logId = ? and Type = ?";
         queryDao.createSQLQuery(sql, logId, Opencron.MsgType.WEBSITE.getValue()).executeUpdate();
     }
-
 
 }

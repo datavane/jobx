@@ -90,6 +90,27 @@ b{color: red;}
     background-color: rgba(0,0,0,0.3);
 }
 
+.opencron_command {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    -moz-binding: url("ellipsis.xml#ellipsis");
+    text-overflow: ellipsis;
+}
+
+@media (min-width: 1440px) {
+   .opencron_command{
+       width: 40em;
+   }
+}
+
+@media (max-width: 1440px) {
+    .opencron_command{
+        width: 30em;
+    }
+}
+
 .btn-float {
     background-color: rgba(0, 0, 0, 0);
     border: medium none rgba(0, 0, 0, 0);

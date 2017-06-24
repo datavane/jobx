@@ -36,14 +36,10 @@
             text-align:center;
             font-size: 10px;
         }
-        .opencron_command{display: none;overflow:hidden; text-overflow:ellipsis; white-space: nowrap;}
     </style>
 
     <script type="text/javascript">
-        function rewidth() {
-            var width = $(window).width();
-            $(".opencron_command").show().css("width",500+(width-1500)+"px");
-        }
+
 
         $(document).ready(function(){
             $("#size").change(function(){doUrl();});
@@ -310,8 +306,9 @@
                             </td>
                         </c:if>
                         <td>${r.agentName}</td>
-
-                        <td title="${cron:escapeHtml(r.command)}"><div class="opencron_command">${cron:escapeHtml(r.command)}</div></td>
+                        <td style="width: 25%" title="${cron:escapeHtml(r.command)}">
+                            <div class="opencron_command">${cron:escapeHtml(r.command)}</div>
+                        </td>
                         <td><fmt:formatDate value="${r.startTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                         <td>${cron:diffdate(r.startTime,r.endTime)}</td>
                         <td>
@@ -363,7 +360,9 @@
                         <c:forEach var="rc" items="${r.childRecord}" varStatus="index">
                             <tr class="redoGroup_${r.recordId} groupRecord_${r.groupId}" style="display: none;">
                                 <td class="${index.count eq 1 ? (r.redoCount eq index.count ? "redo-first" : "redo-first-top") : (r.redoCount eq index.count ? "redo-first-bottom" : "")}" >${rc.agentName}</td>
-                                <td title="${cron:escapeHtml(rc.command)}"><div class="opencron_command">${cron:escapeHtml(rc.command)}</div> </td>
+                                <td style="width: 25%" title="${cron:escapeHtml(rc.command)}">
+                                    <div class="opencron_command">${cron:escapeHtml(rc.command)}</div>
+                                </td>
                                 <td><fmt:formatDate value="${rc.startTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                 <td>${cron:diffdate(rc.startTime,rc.endTime)}</td>
                                 <td>
@@ -403,7 +402,9 @@
 
                             <tr class="flowGroup_${r.recordId} tr-flow_${empty r.groupId ? "" : r.groupId+index.count}" style="display: none;">
                                 <td>${t.agentName}</td>
-                                <td title="${cron:escapeHtml(t.command)}"><div class="opencron_command">${cron:escapeHtml(t.command)}</div></td>
+                                <td style="width: 25%" title="${cron:escapeHtml(t.command)}">
+                                    <div class="opencron_command">${cron:escapeHtml(t.command)}</div>
+                                </td>
                                 <td><fmt:formatDate value="${t.startTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                 <td>${cron:diffdate(t.startTime,t.endTime)}</td>
                                 <td>
@@ -446,7 +447,9 @@
                                 <c:forEach var="tc" items="${t.childRecord}" varStatus="index">
                                     <tr class="redoGroup_${t.recordId} groupRecord_${r.groupId}" style="display: none;">
                                         <td class="${index.count eq 1 ? (t.redoCount eq index.count ? "redo-first" : "redo-first-top") : (t.redoCount eq index.count ? "redo-first-bottom" : "")} ">${tc.agentName}</td>
-                                        <td title="${cron:escapeHtml(tc.command)}"><div class="opencron_command">${cron:escapeHtml(tc.command)}</div></td>
+                                        <td style="width: 25%" title="${cron:escapeHtml(tc.command)}">
+                                            <div class="opencron_command">${cron:escapeHtml(tc.command)}</div>
+                                        </td>
                                         <td><fmt:formatDate value="${tc.startTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                         <td>${cron:diffdate(tc.startTime,tc.endTime)}</td>
                                         <td>

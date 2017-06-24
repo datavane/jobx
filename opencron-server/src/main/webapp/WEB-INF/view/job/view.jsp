@@ -8,13 +8,6 @@
 <head>
 
     <style type="text/css">
-        .opencron_command {
-            display: none;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
         .none {
             text-align: center;
         }
@@ -387,11 +380,6 @@
             });
         }
 
-        function rewidth() {
-            var width = $(window).width();
-            $(".opencron_command").show().css("width", 300 + (width - 1500) + "px");
-        }
-
         $(document).ready(function () {
             $("#execType0").next().attr("onclick", "showCronExp()");
             $("#execType1").next().attr("onclick", "hideCronExp()");
@@ -487,10 +475,6 @@
                     }
                 });
             });
-
-            rewidth();
-
-            $(window).resize(rewidth);
 
         });
 
@@ -803,7 +787,7 @@
                     <c:if test="${permission eq false}">
                         <td>${r.operateUname}</td>
                     </c:if>
-                    <td style="white-space: nowrap;">
+                    <td style="width: 25%">
                         <div class="opencron_command">
                             <a href="#" title="${cron:escapeHtml(r.command)}" onclick="editCmd('${r.jobId}')"
                                id="command_${r.jobId}">
@@ -899,7 +883,7 @@
                             <c:if test="${permission eq false}">
                                 <td>${c.operateUname}</td>
                             </c:if>
-                            <td style="white-space: nowrap;">
+                            <td style="width: 25%">
                                 <div class="opencron_command">
                                     <a href="#" title="${cron:escapeHtml(c.command)}" onclick="editCmd('${c.jobId}')"
                                        id="command_${c.jobId}">

@@ -7,17 +7,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <style type="text/css">
-        .opencron_command{display: none;overflow:hidden; text-overflow:ellipsis; white-space: nowrap;}
-    </style>
-
     <script type="text/javascript">
-
-        function rewidth() {
-            var width = $(window).width();
-            $(".opencron_command").show().css("width",500+(width-1500)+"px");
-        }
-
         $(document).ready(function(){
 
             setInterval(function(){
@@ -46,7 +36,6 @@
                             window.location.href="${contextPath}";
                         }else {
                             $("#tableContent").html(data);
-                            rewidth();
                         }
                     }
                 });
@@ -56,8 +45,6 @@
             $("#agentId").change(function(){doUrl();});
             $("#jobId").change(function(){doUrl();});
             $("#execType").change(function(){doUrl();});
-            rewidth();
-            $(window).resize(rewidth);
         });
         function doUrl() {
             var pageSize = $("#size").val();
@@ -226,7 +213,8 @@
                         <c:if test="${r.execType eq 2}"><span class="label label-warning">&nbsp;&nbsp;重&nbsp;跑&nbsp;&nbsp;</span></c:if>
                         <c:if test="${r.execType eq 3}"><span class="label label-default" style="color: green;font-weight:bold">&nbsp;&nbsp;现&nbsp;场&nbsp;&nbsp;</span></c:if>
                     </td>
-                    <td title="${cron:escapeHtml(r.command)}">
+
+                    <td style="width: 25%" title="${cron:escapeHtml(r.command)}">
                         <div class="opencron_command">${cron:escapeHtml(r.command)}</div>
                     </td>
 

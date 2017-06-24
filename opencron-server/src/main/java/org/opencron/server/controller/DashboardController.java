@@ -261,7 +261,9 @@ public class DashboardController extends BaseController {
             return;
         }
 
-        String path = httpSession.getServletContext().getRealPath("/") + "upload" + File.separator;
+        String rootPath = httpSession.getServletContext().getRealPath("/");
+        rootPath +=  rootPath.endsWith("/")?"":"/";
+        String path = rootPath + "upload/";
 
         String picName = user.getUserId() + extensionName.toLowerCase();
 
