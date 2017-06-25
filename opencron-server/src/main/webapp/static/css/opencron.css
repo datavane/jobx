@@ -1,18 +1,41 @@
 .highcharts-button{
     display: none;
 }
+
+.input-sm{
+    width: 75.333%;
+    margin-bottom: 5px;
+    height: 35px;
+    line-height: 35px;
+}
+
+input,select,textarea {
+    background-color: rgba(0, 0, 0, 0.3)!important;
+    text-shadow: 0 0 3px rgba(255,255,255,0.4)!important;
+    border: 0 none!important;
+    color: rgba(255, 255, 255, 0.8)!important;
+    font-size: 14px!important;
+    border-radius: 2px!important;
+}
+
+input:focus,select:focus,textarea:focus{
+    background-color: rgba(0, 0, 0, 0.5)!important;
+}
+
 .select-opencron {
-    background-color: rgba(0, 0, 0, 0.1)!important;
-    border: 1px solid rgba(255, 255, 255, 0.28)!important;
     padding-left: 3px!important;
+    height: 26px!important;
+    line-height: 26px!important;
 }
 .select-opencron > option{
     background-color: #d9edf7;
 }
-.input-sm{
-    width: 75.333%;
-    margin-bottom: 5px;
+
+.modal input,.modal select,.modal textarea{
+    background-color: rgba(255, 255, 255, 0.10)!important;
+    text-shadow: 0 0 3px rgba(255,255,255,0.4)!important;
 }
+
 .radio-label{
     margin-top: 7px;
 }

@@ -696,7 +696,7 @@
                 </label>
             </div>
 
-            <div style="float: right;margin-top: -10px">
+            <div style="float: right;margin-top: -9px">
                 <label for="agentId">执行器：</label>
                 <select id="agentId" name="agentId" class="select-opencron" style="width: 110px;">
                     <option value="">全部</option>
@@ -738,7 +738,7 @@
                 </select>
 
                 <a href="${contextPath}/job/add.htm?csrf=${csrf}" class="btn btn-sm m-t-10"
-                   style="margin-left: 20px;margin-bottom: 8px"><i class="icon">&#61943;</i>添加</a>
+                   style="margin-left: 20px;margin-bottom: 8px;margin-top: -3px;"><i class="icon">&#61943;</i>添加</a>
             </div>
         </div>
 

@@ -80,7 +80,7 @@ body, button, input, textarea, select, .btn {
     -webkit-font-smoothing: antialiased;
 }
 
-body, a, input, .help-block {
+body, a, .help-block {
     color: rgba(245, 245, 255, 0.95);
     text-shadow: 0 0 3px rgba(255,255,255,0.4);
 }
