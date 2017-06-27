@@ -118,10 +118,10 @@ jdbc.password=${password}
         > vi ${tomcat_home}/webapps/ROOT/WEB-INF/classes/config.properties
       6:完成启动
    2):通过配置server.xml外部指向
-      1):将war包解压到指定的路径,如 /data/www/opencron,并删除war包
-      2):更改jdbc配置文件
+      1:将war包解压到指定的路径,如 /data/www/opencron,并删除war包
+      2:更改jdbc配置文件
          vi /data/www/opencron/WEB-INF/classes/config.properties
-      3):进入tomcat的conf中修改server.xml配置文件
+      3:进入tomcat的conf中修改server.xml配置文件
          下面附上我的完整的server.xml配置:
          
          <?xml version='1.0' encoding='utf-8'?>
