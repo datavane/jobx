@@ -89,7 +89,7 @@ IE10+
 ## opencron-server 部署步骤:
 
 ```
-1):下载已经编译好的opencron-server-${version}.war包
+1):下载已经编译好的opencron-server-${version}.war包,或者自行编码源码
 
 2):更改项目的mysql连接信息,mysql的配置在config.properties里，更改即可:
 如:
@@ -101,7 +101,93 @@ jdbc.password=${password}
 
 3)发布到tomcat或者其他的web服务器启动即可.第一次会自动创建表,默认初始用户名opencron,密码opencron,第一次登陆会提示修改密码.
 
-4):进入到opencron的管理端第一件要做的事情就是添加要管理的执行器.在菜单的第二栏点击"执行器管理"->添加执行器,执行器ip，
+4)tomcat发布项目步骤:
+   tomcat部署有两种部署方式
+   1):直接部署到webapps下:
+      1:下载tomcat8或者以上版本(http://tomcat.apache.org)
+      2:解压tomcat,删除webapps目录下的全部文件 
+        >  rm -rf ${tomcat_home}/webapps/*
+      3:在webapps下新建ROOT文件夹 
+        >  mkdir ${tomcat_home}/webapps/ROOT
+      4:将war解包到ROOT下并删除war文件(注意解包完毕一定要删除war包)
+        >  mv server.war ${tomcat_home}/webapps/ROOT 
+        >  cd ${tomcat_home}/webapps/ROOT 
+        >  jar -xvf server.war 
+        >  rm -rf server.war
+      5:更改jdbc配置信息 
+        > vi ${tomcat_home}/webapps/ROOT/WEB-INF/classes/config.properties
+      6:完成启动
+   2):通过配置server.xml外部指向
+      1):将war包解压到指定的路径,如 /data/www/opencron,并删除war包
+      2):更改jdbc配置文件
+         vi /data/www/opencron/WEB-INF/classes/config.properties
+      3):进入tomcat的conf中修改server.xml配置文件
+         下面附上我的完整的server.xml配置:
+         
+         <?xml version='1.0' encoding='utf-8'?>
+         <Server port="7000" shutdown="SHUTDOWN">
+           <Listener className="org.apache.catalina.startup.VersionLoggerListener" />
+           <Listener className="org.apache.catalina.core.AprLifecycleListener" SSLEngine="on" />
+           <Listener className="org.apache.catalina.core.JreMemoryLeakPreventionListener" />
+           <Listener className="org.apache.catalina.mbeans.GlobalResourcesLifecycleListener" />
+           <Listener className="org.apache.catalina.core.ThreadLocalLeakPreventionListener" />
+         
+           <GlobalNamingResources>
+             <Resource name="UserDatabase" auth="Container"
+                       type="org.apache.catalina.UserDatabase"
+                       description="User database that can be updated and saved"
+                       factory="org.apache.catalina.users.MemoryUserDatabaseFactory"
+                       pathname="conf/tomcat-users.xml" />
+           </GlobalNamingResources>
+         
+             <Service name="Catalina">
+             
+             <!--项目的访问端口-->
+             <Connector port="8080" protocol="HTTP/1.1"
+                         connectionTimeout="20000"
+                        maxThreads="550"
+                         minSpareThreads="25"
+                         maxSpareThreads="75"
+                         minProcessors="100"
+                         maxProcessors="300"
+                        acceptCount="100"
+                        enableLookups="false"
+                        disableUploadTimeout="true"
+                        compression="on"
+                        compressionMinSize="2048"
+                        compressableMimeType="text/html,text/xml,text/javascript,text/css,text/plain"
+                        redirectPort="7970"
+                        URIEncoding="UTF-8"/>
+                 <Connector port="3007" protocol="AJP/1.3" redirectPort="2007" />
+         
+                  <Engine name="Catalina" defaultHost="localhost">
+                         <Realm className="org.apache.catalina.realm.UserDatabaseRealm" resourceName="UserDatabase"/>
+                         <Host name="localhost"
+                                 appBase="/data/www/opencron"
+                                 unpackWARs="true"
+                                 autoDeploy="false"
+                                 xmlValidation="false"
+                                 xmlNamespaceAware="false"
+                                 URIEncoding="UTF-8">
+         
+                         <Context path="/"
+                                 docBase="/data/www/opencron"
+                                 debug="0"
+                                 reloadable="true"/>
+                         </Host>
+         
+                 </Engine>
+           </Service>
+         
+         </Server>
+         
+         配置里Host里的appBase和Context的docBase即为外部解压的项目的路径
+         推荐第二种外部部署的方式
+         
+      启动tomcat,打开浏览器以$ip:$port的方式访问,如:  http://192.168.0.188:8080       
+      
+
+5):进入到opencron的管理端第一件要做的事情就是添加要管理的执行器.在菜单的第二栏点击"执行器管理"->添加执行器,执行器ip，
 就是上面你部署的opencron-agent的机器ip，端口号是要连接的opencron-agent的启动端口，密码也是opencron-agent端的连接密码,
 输入ip,端口和密码后点击"检查通信",如果成功则server和agnet端已经成功通信，server可以管理agent了,添加保持即可.
 如果连接失败，先检查agent端启动是否成功,查看logs中的详情
@@ -117,6 +203,49 @@ jdbc.password=${password}
 2):如果脚本字符编码已经是unix,还是启动失败,请尝试给启动脚本添加权限 chmod 777 bin/*
    
 3):如果agent已经成功启动server还是连接不上,请检查agent端口是否开放(如很多云服务器得开放端口才能访问)
+
+4):如果server端用nginx做反向代理,配置如下:
+
+   
+upstream opencron {
+     server 127.0.0.1:8080;
+}
+
+server {
+    listen 80;
+    server_name www.opencron.org;
+    root /data/www/opencron/;
+
+    location / {
+        proxy_pass        http://opencron;
+        proxy_set_header   Host             $host;
+        proxy_set_header   X-Real-IP        $remote_addr;
+        proxy_set_header   X-Forwarded-For  $proxy_add_x_forwarded_for;
+        client_max_body_size  10m;
+        client_body_buffer_size 1m;
+        proxy_connect_timeout 300;
+        proxy_send_timeout    300;
+        proxy_read_timeout    300;
+        proxy_buffer_size     4k;
+        proxy_buffers    4   32k;
+        proxy_busy_buffers_size 64k;
+        proxy_temp_file_write_size  64k;
+    }
+
+    #这里必须这么配置,否则web终端无法使用
+    location  ^~  /terminal.ws {
+        proxy_pass http://opencron;
+        proxy_redirect    off;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+    }
+
+}
+
 
 ```
 
