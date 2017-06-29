@@ -56,11 +56,11 @@ var opencron = {
 };
 
 function toBase64(text){
-    return  $.base64.encode(text);
+    return  Base64.encode(text);
 }
 
 function passBase64(text){
-    return  $.base64.decode(text);
+    return  Base64.decode(text);
 }
 
 function escapeHtml(text) {
