@@ -66,12 +66,13 @@ function passBase64(text){
 function escapeHtml(text) {
     if(text){
         return text.replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;") ;
+    }else {
+        return "";
     }
 }
 
 function unEscapeHtml(text) {
     if(text){
-        console.log(text);
         return text.replace(/&lt;/g,"<").replace(/&gt;/g,">").replace(/&amp;/g,"").replace(/&quot;/g,"").replace(/&#39;/,"'");
     }
 }

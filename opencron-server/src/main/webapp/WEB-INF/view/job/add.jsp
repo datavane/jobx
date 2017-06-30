@@ -604,7 +604,7 @@
                     </div>
                 </div><br>
 
-                <div class="form-group">
+               <%-- <div class="form-group">
                     <label class="col-lab control-label"><i class="glyphicons glyphicons-saw-blade"></i>&nbsp;&nbsp;命令类型：</label>
                     <div class="col-md-10">
                         <label for="script-shell" class="radio-label"><input type="radio" name="scriptType" id="script-shell" value="0" checked>shell&nbsp;&nbsp;&nbsp;</label>
@@ -614,7 +614,7 @@
                         <label for="script-powerShell" class="radio-label"><input type="radio" name="scriptType" id="script-powerShell" value="4">powerShell&nbsp;&nbsp;&nbsp;</label>
                         <br><span class="tips"><b>*&nbsp;</b>该命令的类型</span>
                     </div>
-                </div><br>
+                </div><br>--%>
 
                 <div class="form-group">
                     <label for="runas" class="col-lab control-label"><i class="glyphicons glyphicons-user"></i>&nbsp;&nbsp;运行身份：</label>
@@ -625,9 +625,9 @@
                 </div><br>
 
                 <div class="form-group">
-                    <label for="successStatus" class="col-lab control-label"><i class="glyphicons glyphicons-tags"></i>&nbsp;&nbsp;成功标识：</label>
+                    <label for="successExit" class="col-lab control-label"><i class="glyphicons glyphicons-tags"></i>&nbsp;&nbsp;成功标识：</label>
                     <div class="col-md-10">
-                        <input type="text" class="form-control input-sm" id="successStatus" name="successStatus" value="0">
+                        <input type="text" class="form-control input-sm" id="successExit" name="successExit" value="0">
                         <span class="tips"><b>*&nbsp;</b>自定义作业执行成功的返回标识(默认执行成功是0)</span>
                     </div>
                 </div><br>
