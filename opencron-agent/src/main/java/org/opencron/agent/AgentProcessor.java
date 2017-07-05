@@ -175,7 +175,13 @@ public class AgentProcessor implements Opencron.Iface {
         Integer exitValue;
 
         try {
-            CommandLine commandLine = CommandLine.parse("/bin/bash +x " + shellFile.getAbsolutePath());
+
+            CommandLine commandLine = CommandLine.parse( String.format("/bin/bash +x %s",shellFile.getAbsoluteFile()) );;
+
+            if (CommonUtils.notEmpty(request.getParams().get("runAs"))) {
+                commandLine = CommandLine.parse( String.format("su - %s -c \"/bin/bash +x %s\"",request.getParams().get("runAs"),shellFile.getAbsoluteFile()) );
+            }
+
             final DefaultExecutor executor = new DefaultExecutor();
 
             ExecuteStreamHandler stream = new PumpStreamHandler(outputStream, outputStream);
@@ -273,7 +279,12 @@ public class AgentProcessor implements Opencron.Iface {
             if (Opencron.StatusCode.TIME_OUT.getValue() == response.getExitCode()) {
                 response.setSuccess(false).end();
             } else {
-                response.setExitCode(exitValue).setSuccess(response.getExitCode() == Opencron.StatusCode.SUCCESS_EXIT.getValue()).end();
+                String successExit = request.getParams().get("successExit");
+                if (CommonUtils.isEmpty(successExit)) {
+                    response.setExitCode(exitValue).setSuccess(exitValue == Opencron.StatusCode.SUCCESS_EXIT.getValue()).end();
+                }else {
+                    response.setExitCode(exitValue).setSuccess(successExit.equals(exitValue.toString())).end();
+                }
             }
 
             if (shellFile != null) {

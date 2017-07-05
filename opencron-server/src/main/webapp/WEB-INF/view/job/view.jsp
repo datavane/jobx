@@ -168,6 +168,12 @@
                 return false;
             }
 
+            var successExit = $("#successExit").val();
+            if( successExit!=null && !isNaN(successExit)) {
+                alert("自定义成功标识必须为数字");
+                return false;
+            }
+
             var timeout = $("#timeout").val();
             if (isNaN(timeout) || parseInt(timeout) < 0) {
                 alert("请填写正确的超时时间")

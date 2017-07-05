@@ -93,6 +93,13 @@
                 alert("请填写执行命令!");
                 return false;
             }
+
+            var successExit = $("#successExit").val();
+            if( successExit!=null && !isNaN(successExit)) {
+                alert("自定义成功标识必须为数字");
+                return false;
+            }
+
             var redo = $('input[type="radio"][name="redo"]:checked').val();
             var reg = /^[0-9]*[1-9][0-9]*$/;
             if (redo == 1){
