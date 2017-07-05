@@ -299,6 +299,8 @@
                                 "cronExp": job.cronExp,
                                 "agentId": job.agentId,
                                 "command": job.command,
+                                "runAs": job.runAs,
+                                "successExit": job.successExit,
                                 "execType": job.execType,
                                 "jobName": job.jobName,
                                 "redo": job.redo,
