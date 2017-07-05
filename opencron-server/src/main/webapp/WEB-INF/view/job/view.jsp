@@ -169,7 +169,7 @@
             }
 
             var successExit = $("#successExit").val();
-            if( successExit!=null && !isNaN(successExit)) {
+            if( successExit!=null && isNaN(successExit)) {
                 alert("自定义成功标识必须为数字");
                 return false;
             }
@@ -946,7 +946,7 @@
 
                         <div class="form-group">
                             <label for="runAs" class="col-lab control-label">运行身份：</label>
-                            <div class="col-md-10">
+                            <div class="col-md-9">
                                 <input type="text" class="form-control" id="runAs" name="runAs" value="root">
                                 <span class="tips"><b>*&nbsp;</b>该任务以哪个身份执行(默认是root)</span>
                             </div>
@@ -954,7 +954,7 @@
 
                         <div class="form-group">
                             <label for="successExit" class="col-lab control-label">成功标识：</label>
-                            <div class="col-md-10">
+                            <div class="col-md-9">
                                 <input type="text" class="form-control" id="successExit" name="successExit" value="0">
                                 <span class="tips"><b>*&nbsp;</b>自定义作业执行成功的返回标识(默认执行成功是0)</span>
                             </div>

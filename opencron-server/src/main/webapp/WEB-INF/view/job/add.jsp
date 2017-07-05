@@ -95,7 +95,7 @@
             }
 
             var successExit = $("#successExit").val();
-            if( successExit!=null && !isNaN(successExit)) {
+            if( successExit!=null && isNaN(successExit)) {
                 alert("自定义成功标识必须为数字");
                 return false;
             }
