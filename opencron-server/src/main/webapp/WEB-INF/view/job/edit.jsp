@@ -384,6 +384,8 @@
                                 '<input type="hidden" name="child.redo" value="'+$("input[type='radio'][name='redo1']:checked").val()+'">'+
                                 '<input type="hidden" name="child.runCount" value="' + $("#runCount1").val() + '">' +
                                 '<input type="hidden" name="child.command" value="' + toBase64($("#command1").val()) + '">' +
+                                '<input type="hidden" name="child.runAs" value="' + $("#runAs1").val() + '">' +
+                                '<input type="hidden" name="child.successExit" value="' + $("#successExit1").val() + '">' +
                                 '<input type="hidden" name="child.timeout" value="' + $("#timeout1").val() + '">' +
                                 '<input type="hidden" name="child.comment" value="' + escapeHtml($("#comment1").val()) + '">' +
                             '</li>';
@@ -560,6 +562,22 @@
                 </div><br>
 
                 <div class="form-group">
+                    <label for="runAs" class="col-lab control-label"><i class="glyphicons glyphicons-user"></i>&nbsp;&nbsp;运行身份：</label>
+                    <div class="col-md-10">
+                        <input type="text" class="form-control input-sm" id="runAs" name="runAs" value="root">
+                        <span class="tips"><b>*&nbsp;</b>该任务以哪个身份执行(默认是root)</span>
+                    </div>
+                </div><br>
+
+                <div class="form-group">
+                    <label for="successExit" class="col-lab control-label"><i class="glyphicons glyphicons-tags"></i>&nbsp;&nbsp;成功标识：</label>
+                    <div class="col-md-10">
+                        <input type="text" class="form-control input-sm" id="successExit" name="successExit" value="0">
+                        <span class="tips"><b>*&nbsp;</b>自定义作业执行成功的返回标识(默认执行成功是0)</span>
+                    </div>
+                </div><br>
+
+                <div class="form-group">
                     <label class="col-lab control-label"><i class="glyphicon  glyphicon glyphicon-forward"></i>&nbsp;&nbsp;重新执行：</label>
                     <div class="col-md-10">
                         <label onclick="showCountDiv()" for="redo01" class="radio-label"><input type="radio" name="redo" value="1" id="redo01" ${job.redo eq 1 ? 'checked' : ''}>是&nbsp;&nbsp;&nbsp;</label>
@@ -614,6 +632,8 @@
                                     <input type="hidden" name="child.runCount" value="${c.runCount}">
                                     <input type="hidden" name="child.command" value="${cron:toBase64(c.command)}">
                                     <input type="hidden" name="child.timeout" value="${c.timeout}">
+                                    <input type="hidden" name="child.runAs" value="${c.runAs}">
+                                    <input type="hidden" name="child.successExit" value="${c.successExit}">
                                     <input type="hidden" name="child.comment" value="${c.comment}">
                                 </li>
                             </c:forEach>
@@ -717,6 +737,23 @@
                                 <span class="tips"><b>*&nbsp;</b>执行作业允许的最大时间,超过则为超时(0:忽略超时时间,分钟为单位)</span>
                             </div>
                         </div><br>
+
+                        <div class="form-group">
+                            <label for="runAs1" class="col-lab control-label"><i class="glyphicons glyphicons-user"></i>&nbsp;&nbsp;运行身份：</label>
+                            <div class="col-md-10">
+                                <input type="text" class="form-control input-sm" id="runAs1" name="runAs1" value="root">
+                                <span class="tips"><b>*&nbsp;</b>该任务以哪个身份执行(默认是root)</span>
+                            </div>
+                        </div><br>
+
+                        <div class="form-group">
+                            <label for="successExit1" class="col-lab control-label"><i class="glyphicons glyphicons-tags"></i>&nbsp;&nbsp;成功标识：</label>
+                            <div class="col-md-10">
+                                <input type="text" class="form-control input-sm" id="successExit1" name="successExit1" value="0">
+                                <span class="tips"><b>*&nbsp;</b>自定义作业执行成功的返回标识(默认执行成功是0)</span>
+                            </div>
+                        </div><br>
+
 
                         <div class="form-group">
                             <label class="col-lab control-label" title="执行失败时是否自动重新执行">重新执行：</label>&nbsp;&nbsp;

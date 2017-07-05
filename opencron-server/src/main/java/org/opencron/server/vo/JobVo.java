@@ -37,6 +37,8 @@ public class JobVo implements Serializable {
     private Integer cronType;
     private String cronExp;
     private String command;
+    private String runAs;
+    private String successExit;
     private Integer execType;
     private String comment;
     private Long userId;
@@ -151,6 +153,22 @@ public class JobVo implements Serializable {
 
     public void setCommand(String command) {
         this.command = command;
+    }
+
+    public String getRunAs() {
+        return runAs;
+    }
+
+    public void setRunAs(String runAs) {
+        this.runAs = runAs;
+    }
+
+    public String getSuccessExit() {
+        return successExit;
+    }
+
+    public void setSuccessExit(String successExit) {
+        this.successExit = successExit;
     }
 
     public Integer getExecType() {

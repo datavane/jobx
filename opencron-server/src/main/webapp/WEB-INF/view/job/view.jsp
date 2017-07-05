@@ -38,123 +38,91 @@
             $.ajax({
                 headers: {"csrf": "${csrf}"},
                 type: "POST",
-                url: "${contextPath}/job/canrun.do",
+                url: "${contextPath}/job/editsingle.do",
                 data: {"id": id},
-                success: function (data) {
-                    if (!data) {
-                        $.ajax({
-                            headers: {"csrf": "${csrf}"},
-                            type: "POST",
-                            url: "${contextPath}/job/editsingle.do",
-                            data: {"id": id},
-                            success: function (obj) {
-                                $("#jobform")[0].reset();
-                                if (obj != null) {
-                                    $("#checkJobName").html("");
-                                    $("#checkcronExp").html("");
-                                    $("#id").val(obj.jobId);
-                                    $("#magentId").val(obj.agentId);
-                                    $("#jobName").val(unEscapeHtml(obj.jobName));
-                                    $("#agent").val(obj.agentName + "   " + obj.ip);
-                                    $("#cronExp").val(obj.cronExp);
-                                    $("#cmd").val(obj.command);
-                                    if (obj.execType == 1) {
-                                        $("#execType1").prop("checked", true);
-                                        $("#execType1").parent().removeClass("checked").addClass("checked");
-                                        $("#execType1").parent().attr("aria-checked", true);
-                                        $("#execType0").parent().removeClass("checked");
-                                        $("#execType0").parent().attr("aria-checked", false);
-                                        hideCronExp();
-                                    } else {
-                                        $("#execType0").prop("checked", true);
-                                        $("#execType0").parent().removeClass("checked").addClass("checked");
-                                        $("#execType0").parent().attr("aria-checked", true);
-                                        $("#execType1").parent().removeClass("checked");
-                                        $("#execType1").parent().attr("aria-checked", false);
-                                        showCronExp();
-                                    }
-                                    if (obj.cronType == 1) {
-                                        $("#cronType1").prop("checked", true);
-                                        $("#cronType1").parent().removeClass("checked").addClass("checked");
-                                        $("#cronType1").parent().attr("aria-checked", true);
-                                        $("#cronType0").parent().removeClass("checked");
-                                        $("#cronType0").parent().attr("aria-checked", false);
-                                    } else {
-                                        $("#cronType0").prop("checked", true);
-                                        $("#cronType0").parent().removeClass("checked").addClass("checked");
-                                        $("#cronType0").parent().attr("aria-checked", true);
-                                        $("#cronType1").parent().removeClass("checked");
-                                        $("#cronType1").parent().attr("aria-checked", false);
-                                    }
-                                    if (obj.redo == 1) {
-                                        $("#redo1").prop("checked", true);
-                                        $("#redo1").parent().removeClass("checked").addClass("checked");
-                                        $("#redo1").parent().attr("aria-checked", true);
-                                        $("#redo0").parent().removeClass("checked");
-                                        $("#redo0").parent().attr("aria-checked", false);
-                                        showCountDiv();
-                                    } else {
-                                        $("#redo0").prop("checked", true);
-                                        $("#redo0").parent().removeClass("checked").addClass("checked");
-                                        $("#redo0").parent().attr("aria-checked", true);
-                                        $("#redo1").parent().removeClass("checked");
-                                        $("#redo1").parent().attr("aria-checked", false);
-                                        hideCountDiv();
-                                    }
-                                    $("#runCount").val(obj.runCount);
-                                    if (obj.warning == true) {
-                                        showContact();
-                                        $("#warning1").prop("checked", true);
-                                        $("#warning1").parent().removeClass("checked").addClass("checked");
-                                        $("#warning1").parent().attr("aria-checked", true);
-                                        $("#warning1").parent().prop("onclick", "showContact()");
-                                        $("#warning0").parent().removeClass("checked");
-                                        $("#warning0").parent().attr("aria-checked", false);
-                                    } else {
-                                        hideContact();
-                                        $("#warning0").prop("checked", true);
-                                        $("#warning0").parent().removeClass("checked").addClass("checked");
-                                        $("#warning0").parent().attr("aria-checked", true);
-                                        $("#warning1").parent().removeClass("checked");
-                                        $("#warning1").parent().attr("aria-checked", false);
-                                    }
-                                    $("#mobiles").val(obj.mobiles);
-                                    $("#email").val(obj.emailAddress);
-                                    $("#comment").val(unEscapeHtml(obj.comment));
-                                    $("#timeout").val(obj.timeout);
-                                    $('#jobModal').modal('show');
-                                    return;
-                                }
-                            },
-                            error: function () {
-                                alert("网络繁忙请刷新页面重试!");
-                            }
-                        });
-                    } else {
-                        alert("当前作业正在运行中,暂时不能编辑!");
+                success: function (obj) {
+                    $("#jobform")[0].reset();
+                    if (obj != null) {
+                        $("#checkJobName").html("");
+                        $("#checkcronExp").html("");
+                        $("#id").val(obj.jobId);
+                        $("#magentId").val(obj.agentId);
+                        $("#jobName").val(unEscapeHtml(obj.jobName));
+                        $("#agent").val(obj.agentName + "   " + obj.ip);
+                        $("#cronExp").val(obj.cronExp);
+                        $("#cmd").val(obj.command);
+                        if (obj.execType == 1) {
+                            $("#execType1").prop("checked", true);
+                            $("#execType1").parent().removeClass("checked").addClass("checked");
+                            $("#execType1").parent().attr("aria-checked", true);
+                            $("#execType0").parent().removeClass("checked");
+                            $("#execType0").parent().attr("aria-checked", false);
+                            hideCronExp();
+                        } else {
+                            $("#execType0").prop("checked", true);
+                            $("#execType0").parent().removeClass("checked").addClass("checked");
+                            $("#execType0").parent().attr("aria-checked", true);
+                            $("#execType1").parent().removeClass("checked");
+                            $("#execType1").parent().attr("aria-checked", false);
+                            showCronExp();
+                        }
+                        if (obj.cronType == 1) {
+                            $("#cronType1").prop("checked", true);
+                            $("#cronType1").parent().removeClass("checked").addClass("checked");
+                            $("#cronType1").parent().attr("aria-checked", true);
+                            $("#cronType0").parent().removeClass("checked");
+                            $("#cronType0").parent().attr("aria-checked", false);
+                        } else {
+                            $("#cronType0").prop("checked", true);
+                            $("#cronType0").parent().removeClass("checked").addClass("checked");
+                            $("#cronType0").parent().attr("aria-checked", true);
+                            $("#cronType1").parent().removeClass("checked");
+                            $("#cronType1").parent().attr("aria-checked", false);
+                        }
+                        if (obj.redo == 1) {
+                            $("#redo1").prop("checked", true);
+                            $("#redo1").parent().removeClass("checked").addClass("checked");
+                            $("#redo1").parent().attr("aria-checked", true);
+                            $("#redo0").parent().removeClass("checked");
+                            $("#redo0").parent().attr("aria-checked", false);
+                            showCountDiv();
+                        } else {
+                            $("#redo0").prop("checked", true);
+                            $("#redo0").parent().removeClass("checked").addClass("checked");
+                            $("#redo0").parent().attr("aria-checked", true);
+                            $("#redo1").parent().removeClass("checked");
+                            $("#redo1").parent().attr("aria-checked", false);
+                            hideCountDiv();
+                        }
+                        $("#runCount").val(obj.runCount);
+                        if (obj.warning == true) {
+                            showContact();
+                            $("#warning1").prop("checked", true);
+                            $("#warning1").parent().removeClass("checked").addClass("checked");
+                            $("#warning1").parent().attr("aria-checked", true);
+                            $("#warning1").parent().prop("onclick", "showContact()");
+                            $("#warning0").parent().removeClass("checked");
+                            $("#warning0").parent().attr("aria-checked", false);
+                        } else {
+                            hideContact();
+                            $("#warning0").prop("checked", true);
+                            $("#warning0").parent().removeClass("checked").addClass("checked");
+                            $("#warning0").parent().attr("aria-checked", true);
+                            $("#warning1").parent().removeClass("checked");
+                            $("#warning1").parent().attr("aria-checked", false);
+                        }
+                        $("#mobiles").val(obj.mobiles);
+                        $("#email").val(obj.emailAddress);
+                        $("#comment").val(unEscapeHtml(obj.comment));
+                        $("#runAs").val(obj.runAs);
+                        $("#successExit").val(obj.successExit);
+                        $("#timeout").val(obj.timeout);
+                        $('#jobModal').modal('show');
+                        return;
                     }
                 },
                 error: function () {
-                    alert("网络异常，请刷新页面重试!");
-                }
-            });
-        }
-
-        function editFlow(id) {
-            $.ajax({
-                headers: {"csrf": "${csrf}"},
-                type: "POST",
-                url: "${contextPath}/job/canrun.do",
-                data: {"id": id},
-                success: function (data) {
-                    if (!data) {
-                        window.location.href = "${contextPath}/job/editflow.htm?id=" + id + "&csrf=${csrf}";
-                    } else {
-                        alert("当前作业或其子作业正在运行中,暂时不能编辑!");
-                    }
-                },
-                error: function () {
-                    alert("网络异常，请刷新页面重试!");
+                    alert("网络繁忙请刷新页面重试!");
                 }
             });
         }
@@ -261,6 +229,8 @@
                 "cronExp": cronExp,
                 "agentId": agentId,
                 "command": toBase64(command),
+                "runAs":$("#runAs").val(),
+                "successExit":$("#successExit").val(),
                 "timeout": timeout,
                 "execType": execType,
                 "jobName": jobName,
@@ -547,34 +517,18 @@
             $.ajax({
                 headers: {"csrf": "${csrf}"},
                 type: "POST",
-                url: "${contextPath}/job/canrun.do",
+                url: "${contextPath}/job/editsingle.do",
                 data: {"id": id},
-                success: function (data) {
-                    if (!data) {
-
-                        $.ajax({
-                            headers: {"csrf": "${csrf}"},
-                            type: "POST",
-                            url: "${contextPath}/job/editsingle.do",
-                            data: {"id": id},
-                            success: function (obj) {
-                                $("#cmdform")[0].reset();
-                                if (obj != null) {
-                                    $("#cmdId").val(obj.jobId);
-                                    $("#command").val(obj.command);
-                                    $('#cmdModal').modal('show');
-                                }
-                            },
-                            error: function () {
-                                alert("网络繁忙请刷新页面重试!");
-                            }
-                        });
-                    } else {
-                        alert("当前作业正在运行中,暂时不能编辑!");
+                success: function (obj) {
+                    $("#cmdform")[0].reset();
+                    if (obj != null) {
+                        $("#cmdId").val(obj.jobId);
+                        $("#command").val(obj.command);
+                        $('#cmdModal').modal('show');
                     }
                 },
                 error: function () {
-                    alert("网络异常，请刷新页面重试!");
+                    alert("网络繁忙请刷新页面重试!");
                 }
             });
         }
@@ -849,7 +803,7 @@
                                     </a>
                                 </c:if>
                                 <c:if test="${r.jobType eq 1}">
-                                    <a title="编辑" onclick="editFlow('${r.jobId}')">
+                                    <a title="编辑" href="${contextPath}/job/editflow.htm?id=${r.jobId}&csrf=${csrf}">
                                         <i class="glyphicon glyphicon-pencil"></i>
                                     </a>
                                 </c:if>
@@ -985,6 +939,22 @@
                         </div>
 
                         <div class="form-group">
+                            <label for="runAs" class="col-lab control-label">运行身份：</label>
+                            <div class="col-md-10">
+                                <input type="text" class="form-control" id="runAs" name="runAs" value="root">
+                                <span class="tips"><b>*&nbsp;</b>该任务以哪个身份执行(默认是root)</span>
+                            </div>
+                        </div><br>
+
+                        <div class="form-group">
+                            <label for="successExit" class="col-lab control-label">成功标识：</label>
+                            <div class="col-md-10">
+                                <input type="text" class="form-control" id="successExit" name="successExit" value="0">
+                                <span class="tips"><b>*&nbsp;</b>自定义作业执行成功的返回标识(默认执行成功是0)</span>
+                            </div>
+                        </div><br>
+
+                        <div class="form-group">
                             <label for="timeout" class="col-lab control-label"
                                    title="执行作业允许的最大时间,超过则为超时(0:忽略超时时间,分钟为单位)">超时时间：</label>
                             <div class="col-md-9">
@@ -992,7 +962,6 @@
                             </div>
                         </div>
                         <br>
-
 
                         <div class="form-group">
                             <label class="col-lab control-label" title="作业失败后是否重新执行此作业">重新执行：</label>&nbsp;&nbsp;

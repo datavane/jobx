@@ -262,7 +262,7 @@ public class JobService {
             return "error";
         }
 
-        //该任务是否正在执行中?
+        //该任务是否正在执行中
         String sql = "SELECT COUNT(1) FROM T_RECORD WHERE jobId = ? AND `status`=?";
         Long count = queryDao.getCountBySql(sql, id, RunStatus.RUNNING.getStatus());
         if (count > 0) {

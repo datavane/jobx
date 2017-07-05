@@ -617,9 +617,9 @@
                 </div><br>--%>
 
                 <div class="form-group">
-                    <label for="runas" class="col-lab control-label"><i class="glyphicons glyphicons-user"></i>&nbsp;&nbsp;运行身份：</label>
+                    <label for="runAs" class="col-lab control-label"><i class="glyphicons glyphicons-user"></i>&nbsp;&nbsp;运行身份：</label>
                     <div class="col-md-10">
-                        <input type="text" class="form-control input-sm" id="runas" name="runas" value="root">
+                        <input type="text" class="form-control input-sm" id="runAs" name="runAs" value="root">
                         <span class="tips"><b>*&nbsp;</b>该任务以哪个身份执行(默认是root)</span>
                     </div>
                 </div><br>

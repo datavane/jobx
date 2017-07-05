@@ -43,6 +43,8 @@ public class Job implements Serializable {
     
     private Integer execType;
     private String comment;
+    private String runAs;
+    private String successExit;
     private Long userId;
     private Date updateTime;
     private Integer redo;
@@ -141,6 +143,22 @@ public class Job implements Serializable {
         this.comment = comment;
     }
 
+    public String getRunAs() {
+        return runAs;
+    }
+
+    public void setRunAs(String runAs) {
+        this.runAs = runAs;
+    }
+
+    public String getSuccessExit() {
+        return successExit;
+    }
+
+    public void setSuccessExit(String successExit) {
+        this.successExit = successExit;
+    }
+
     public Long getUserId() {
         return userId;
     }
@@ -197,20 +215,20 @@ public class Job implements Serializable {
         this.flowNum = flowNum;
     }
 
-    public Boolean getLastChild() {
-        return lastChild;
-    }
-
-    public void setLastChild(Boolean lastChild) {
-        this.lastChild = lastChild;
-    }
-
     public Integer getRunModel() {
         return runModel;
     }
 
     public void setRunModel(Integer runModel) {
         this.runModel = runModel;
+    }
+
+    public Boolean getLastChild() {
+        return lastChild;
+    }
+
+    public void setLastChild(Boolean lastChild) {
+        this.lastChild = lastChild;
     }
 
     public Boolean getWarning() {
@@ -237,20 +255,20 @@ public class Job implements Serializable {
         this.emailAddress = emailAddress;
     }
 
-    public Integer getTimeout() {
-        return timeout;
-    }
-
-    public void setTimeout(Integer timeout) {
-        this.timeout = timeout;
-    }
-
     public Boolean getDeleted() {
         return deleted;
     }
 
     public void setDeleted(Boolean deleted) {
         this.deleted = deleted;
+    }
+
+    public Integer getTimeout() {
+        return timeout;
+    }
+
+    public void setTimeout(Integer timeout) {
+        this.timeout = timeout;
     }
 
     @Override
@@ -264,6 +282,8 @@ public class Job implements Serializable {
                 ", command='" + command + '\'' +
                 ", execType=" + execType +
                 ", comment='" + comment + '\'' +
+                ", runAs='" + runAs + '\'' +
+                ", successExit='" + successExit + '\'' +
                 ", userId=" + userId +
                 ", updateTime=" + updateTime +
                 ", redo=" + redo +
