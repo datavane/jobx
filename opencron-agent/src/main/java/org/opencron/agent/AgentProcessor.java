@@ -146,6 +146,7 @@ public class AgentProcessor implements Opencron.Iface {
 
     @Override
     public Response execute(final Request request) throws TException {
+
         if (!this.password.equalsIgnoreCase(request.getPassword())) {
             return errorPasswordResponse(request);
         }
@@ -174,9 +175,16 @@ public class AgentProcessor implements Opencron.Iface {
 
         Integer exitValue;
 
+        String successExit = request.getParams().get("successExit");
+        if (CommonUtils.isEmpty(successExit)) {
+            exitValue = 0;//标准退住值:0
+        }else {
+            exitValue = Integer.parseInt(successExit);
+        }
+
         try {
 
-            CommandLine commandLine = CommandLine.parse( String.format("/bin/bash +x %s",shellFile.getAbsoluteFile()) );;
+            CommandLine commandLine = CommandLine.parse( String.format("/bin/bash +x %s",shellFile.getAbsoluteFile()) );
 
             if (CommonUtils.notEmpty(request.getParams().get("runAs"))) {
                 commandLine = CommandLine.parse( String.format("su - %s -c \"/bin/bash +x %s\"",request.getParams().get("runAs"),shellFile.getAbsoluteFile()) );
@@ -188,7 +196,7 @@ public class AgentProcessor implements Opencron.Iface {
             executor.setStreamHandler(stream);
             response.setStartTime(new Date().getTime());
             //成功执行完毕时退出值为0,shell标准的退出
-            executor.setExitValue(0);
+            executor.setExitValue(exitValue);
 
             if (timeoutFlag) {
                 //设置监控狗...
@@ -279,7 +287,6 @@ public class AgentProcessor implements Opencron.Iface {
             if (Opencron.StatusCode.TIME_OUT.getValue() == response.getExitCode()) {
                 response.setSuccess(false).end();
             } else {
-                String successExit = request.getParams().get("successExit");
                 if (CommonUtils.isEmpty(successExit)) {
                     response.setExitCode(exitValue).setSuccess(exitValue == Opencron.StatusCode.SUCCESS_EXIT.getValue()).end();
                 }else {
@@ -287,9 +294,6 @@ public class AgentProcessor implements Opencron.Iface {
                 }
             }
 
-            if (shellFile != null) {
-                shellFile.delete();//删除文件
-            }
         }
         logger.info("[opencron]:execute result:{}", response.toString());
         watchdog.stop();
