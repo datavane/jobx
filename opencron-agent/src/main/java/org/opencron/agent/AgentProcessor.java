@@ -184,11 +184,15 @@ public class AgentProcessor implements Opencron.Iface {
 
         try {
 
-            CommandLine commandLine = CommandLine.parse( String.format("/bin/bash +x %s",shellFile.getAbsoluteFile()) );
+            String runCommand = String.format("/bin/bash +x %s",shellFile.getAbsoluteFile());
 
             if (CommonUtils.notEmpty(request.getParams().get("runAs"))) {
-                commandLine = CommandLine.parse( String.format("su - %s -c \"/bin/bash +x %s\"",request.getParams().get("runAs"),shellFile.getAbsoluteFile()) );
+                runCommand = String.format("su - %s -c \"/bin/bash +x %s\"",request.getParams().get("runAs"),shellFile.getAbsoluteFile());
             }
+
+            logger.info("[opencron]:runCommand :{}",runCommand);
+
+            CommandLine commandLine = CommandLine.parse(runCommand);
 
             final DefaultExecutor executor = new DefaultExecutor();
 
