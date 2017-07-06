@@ -55,7 +55,7 @@ public abstract class CommandUtils implements Serializable {
                 if (CommonUtils.notEmpty(runAs)) {
                     out.write( "#!/bin/bash\n\nsu - "+runAs+" -c \""+command+"\"\n\n"+exitScript);
                 }else {
-                    out.write("#!/bin/bash\n\n" + command+"\n\n"+exitScript);
+                    out.write("#!/bin/bash\n\n" + command + exitScript);
                 }
                 out.flush();
                 out.close();

@@ -62,7 +62,7 @@ public class AgentProcessor implements Opencron.Iface {
 
     private String EXITCODE_KEY = "exitCode";
 
-    private String EXITCODE_SCRIPT = String.format(" \n echo %s:$?", EXITCODE_KEY);
+    private String EXITCODE_SCRIPT = String.format("\n\necho %s:$?", EXITCODE_KEY);
 
     private AgentMonitor agentMonitor;
 
