@@ -58,11 +58,11 @@ public class AgentProcessor implements Opencron.Iface {
 
     private Integer socketPort;
 
-    private final String EXITCODE_KEY = "exitCode";
-
-    private final String EXITCODE_SCRIPT = String.format(" \n echo %s:$?", EXITCODE_KEY);
-
     private final String REPLACE_REX = "%s:\\sline\\s[0-9]+:";
+
+    private String EXITCODE_KEY = "exitCode";
+
+    private String EXITCODE_SCRIPT = String.format(" \n echo %s:$?", EXITCODE_KEY);
 
     private AgentMonitor agentMonitor;
 
@@ -151,7 +151,7 @@ public class AgentProcessor implements Opencron.Iface {
             return errorPasswordResponse(request);
         }
 
-        String command = request.getParams().get("command") + EXITCODE_SCRIPT;
+        String command = request.getParams().get("command");
 
         String pid = request.getParams().get("pid");
         //以分钟为单位
@@ -161,7 +161,7 @@ public class AgentProcessor implements Opencron.Iface {
 
         logger.info("[opencron]:execute:{},pid:{}", command, pid);
 
-        File shellFile = CommandUtils.createShellFile(command, pid,request.getParams().get("runAs"));
+        File shellFile = CommandUtils.createShellFile(command,pid,request.getParams().get("runAs"),EXITCODE_SCRIPT);
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
