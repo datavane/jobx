@@ -23,7 +23,7 @@
 package org.opencron.server.service;
 
 import org.opencron.common.job.Opencron;
-import org.opencron.common.utils.DateUtils;
+import org.opencron.common.utils.CommonUtils;
 import org.opencron.server.dao.QueryDao;
 import org.opencron.server.domain.Record;
 import org.opencron.server.job.OpencronTools;
@@ -50,7 +50,7 @@ public class RecordService {
 
     public PageBean query(HttpSession session, PageBean<RecordVo> pageBean, RecordVo recordVo, String queryTime, boolean status) {
         String sql = "SELECT R.recordId,R.jobId,R.command,R.success,R.startTime,R.status,R.redoCount,R.jobType,R.groupId," +
-                "CASE WHEN R.status IN (1,3,5,6) THEN R.endTime WHEN R.status IN (0,2,4) THEN '"+ DateUtils.parseStringFromDate(new Date())+"' END AS endTime," +
+                "CASE WHEN R.status IN (1,3,5,6) THEN R.endTime WHEN R.status IN (0,2,4) THEN NOW() END AS endTime," +
                 "R.execType,T.jobName,T.agentId,D.name AS agentName,D.password,D.ip,T.cronExp,U.userName AS operateUname FROM T_RECORD AS R " +
                 "LEFT JOIN T_JOB AS T " +
                 "ON R.jobId = T.jobId " +
@@ -87,6 +87,20 @@ public class RecordService {
         }
         sql += " ORDER BY R.startTime DESC";
         queryDao.getPageBySql(pageBean, RecordVo.class, sql);
+
+        List<RecordVo> parentRecords = pageBean.getResult();
+
+        if (CommonUtils.notEmpty(parentRecords)) {
+            for (RecordVo parentRecord : parentRecords) {
+                //0,2,4
+                if (parentRecord.getStatus() % 2 == 0) {
+                    /**
+                     * 如果数据和当前的server不在同一台服务器上,有可能数据库所在的机器和server所在的机器时间不一致,有可能导致endTime小于startTime
+                     */
+                    parentRecord.setEndTime(new Date());
+                }
+            }
+        }
 
         if (status) {
             //已完成任务的子任务及重跑记录查询
