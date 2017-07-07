@@ -88,10 +88,8 @@ public class RecordService {
         sql += " ORDER BY R.startTime DESC";
         queryDao.getPageBySql(pageBean, RecordVo.class, sql);
 
-        List<RecordVo> parentRecords = pageBean.getResult();
-
-        if (CommonUtils.notEmpty(parentRecords)) {
-            for (RecordVo parentRecord : parentRecords) {
+        if (CommonUtils.notEmpty(pageBean.getResult())) {
+            for (RecordVo parentRecord : pageBean.getResult()) {
                 //0,2,4
                 if (parentRecord.getStatus() % 2 == 0) {
                     /**
