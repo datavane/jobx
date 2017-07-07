@@ -23,6 +23,7 @@
 package org.opencron.server.service;
 
 import org.opencron.common.job.Opencron;
+import org.opencron.common.utils.DateUtils;
 import org.opencron.server.dao.QueryDao;
 import org.opencron.server.domain.Record;
 import org.opencron.server.job.OpencronTools;
@@ -35,6 +36,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 import java.util.List;
 
 import static org.opencron.common.utils.CommonUtils.notEmpty;
@@ -48,7 +50,7 @@ public class RecordService {
 
     public PageBean query(HttpSession session, PageBean<RecordVo> pageBean, RecordVo recordVo, String queryTime, boolean status) {
         String sql = "SELECT R.recordId,R.jobId,R.command,R.success,R.startTime,R.status,R.redoCount,R.jobType,R.groupId," +
-                "CASE WHEN R.status IN (1,3,5,6) THEN R.endTime WHEN R.status IN (0,2,4) THEN NOW() END AS endTime," +
+                "CASE WHEN R.status IN (1,3,5,6) THEN R.endTime WHEN R.status IN (0,2,4) THEN '"+ DateUtils.parseStringFromDate(new Date())+"' END AS endTime," +
                 "R.execType,T.jobName,T.agentId,D.name AS agentName,D.password,D.ip,T.cronExp,U.userName AS operateUname FROM T_RECORD AS R " +
                 "LEFT JOIN T_JOB AS T " +
                 "ON R.jobId = T.jobId " +
