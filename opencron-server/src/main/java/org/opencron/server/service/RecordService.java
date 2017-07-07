@@ -70,7 +70,7 @@ public class RecordService {
                 sql += " AND R.jobId = " + recordVo.getJobId() + " ";
             }
             if (notEmpty(queryTime)) {
-                sql += " AND R.startTime like '" + queryTime + "%' ";
+                sql += " AND date_format(R.startTime,'%Y-%m-%d')='"+queryTime+"'";
             }
             if (notEmpty(recordVo.getExecType())) {
                 sql += " AND R.execType = " + recordVo.getExecType() + " ";
