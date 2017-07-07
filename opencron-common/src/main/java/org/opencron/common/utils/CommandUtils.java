@@ -63,7 +63,6 @@ public abstract class CommandUtils implements Serializable {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            shellFile.deleteOnExit();
             return shellFile;
         }
     }
