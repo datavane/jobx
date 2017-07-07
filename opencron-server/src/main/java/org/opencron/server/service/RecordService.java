@@ -87,19 +87,6 @@ public class RecordService {
         }
         sql += " ORDER BY R.startTime DESC";
         queryDao.getPageBySql(pageBean, RecordVo.class, sql);
-
-        if (CommonUtils.notEmpty(pageBean.getResult())) {
-            for (RecordVo parentRecord : pageBean.getResult()) {
-                //0,2,4
-                if (parentRecord.getStatus() % 2 == 0) {
-                    /**
-                     * 如果数据和当前的server不在同一台服务器上,有可能数据库所在的机器和server所在的机器时间不一致,有可能导致endTime小于startTime
-                     */
-                    parentRecord.setEndTime(new Date());
-                }
-            }
-        }
-
         if (status) {
             //已完成任务的子任务及重跑记录查询
             queryChildrenAndRedo(pageBean);
@@ -196,7 +183,10 @@ public class RecordService {
     }
 
     public Record merge(Record record) {
-        return (Record) queryDao.merge(record);
+        record = (Record) queryDao.merge(record);
+        String sql = "UPDATE T_RECORD SET startTime=NOW() WHERE recordId=?";
+        queryDao.createSQLQuery(sql,record.getRecordId()).executeUpdate();
+        return record;
     }
 
     public Record get(Long recordId) {
