@@ -42,7 +42,7 @@
                             type:"POST",
                             url:"${contextPath}/job/batchexec.do",
                             data:{
-                                "command":$.base64.encode(cmd),
+                                "command":toBase64(cmd),
                                 "agentIds":ids
                             }
                         });
