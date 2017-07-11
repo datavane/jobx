@@ -751,17 +751,17 @@
                         </div><br>
 
                         <div class="form-group">
-                            <label for="runAs1" class="col-lab control-label"><i class="glyphicons glyphicons-user"></i>&nbsp;&nbsp;运行身份：</label>
+                            <label for="runAs1" class="col-lab control-label">运行身份：</label>
                             <div class="col-md-9">
-                                <input type="text" class="form-control input-sm" id="runAs1" name="runAs1" value="root">
+                                <input type="text" class="form-control" id="runAs1" name="runAs1" value="root">
                                 <span class="tips"><b>*&nbsp;</b>该任务以哪个身份执行(默认是root)</span>
                             </div>
                         </div><br>
 
                         <div class="form-group">
-                            <label for="successExit1" class="col-lab control-label"><i class="glyphicons glyphicons-tags"></i>&nbsp;&nbsp;成功标识：</label>
+                            <label for="successExit1" class="col-lab control-label">成功标识：</label>
                             <div class="col-md-9">
-                                <input type="text" class="form-control input-sm" id="successExit1" name="successExit1" value="0">
+                                <input type="text" class="form-control" id="successExit1" name="successExit1" value="0">
                                 <span class="tips"><b>*&nbsp;</b>自定义作业执行成功的返回标识(默认执行成功是0)</span>
                             </div>
                         </div><br>

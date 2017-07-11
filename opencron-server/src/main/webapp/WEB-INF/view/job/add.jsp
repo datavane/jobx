@@ -366,6 +366,12 @@
                 return false;
             }
 
+            var successExit = $("#successExit1").val();
+            if( successExit!=null && isNaN(successExit)) {
+                alert("自定义成功标识必须为数字");
+                return false;
+            }
+
             var redo = $('#itemRedo').val();
 
             var reg = /^[0-9]*[1-9][0-9]*$/;
@@ -413,6 +419,8 @@
                                     "<input type='hidden' name='child.redo' value='"+$('#itemRedo').val()+"'>"+
                                     "<input type='hidden' name='child.runCount' value='"+$("#runCount1").val()+"'>"+
                                     "<input type='hidden' name='child.timeout' value='"+$("#timeout1").val()+"'>"+
+                                    "<input type='hidden' name='child.runAs' value='"+$("#runAs1").val()+"'>"+
+                                    "<input type='hidden' name='child.successExit' value='"+$("#successExit1").val()+"'>"+
                                     "<input type='hidden' name='child.comment' value='"+escapeHtml($("#comment1").val())+"'>"
                             "</li>";
                             $("#subJobDiv").append($(addHtml));
@@ -430,6 +438,14 @@
 
                                 if ($(element).attr("name") == "child.runCount"){
                                     $(element).attr("value",$("#runCount1").val());
+                                }
+
+                                if ($(element).attr("name") == "child.successExit") {
+                                    $(element).attr("value",$("#successExit1").val());
+                                }
+
+                                if ($(element).attr("name") == "child.runAs") {
+                                    $(element).attr("value",$("#runAs1").val());
                                 }
 
                                 if ($(element).attr("name") == "child.agentId"){
@@ -477,6 +493,15 @@
                 if ($(element).attr("name") == "child.command"){
                     $("#command1").val(passBase64($(element).val()));
                 }
+
+                if ($(element).attr("name") == "child.runAs"){
+                    $("#runAs1").val($(element).val());
+                }
+
+                if ($(element).attr("name") == "child.successExit"){
+                    $("#successExit1").val($(element).val());
+                }
+
                 if ($(element).attr("name") == "child.redo") {
                     itemRedo($("#itemRedo").val()||$(element).val());
                 }
@@ -771,6 +796,21 @@
                             </div>
                         </div>
 
+                        <div class="form-group">
+                            <label for="runAs1" class="col-lab control-label">运行身份：</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" id="runAs1" name="runAs1" value="root">
+                                <span class="tips"><b>*&nbsp;</b>该任务以哪个身份执行(默认是root)</span>
+                            </div>
+                        </div><br>
+
+                        <div class="form-group">
+                            <label for="successExit1" class="col-lab control-label">成功标识：</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" id="successExit1" name="successExit1" value="0">
+                                <span class="tips"><b>*&nbsp;</b>自定义作业执行成功的返回标识(默认执行成功是0)</span>
+                            </div>
+                        </div><br>
 
                         <div class="form-group">
                             <label for="timeout1" class="col-lab control-label">超时时间：</label>
@@ -779,7 +819,6 @@
                                 <span class="tips"><b>*&nbsp;</b>执行作业允许的最大时间,超过则为超时(0:忽略超时时间,分钟为单位)</span>
                             </div>
                         </div><br>
-
 
                         <div class="form-group">
                             <label class="col-lab control-label" title="执行失败时是否自动重新执行">重新执行：</label>&nbsp;&nbsp;
