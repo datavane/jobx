@@ -292,7 +292,9 @@ public class AgentProcessor implements Opencron.Iface {
 
         }
 
-        shellFile.delete();
+        if (CommonUtils.notEmpty(shellFile)) {
+            shellFile.delete();
+        }
 
         logger.info("[opencron]:execute result:{}", response.toString());
 
