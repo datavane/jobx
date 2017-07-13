@@ -118,6 +118,7 @@ if [ `mvn -h 2>&1|grep 'command not found'|wc -l` -ne 0 ]; then
              wget -P ${BUILD_HOME} $MAVEN_URL && {
                 echo_g "download maven successful!";
                 tar -xzvf ${BUILD_HOME}/${MAVEN_NAME}.tar.gz -C ${BUILD_HOME}
+                cp $WORKDIR/settings.xml $${BUILD_HOME}/${UNPKG_MAVEN_NAME}/conf
                 OPENCRON_MAVEN=${BUILD_HOME}/${UNPKG_MAVEN_NAME}/bin/mvn
              }
         else
