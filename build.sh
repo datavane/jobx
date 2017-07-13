@@ -118,7 +118,7 @@ if [ `mvn -h 2>&1|grep 'command not found'|wc -l` -ne 0 ]; then
              wget -P ${BUILD_HOME} $MAVEN_URL && {
                 echo_g "download maven successful!";
                 tar -xzvf ${BUILD_HOME}/${MAVEN_NAME}.tar.gz -C ${BUILD_HOME}
-                cp $WORKDIR/settings.xml $${BUILD_HOME}/${UNPKG_MAVEN_NAME}/conf
+                cp $WORKDIR/settings.xml ${BUILD_HOME}/${UNPKG_MAVEN_NAME}/conf
                 OPENCRON_MAVEN=${BUILD_HOME}/${UNPKG_MAVEN_NAME}/bin/mvn
              }
         else
@@ -152,7 +152,7 @@ if [ ${retval} -ne 0 ] ; then
     exit 1
 else
     echo_g "build opencron successfully! "
-    cp ${WORKDIR}/opencron-agent/target/opencron-agent-{OPENCRON_VERSION}.tar.gz ${BUILD_HOME}/dist
+    cp ${WORKDIR}/opencron-agent/target/opencron-agent-${OPENCRON_VERSION}.tar.gz ${BUILD_HOME}/dist
     cp ${WORKDIR}/opencron-server/target/opencron-server.war ${BUILD_HOME}/dist
     echo_g "please go ${BUILD_HOME}/dist ";
 fi
