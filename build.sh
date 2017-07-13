@@ -57,9 +57,9 @@ BUILD_HOME=${WORKDIR}/build
 
 [ ! -d ${BUILD_HOME} ] && mkdir ${BUILD_HOME}
 
-build_log=${BUILD_HOME}/build-$(date +%Y%m%d).log
+build_log=${BUILD_HOME}/build.$(date +%Y%m%d).log
 
-[ ! -d ${BUILD_HOME}/dist ] && mkdir ${BUILD_HOME}/dist
+[ ! -d ${BUILD_HOME}/dist ] && mkdir ${BUILD_HOME}/dist/
 rm -rf ${BUILD_HOME}/dist/*
 
 function echo_r () {
@@ -77,11 +77,6 @@ function echo_y () {
     # Color yellow: Warning
     [ $# -ne 1 ] && return 1
     echo -e "\033[33m$1\033[0m"
-}
-function echo_b () {
-    # Color blue: Debug Level 1
-    [ $# -ne 1 ] && return 1
-    echo -e "\033[34m$1\033[0m"
 }
 
 function echo_p () {
@@ -105,8 +100,8 @@ fi
 #check maven exists
 if [ `mvn -h 2>&1|grep 'command not found'|wc -l` -ne 0 ]; then
     echo_r "maven is not exists."
-    echo_b "install maven Starting..."
-    echo_b "checking network connectivity ... "
+    echo_g "install maven Starting..."
+    echo_g "checking network connectivity ... "
     net_check_ip=114.114.114.114
     ping_count=2
     ping -c ${ping_count} ${net_check_ip} >/dev/null
@@ -125,21 +120,23 @@ if [ `mvn -h 2>&1|grep 'command not found'|wc -l` -ne 0 ]; then
                 tar -xzvf ${BUILD_HOME}/${MAVEN_NAME}.tar.gz -C ${BUILD_HOME}
                 OPENCRON_MAVEN=${BUILD_HOME}/${UNPKG_MAVEN_NAME}/bin/mvn
              }
+        else
+             OPENCRON_MAVEN=${BUILD_HOME}/${UNPKG_MAVEN_NAME}/bin/mvn
         fi
     fi
 fi
 
 if [ "$OPENCRON_MAVEN"x = ""x ]; then
- OPENCRON_MAVEN="mvn";
+    OPENCRON_MAVEN="mvn";
 fi
 
-echo_b "build opencron Starting...";
+echo_g "build opencron Starting...";
 
 $OPENCRON_MAVEN clean package > $build_log 2>&1
 
 retval=$?
 if [ ${retval} -ne 0 ] ; then
-    echo_r "mvn clean package for opencron failed! More details refer to ${build_log}.log"
+    echo_r "mvn clean package for opencron failed! More details refer to $build_log"
     exit 1
 else
     echo_g "mvn clean package for opencron successfully! "
