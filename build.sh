@@ -143,7 +143,7 @@ else
     echo_g "mvn clean package for opencron successfully! "
 fi
 
-mvn install >>$build_log 2>&1
+$OPENCRON_MAVEN install >>$build_log 2>&1
 
 retval=$?
 
