@@ -136,7 +136,7 @@ $OPENCRON_MAVEN clean package install -Dmaven.test.skip=true;
 retval=$?
 
 if [ ${retval} -ne 0 ] ; then
-    echo_r "build opencron failed! please try ageen"
+    echo_r "build opencron failed! please try again "
     exit 1
 else
     echo_g "build opencron successfully! "
