@@ -141,5 +141,5 @@ else
     echo_g "build opencron successfully! "
     cp ${WORKDIR}/opencron-agent/target/opencron-agent-${OPENCRON_VERSION}.tar.gz ${BUILD_HOME}/dist/
     cp ${WORKDIR}/opencron-server/target/opencron-server.war ${BUILD_HOME}/dist/
-    echo_g "please go ${BUILD_HOME}/dist ";
+    echo_g "please goto ${BUILD_HOME}/dist ";
 fi
