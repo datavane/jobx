@@ -57,8 +57,6 @@ BUILD_HOME=${WORKDIR}/build
 
 [ ! -d ${BUILD_HOME} ] && mkdir ${BUILD_HOME}
 
-build_log=${BUILD_HOME}/build.$(date +%Y%m%d).log
-
 [ ! -d ${BUILD_HOME}/dist ] && mkdir ${BUILD_HOME}/dist/
 rm -rf ${BUILD_HOME}/dist/*
 
@@ -133,26 +131,16 @@ fi
 
 echo_g "build opencron Starting...";
 
-$OPENCRON_MAVEN clean package > $build_log 2>&1
-
-retval=$?
-if [ ${retval} -ne 0 ] ; then
-    echo_r "mvn clean package for opencron failed! More details refer to $build_log"
-    exit 1
-else
-    echo_g "mvn clean package for opencron successfully! "
-fi
-
-$OPENCRON_MAVEN install >>$build_log 2>&1
+$OPENCRON_MAVEN clean package install -Dmaven.test.skip=true;
 
 retval=$?
 
 if [ ${retval} -ne 0 ] ; then
-    echo_r "build opencron failed! More details refer to ${build_log}.log"
+    echo_r "build opencron failed! please try ageen"
     exit 1
 else
     echo_g "build opencron successfully! "
-    cp ${WORKDIR}/opencron-agent/target/opencron-agent-${OPENCRON_VERSION}.tar.gz ${BUILD_HOME}/dist
-    cp ${WORKDIR}/opencron-server/target/opencron-server.war ${BUILD_HOME}/dist
+    cp ${WORKDIR}/opencron-agent/target/opencron-agent-${OPENCRON_VERSION}.tar.gz ${BUILD_HOME}/dist/
+    cp ${WORKDIR}/opencron-server/target/opencron-server.war ${BUILD_HOME}/dist/
     echo_g "please go ${BUILD_HOME}/dist ";
 fi
