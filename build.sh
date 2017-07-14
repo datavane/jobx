@@ -130,7 +130,7 @@ fi
 
 echo_g "build opencron Starting...";
 
-$OPENCRON_MAVEN clean package install -Dmaven.test.skip=true;
+$OPENCRON_MAVEN clean install -Dmaven.test.skip=true;
 
 retval=$?
 
