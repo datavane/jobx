@@ -103,8 +103,7 @@ if [ $? -ne 1 ]; then
     ping -c ${ping_count} ${net_check_ip} >/dev/null
     retval=$?
     if [ ${retval} -ne 0 ] ; then
-        echo_r "network is blocked! please check your network!"
-        echo_r "build error! bye!"
+        echo_r "ERROR:network is blocked! please check your network!build error! bye!"
         exit 1
     elif [ ${retval} -eq 0 ]; then
         echo_g "check network connectivity passed! "
