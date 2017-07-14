@@ -84,8 +84,20 @@ if [ $UID -ne 0 ]; then
     echo_y "WARNING: Running as a non-root user, \"$LOGNAME\". Functionality may be unavailable. Only root can use some commands or options"
 fi
 
+#check java exists.
+
+java 2> /dev/null;
+
+if [ $? -ne 1 ];then
+  echo_r "ERROR: java is not install,please install java first!"
+  exit 1;
+fi
+
 #check maven exists
-if [ `mvn -h 2>&1|grep 'command not found'|wc -l` -ne 0 ]; then
+
+mvn -h 2> /dev/null
+
+if [ $? -ne 1 ]; then
     echo_y "WARNING:maven is not install!"
     echo_g "checking network connectivity ... "
     net_check_ip=114.114.114.114
@@ -146,4 +158,5 @@ else
     cp ${WORKDIR}/opencron-agent/target/opencron-agent-${OPENCRON_VERSION}.tar.gz ${BUILD_HOME}/dist/
     cp ${WORKDIR}/opencron-server/target/opencron-server.war ${BUILD_HOME}/dist/
     echo_g "build opencron successfully! please goto ${BUILD_HOME}/dist"
+    exit 0
 fi
