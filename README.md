@@ -50,9 +50,15 @@ IE10+
 ## opencron-agent 安装步骤:
 ```
 
-1·)下载编译好的opencron-agent-${version}.tar.gz包(如未提供编译好的包,请自行下载源码用maven编辑即可)
+1·)下载源码: 
+> git clone https://github.com/wolfboys/opencron.git
 
-2)部署agent，将opencron-agent-${version}.tar.gz包拷贝到要管理任务的目标服务器,解包,会看到以下目录
+2):进入源码目录并执行编译:
+> cd opencron
+> sh build.sh
+编译完成的文件在build/dist下
+
+3)部署agent，将opencron-agent-${version}.tar.gz包拷贝到要管理任务的目标服务器,解包,会看到以下目录
 ---bin/
 |  startup.sh          #agent的启动脚本,调用的是opencron.sh来完成
 |  shutdown.sh         #agent停止脚本，调用的是opencron.sh来完成
@@ -80,7 +86,7 @@ IE10+
 -p (小写的p)为当前agent的连接密码,选填，如果不输入默认连接该机器的密码是opencron
 更多详细的启动信息请查看logs/opencron.out
 
-4)停止opencron-agent 进入opencron-agent/bin 执行：
+5)停止opencron-agent 进入opencron-agent/bin 执行：
 > cd opencron-agent/bin
 > sh shutdown.sh
 
