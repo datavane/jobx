@@ -85,7 +85,6 @@ if [ $UID -ne 0 ]; then
 fi
 
 #check java exists.
-
 java 2> /dev/null;
 
 if [ $? -ne 1 ];then
@@ -94,7 +93,6 @@ if [ $? -ne 1 ];then
 fi
 
 #check maven exists
-
 mvn -h 2> /dev/null
 
 if [ $? -ne 1 ]; then
