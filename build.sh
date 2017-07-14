@@ -63,18 +63,25 @@ rm -rf ${BUILD_HOME}/dist/*
 function echo_r () {
     # Color red: Error, Failed
     [ $# -ne 1 ] && return 1
-    echo -e "\033[31m$1\033[0m"
+    echo -e "[\033[32mopencron\033[0m] \033[31m$1\033[0m"
 }
 
 function echo_g () {
     # Color green: Success
     [ $# -ne 1 ] && return 1
-    echo -e "\033[32m$1\033[0m"
+    echo -e "[\033[32mopencron\033[0m] \033[32m$1\033[0m"
 }
+
 function echo_y () {
     # Color yellow: Warning
     [ $# -ne 1 ] && return 1
-    echo -e "\033[33m$1\033[0m"
+    echo -e "[\033[32mopencron\033[0m] \033[33m$1\033[0m"
+}
+
+function echo_b () {
+    # Color blue: Debug Level 1
+    [ $# -ne 1 ] && return 1
+    echo -e "[\033[32mopencron\033[0m] \033[32m$1\036[0m"
 }
 
 USER="`id -un`"
@@ -85,18 +92,18 @@ fi
 
 #check maven exists
 if [ `mvn -h 2>&1|grep 'command not found'|wc -l` -ne 0 ]; then
-    echo_y "maven is not install!"
+    echo_y "WARNING:maven is not install!"
     echo_g "checking network connectivity ... "
     net_check_ip=114.114.114.114
     ping_count=2
     ping -c ${ping_count} ${net_check_ip} >/dev/null
     retval=$?
     if [ ${retval} -ne 0 ] ; then
-        echo_r "Network is blocked! please check your network!"
-        echo_r "Build error! bye!"
+        echo_r "network is blocked! please check your network!"
+        echo_r "build error! bye!"
         exit 1
     elif [ ${retval} -eq 0 ]; then
-        echo_g "Check network connectivity passed! "
+        echo_g "check network connectivity passed! "
         if [ ! -x "${BUILD_HOME}/${UNPKG_MAVEN_NAME}" ] ; then
              echo_y "download maven Starting..."
              wget -P ${BUILD_HOME} $MAVEN_URL && {
@@ -142,8 +149,7 @@ if [ ${retval} -ne 0 ] ; then
     echo_r "build opencron failed! please try again "
     exit 1
 else
-    echo_g "build opencron successfully! "
     cp ${WORKDIR}/opencron-agent/target/opencron-agent-${OPENCRON_VERSION}.tar.gz ${BUILD_HOME}/dist/
     cp ${WORKDIR}/opencron-server/target/opencron-server.war ${BUILD_HOME}/dist/
-    echo_g "please goto ${BUILD_HOME}/dist ";
+    echo_g "build opencron successfully! please goto ${BUILD_HOME}/dist"
 fi
