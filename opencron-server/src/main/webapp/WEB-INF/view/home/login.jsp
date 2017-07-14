@@ -17,10 +17,13 @@
             window.location.href="${contextPath}/dashboard.htm?csrf=${csrf}";
         </c:if>
 
-        $(document).ready(function(){
-            var skin = $.cookie("opencron_skin");
-            if(skin) {
-                $('body').attr('id', skin);
+        $(document).ready(function() {
+            if ( !$('body').attr('id') ) {
+                //从session从未读到skin则先从cookie中获取
+                var skin = $.cookie("opencron_skin");
+                if(skin) {
+                    $('body').attr('id', skin);
+                }
             }
         });
 
@@ -458,7 +461,8 @@
     </script>
 
 </head>
-<body id="skin-blur-ocean">
+
+<body id="${sessionScope.skin}">
 
 <section id="login">
     <header>

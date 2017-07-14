@@ -2004,85 +2004,85 @@ a.list-group-item.active > .badge,
     /* --------------------------------------------------------
         Template Blur Skins for Desktop
     -----------------------------------------------------------*/
-    [id^="skin-blur-"] {
+    [id^="skin-"] {
         background-size: 100% 100%;
         background-attachment: fixed;
     }
 
-    #skin-blur-violate {
+    #skin-violate {
         background-image: url(/static/img/body/violate.jpg);
     }
 
-    #skin-blur-lights {
+    #skin-lights {
         background-image: url(/static/img/body/lights.jpg);
     }
 
-    #skin-blur-orange {
+    #skin-orange {
         background-image: url(/static/img/body/orange.jpg);
     }
 
 
-    #skin-blur-2 {
+    #skin-2 {
         background-image: url(/static/img/body/2.jpg);
     }
 
 
-    #skin-blur-3 {
+    #skin-3 {
         background-image: url(/static/img/body/3.jpg);
     }
 
 
-    #skin-blur-4 {
+    #skin-4 {
         background-image: url(/static/img/body/4.jpg);
     }
 
 
-    #skin-blur-5 {
+    #skin-5 {
         background-image: url(/static/img/body/5.jpg);
     }
 
 
-    #skin-blur-6 {
+    #skin-6 {
         background-image: url(/static/img/body/6.jpg);
     }
 
-    #skin-blur-city {
+    #skin-city {
         background-image: url(/static/img/body/city.jpg);
     }
 
-    #skin-blur-greenish {
+    #skin-greenish {
         background-image: url(/static/img/body/greenish.jpg);
     }
 
-    #skin-blur-night {
+    #skin-night {
         background-image: url(/static/img/body/night.jpg);
     }
 
-    #skin-blur-sunny {
+    #skin-sunny {
         background-image: url(/static/img/body/sunny.jpg);
     }
 
-    #skin-blur-blue {
+    #skin-blue {
         background-image: url(/static/img/body/blue.jpg);
     }
 
-    #skin-blur-chrome {
+    #skin-chrome {
         background-image: url(/static/img/body/chrome.jpg);
     }
 
-    #skin-blur-ocean {
+    #skin-ocean {
         background-image: url(/static/img/body/ocean.jpg);
     }
 
-    #skin-blur-sunset {
+    #skin-sunset {
         background-image: url(/static/img/body/sunset.jpg);
     }
 
-    #skin-blur-yellow {
+    #skin-yellow {
         background-image: url(/static/img/body/yellow.jpg);
     }
 
-    #skin-blur-kiwi {
+    #skin-kiwi {
         background-image: url(/static/img/body/kiwi.jpg);
     }
 
@@ -2216,75 +2216,75 @@ a.list-group-item.active > .badge,
     /* --------------------------------------------------------
         Template Skins for Mobile
     -----------------------------------------------------------*/
-    #skin-blur-violate {
+    #skin-violate {
         background: #581528;
     }
 
-    #skin-blur-lights {
+    #skin-lights {
         background: #152d33;
     }
 
-    #skin-blur-city {
+    #skin-city {
         background: #321e39;
     }
 
-    #skin-blur-greenish {
+    #skin-greenish {
         background: #233335;
     }
 
-    #skin-blur-night {
+    #skin-night {
         background: #0F3D52;
     }
 
-    #skin-blur-sunny {
+    #skin-sunny {
         background: #44360B;
     }
 
-    #skin-blur-blue {
+    #skin-blue {
         background: #2B6474;
     }
 
-    #skin-blur-chrome {
+    #skin-chrome {
         background: #40404E;
     }
 
-    #skin-blur-ocean {
+    #skin-ocean {
         background: #0064B3;
     }
 
-    #skin-blur-sunset {
+    #skin-sunset {
         background: #883527;
     }
 
-    #skin-blur-yellow {
+    #skin-yellow {
         background: #915D25;
     }
 
-    #skin-blur-kiwi {
+    #skin-kiwi {
         background: #0f4731;
     }
 
-    #skin-blur-orange {
+    #skin-orange {
         background: #c28c99;
     }
 
-    #skin-blur-2 {
+    #skin-2 {
         background: #af761d;
     }
 
-    #skin-blur-3 {
+    #skin-3 {
         background: #7e828b;
     }
 
-    #skin-blur-4 {
+    #skin-4 {
         background: #ad9e73;
     }
 
-    #skin-blur-5 {
+    #skin-5 {
         background: #e0a680;
     }
 
-    #skin-blur-6 {
+    #skin-6 {
         background: #d6e2f0;
     }
 

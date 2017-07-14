@@ -110,7 +110,6 @@ public class Config implements Serializable {
         this.smtpPort = smtpPort;
     }
 
-
     @Override
     public String toString() {
         return "Config{" +

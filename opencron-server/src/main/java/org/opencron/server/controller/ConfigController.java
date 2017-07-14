@@ -21,6 +21,7 @@
 
 package org.opencron.server.controller;
 
+import org.opencron.common.utils.CookieUtils;
 import org.opencron.common.utils.DigestUtils;
 import org.opencron.server.domain.Config;
 import org.opencron.server.job.OpencronTools;
@@ -33,6 +34,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -81,5 +83,14 @@ public class ConfigController extends BaseController {
         recordService.deleteRecordBetweenTime(startTime, endTime);
         return true;
     }
+
+    @RequestMapping(value = "/skin.do",method= RequestMethod.POST)
+    @ResponseBody
+    public boolean skin(String skin, HttpServletResponse response,HttpSession session) {
+        CookieUtils.setCookie(response,"opencron_skin",skin);
+        session.setAttribute("opencron_skin",skin);
+        return true;
+    }
+
 
 }

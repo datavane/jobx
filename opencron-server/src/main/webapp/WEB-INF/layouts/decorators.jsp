@@ -94,12 +94,16 @@
                 });
             }
 
-            var skin = $.cookie("opencron_skin");
-            if(skin) {
-                $('body').attr('id', skin);
+
+            if ( !$('body').attr('id') ) {
+                //从session从未读到skin则先从cookie中获取
+                var skin = $.cookie("opencron_skin");
+                if(skin) {
+                    $('body').attr('id', skin);
+                }
             }
 
-            $('body').on('click', '.template-skins > a', function(e){
+            $('body').on('click', '.template-skins > a', function(e) {
                 e.preventDefault();
                 var skin = $(this).data('skin');
                 $('body').attr('id', skin);
@@ -109,6 +113,16 @@
                     domain:document.domain,
                     path:"/"
                 });
+                $.ajax({
+                    headers:{"csrf":"${csrf}"},
+                    type:"POST",
+                    url: "${contextPath}/config/skin.do",
+                    dataType: "JSON",
+                    data:{
+                        "skin":skin
+                    }
+                });
+
             });
 
 
@@ -146,7 +160,7 @@
 
 </head>
 
-<body id="skin-blur-ocean">
+<body id="${sessionScope.skin}">
 
     <div id="mask" class="mask"></div>
 

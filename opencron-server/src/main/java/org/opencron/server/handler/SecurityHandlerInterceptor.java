@@ -24,6 +24,7 @@ package org.opencron.server.handler;
 
 
 import org.opencron.common.utils.CommonUtils;
+import org.opencron.common.utils.CookieUtils;
 import org.opencron.common.utils.StringUtils;
 import org.opencron.server.domain.User;
 import org.opencron.server.job.OpencronTools;
@@ -54,6 +55,14 @@ public class SecurityHandlerInterceptor extends HandlerInterceptorAdapter {
         request.setAttribute("uri",request.getRequestURI());
 
         HttpSession session = request.getSession();
+
+        if (session.getAttribute("opencron_skin")!=null) {
+            Cookie cookie = CookieUtils.getCookie(request, "opencron_skin");
+            String skin = cookie.getValue();
+            if (skin != null) {
+                session.setAttribute("skin", skin);
+            }
+        }
 
         String requestURI = request.getContextPath() + request.getServletPath();
 
