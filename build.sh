@@ -77,28 +77,15 @@ function echo_y () {
     echo -e "\033[33m$1\033[0m"
 }
 
-function echo_p () {
-    # Color purple,magenta: Debug Level 2
-    [ $# -ne 1 ] && return 1
-    echo -e "\033[35m$1\033[0m"
-}
-
-function echo_c () {
-    # Color cyan: friendly prompt, Level 1
-    [ $# -ne 1 ] && return 1
-    echo -e "\033[36m$1\033[0m"
-}
-
 USER="`id -un`"
 LOGNAME="$USER"
 if [ $UID -ne 0 ]; then
-    echo "WARNING: Running as a non-root user, \"$LOGNAME\". Functionality may be unavailable. Only root can use some commands or options"
+    echo_y "WARNING: Running as a non-root user, \"$LOGNAME\". Functionality may be unavailable. Only root can use some commands or options"
 fi
 
 #check maven exists
 if [ `mvn -h 2>&1|grep 'command not found'|wc -l` -ne 0 ]; then
-    echo_r "maven is not exists."
-    echo_g "install maven Starting..."
+    echo_y "maven is not install!"
     echo_g "checking network connectivity ... "
     net_check_ip=114.114.114.114
     ping_count=2
@@ -114,8 +101,25 @@ if [ `mvn -h 2>&1|grep 'command not found'|wc -l` -ne 0 ]; then
              echo_y "download maven Starting..."
              wget -P ${BUILD_HOME} $MAVEN_URL && {
                 echo_g "download maven successful!";
+                echo_g "install maven Starting"
                 tar -xzvf ${BUILD_HOME}/${MAVEN_NAME}.tar.gz -C ${BUILD_HOME}
-                cp $WORKDIR/settings.xml ${BUILD_HOME}/${UNPKG_MAVEN_NAME}/conf
+                echo "
+<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+
+<settings xmlns=\"http://maven.apache.org/SETTINGS/1.0.0\"
+          xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"
+          xsi:schemaLocation=\"http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd\">
+
+  <mirrors>
+    <mirror>
+      <id>nexus-aliyun</id>
+      <mirrorOf>*</mirrorOf>
+      <name>Nexus aliyun</name>
+      <url>http://maven.aliyun.com/nexus/content/groups/public</url>
+    </mirror>
+  </mirrors>
+
+</settings>" > ${BUILD_HOME}/${UNPKG_MAVEN_NAME}/conf/settings.xml
                 OPENCRON_MAVEN=${BUILD_HOME}/${UNPKG_MAVEN_NAME}/bin/mvn
              }
         else
