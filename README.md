@@ -95,7 +95,7 @@ IE10+
 ## opencron-server 部署步骤:
 
 ```
-1):下载已经编译好的opencron-server-${version}.war包,或者自行编码源码
+1):编译好项目源码，找到 build/dist/opencron-server.war
 
 2):更改项目的mysql连接信息,mysql的配置在config.properties里，更改即可:
 如:
