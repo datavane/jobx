@@ -78,12 +78,6 @@ function echo_y () {
     echo -e "[\033[32mopencron\033[0m] \033[33m$1\033[0m"
 }
 
-function echo_b () {
-    # Color blue: Debug Level 1
-    [ $# -ne 1 ] && return 1
-    echo -e "[\033[32mopencron\033[0m] \033[32m$1\036[0m"
-}
-
 USER="`id -un`"
 LOGNAME="$USER"
 if [ $UID -ne 0 ]; then
