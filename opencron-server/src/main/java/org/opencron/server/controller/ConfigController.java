@@ -21,7 +21,6 @@
 
 package org.opencron.server.controller;
 
-import org.opencron.common.utils.CookieUtils;
 import org.opencron.common.utils.DigestUtils;
 import org.opencron.server.domain.Config;
 import org.opencron.server.job.OpencronTools;
@@ -34,6 +33,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -86,7 +86,7 @@ public class ConfigController extends BaseController {
 
     @RequestMapping(value = "/skin.do",method= RequestMethod.POST)
     @ResponseBody
-    public boolean skin(String skin, HttpServletResponse response,HttpSession session) {
+    public boolean skin(String skin, HttpServletRequest request, HttpServletResponse response, HttpSession session) {
         session.setAttribute(OpencronTools.SKIN_NAME,skin);
         return true;
     }

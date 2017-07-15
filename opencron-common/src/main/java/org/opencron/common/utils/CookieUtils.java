@@ -60,21 +60,13 @@ public abstract class CookieUtils {
 
     public static void setCookie(HttpServletResponse response, String name, String value, int expire, String domain) {
         Cookie c = new Cookie(name, value);
-        c.setPath("/");
         c.setMaxAge(expire);
         if (domain != null) {
             c.setDomain(domain);
+        }else {
+            c.setPath("/");
         }
-
         response.addCookie(c);
-    }
-
-    public static void setCookie(HttpServletResponse response, String name, String value, int expire) {
-        setCookie(response, name, value, expire);
-    }
-
-    public static void setCookie(HttpServletResponse response, String name, String value) {
-        setCookie(response, name, value, -1);
     }
 
 }

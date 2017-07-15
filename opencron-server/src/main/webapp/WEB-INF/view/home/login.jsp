@@ -18,14 +18,31 @@
         </c:if>
 
         $(document).ready(function() {
-            if ( "${sessionScope.skin}" != "" ) {
+            if ( "${sessionScope.skin}" == "" ) {
                 //从session从未读到skin则先从cookie中获取
                 var skin = $.cookie("skin");
                 if(skin) {
                     $('body').attr('id', skin);
                 }else {
-                    $('body').attr('id', "skin-4");
+                    skin = "skin-4";
+                    $('body').attr('id',skin);
+                    $.cookie("skin", skin, {
+                        expires : 30,
+                        domain:document.domain,
+                        path:"/"
+                    });
                 }
+
+                //同步到session中...
+                $.ajax({
+                    headers:{"csrf":"${csrf}"},
+                    type:"POST",
+                    url: "${contextPath}/config/skin.do",
+                    dataType: "JSON",
+                    data:{
+                        "skin":skin
+                    }
+                });
             }
         });
 
