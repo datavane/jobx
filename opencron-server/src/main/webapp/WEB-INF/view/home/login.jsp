@@ -18,11 +18,13 @@
         </c:if>
 
         $(document).ready(function() {
-            if ( !$('body').attr('id') ) {
+            if ( "${sessionScope.skin}" != "" ) {
                 //从session从未读到skin则先从cookie中获取
-                var skin = $.cookie("opencron_skin");
+                var skin = $.cookie("skin");
                 if(skin) {
                     $('body').attr('id', skin);
+                }else {
+                    $('body').attr('id', "skin-4");
                 }
             }
         });

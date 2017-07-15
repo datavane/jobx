@@ -87,10 +87,8 @@ public class ConfigController extends BaseController {
     @RequestMapping(value = "/skin.do",method= RequestMethod.POST)
     @ResponseBody
     public boolean skin(String skin, HttpServletResponse response,HttpSession session) {
-        CookieUtils.setCookie(response,"opencron_skin",skin);
-        session.setAttribute("opencron_skin",skin);
+        session.setAttribute(OpencronTools.SKIN_NAME,skin);
         return true;
     }
-
 
 }

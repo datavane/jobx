@@ -94,12 +94,13 @@
                 });
             }
 
-
-            if ( !$('body').attr('id') ) {
+            if ( "${sessionScope.skin}" != "" ) {
                 //从session从未读到skin则先从cookie中获取
-                var skin = $.cookie("opencron_skin");
+                var skin = $.cookie("skin");
                 if(skin) {
                     $('body').attr('id', skin);
+                }else {
+                    $('body').attr('id', "skin-4");
                 }
             }
 
@@ -108,7 +109,7 @@
                 var skin = $(this).data('skin');
                 $('body').attr('id', skin);
                 $('#changeSkin').modal('hide');
-                $.cookie("opencron_skin", skin, {
+                $.cookie("skin", skin, {
                     expires : 30,
                     domain:document.domain,
                     path:"/"

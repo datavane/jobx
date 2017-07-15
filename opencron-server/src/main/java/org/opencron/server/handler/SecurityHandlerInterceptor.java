@@ -56,11 +56,11 @@ public class SecurityHandlerInterceptor extends HandlerInterceptorAdapter {
 
         HttpSession session = request.getSession();
 
-        if (session.getAttribute("opencron_skin")!=null) {
-            Cookie cookie = CookieUtils.getCookie(request, "opencron_skin");
-            String skin = cookie.getValue();
-            if (skin != null) {
-                session.setAttribute("skin", skin);
+        if (session.getAttribute(OpencronTools.SKIN_NAME)==null) {
+            Cookie cookie = CookieUtils.getCookie(request, OpencronTools.SKIN_NAME);
+            if (cookie!=null) {
+                String skin = cookie.getValue();
+                session.setAttribute(OpencronTools.SKIN_NAME, skin);
             }
         }
 

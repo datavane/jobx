@@ -56,6 +56,8 @@ public final class OpencronTools {
 
     public static final String CONTEXT_PATH_NAME = "contextPath";
 
+    public static final String SKIN_NAME = "skin";
+
     private static String resourceId;
 
     private static Logger logger = LoggerFactory.getLogger(OpencronTools.class);
