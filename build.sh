@@ -85,7 +85,7 @@ if [ $UID -ne 0 ]; then
 fi
 
 #check java exists.
-java 2> /dev/null;
+java >/dev/null 2>&1
 
 if [ $? -ne 1 ];then
   echo_r "ERROR: java is not install,please install java first!"
@@ -93,7 +93,7 @@ if [ $? -ne 1 ];then
 fi
 
 #check maven exists
-mvn -h 2> /dev/null
+mvn -h >/dev/null 2>&1
 
 if [ $? -ne 1 ]; then
     echo_y "WARNING:maven is not install!"
