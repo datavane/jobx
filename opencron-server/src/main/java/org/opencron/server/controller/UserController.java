@@ -118,7 +118,7 @@ public class UserController extends BaseController {
         user1.setQq(user.getQq());
         user1.setModifyTime(new Date());
         userService.updateUser(user1);
-        return String.format("redirect:/detail/%d.htm?csrf=%s",user.getUserId(),OpencronTools.getCSRF(session));
+        return String.format("redirect:/user/view.htm?csrf=%s",OpencronTools.getCSRF(session));
     }
 
     @RequestMapping(value = "/get.do",method= RequestMethod.POST)
