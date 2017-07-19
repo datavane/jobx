@@ -40,7 +40,10 @@
 # -----------------------------------------------------------------------------
 
 # opencron logo...
-echo -ne "\033[0;32m"
+GREEN_COLOR="\E[1;32m";
+RES="\E[0m";
+
+echo -ne "${GREEN_COLOR}"
 cat<<EOT
 
       --------------------------------------------
@@ -55,7 +58,7 @@ cat<<EOT
       --------------------------------------------
 
 EOT
-echo -ne "\033[m";
+echo -ne "${RES}";
 
 
 # OS specific support.  $var _must_ be set to either true or false.

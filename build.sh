@@ -1,6 +1,13 @@
 #!/bin/bash
 
-echo -ne "\033[0;32m"
+#echo color
+DEF_COLOR="\E[1;32m";
+RED_COLOR="\E[1;31m";
+GREEN_COLOR="\E[1;32m";
+YELLOW_COLOR="\E[1;33m";
+RES="\E[0m";
+
+echo -ne "${GREEN_COLOR}"
 cat<<EOT
 
       --------------------------------------------
@@ -15,7 +22,7 @@ cat<<EOT
       --------------------------------------------
 
 EOT
-echo -ne "\033[m";
+echo -ne "${RES}";
 
 # OS specific support.  $var _must_ be set to either true or false.
 cygwin=false
@@ -63,19 +70,19 @@ rm -rf ${BUILD_HOME}/dist/*
 function echo_r () {
     # Color red: Error, Failed
     [ $# -ne 1 ] && return 1
-    echo -e "[\033[32mopencron\033[0m] \033[31m$1\033[0m"
+    echo -e "[${DEF_COLOR}opencron${RES}] ${RED_COLOR}$1${RES}"
 }
 
 function echo_g () {
     # Color green: Success
     [ $# -ne 1 ] && return 1
-    echo -e "[\033[32mopencron\033[0m] \033[32m$1\033[0m"
+    echo -e "[${DEF_COLOR}opencron${RES}] ${GREEN_COLOR}$1${RES}"
 }
 
 function echo_y () {
     # Color yellow: Warning
     [ $# -ne 1 ] && return 1
-    echo -e "[\033[32mopencron\033[0m] \033[33m$1\033[0m"
+    echo -e "[${DEF_COLOR}opencron${RES}] ${YELLOW_COLOR}$1${RES}"
 }
 
 USER="`id -un`"
