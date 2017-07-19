@@ -1,8 +1,9 @@
 #!/bin/bash
 
 #echo color
-DEF_COLOR="\E[1;32m";
+WHITE_COLOR="\E[1;37m";
 RED_COLOR="\E[1;31m";
+BLUE_COLOR='\E[1;34m';
 GREEN_COLOR="\E[1;32m";
 YELLOW_COLOR="\E[1;33m";
 RES="\E[0m";
@@ -70,19 +71,25 @@ rm -rf ${BUILD_HOME}/dist/*
 function echo_r () {
     # Color red: Error, Failed
     [ $# -ne 1 ] && return 1
-    echo -e "[${DEF_COLOR}opencron${RES}] ${RED_COLOR}$1${RES}"
+    echo -e "[${GREEN_COLOR}opencron${RES}] ${RED_COLOR}$1${RES}"
 }
 
 function echo_g () {
     # Color green: Success
     [ $# -ne 1 ] && return 1
-    echo -e "[${DEF_COLOR}opencron${RES}] ${GREEN_COLOR}$1${RES}"
+    echo -e "[${GREEN_COLOR}opencron${RES}] ${GREEN_COLOR}$1${RES}"
 }
 
 function echo_y () {
     # Color yellow: Warning
     [ $# -ne 1 ] && return 1
-    echo -e "[${DEF_COLOR}opencron${RES}] ${YELLOW_COLOR}$1${RES}"
+    echo -e "[${GREEN_COLOR}opencron${RES}] ${YELLOW_COLOR}$1${RES}"
+}
+
+function echo_w () {
+    # Color yellow: White
+    [ $# -ne 1 ] && return 1
+    echo -e "[${GREEN_COLOR}opencron${RES}] ${WHITE_COLOR}$1${RES}"
 }
 
 USER="`id -un`"
@@ -104,7 +111,7 @@ mvn -h >/dev/null 2>&1
 
 if [ $? -ne 1 ]; then
     echo_y "WARNING:maven is not install!"
-    echo_g "checking network connectivity ... "
+    echo_w "checking network connectivity ... "
     net_check_ip=114.114.114.114
     ping_count=2
     ping -c ${ping_count} ${net_check_ip} >/dev/null
@@ -115,10 +122,10 @@ if [ $? -ne 1 ]; then
     elif [ ${retval} -eq 0 ]; then
         echo_g "check network connectivity passed! "
         if [ ! -x "${BUILD_HOME}/${UNPKG_MAVEN_NAME}" ] ; then
-             echo_y "download maven Starting..."
+             echo_w "download maven Starting..."
              wget -P ${BUILD_HOME} $MAVEN_URL && {
                 echo_g "download maven successful!";
-                echo_g "install maven Starting"
+                echo_w "install maven Starting"
                 tar -xzvf ${BUILD_HOME}/${MAVEN_NAME}.tar.gz -C ${BUILD_HOME}
                 echo "
 <?xml version=\"1.0\" encoding=\"UTF-8\"?>
@@ -149,7 +156,7 @@ if [ "$OPENCRON_MAVEN"x = ""x ]; then
     OPENCRON_MAVEN="mvn";
 fi
 
-echo_g "build opencron Starting...";
+echo_w "build opencron Starting...";
 
 $OPENCRON_MAVEN clean install -Dmaven.test.skip=true;
 
@@ -161,6 +168,6 @@ if [ ${retval} -ne 0 ] ; then
 else
     cp ${WORKDIR}/opencron-agent/target/opencron-agent-${OPENCRON_VERSION}.tar.gz ${BUILD_HOME}/dist/
     cp ${WORKDIR}/opencron-server/target/opencron-server.war ${BUILD_HOME}/dist/
-    echo_g "build opencron successfully! please goto ${BUILD_HOME}/dist"
+    echo -e "[${GREEN_COLOR}opencron${RES}] ${WHITE_COLOR}build opencron @ Version ${BLUE_COLOR}${OPENCRON_VERSION}${RES} successfully! please goto${RES} ${GREEN_COLOR}${BUILD_HOME}/dist${RES}"
     exit 0
 fi
