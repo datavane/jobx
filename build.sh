@@ -107,23 +107,26 @@ if [ $? -ne 1 ];then
 fi
 
 #check maven exists
-mvn -h >/dev/null 2>&1
+mvn >/dev/null 2>&1
 
 if [ $? -ne 1 ]; then
+
     echo_y "WARNING:maven is not install!"
-    echo_w "checking network connectivity ... "
-    net_check_ip=114.114.114.114
-    ping_count=2
-    ping -c ${ping_count} ${net_check_ip} >/dev/null
-    retval=$?
-    if [ ${retval} -ne 0 ] ; then
-        echo_r "ERROR:network is blocked! please check your network!build error! bye!"
-        exit 1
-    elif [ ${retval} -eq 0 ]; then
-        echo_g "check network connectivity passed! "
-        if [ ! -x "${BUILD_HOME}/${UNPKG_MAVEN_NAME}" ] ; then
-             echo_w "download maven Starting..."
-             wget -P ${BUILD_HOME} $MAVEN_URL && {
+
+    if [ -x "${BUILD_HOME}/${UNPKG_MAVEN_NAME}" ] ; then
+        echo_w "maven is already download,now config setting...";
+        OPENCRON_MAVEN=${BUILD_HOME}/${UNPKG_MAVEN_NAME}/bin/mvn
+    else
+        echo_w "download maven Starting..."
+        echo_w "checking network connectivity ... "
+        net_check_ip=114.114.114.114
+        ping_count=2
+        ping -c ${ping_count} ${net_check_ip} >/dev/null
+        retval=$?
+
+        if [ ${retval} -eq 0 ] ; then
+            echo_w "network is connectioned,download maven Starting... "
+            wget -P ${BUILD_HOME} $MAVEN_URL && {
                 echo_g "download maven successful!";
                 echo_w "install maven Starting"
                 tar -xzvf ${BUILD_HOME}/${MAVEN_NAME}.tar.gz -C ${BUILD_HOME}
@@ -145,15 +148,17 @@ if [ $? -ne 1 ]; then
 
 </settings>" > ${BUILD_HOME}/${UNPKG_MAVEN_NAME}/conf/settings.xml
                 OPENCRON_MAVEN=${BUILD_HOME}/${UNPKG_MAVEN_NAME}/bin/mvn
-             }
-        else
-             OPENCRON_MAVEN=${BUILD_HOME}/${UNPKG_MAVEN_NAME}/bin/mvn
+            }
+        elif [ ${retval} -ne 0 ]; then
+            echo_r "ERROR:network is blocked! download maven failed,please check your network!build error! bye!"
+            exit 1
         fi
     fi
-fi
 
-if [ "$OPENCRON_MAVEN"x = ""x ]; then
+elif [ "$OPENCRON_MAVEN"x = ""x ]; then
+
     OPENCRON_MAVEN="mvn";
+
 fi
 
 echo_w "build opencron Starting...";
@@ -162,12 +167,12 @@ $OPENCRON_MAVEN clean install -Dmaven.test.skip=true;
 
 retval=$?
 
-if [ ${retval} -ne 0 ] ; then
-    echo_r "build opencron failed! please try again "
-    exit 1
-else
+if [ ${retval} -eq 0 ] ; then
     cp ${WORKDIR}/opencron-agent/target/opencron-agent-${OPENCRON_VERSION}.tar.gz ${BUILD_HOME}/dist/
     cp ${WORKDIR}/opencron-server/target/opencron-server.war ${BUILD_HOME}/dist/
     echo -e "[${GREEN_COLOR}opencron${RES}] ${WHITE_COLOR}build opencron @ Version ${BLUE_COLOR}${OPENCRON_VERSION}${RES} successfully! please goto${RES} ${GREEN_COLOR}${BUILD_HOME}/dist${RES}"
     exit 0
+else
+    echo_r "build opencron failed! please try again "
+    exit 1
 fi
