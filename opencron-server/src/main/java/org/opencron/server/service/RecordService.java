@@ -108,7 +108,7 @@ public class RecordService {
                     "ORDER BY R.startTime ASC ";
 
             //单一任务有重跑记录的，查出后并把最后一条重跑记录的执行结果记作整个任务的成功、失败状态
-            if (parentRecord.getJobType() == Opencron.JobType.FLOW.getCode() && parentRecord.getRedoCount() > 0) {
+            if (parentRecord.getJobType() == Opencron.JobType.SINGLETON.getCode() && parentRecord.getRedoCount() > 0) {
                 List<RecordVo> records = queryDao.sqlQuery(RecordVo.class, sql, parentRecord.getRecordId());
                 parentRecord.setSuccess(records.get(records.size() - 1).getSuccess());
                 parentRecord.setChildRecord(records);

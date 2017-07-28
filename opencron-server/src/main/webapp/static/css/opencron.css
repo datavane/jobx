@@ -134,6 +134,19 @@ b{color: red;}
     }
 }
 
+@media (max-width: 1366px) {
+    .opencron_command{
+        width: 25em;
+    }
+}
+
+@media (max-width: 1280px) {
+    .opencron_command{
+        width: 20em;
+    }
+}
+
+
 .btn-float {
     background-color: rgba(0, 0, 0, 0);
     border: medium none rgba(0, 0, 0, 0);
