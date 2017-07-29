@@ -52,6 +52,25 @@ var opencron = {
     testQq:function(qq){
         var reg = /^[1-9]\d{5,11}$/;
         return reg.test(qq);
+    },
+
+    tipOk:function (el) {
+        if (typeof(el) == "string") {
+            el = $(el).next();
+        }
+        el.html($("<font class='big-green' color='green'><i class='glyphicon glyphicon-ok-sign'></i></font>"))
+    },
+    tipError:function (el,message) {
+        if (typeof(el) == "string"){
+            el = $(el).next();
+        }
+        el.html("<font color='red'><i class='glyphicon glyphicon-remove-sign'></i>&nbsp;"+message+"</font>");
+    },
+    tipDefault:function (el) {
+        if (typeof(el) == "string"){
+            el = $(el).next();
+        }
+        el.html(el.attr("tip"));
     }
 };
 

@@ -43,6 +43,12 @@ input:focus,select:focus,textarea:focus{
     font-size: 12px;
     color: #BBBBBB;
 }
+.big-green{
+    position: absolute;
+    right: 20%;
+    top: 4px;
+    font-size: 22px;
+}
 b{color: red;}
 .item{
     width: 120px;

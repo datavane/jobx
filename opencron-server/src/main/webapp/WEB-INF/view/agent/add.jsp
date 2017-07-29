@@ -9,304 +9,274 @@
 
     <script type="text/javascript">
 
-        function save() {
-            var name = $("#name").val();
-            if (!name) {
-                alert("请填写执行器名称!");
-                return false;
-            }
-            var ip = $("#ip").val();
-            if (!ip) {
-                alert("请填写机器IP!");
-                return false;
-            }
-            if (!opencron.testIp(ip)) {
-                alert("请填写正确的IP地址!");
-                return false;
-            }
-            var password = $("#password").val();
-            if (!password) {
-                alert("请填写连接密码!");
-                return false;
-            }
-            var port = $("#port").val();
-            if (!port) {
-                alert("请填写端口号!");
-                return false;
-            }
-            if (!opencron.testPort(port)) {
-                alert("请填写正确的端口号!");
-                return false;
-            }
+        var validata = {
 
-            var warning = $('input[type="radio"][name="warning"]:checked').val();
-            if (warning == 1) {
-                if (!$("#mobiles").val()) {
-                    alert("请填写手机号码!");
-                    return false;
-                }
-                if (!opencron.testMobile($("#mobiles").val())) {
-                    alert("请填写正确的手机号码!");
-                    return false;
-                }
-                if (!$("#email").val()) {
-                    alert("请填写邮箱地址!");
-                    return false;
-                }
-                if (!opencron.testEmail($("#email").val())) {
-                    alert("请填写正确的邮箱地址!");
-                    return false;
-                }
-            }
+            status:true,
 
-            var proxy = $('input[type="radio"][name="proxy"]:checked').val();
-            var proxyId = null;
-            if (proxy == 1) {
-                proxyId = $("#proxyAgent").val();
-            }
+            pingDone:false,
 
-            $.ajax({
-                headers: {"csrf": "${csrf}"},
-                type: "POST",
-                url: "${contextPath}/agent/checkhost.do",
-                data: {
-                    "ip": ip
-                },
-                success: function (data) {
+            init:function () {
+                this.status = true;
+                this.pingDone = false;
+            },
 
-                    if (data) {
+            name:function () {
+                var _name = $("#name").val();
+                if (!_name){
+                    opencron.tipError("#name","执行器名称不能为空!");
+                    this.status = false;
+                }else{
+                    if (_name.length<4 || _name.length>17){
+                        opencron.tipError("#name","执行器名称不能小于4个字符并且不能超过16个字符!");
+                        this.status = false;
+                    }else {
+                        var _this = this;
                         $.ajax({
                             headers: {"csrf": "${csrf}"},
                             type: "POST",
                             url: "${contextPath}/agent/checkname.do",
                             data: {
-                                "name": name
+                                "name": _name
                             },
                             success: function (data) {
-                                if (data) {
-                                    $.ajax({
-                                        headers: {"csrf": "${csrf}"},
-                                        type: "POST",
-                                        url: "${contextPath}/verify/ping.do",
-                                        data: {
-                                            "proxy": proxy || 0,
-                                            "proxyId": proxyId,
-                                            "ip": ip,
-                                            "port": port,
-                                            "password": calcMD5(password)
-                                        },
-                                        dataType:"JSON",
-                                        success: function (data) {
-                                            if (data) {
-                                                $("#agent").submit();
-                                                return;
-                                            } else {
-                                                alert("通信失败!请检查IP和端口号及密码");
-                                            }
-                                        },
-                                        error: function () {
-                                            alert("网络繁忙请刷新页面重试!");
-                                        }
-                                    });
-                                    return false;
-                                } else {
-                                    alert("执行器名称已存在!");
-                                    return false;
+                                if (!data) {
+                                    opencron.tipError("#name","执行器名称已存在!");
+                                    _this.status = false;
+                                }else{
+                                    opencron.tipOk("#name");
                                 }
-                            },
-                            error: function () {
-                                alert("网络繁忙请刷新页面重试!");
-                                return false;
                             }
                         });
-                    } else {
-                        alert("该执行器IP已存在!不能重复添加");
-                        return false;
                     }
-                },
-                error: function () {
-                    alert("网络繁忙请刷新页面重试!");
-                    return false;
                 }
-            })
+            },
 
-        }
-
-        function pingCheck() {
-
-            var ip = $("#ip").val();
-            if (!ip) {
-                alert("请填写机器IP!");
-                return false;
-            }
-            var password = $("#password").val();
-            if (!password) {
-                alert("请填写连接密码!");
-                return false;
-            }
-            if (!opencron.testIp(ip)) {
-                alert("请填写正确的IP地址!");
-                return false;
-            }
-            var port = $("#port").val();
-            if (!port) {
-                alert("请填写端口号!");
-                return false;
-            }
-            if (!opencron.testPort(port)) {
-                alert("请填写正确的端口号!");
-                return false;
-            }
-            var proxy = $('input[type="radio"][name="proxy"]:checked').val();
-            var proxyId = null;
-            if (proxy == 1) {
-                proxyId = $("#proxyAgent").val();
-            }
-
-            $("#pingResult").html("<img src='${contextPath}/static/img/icon-loader.gif'> <font color='#2fa4e7'>检测中...</font>");
-            $.ajax({
-                headers: {"csrf": "${csrf}"},
-                type: "POST",
-                url: "${contextPath}/verify/ping.do",
-                data: {
-                    "proxy": proxy || 0,
-                    "proxyId": proxyId,
-                    "ip": ip,
-                    "port": port,
-                    "password": calcMD5(password)
-                },
-                dataType:"JSON",
-                success: function (data) {
-                    if (data) {
-                        $.ajax({
-                            headers: {"csrf": "${csrf}"},
-                            type: "POST",
-                            url: "${contextPath}/verify/guid.do",
-                            data: {
-                                "proxy": proxy || 0,
-                                "proxyId": proxyId,
-                                "ip": ip,
-                                "port": port,
-                                "password": calcMD5(password)
-                            },
-                            dataType:"html",
-                            success:function(data){
-                                $("#machineId").val(data);
-                            }
-                        });
-                        $("#pingResult").html("<font color='green'>" + '<i class="glyphicon glyphicon-ok-sign"></i>&nbsp;通信正常' + "</font>");
-                        return;
-                    } else {
-                        $("#pingResult").html("<font color='red'>" + '<i class="glyphicon glyphicon-remove-sign"></i>&nbsp;通信失败' + "</font>");
-                        return;
-                    }
-                },
-                error: function () {
-                    $("#pingResult").html("<font color='red'>" + '<i class="glyphicon glyphicon-remove-sign"></i>&nbsp;通信失败' + "</font>");
-                }
-            });
-
-        }
-
-        $(document).ready(function () {
-
-            $("#ip").focus(function () {
-                $("#pingResult").html("");
-                $("#checkIp").html("");
-            }).blur(function () {
-                if (!$("#ip").val()) {
-                    $("#checkIp").html("<font color='red'>" + '<i class="glyphicon glyphicon-remove-sign"></i>&nbsp;请填写执行器IP' + "</font>");
-                } else {
-                    if (!opencron.testIp($("#ip").val())) {
-                        $("#checkIp").html("<font color='red'>" + '<i class="glyphicon glyphicon-remove-sign"></i>&nbsp;IP格式错误,请填写正确的IP地址' + "</font>");
-                        return false;
-                    } else {
+            ip:function () {
+                var _ip = $("#ip").val();
+                if (!_ip) {
+                    opencron.tipError("#ip","请填写机器IP!");
+                    this.status = false;
+                }else{
+                    if (!opencron.testIp(_ip)) {
+                        opencron.tipError("#ip","请填写正确的IP地址!");
+                        this.status = false;
+                    }else{
+                        var _this = this;
                         $.ajax({
                             headers: {"csrf": "${csrf}"},
                             type: "POST",
                             url: "${contextPath}/agent/checkhost.do",
                             data: {
-                                "ip": $("#ip").val()
+                                "ip": _ip
                             },
                             success: function (data) {
-                                if (data) {
-                                    $("#checkIp").html("<font color='green'>" + '<i class="glyphicon glyphicon-ok-sign"></i>&nbsp;执行器IP可用' + "</font>");
-                                    return false;
-                                } else {
-                                    $("#checkIp").html("<font color='red'>" + '<i class="glyphicon glyphicon-remove-sign"></i>&nbsp;执行器IP已存在' + "</font>");
-                                    return false;
+                                if (!data){
+                                    opencron.tipError("#ip","该执行器IP已存在!不能重复添加!");
+                                    _this.status = false;
+                                }else{
+                                    opencron.tipOk("#ip");
                                 }
-                            },
-                            error: function () {
-                                alert("网络繁忙请刷新页面重试!");
-                                return false;
                             }
-                        });
+                        })
                     }
                 }
-            });
 
-            $("#name").blur(function () {
-                if (!$("#name").val()) {
-                    $("#checkName").html("<font color='red'>" + '<i class="glyphicon glyphicon-remove-sign"></i>&nbsp;请填写执行器名' + "</font>");
-                    return false;
+            },
+
+            password:function () {
+                var _password = $("#password").val();
+                if (!_password) {
+                    opencron.tipError("#password","请填写连接密码!");
+                    this.status = false;
+                }else{
+                    opencron.tipOk("#password");
                 }
+            },
+
+            port:function () {
+                var _port = $("#port").val();
+                if (!_port) {
+                    opencron.tipError("#port","请填写端口号!");
+                    this.status = false;
+                }else if(!opencron.testPort(_port)) {
+                    opencron.tipError("#port","请填写正确的端口号!");
+                    this.status = false;
+                }else {
+                    validata.ping();
+                }
+            },
+
+            mobiles:function () {
+                var _mobiles = $("#mobiles").val();
+                if (!_mobiles) {
+                    opencron.tipError("#mobiles","手机号不能为空!");
+                    this.status = false;
+                }else if(!opencron.testMobile(_mobiles)) {
+                    opencron.tipError("#mobiles","手机号码格式错误!");
+                    this.status = false;
+                }else{
+                    opencron.tipOk("#mobiles");
+                }
+            },
+
+            email:function () {
+                var _email = $("#email").val();
+                if (!_email) {
+                    opencron.tipError("#email","邮箱地址不能为空!");
+                    this.status = false;
+                }else if(!opencron.testEmail(_email)) {
+                    opencron.tipError("#email","邮箱地址错误!");
+                    this.status = false;
+                }else{
+                    opencron.tipOk("#email");
+                }
+            },
+
+            warning:function () {
+                var _warning = $('input[type="radio"][name="warning"]:checked').val();
+                if(_warning) {
+                    this.mobiles();
+                    this.email();
+                }
+
+            },
+
+            ping:function() {
+                $("#pingResult").html("<img src='${contextPath}/static/img/icon-loader.gif'> <font color='#2fa4e7'>检测中...</font>");
+                var _ping = $('input[type="radio"][name="proxy"]:checked').val();
+                var proxyId = null;
+                if (_ping == 1) {
+                    proxyId = $("#proxyAgent").val();
+                }
+                var _this=this;
                 $.ajax({
                     headers: {"csrf": "${csrf}"},
                     type: "POST",
-                    url: "${contextPath}/agent/checkname.do",
+                    url: "${contextPath}/verify/ping.do",
                     data: {
-                        "name": $("#name").val()
+                        "proxy": _ping || 0,
+                        "proxyId": proxyId,
+                        "ip":$("#ip").val(),
+                        "port": $("#port").val(),
+                        "password": calcMD5($("#password").val())
                     },
+                    dataType:"JSON",
                     success: function (data) {
                         if (data) {
-                            $("#checkName").html("<font color='green'>" + '<i class="glyphicon glyphicon-ok-sign"></i>&nbsp;执行器名可用' + "</font>");
-                            return false;
+                            $.ajax({
+                                headers: {"csrf": "${csrf}"},
+                                type: "POST",
+                                url: "${contextPath}/verify/guid.do",
+                                data: {
+                                    "proxy": _ping || 0,
+                                    "proxyId": proxyId,
+                                    "ip":$("#ip").val(),
+                                    "port": $("#port").val(),
+                                    "password": calcMD5($("#password").val())
+                                },
+                                dataType:"html",
+                                success:function(data) {
+                                    _this.pingDone = true;
+                                    $("#machineId").val(data);
+                                },
+                                error:function () {
+                                    _this.pingDone = true;
+                                }
+                            });
+                            opencron.tipOk("#port");
                         } else {
-                            $("#checkName").html("<font color='red'>" + '<i class="glyphicon glyphicon-remove-sign"></i>&nbsp;执行器名已存在' + "</font>");
-                            return false;
+                            opencron.tipError("#port","通信失败");
+                            _this.status=false;
+                            _this.pingDone = true;
                         }
                     },
                     error: function () {
-                        alert("网络繁忙请刷新页面重试!");
-                        return false;
+                        opencron.tipError("#port","通信失败");
+                        _this.status=false;
+                        _this.pingDone = true;
                     }
                 });
-            }).focus(function () {
-                $("#checkName").html('<b>*&nbsp;</b>执行器名称必填');
-            });
+            }
+        }
 
-            $("#port").focus(function () {
-                $("#pingResult").html("");
-            });
+        $(document).ready(function () {
 
-            $("#warning1").next().attr("onclick", "showContact()");
-            $("#warning0").next().attr("onclick", "hideContact()");
-
-            $("#proxy1").next().attr("onclick", "showProxy()");
-            $("#proxy0").next().attr("onclick", "hideProxy()");
-
-            var proxy = $('input[type="radio"][name="proxy"]:checked').val();
-            if (proxy == 1) {
+            if ($('input[type="radio"][name="proxy"]:checked').val()) {
                 $(".proxy").show();
             } else {
                 $(".proxy").hide();
             }
 
-        });
+            $("#warning0").next().click(function () {
+                $(".contact").show();
+            });
 
-        function showContact() {
-            $(".contact").show()
-        }
-        function hideContact() {
-            $(".contact").hide()
-        }
-        function showProxy() {
-            $(".proxy").show()
-        }
-        function hideProxy() {
-            $(".proxy").hide()
-        }
+            $("#warning1").next().click(function () {
+                $(".contact").hide();
+            });
+
+            $("#proxy0").next().click(function () {
+                $(".proxy").hide();
+            });
+
+            $("#proxy1").next().click(function () {
+                $(".proxy").show();
+            });
+
+            $("#saveBtn").click(function () {
+                validata.init();
+                validata.name();
+                validata.ip();
+                validata.password();
+                validata.port();
+                validata.warning();
+                var valId = setInterval(function () {
+                    if (validata.pingDone) {
+                        window.clearInterval(valId);
+                        if(validata.status) {
+                            $("#agentForm").submit();
+                        }
+                    }
+                },500);
+            });
+
+            $("#name").blur(function () {
+                validata.name();
+            }).focus(function () {
+                opencron.tipDefault("#name");
+            });
+
+            $("#ip").blur(function () {
+                validata.ip();
+            }).focus(function () {
+                opencron.tipDefault("#ip");
+            });
+
+            $("#password").blur(function () {
+                validata.password();
+            }).focus(function () {
+                opencron.tipDefault("#password");
+            });
+
+            $("#port").blur(function () {
+                validata.port();
+            }).focus(function () {
+                opencron.tipDefault("#port");
+            });
+
+            $("#mobiles").blur(function () {
+                validata.mobiles();
+            }).focus(function () {
+                opencron.tipDefault("#mobiles");
+            });
+
+            $("#email").blur(function () {
+                validata.email();
+            }).focus(function () {
+                opencron.tipDefault("#email");
+            });
+
+        });
 
     </script>
 
@@ -336,14 +306,14 @@
 
         <div class="block-area" id="basic">
             <div class="tile p-15">
-                <form class="form-horizontal" role="form" id="agent" action="${contextPath}/agent/add.do" method="post"></br>
+                <form class="form-horizontal" role="form" id="agentForm" action="${contextPath}/agent/add.do" method="post"></br>
                     <input type="hidden" name="csrf" value="${csrf}">
                     <input type="hidden" name="machineId" id="machineId" value="">
                     <div class="form-group">
                         <label for="name" class="col-lab control-label"><i class="glyphicon glyphicon-leaf"></i>&nbsp;&nbsp;执行器名：</label>
                         <div class="col-md-10">
                             <input type="text" class="form-control input-sm" id="name" name="name">
-                            <span class="tips" id="checkName"><b>*&nbsp;</b>执行器名称必填</span>
+                            <span class="tips" tip="<b>*&nbsp;</b>必填项,由6-16个任意字符组成"><b>*&nbsp;</b>执行器名称必填,由6-16个任意字符组成</span>
                         </div>
                     </div>
                     <br>
@@ -356,12 +326,8 @@
                         <div class="form-group">
                             <label class="col-lab control-label"><i class="glyphicon glyphicon-transfer"></i>&nbsp;&nbsp;连接类型：</label>&nbsp;&nbsp;&nbsp;
                             <div class="col-md-10">
-                                <label onclick="hideProxy()" for="proxy0" class="radio-label"><input type="radio"
-                                                                                                     name="proxy" value="0"
-                                                                                                     id="proxy0" checked>直连</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <label onclick="showProxy()" for="proxy1" class="radio-label"><input type="radio"
-                                                                                                     name="proxy" value="1"
-                                                                                                     id="proxy1">代理&nbsp;&nbsp;&nbsp;</label>
+                                <label for="proxy0" class="radio-label"><input type="radio" name="proxy" value="0" id="proxy0" checked>直连</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <label for="proxy1" class="radio-label"><input type="radio" name="proxy" value="1" id="proxy1">代理&nbsp;&nbsp;&nbsp;</label>
                                 </br><span class="tips"><b>*&nbsp;</b>直连:直接连接目标执行器,代理:通过其他执行器代理连接目标执行器</span>
                             </div>
                         </div>
@@ -384,8 +350,7 @@
                         <label for="ip" class="col-lab control-label"><i class="glyphicon glyphicon-tag"></i>&nbsp;&nbsp;机&nbsp;&nbsp;器&nbsp;&nbsp;IP：</label>
                         <div class="col-md-10">
                             <input type="text" class="form-control input-sm" id="ip" name="ip">
-                            <span class="tips"><b>*&nbsp;</b>执行器IP地址只能为点分十进制方式表示,如192.168.0.1</span>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="tips" id="checkIp"></span>
+                            <span class="tips" tip="<b>*&nbsp;</b>必填项,执行器IP地址只能为点分十进制方式表示,如192.168.0.1"><b>*&nbsp;</b>必填项,执行器IP地址只能为点分十进制方式表示,如192.168.0.1</span>
                         </div>
                     </div>
                     <br>
@@ -394,7 +359,7 @@
                         <label for="password" class="col-lab control-label"><i class="glyphicon glyphicon-lock"></i>&nbsp;&nbsp;连接密码：</label>
                         <div class="col-md-10">
                             <input type="text" class="form-control input-sm" id="password" name="password">
-                            <span class="tips"><b>*&nbsp;</b>连接密码必填,调用执行器的权限依据</span>
+                            <span class="tips" tip="<b>*&nbsp;</b>必填项,链接密码是调用执行器的权限依据"><b>*&nbsp;</b>必填项,链接密码是调用执行器的权限依据</span>
                         </div>
                     </div>
                     <br>
@@ -403,9 +368,8 @@
                         <label for="port" class="col-lab control-label"><i class="glyphicon glyphicon-question-sign"></i>&nbsp;&nbsp;端&nbsp;&nbsp;口&nbsp;&nbsp;号：</label>
                         <div class="col-md-10">
                             <input type="text" class="form-control input-sm" id="port" name="port">
-                            <span class="tips"><b>*&nbsp;</b>执行器端口号只能是数字，范围从0到65535</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <a href="#" onclick="pingCheck()"><i class="glyphicon glyphicon-signal"></i>&nbsp;检测通信</a>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="tips" id="pingResult"></span>
+                            <span class="tips" tip="<b>*&nbsp;</b>必填项,执行器端口号为数字,范围从0到65535"><b>*&nbsp;</b>必填项,执行器端口号为数字,范围从0到65535</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <a href="#" onclick="validata.ping()"><i class="glyphicon glyphicon-signal"></i>&nbsp;检测通信</a>
                         </div>
                     </div>
                     <br>
@@ -413,14 +377,8 @@
                     <div class="form-group">
                         <label class="col-lab control-label"><i class="glyphicon glyphicon-warning-sign"></i>&nbsp;&nbsp;失联报警：</label>&nbsp;&nbsp;&nbsp;
                         <div class="col-md-10">
-                            <label onclick="showContact()" for="warning1" class="radio-label"><input type="radio"
-                                                                                                     name="warning"
-                                                                                                     value="1" id="warning1"
-                                                                                                     checked>是&nbsp;&nbsp;&nbsp;</label>
-                            <label onclick="hideContact()" for="warning0" class="radio-label"><input type="radio"
-                                                                                                     name="warning"
-                                                                                                     value="0"
-                                                                                                     id="warning0">否</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <label for="warning1" class="radio-label"><input type="radio" name="warning" value="1" id="warning1" checked>是&nbsp;&nbsp;&nbsp;</label>
+                            <label for="warning0" class="radio-label"><input type="radio" name="warning"  value="0" id="warning0">否</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             </br><span class="tips"><b>*&nbsp;</b>执行器通信不正常时是否发信息报警</span>
                         </div>
                     </div>
@@ -430,7 +388,7 @@
                         <label for="mobiles" class="col-lab control-label"><i class="glyphicon glyphicon-comment"></i>&nbsp;&nbsp;报警手机：</label>
                         <div class="col-md-10">
                             <input type="text" class="form-control input-sm" id="mobiles" name="mobiles">
-                            <span class="tips"><b>*&nbsp;</b>执行器通信不正常时将发送短信给此手机</span>
+                            <span class="tips" tip="<b>*&nbsp;</b>执行器通信不正常时将发送短信给此手机"><b>*&nbsp;</b>执行器通信不正常时将发送短信给此手机</span>
                         </div>
                     </div>
                     <br>
@@ -439,7 +397,7 @@
                         <label for="email" class="col-lab control-label"><i class="glyphicon glyphicon-envelope"></i>&nbsp;&nbsp;报警邮箱：</label>
                         <div class="col-md-10">
                             <input type="text" class="form-control input-sm" id="email" name="emailAddress">
-                            <span class="tips"><b>*&nbsp;</b>执行器通信不正常时将发送报告给此邮箱</span>
+                            <span class="tips" tip="<b>*&nbsp;</b>执行器通信不正常时将发送报告给此邮箱"><b>*&nbsp;</b>执行器通信不正常时将发送报告给此邮箱</span>
                         </div>
                     </div>
                     <br>
@@ -454,7 +412,7 @@
 
                     <div class="form-group">
                         <div class="col-md-offset-1 col-md-10">
-                            <button type="button" onclick="save()" class="btn btn-sm m-t-10"><i class="icon">&#61717;</i>&nbsp;保存
+                            <button type="button" id="saveBtn" class="btn btn-sm m-t-10"><i class="icon">&#61717;</i>&nbsp;保存
                             </button>&nbsp;&nbsp;
                             <button type="button" onclick="history.back()" class="btn btn-sm m-t-10"><i class="icon">&#61740;</i>&nbsp;取消
                             </button>
