@@ -43,7 +43,7 @@ public class Record implements Serializable {
 
 
     @Lob
-    @Column(columnDefinition="TEXT")
+    @Column(columnDefinition="text")
     private String command;
     private Integer returnCode;
     private Integer success;
@@ -51,7 +51,7 @@ public class Record implements Serializable {
     private Date endTime;
     private Integer execType;
     @Lob
-    @Column(columnDefinition="TEXT")
+    @Column(columnDefinition="longtext")
     private String message;
     private Integer redoCount;
     private Integer status;
