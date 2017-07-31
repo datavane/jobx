@@ -277,15 +277,15 @@ public class RecordService {
     public Long getRecords(HttpSession session, int status, Opencron.ExecType execType) {
         String sql;
         if (status == 1) {
-            sql = "SELECT COUNT(1) FROM T_RECORD WHERE success=? AND execType=? AND (FLOWNUM IS NULL OR flowNum=1)";
+            sql = "SELECT COUNT(1) FROM T_RECORD WHERE success=? AND execType=? AND STATUS IN (?,?,?) AND (FLOWNUM IS NULL OR flowNum=1)";
         } else {
-            sql = "SELECT COUNT(1) FROM T_RECORD WHERE success<>? AND execType=? AND (FLOWNUM IS NULL OR flowNum=1)";
+            sql = "SELECT COUNT(1) FROM T_RECORD WHERE success<>? AND execType=? AND STATUS IN (?,?,?) AND (FLOWNUM IS NULL OR flowNum=1)";
         }
         if (!OpencronTools.isPermission(session)) {
             User user = OpencronTools.getUser(session);
             sql += " AND userId = " + user.getUserId() + " AND agentid IN (" + user.getAgentIds() + ")";
         }
-        return queryDao.getCountBySql(sql, 1, execType.getStatus());
+        return queryDao.getCountBySql(sql, 1, execType.getStatus(), Opencron.RunStatus.STOPED.getStatus(),Opencron.RunStatus.DONE.getStatus(),Opencron.RunStatus.RERUNDONE.getStatus());
     }
 
     @Transactional

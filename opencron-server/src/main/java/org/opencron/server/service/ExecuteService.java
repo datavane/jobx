@@ -470,7 +470,12 @@ public class ExecuteService implements Job {
      */
     private Response responseToRecord(final JobVo job, final Record record) throws Exception {
         Response response = opencronCaller.call(Request.request(job.getIp(), job.getPort(), Action.EXECUTE, job.getPassword())
-                .putParam("command", job.getCommand()).putParam("pid", record.getPid()).putParam("timeout", job.getTimeout() + "").putParam("runAs",job.getRunAs()).putParam("successExit",job.getSuccessExit()), job.getAgent());
+                .putParam("command", job.getCommand())
+                .putParam("pid", record.getPid())
+                .putParam("timeout", job.getTimeout() + "")
+                .putParam("runAs",job.getRunAs())
+                .putParam("successExit",job.getSuccessExit()), job.getAgent());
+
         logger.info("[opencron]:execute response:{}", response.toString());
         record.setReturnCode(response.getExitCode());
         record.setMessage(response.getMessage());

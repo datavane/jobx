@@ -21,7 +21,6 @@
 
 package org.opencron.server.controller;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.opencron.common.job.Opencron;
