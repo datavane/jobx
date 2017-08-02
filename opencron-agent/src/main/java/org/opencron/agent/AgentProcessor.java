@@ -123,7 +123,7 @@ public class AgentProcessor implements Opencron.Iface {
             case CONN:
                 if (CommonUtils.isEmpty(agentMonitor, socketPort) || agentMonitor.stoped()) {
                     //选举一个空闲可用的port
-                    this.socketPort = 17502;//HttpUtils.freePort();
+                    this.socketPort = HttpUtils.freePort();
                     try {
                         agentMonitor.start(socketPort);
                     } catch (Exception e) {
