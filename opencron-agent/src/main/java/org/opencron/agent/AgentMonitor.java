@@ -62,7 +62,7 @@ public class AgentMonitor {
 
     public void start(final int port) throws Exception {
         final Configuration configuration = new Configuration();
-        configuration.setPort(port);
+        configuration.setPort(5329);
 
         final SocketIOServer server = new SocketIOServer(configuration);
 
@@ -70,7 +70,7 @@ public class AgentMonitor {
             @Override
             public void onConnect(final SocketIOClient client) {
                 UUID sessionId = client.getSessionId();
-                logger.info("[opencron]:monitor connected:SessionId @ {},port @ {}", sessionId, port);
+                logger.info("[opencron]:monitor connected:SessionId @ {},port @ {}", sessionId, 5329);
                 clients.put(sessionId, client);
                 /**
                  * 断开连接或者获取数据错误,不在推送数据...
