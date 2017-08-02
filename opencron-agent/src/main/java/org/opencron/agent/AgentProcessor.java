@@ -56,7 +56,7 @@ public class AgentProcessor implements Opencron.Iface {
 
     private String password;
 
-    private Integer socketPort;
+    private Integer socketPort = 5329;
 
     private final String REPLACE_REX = "%s:\\sline\\s[0-9]+:";
 
@@ -123,7 +123,7 @@ public class AgentProcessor implements Opencron.Iface {
             case CONN:
                 if (CommonUtils.isEmpty(agentMonitor, socketPort) || agentMonitor.stoped()) {
                     //选举一个空闲可用的port
-                    this.socketPort = HttpUtils.freePort();
+                    //this.socketPort = HttpUtils.freePort();
                     try {
                         agentMonitor.start(socketPort);
                     } catch (Exception e) {
