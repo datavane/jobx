@@ -245,7 +245,19 @@ function OpencronChart() {
                 colorCss = "progress-bar-danger";
             }
 
-            var html = '<div class="side-border"><h6><small style="font-weight: lighter"><i class="glyphicon glyphicon-hdd"></i>&nbsp;&nbsp;' + disk + '&nbsp;&nbsp;(已用:' + used + 'G/空闲:' + free + 'G)</small><div class="progress progress-small"><a href="#" data-toggle="tooltip" title="" class="progress-bar tooltips ' + colorCss + '" style="width: ' + val + '%;" data-original-title="' + val + '%"><span class="sr-only">' + val + '%</span></a></div></h6></div>';
+            var html =
+                '<div class="side-border">' +
+                '<h6>' +
+                '   <small style="font-weight: lighter">' +
+                '       <i class="glyphicon glyphicon-hdd"></i>&nbsp;&nbsp;' + disk + '&nbsp;&nbsp;(已用:' + used + 'G/空闲:' + free + 'G)' +
+                '   </small>' +
+                '   <div class="progress progress-small">' +
+                '       <a href="#" data-toggle="tooltip" title="" class="progress-bar tooltips ' + colorCss + '" style="width: ' + val + '%;" data-original-title="' + val + '%">' +
+                '           <span class="sr-only">' + val + '%</span>' +
+                '       </a>' +
+                '   </div>' +
+                '</h6>' +
+                '</div>';
             $("#disk-item").append(html);
         }
 
@@ -355,10 +367,22 @@ function OpencronChart() {
 
             if (i == 2) {
                 if (self.screen == 2) {
-                    var html = "<div class='gauge-cpu-warp'><div id=\"gauge-cpu\" class=\"gaugeChart_m\"></div><span class='gaugeChartTitle' ><i class=\"icon\" >&#61881;</i>&nbsp;" + title + "</span></div>";
+                    var html =
+                        '<div class="gauge-cpu-warp">' +
+                        '   <div id="gauge-cpu" class="gaugeChart_m"></div>' +
+                        '   <span class="gaugeChartTitle" >' +
+                        '       <i class="icon" >&#61881;</i>&nbsp;' + title + '' +
+                        '   </span>' +
+                        '</div>';
                     $("#overview-chart").append(html);
                 } else {
-                    var html = "<div class='gauge-cpu-warp'><div id=\"gauge-cpu\" class=\"gaugeChart\"></div><span class='gaugeChartTitle' ><i class=\"icon\" >&#61881;</i>&nbsp;" + title + "</span></div>";
+                    var html =
+                        '<div class="gauge-cpu-warp">' +
+                        '   <div id="gauge-cpu" class="gaugeChart"></div>' +
+                        '   <span class="gaugeChartTitle" >' +
+                        '       <i class="icon" >&#61881;</i>&nbsp;' + title + '' +
+                        '   </span>' +
+                        '</div>';
                     $("#overview-chart").append(html);
                 }
                 self.gauge = echarts.init(document.getElementById('gauge-cpu'));
@@ -419,7 +443,14 @@ function OpencronChart() {
                 self.gauge.setOption(self.gaugeOption, true);
 
             } else {
-                var html = $("<div class=\"pie-chart-tiny\" id=\"cpu_" + key + "\"><span class=\"percent\"></span><span style='font-weight: lighter' class=\"pie-title\" title='" + title + "(" + key + ")'><i class=\"icon\" >&#61881;</i>&nbsp;" + title + "</span></div>&nbsp;&nbsp;");
+                var html = $(
+                    '<div class="pie-chart-tiny" id="cpu_' + key + '">' +
+                    '   <span class="percent"></span>' +
+                    '       <span style="font-weight: lighter" class="pie-title" title="' + title + '(' + key + ')">' +
+                    '       <i class="icon" >&#61881;</i>&nbsp;' + title + '' +
+                    '   </span>' +
+                    '</div>&nbsp;&nbsp;');
+
                 html.easyPieChart({
                     easing: 'easeOutBounce',
                     barColor: self.overviewDataArr[i].color,
@@ -607,12 +638,15 @@ function OpencronChart() {
                         } else {
                             colorCss = "progress-bar-danger";
                         }
-                        var cpu = '<td> <div class="status pull-right bg-transparent-black-1" style="margin-left: 5px;font-size: 10px;">' +
-                            '<span id="agent_number" class="animate-number" data-value="100.00" data-animation-duration="1500">' + val + '</span>%' +
-                            '</div>' +
-                            '<div class="progress progress-small progress-white">' +
-                            '<div class="progress-bar ' + colorCss + '" role="progressbar" data-percentage="' + val + '%" style="width:' + val + '%" aria-valuemin="0" aria-valuemax="100"></div>' +
-                            '</div></td>';
+                        var cpu =
+                            '<td>' +
+                            '   <div class="status pull-right bg-transparent-black-1" style="margin-left: 5px;font-size: 10px;">' +
+                            '       <span id="agent_number" class="animate-number" data-value="100.00" data-animation-duration="1500">' + val + '</span>%' +
+                            '   </div>' +
+                            '   <div class="progress progress-small progress-white">' +
+                            '       <div class="progress-bar ' + colorCss + '" role="progressbar" data-percentage="' + val + '%" style="width:' + val + '%" aria-valuemin="0" aria-valuemax="100"></div>' +
+                            '   </div>' +
+                            '</td>';
                         text += cpu;
                     } else {
                         text += ("<td>" + obj[k] + "</td>");
