@@ -52,7 +52,7 @@ import static org.opencron.common.utils.CommonUtils.notEmpty;
 import static org.opencron.common.utils.WebUtils.*;
 
 @Controller
-@RequestMapping("/job")
+@RequestMapping("job")
 public class JobController extends BaseController {
 
     @Autowired
@@ -70,7 +70,7 @@ public class JobController extends BaseController {
     @Autowired
     private SchedulerService schedulerService;
 
-    @RequestMapping("/view.htm")
+    @RequestMapping("view.htm")
     public String view(HttpSession session, HttpServletRequest request, PageBean pageBean, JobVo job, Model model) {
 
         model.addAttribute("agents", agentService.getOwnerAgents(session));
@@ -105,19 +105,19 @@ public class JobController extends BaseController {
      * @param agentId
      * @param name
      */
-    @RequestMapping(value = "/checkname.do",method= RequestMethod.POST)
+    @RequestMapping(value = "checkname.do",method= RequestMethod.POST)
     @ResponseBody
     public boolean checkName(Long jobId, Long agentId, String name) {
         return !jobService.existsName(jobId, agentId, name);
     }
 
-    @RequestMapping(value = "/checkdel.do",method= RequestMethod.POST)
+    @RequestMapping(value = "checkdel.do",method= RequestMethod.POST)
     @ResponseBody
     public String checkDelete(Long id) {
         return jobService.checkDelete(id);
     }
 
-    @RequestMapping(value = "/delete.do",method= RequestMethod.POST)
+    @RequestMapping(value = "delete.do",method= RequestMethod.POST)
     @ResponseBody
     public boolean delete(Long id) {
         try {
@@ -129,7 +129,7 @@ public class JobController extends BaseController {
         }
     }
 
-    @RequestMapping("/add.htm")
+    @RequestMapping("add.htm")
     public String addpage(HttpSession session, Model model, Long id) {
         if (notEmpty(id)) {
             Agent agent = agentService.getAgent(id);
@@ -140,7 +140,7 @@ public class JobController extends BaseController {
         return "/job/add";
     }
 
-    @RequestMapping(value = "/save.do",method= RequestMethod.POST)
+    @RequestMapping(value = "save.do",method= RequestMethod.POST)
     public String save(HttpSession session, Job job, HttpServletRequest request) throws SchedulerException {
         job.setCommand(DigestUtils.passBase64(job.getCommand()));
         job.setDeleted(false);
@@ -219,7 +219,7 @@ public class JobController extends BaseController {
         return "redirect:/job/view.htm?csrf=" + OpencronTools.getCSRF(session);
     }
 
-    @RequestMapping("/editsingle.do")
+    @RequestMapping("editsingle.do")
     public void editSingleJob(HttpSession session, HttpServletResponse response, Long id) {
         JobVo job = jobService.getJobVoById(id);
         if (job == null) {
@@ -230,7 +230,7 @@ public class JobController extends BaseController {
         writeJson(response, JSON.toJSONString(job));
     }
 
-    @RequestMapping("/editflow.htm")
+    @RequestMapping("editflow.htm")
     public String editFlowJob(HttpSession session, Model model, Long id) {
         JobVo job = jobService.getJobVoById(id);
         if (job == null) {
@@ -245,7 +245,7 @@ public class JobController extends BaseController {
     }
 
 
-    @RequestMapping(value = "/edit.do",method= RequestMethod.POST)
+    @RequestMapping(value = "edit.do",method= RequestMethod.POST)
     @ResponseBody
     public boolean edit(HttpSession session,Job job) throws SchedulerException {
         Job dbJob = jobService.getJob(job.getJobId());
@@ -272,7 +272,7 @@ public class JobController extends BaseController {
         return true;
     }
 
-    @RequestMapping(value = "/editcmd.do",method= RequestMethod.POST)
+    @RequestMapping(value = "editcmd.do",method= RequestMethod.POST)
     @ResponseBody
     public boolean editCmd(HttpSession session,Long jobId, String command) throws SchedulerException {
         command = DigestUtils.passBase64(command);
@@ -285,13 +285,13 @@ public class JobController extends BaseController {
         return true;
     }
 
-    @RequestMapping(value = "/canrun.do",method= RequestMethod.POST)
+    @RequestMapping(value = "canrun.do",method= RequestMethod.POST)
     @ResponseBody
     public boolean canRun(Long id) {
         return recordService.isRunning(id);
     }
 
-    @RequestMapping(value = "/execute.do",method= RequestMethod.POST)
+    @RequestMapping(value = "execute.do",method= RequestMethod.POST)
     @ResponseBody
     public boolean remoteExecute(HttpSession session, Long id) {
         JobVo job = jobService.getJobVoById(id);//找到要执行的任务
@@ -309,13 +309,13 @@ public class JobController extends BaseController {
         return true;
     }
 
-    @RequestMapping("/goexec.htm")
+    @RequestMapping("goexec.htm")
     public String goExec(HttpSession session, Model model) {
         model.addAttribute("agents", agentService.getOwnerAgents(session));
         return "/job/exec";
     }
 
-    @RequestMapping(value = "/batchexec.do",method= RequestMethod.POST)
+    @RequestMapping(value = "batchexec.do",method= RequestMethod.POST)
     @ResponseBody
     public boolean batchExec(HttpSession session, String command, String agentIds) {
         if (notEmpty(agentIds) && notEmpty(command)) {
@@ -330,7 +330,7 @@ public class JobController extends BaseController {
         return true;
     }
 
-    @RequestMapping("/detail/{id}.htm")
+    @RequestMapping("detail/{id}.htm")
     public String showDetail(HttpSession session, Model model,@PathVariable("id") Long id) {
         JobVo jobVo = jobService.getJobVoById(id);
         if (jobVo == null) {

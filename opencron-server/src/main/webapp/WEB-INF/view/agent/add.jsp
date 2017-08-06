@@ -197,6 +197,7 @@
                     }
                 });
             }
+
         }
 
         $(document).ready(function () {
@@ -208,11 +209,20 @@
             }
 
             $("#warning0").next().click(function () {
-                $(".contact").show();
+                $(".contact").hide();
+            });
+            $("#warning0").parent().parent().click(function () {
+                $(".contact").hide();
             });
 
+
             $("#warning1").next().click(function () {
-                $(".contact").hide();
+                $(".contact").show();
+                validata.warning();
+            });
+            $("#warning1").parent().parent().click(function () {
+                $(".contact").show();
+                validata.warning();
             });
 
             $("#proxy0").next().click(function () {
@@ -310,10 +320,10 @@
                     <input type="hidden" name="csrf" value="${csrf}">
                     <input type="hidden" name="machineId" id="machineId" value="">
                     <div class="form-group">
-                        <label for="name" class="col-lab control-label"><i class="glyphicon glyphicon-leaf"></i>&nbsp;&nbsp;执行器名：</label>
+                        <label for="name" class="col-lab control-label wid150"><i class="glyphicon glyphicon-leaf"></i>&nbsp;&nbsp;执行器名&nbsp;&nbsp;<b>*&nbsp;</b></label>
                         <div class="col-md-10">
                             <input type="text" class="form-control input-sm" id="name" name="name">
-                            <span class="tips" tip="<b>*&nbsp;</b>必填项,由6-16个任意字符组成"><b>*&nbsp;</b>执行器名称必填,由6-16个任意字符组成</span>
+                            <span class="tips" tip="必填项,由6-16个任意字符组成">执行器名称必填,由6-16个任意字符组成</span>
                         </div>
                     </div>
                     <br>
@@ -324,17 +334,17 @@
                     </c:if>
                     <c:if test="${!empty connAgents}">
                         <div class="form-group">
-                            <label class="col-lab control-label"><i class="glyphicon glyphicon-transfer"></i>&nbsp;&nbsp;连接类型：</label>&nbsp;&nbsp;&nbsp;
+                            <label class="col-lab control-label wid150"><i class="glyphicon glyphicon-transfer "></i>&nbsp;&nbsp;连接类型&nbsp;&nbsp;<b>*&nbsp;</b></label>
                             <div class="col-md-10">
                                 <label for="proxy0" class="radio-label"><input type="radio" name="proxy" value="0" id="proxy0" checked>直连</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 <label for="proxy1" class="radio-label"><input type="radio" name="proxy" value="1" id="proxy1">代理&nbsp;&nbsp;&nbsp;</label>
-                                </br><span class="tips"><b>*&nbsp;</b>直连:直接连接目标执行器,代理:通过其他执行器代理连接目标执行器</span>
+                                </br><span class="tips">直连:直接连接目标执行器,代理:通过其他执行器代理连接目标执行器</span>
                             </div>
                         </div>
                         <br>
 
                         <div class="form-group proxy" style="display: none;">
-                            <label for="proxyAgent" class="col-lab control-label"><i class="glyphicon glyphicon-leaf"></i>&nbsp;&nbsp;代&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;理：</label>
+                            <label for="proxyAgent" class="col-lab control-label wid150"><i class="glyphicon glyphicon-leaf"></i>&nbsp;&nbsp;代&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;理&nbsp;&nbsp;&nbsp;&nbsp;</label>
                             <div class="col-md-10">
                                 <select id="proxyAgent" name="proxyAgent" class="form-control input-sm">
                                     <c:forEach var="d" items="${connAgents}">
@@ -347,63 +357,63 @@
                     </c:if>
 
                     <div class="form-group">
-                        <label for="ip" class="col-lab control-label"><i class="glyphicon glyphicon-tag"></i>&nbsp;&nbsp;机&nbsp;&nbsp;器&nbsp;&nbsp;IP：</label>
+                        <label for="ip" class="col-lab control-label wid150"><i class="glyphicon glyphicon-tag"></i>&nbsp;&nbsp;机&nbsp;&nbsp;器&nbsp;&nbsp;IP&nbsp;&nbsp;<b>*</b></label>
                         <div class="col-md-10">
                             <input type="text" class="form-control input-sm" id="ip" name="ip">
-                            <span class="tips" tip="<b>*&nbsp;</b>必填项,执行器IP地址只能为点分十进制方式表示,如192.168.0.1"><b>*&nbsp;</b>必填项,执行器IP地址只能为点分十进制方式表示,如192.168.0.1</span>
+                            <span class="tips" tip="必填项,执行器IP地址只能为点分十进制方式表示,如192.168.0.1">必填项,执行器IP地址只能为点分十进制方式表示,如192.168.0.1</span>
                         </div>
                     </div>
                     <br>
 
                     <div class="form-group">
-                        <label for="password" class="col-lab control-label"><i class="glyphicon glyphicon-lock"></i>&nbsp;&nbsp;连接密码：</label>
+                        <label for="password" class="col-lab control-label wid150"><i class="glyphicon glyphicon-lock"></i>&nbsp;&nbsp;连接密码&nbsp;&nbsp;<b>*</b></label>
                         <div class="col-md-10">
                             <input type="text" class="form-control input-sm" id="password" name="password">
-                            <span class="tips" tip="<b>*&nbsp;</b>必填项,链接密码是调用执行器的权限依据"><b>*&nbsp;</b>必填项,链接密码是调用执行器的权限依据</span>
+                            <span class="tips" tip="必填项,链接密码是调用执行器的权限依据">必填项,链接密码是调用执行器的权限依据</span>
                         </div>
                     </div>
                     <br>
 
                     <div class="form-group">
-                        <label for="port" class="col-lab control-label"><i class="glyphicon glyphicon-question-sign"></i>&nbsp;&nbsp;端&nbsp;&nbsp;口&nbsp;&nbsp;号：</label>
+                        <label for="port" class="col-lab control-label wid150 "><i class="glyphicon glyphicon-question-sign"></i>&nbsp;&nbsp;端&nbsp;&nbsp;口&nbsp;&nbsp;号&nbsp;&nbsp;<b>*</b></label>
                         <div class="col-md-10">
                             <input type="text" class="form-control input-sm" id="port" name="port">
-                            <span class="tips" tip="<b>*&nbsp;</b>必填项,执行器端口号为数字,范围从0到65535"><b>*&nbsp;</b>必填项,执行器端口号为数字,范围从0到65535</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <span class="tips" tip="必填项,执行器端口号为数字,范围从0到65535">必填项,执行器端口号为数字,范围从0到65535</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             <a href="#" onclick="validata.ping()"><i class="glyphicon glyphicon-signal"></i>&nbsp;检测通信</a>
                         </div>
                     </div>
                     <br>
 
                     <div class="form-group">
-                        <label class="col-lab control-label"><i class="glyphicon glyphicon-warning-sign"></i>&nbsp;&nbsp;失联报警：</label>&nbsp;&nbsp;&nbsp;
+                        <label class="col-lab control-label wid150"><i class="glyphicon glyphicon-warning-sign"></i>&nbsp;&nbsp;失联报警&nbsp;&nbsp;<b>*</b></label>
                         <div class="col-md-10">
                             <label for="warning1" class="radio-label"><input type="radio" name="warning" value="1" id="warning1" checked>是&nbsp;&nbsp;&nbsp;</label>
                             <label for="warning0" class="radio-label"><input type="radio" name="warning"  value="0" id="warning0">否</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            </br><span class="tips"><b>*&nbsp;</b>执行器通信不正常时是否发信息报警</span>
+                            </br><span class="tips">执行器通信不正常时是否发信息报警</span>
                         </div>
                     </div>
                     <br>
 
                     <div class="form-group contact">
-                        <label for="mobiles" class="col-lab control-label"><i class="glyphicon glyphicon-comment"></i>&nbsp;&nbsp;报警手机：</label>
+                        <label for="mobiles" class="col-lab control-label wid150"><i class="glyphicon glyphicon-comment"></i>&nbsp;&nbsp;报警手机&nbsp;&nbsp;&nbsp;&nbsp;</label>
                         <div class="col-md-10">
                             <input type="text" class="form-control input-sm" id="mobiles" name="mobiles">
-                            <span class="tips" tip="<b>*&nbsp;</b>执行器通信不正常时将发送短信给此手机"><b>*&nbsp;</b>执行器通信不正常时将发送短信给此手机</span>
+                            <span class="tips" tip="执行器通信不正常时将发送短信给此手机">执行器通信不正常时将发送短信给此手机</span>
                         </div>
                     </div>
                     <br>
 
                     <div class="form-group contact">
-                        <label for="email" class="col-lab control-label"><i class="glyphicon glyphicon-envelope"></i>&nbsp;&nbsp;报警邮箱：</label>
+                        <label for="email" class="col-lab control-label wid150"><i class="glyphicon glyphicon-envelope"></i>&nbsp;&nbsp;报警邮箱&nbsp;&nbsp;&nbsp;&nbsp;</label>
                         <div class="col-md-10">
                             <input type="text" class="form-control input-sm" id="email" name="emailAddress">
-                            <span class="tips" tip="<b>*&nbsp;</b>执行器通信不正常时将发送报告给此邮箱"><b>*&nbsp;</b>执行器通信不正常时将发送报告给此邮箱</span>
+                            <span class="tips" tip="执行器通信不正常时将发送报告给此邮箱">执行器通信不正常时将发送报告给此邮箱</span>
                         </div>
                     </div>
                     <br>
 
                     <div class="form-group">
-                        <label for="comment" class="col-lab control-label"><i class="glyphicon glyphicon-magnet"></i>&nbsp;&nbsp;描&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;述：</label>
+                        <label for="comment" class="col-lab control-label wid150"><i class="glyphicon glyphicon-magnet"></i>&nbsp;&nbsp;描&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;述&nbsp;&nbsp;&nbsp;&nbsp;</label>
                         <div class="col-md-10">
                             <textarea class="form-control input-sm" id="comment" name="comment"></textarea>
                         </div>

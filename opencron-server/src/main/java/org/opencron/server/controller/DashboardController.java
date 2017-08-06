@@ -85,13 +85,13 @@ public class DashboardController extends BaseController {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
-    @RequestMapping("/")
+    @RequestMapping("")
     public String index() {
         return "/home/login";
     }
 
-    @RequestMapping("/dashboard.htm")
-    public String home(HttpSession session, Model model) {
+    @RequestMapping("dashboard.htm")
+    public String dashboard(HttpSession session, Model model) {
         /**
          * agent...
          */
@@ -138,7 +138,7 @@ public class DashboardController extends BaseController {
         return "/home/index";
     }
 
-    @RequestMapping("/record.do")
+    @RequestMapping("record.do")
     @ResponseBody
     public List<ChartVo> record(HttpSession session,String startTime, String endTime) {
         if (isEmpty(startTime)) {
@@ -156,7 +156,7 @@ public class DashboardController extends BaseController {
         }
     }
 
-    @RequestMapping(value = "/progress.do",method= RequestMethod.POST)
+    @RequestMapping(value = "progress.do",method= RequestMethod.POST)
     @ResponseBody
     public ChartVo progress(HttpSession session) {
         //成功失败折线图数据
@@ -168,7 +168,7 @@ public class DashboardController extends BaseController {
         return chartVo;
     }
 
-    @RequestMapping(value = "/monitor.do",method= RequestMethod.POST)
+    @RequestMapping(value = "monitor.do",method= RequestMethod.POST)
     @ResponseBody
     public String port(Long agentId) throws Exception {
         Agent agent = agentService.getAgent(agentId);
@@ -188,7 +188,7 @@ public class DashboardController extends BaseController {
         }
     }
 
-    @RequestMapping(value = "/login.do",method= RequestMethod.POST)
+    @RequestMapping(value = "login.do",method= RequestMethod.POST)
     public void login(HttpSession session, HttpServletRequest request, HttpServletResponse response, HttpSession httpSession, @RequestParam String username, @RequestParam String password) throws Exception {
 
         //用户信息验证
@@ -228,13 +228,13 @@ public class DashboardController extends BaseController {
     }
 
 
-    @RequestMapping("/logout.htm")
+    @RequestMapping("logout.htm")
     public String logout(HttpSession httpSession) throws Exception {
         OpencronTools.invalidSession(httpSession);
         return "redirect:/";
     }
 
-    @RequestMapping(value = "/headpic/upload.do",method= RequestMethod.POST)
+    @RequestMapping(value = "headpic/upload.do",method= RequestMethod.POST)
     public void upload(@RequestParam(value = "file", required = false) MultipartFile file, Long userId, String data, HttpServletRequest request, HttpSession httpSession, HttpServletResponse response) throws Exception {
 
         String extensionName = null;
@@ -311,7 +311,7 @@ public class DashboardController extends BaseController {
     }
 
 
-    @RequestMapping("/notice/view.htm")
+    @RequestMapping("notice/view.htm")
     public String log(HttpSession session, Model model, PageBean pageBean, Long agentId, String sendTime) {
         model.addAttribute("agents", agentService.getOwnerAgents(session));
         if (notEmpty(agentId)) {
@@ -325,7 +325,7 @@ public class DashboardController extends BaseController {
     }
 
 
-    @RequestMapping(value = "/notice/uncount.do",method= RequestMethod.POST)
+    @RequestMapping(value = "notice/uncount.do",method= RequestMethod.POST)
     @ResponseBody
     public Long uncount(HttpSession session) {
         return homeService.getUnReadCount(session);
@@ -337,13 +337,13 @@ public class DashboardController extends BaseController {
      * @param model
      * @return
      */
-    @RequestMapping("/notice/unread.htm")
+    @RequestMapping("notice/unread.htm")
     public String nuread(HttpSession session, Model model) {
         model.addAttribute("message", homeService.getUnReadMessage(session));
         return "notice/info";
     }
 
-    @RequestMapping("/notice/detail/{logId}.htm")
+    @RequestMapping("notice/detail/{logId}.htm")
     public String detail(Model model,@PathVariable("logId") Long logId) {
         Log log = homeService.getLogDetail(logId);
         if (log == null) {

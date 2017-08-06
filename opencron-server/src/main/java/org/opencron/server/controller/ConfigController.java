@@ -50,19 +50,19 @@ public class ConfigController extends BaseController {
     @Autowired
     private RecordService recordService;
 
-    @RequestMapping("/view.htm")
+    @RequestMapping("view.htm")
     public String settings(Model model) {
         model.addAttribute("config", configService.getSysConfig());
         return "config/view";
     }
 
-    @RequestMapping("/edit.htm")
+    @RequestMapping("edit.htm")
     public String editPage(Model model) {
         model.addAttribute("config", configService.getSysConfig());
         return "config/edit";
     }
 
-    @RequestMapping(value = "/edit.do",method= RequestMethod.POST)
+    @RequestMapping(value = "edit.do",method= RequestMethod.POST)
     public String edit(HttpSession session, Config config) {
         Config cfg = configService.getSysConfig();
         cfg.setSenderEmail(config.getSenderEmail());
@@ -77,14 +77,14 @@ public class ConfigController extends BaseController {
         return "redirect:/config/view.htm?csrf=" + OpencronTools.getCSRF(session);
     }
 
-    @RequestMapping(value = "/clear.do",method= RequestMethod.POST)
+    @RequestMapping(value = "clear.do",method= RequestMethod.POST)
     @ResponseBody
     public boolean clearRecord(String startTime, String endTime) {
         recordService.deleteRecordBetweenTime(startTime, endTime);
         return true;
     }
 
-    @RequestMapping(value = "/skin.do",method= RequestMethod.POST)
+    @RequestMapping(value = "skin.do",method= RequestMethod.POST)
     @ResponseBody
     public boolean skin(String skin, HttpServletRequest request, HttpServletResponse response, HttpSession session) {
         session.setAttribute(OpencronTools.SKIN_NAME,skin);

@@ -8,7 +8,7 @@
 <html lang="en">
 <head>
     <script type="text/javascript">
-        $(document).ready(function(){
+        $(document).ready(function() {
 
             setInterval(function(){
 

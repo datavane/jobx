@@ -49,7 +49,7 @@ import static org.opencron.common.utils.WebUtils.*;
 
 
 @Controller
-@RequestMapping("/agent")
+@RequestMapping("agent")
 public class AgentController extends BaseController {
 
     @Autowired
@@ -58,51 +58,51 @@ public class AgentController extends BaseController {
     @Autowired
     private ExecuteService executeService;
 
-    @RequestMapping("/view.htm")
+    @RequestMapping("view.htm")
     public String queryAllAgent(HttpSession session, Model model, PageBean pageBean) {
         agentService.getOwnerAgent(session, pageBean);
         model.addAttribute("connAgents", agentService.getAgentByConnType(Opencron.ConnType.CONN));
         return "/agent/view";
     }
 
-    @RequestMapping("/refresh.htm")
+    @RequestMapping("refresh.htm")
     public String refreshAgent(HttpSession session,PageBean pageBean) {
         agentService.getOwnerAgent(session, pageBean);
         return "/agent/refresh";
     }
 
-    @RequestMapping(value = "/checkname.do",method= RequestMethod.POST)
+    @RequestMapping(value = "checkname.do",method= RequestMethod.POST)
     @ResponseBody
     public boolean checkName(Long id, String name) {
         return !agentService.existsName(id, name);
     }
 
-    @RequestMapping(value = "/checkdel.do",method= RequestMethod.POST)
+    @RequestMapping(value = "checkdel.do",method= RequestMethod.POST)
     @ResponseBody
     public String checkDelete(Long id) {
        return agentService.checkDelete(id);
     }
 
-    @RequestMapping(value = "/delete.do",method= RequestMethod.POST)
+    @RequestMapping(value = "delete.do",method= RequestMethod.POST)
     @ResponseBody
     public void delete(Long id) {
         agentService.delete(id);
     }
 
-    @RequestMapping(value = "/checkhost.do",method= RequestMethod.POST)
+    @RequestMapping(value = "checkhost.do",method= RequestMethod.POST)
     @ResponseBody
     public boolean checkhost(Long id, String ip) {
         return  !agentService.existshost(id, ip);
     }
 
-    @RequestMapping("/add.htm")
+    @RequestMapping("add.htm")
     public String addPage(Model model) {
         List<Agent> agentList = agentService.getAgentByConnType(Opencron.ConnType.CONN);
         model.addAttribute("connAgents", agentList);
         return "/agent/add";
     }
 
-    @RequestMapping(value = "/add.do",method= RequestMethod.POST)
+    @RequestMapping(value = "add.do",method= RequestMethod.POST)
     public String add(HttpSession session, Agent agent) {
         if (!agent.getWarning()) {
             agent.setMobiles(null);
@@ -122,7 +122,7 @@ public class AgentController extends BaseController {
         return "redirect:/agent/view.htm?csrf=" + OpencronTools.getCSRF(session);
     }
 
-    @RequestMapping(value = "/autoreg.do",method= RequestMethod.POST)
+    @RequestMapping(value = "autoreg.do",method= RequestMethod.POST)
     public synchronized void autoReg(HttpServletRequest request, HttpServletResponse response, Agent agent, String key) {
         String ip = getIp(request);
         String format = "{\"status\":%d,\"message\":\"%s\"}";
@@ -168,7 +168,7 @@ public class AgentController extends BaseController {
         }
     }
 
-    @RequestMapping(value = "/get.do",method= RequestMethod.POST)
+    @RequestMapping(value = "get.do",method= RequestMethod.POST)
     public void get(HttpServletResponse response, Long id) {
         Agent agent = agentService.getAgent(id);
         if (agent == null) {
@@ -178,7 +178,7 @@ public class AgentController extends BaseController {
         writeJson(response, JSON.toJSONString(agent));
     }
 
-    @RequestMapping(value = "/edit.do",method= RequestMethod.POST)
+    @RequestMapping(value = "edit.do",method= RequestMethod.POST)
     @ResponseBody
     public void edit(Agent agent) {
         Agent agent1 = agentService.getAgent(agent.getAgentId());
@@ -200,13 +200,13 @@ public class AgentController extends BaseController {
         agentService.merge(agent1);
     }
 
-    @RequestMapping(value = "/pwd.do",method= RequestMethod.POST)
+    @RequestMapping(value = "pwd.do",method= RequestMethod.POST)
     @ResponseBody
     public String pwd(Boolean type, Long id, String pwd0, String pwd1, String pwd2) {
         return agentService.editPwd(id,type,pwd0, pwd1, pwd2);
     }
 
-    @RequestMapping("/detail/{id}.htm")
+    @RequestMapping("detail/{id}.htm")
     public String showDetail(Model model,@PathVariable("id") Long id) {
         Agent agent = agentService.getAgent(id);
         if (agent == null) {
@@ -216,13 +216,13 @@ public class AgentController extends BaseController {
         return "/agent/detail";
     }
 
-    @RequestMapping(value = "/getConnAgents.do",method= RequestMethod.POST)
+    @RequestMapping(value = "getConnAgents.do",method= RequestMethod.POST)
     @ResponseBody
     public List<Agent> getConnAgents() {
        return agentService.getAgentByConnType(Opencron.ConnType.CONN);
     }
 
-    @RequestMapping(value = "/path.do",method= RequestMethod.POST)
+    @RequestMapping(value = "path.do",method= RequestMethod.POST)
     @ResponseBody
     public String getPath(Long agentId) {
         Agent agent = agentService.getAgent(agentId);

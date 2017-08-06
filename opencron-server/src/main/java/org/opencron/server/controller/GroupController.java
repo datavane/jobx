@@ -40,7 +40,7 @@ import java.util.*;
 
 
 @Controller
-@RequestMapping("/group")
+@RequestMapping("group")
 public class GroupController extends BaseController {
 
     @Autowired
@@ -49,20 +49,20 @@ public class GroupController extends BaseController {
     @Autowired
     private AgentService agentService;
 
-    @RequestMapping("/view.htm")
+    @RequestMapping("view.htm")
     public String view(PageBean pageBean) {
         groupService.getGroupPage(pageBean);
         return "/group/view";
     }
 
-    @RequestMapping("/add.htm")
+    @RequestMapping("add.htm")
     public String add(Model model) {
         List<Group> groups = groupService.getGroupforAgent();
         model.addAttribute("groups",groups);
         return "/group/add";
     }
 
-    @RequestMapping("/edit/{groupId}.htm")
+    @RequestMapping("edit/{groupId}.htm")
     public String edit(@PathVariable("groupId")Long groupId, Model model) {
         Group group = groupService.getById(groupId);
         List<Group> groups = groupService.getGroupforAgent();
@@ -71,13 +71,13 @@ public class GroupController extends BaseController {
         return "/group/edit";
     }
 
-    @RequestMapping(value = "/checkname.do",method= RequestMethod.POST)
+    @RequestMapping(value = "checkname.do",method= RequestMethod.POST)
     @ResponseBody
     public boolean checkname(Long id, String groupName) {
         return  !groupService.existsName(id, groupName);
     }
 
-    @RequestMapping(value = "/save.do",method= RequestMethod.POST)
+    @RequestMapping(value = "save.do",method= RequestMethod.POST)
     public String save(HttpSession session,Group group, String agentIds){
         group.setCreateTime(new Date());
         group.setUserId(OpencronTools.getUserId(session));

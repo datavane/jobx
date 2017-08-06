@@ -39,7 +39,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import static org.opencron.common.utils.CommonUtils.notEmpty;
 
 @Controller
-@RequestMapping("/record")
+@RequestMapping("record")
 public class RecordController extends BaseController {
 
     @Autowired
@@ -62,7 +62,7 @@ public class RecordController extends BaseController {
      * @param model
      * @return
      */
-    @RequestMapping("/done.htm")
+     @RequestMapping("done.htm")
     public String queryDone(HttpSession session, PageBean pageBean, RecordVo recordVo, String queryTime, Model model) {
 
         model.addAttribute("agents", agentService.getOwnerAgents(session));
@@ -95,7 +95,7 @@ public class RecordController extends BaseController {
         return "/record/done";
     }
 
-    @RequestMapping("/running.htm")
+     @RequestMapping("running.htm")
     public String queryRunning(HttpSession session, PageBean pageBean, RecordVo recordVo, String queryTime, Model model,Boolean refresh) {
 
         model.addAttribute("agents", agentService.getOwnerAgents(session));
@@ -120,12 +120,12 @@ public class RecordController extends BaseController {
         return refresh==null?"/record/running":"/record/refresh";
     }
 
-    @RequestMapping("/refresh.htm")
+     @RequestMapping("refresh.htm")
     public String refresh(HttpSession session,PageBean pageBean, RecordVo recordVo, String queryTime, Model model) {
         return this.queryRunning(session,pageBean,recordVo,queryTime,model,true);
     }
 
-    @RequestMapping("/detail/{id}.htm")
+     @RequestMapping("detail/{id}.htm")
     public String showDetail(Model model,@PathVariable("id") Long id) {
         RecordVo recordVo = recordService.getDetailById(id);
         if (recordVo == null) {
@@ -135,7 +135,7 @@ public class RecordController extends BaseController {
         return "/record/detail";
     }
 
-    @RequestMapping(value = "/kill.do",method= RequestMethod.POST)
+    @RequestMapping(value = "kill.do",method= RequestMethod.POST)
     @ResponseBody
     public boolean kill(HttpSession session, Long recordId) {
         Record record = recordService.get(recordId);

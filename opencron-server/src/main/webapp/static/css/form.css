@@ -26,9 +26,16 @@ label {
     margin-bottom: 5px;
 }
 
+.wid150{
+    width:150px !important;
+}
+
+.wid100{
+    width:100px !important;
+}
+
 .form-control, .message-search {
    background: rgba(0, 0, 0, 0.05);
-   border: 1px solid rgba(255, 255, 255, 0.3);
    text-shadow: none;
    color: #fff;
    box-shadow: none;
@@ -79,7 +86,7 @@ select:not([multiple]){
    background-repeat: no-repeat;
    background-position: right center;
    padding:1px;
-   height: 35px;
+   height: 40px;
 }
 
 .ie9 select:not([multiple]){

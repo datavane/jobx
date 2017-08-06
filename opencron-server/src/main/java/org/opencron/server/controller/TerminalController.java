@@ -52,13 +52,13 @@ import static org.opencron.common.utils.WebUtils.*;
  * benjobs..
  */
 @Controller
-@RequestMapping("/terminal")
+@RequestMapping("terminal")
 public class TerminalController extends BaseController {
 
     @Autowired
     private TerminalService termService;
 
-    @RequestMapping(value = "/ssh.do",method= RequestMethod.POST)
+    @RequestMapping(value = "ssh.do",method= RequestMethod.POST)
     public void ssh(HttpSession session, HttpServletResponse response, Terminal terminal) throws Exception {
         User user = OpencronTools.getUser(session);
 
@@ -79,7 +79,7 @@ public class TerminalController extends BaseController {
         }
     }
 
-    @RequestMapping("/ssh2.htm")
+    @RequestMapping("ssh2.htm")
     public String ssh2(HttpSession session, Terminal terminal) throws Exception {
         User user = OpencronTools.getUser(session);
 
@@ -99,27 +99,27 @@ public class TerminalController extends BaseController {
 
     }
 
-    @RequestMapping(value = "/detail.do",method= RequestMethod.POST)
+    @RequestMapping(value = "detail.do",method= RequestMethod.POST)
     @ResponseBody
     public Terminal detail(Terminal terminal) throws Exception {
         return termService.getById(terminal.getId());
     }
 
-    @RequestMapping(value = "/exists.do",method= RequestMethod.POST)
+    @RequestMapping(value = "exists.do",method= RequestMethod.POST)
     @ResponseBody
     public boolean exists(HttpSession session,Terminal terminal) throws Exception {
         User user = OpencronTools.getUser(session);
         return termService.exists(user.getUserId(), terminal.getHost());
     }
 
-    @RequestMapping("/view.htm")
+    @RequestMapping("view.htm")
     public String view(HttpSession session, PageBean pageBean, Model model) throws Exception {
         pageBean = termService.getPageBeanByUser(pageBean, OpencronTools.getUserId(session));
         model.addAttribute("pageBean", pageBean);
         return "/terminal/view";
     }
 
-    @RequestMapping("/open.htm")
+    @RequestMapping("open.htm")
     public String open(HttpServletRequest request, String token, Long id) throws Exception {
         //登陆失败
         if (token == null && id != null) {
@@ -139,7 +139,7 @@ public class TerminalController extends BaseController {
         return "/terminal/error";
     }
 
-    @RequestMapping("/reopen.htm")
+    @RequestMapping("reopen.htm")
     public String reopen(HttpSession session, String token) throws Exception {
         Terminal terminal = (Terminal) OpencronTools.CACHE.get(token);
         if (terminal != null) {
@@ -151,7 +151,7 @@ public class TerminalController extends BaseController {
         return "/terminal/error";
     }
 
-    @RequestMapping(value = "/resize.do",method= RequestMethod.POST)
+    @RequestMapping(value = "resize.do",method= RequestMethod.POST)
     @ResponseBody
     public boolean resize(String token, Integer cols, Integer rows, Integer width, Integer height) throws Exception {
         TerminalClient terminalClient = TerminalSession.get(token);
@@ -161,7 +161,7 @@ public class TerminalController extends BaseController {
         return true;
     }
 
-    @RequestMapping(value = "/sendAll.do",method= RequestMethod.POST)
+    @RequestMapping(value = "sendAll.do",method= RequestMethod.POST)
     @ResponseBody
     public boolean sendAll(String token, String cmd) throws Exception {
         cmd = URLDecoder.decode(cmd, "UTF-8");
@@ -175,7 +175,7 @@ public class TerminalController extends BaseController {
         return true;
     }
 
-    @RequestMapping(value = "/theme.do",method= RequestMethod.POST)
+    @RequestMapping(value = "theme.do",method= RequestMethod.POST)
     public void theme(String token, String theme) throws Exception {
         TerminalClient terminalClient = TerminalSession.get(token);
         if (terminalClient != null) {
@@ -183,7 +183,7 @@ public class TerminalController extends BaseController {
         }
     }
 
-    @RequestMapping(value = "/upload.do",method= RequestMethod.POST)
+    @RequestMapping(value = "upload.do",method= RequestMethod.POST)
     public void upload(HttpSession httpSession, HttpServletResponse response, String token, @RequestParam(value = "file", required = false) MultipartFile[] file, String path) {
         TerminalClient terminalClient = TerminalSession.get(token);
         boolean success = true;
@@ -211,7 +211,7 @@ public class TerminalController extends BaseController {
     }
 
 
-    @RequestMapping(value = "/save.do",method= RequestMethod.POST)
+    @RequestMapping(value = "save.do",method= RequestMethod.POST)
     @ResponseBody
     public String save(HttpSession session,Terminal term) throws Exception {
         Terminal.AuthStatus authStatus = termService.auth(term);
@@ -224,7 +224,7 @@ public class TerminalController extends BaseController {
     }
 
 
-    @RequestMapping(value = "/delete.do",method= RequestMethod.POST)
+    @RequestMapping(value = "delete.do",method= RequestMethod.POST)
     @ResponseBody
     public String delete(HttpSession session, Terminal term) throws Exception {
         return termService.delete(session, term.getId());
