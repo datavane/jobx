@@ -130,7 +130,7 @@
         function save() {
             var jobName = $("#jobName").val();
             if (!jobName) {
-                alert("请填写作业名称!");
+                opencron.tipError($("#checkJobName"),"请填写作业名称!");
                 return false;
             }
             var jobId = $("#id").val();
@@ -158,7 +158,7 @@
             var cronExp = $("#cronExp").val();
             if (execType == 0) {
                 if (!cronExp) {
-                    alert("请填写时间规则!");
+                    opencron.tipError($("#checkcronExp"),"请填写时间规则!");
                     return false;
                 }
             }
@@ -170,6 +170,7 @@
 
             var successExit = $("#successExit").val();
             if( successExit!=null && isNaN(successExit)) {
+                opencron.tipError($("#checkcronExp"),"请填写时间规则!");
                 alert("自定义成功标识必须为数字");
                 return false;
             }
@@ -321,7 +322,7 @@
 
                                     if (job.execType == "0") {
                                         $("#execType_" + job.jobId).html('<center><font color="green">自动</font></center>');
-                                        $("#cronType_" + job.jobId).html(job.cronType == "0" ? '<img width="70px" src="${contextPath}/static/img/crontab_ico.png">' : '<img width="70px" src="${contextPath}/static/img/quartz_ico.png">');
+                                        $("#cronType_" + job.jobId).html(job.cronType == "0" ? '<center><img width="70px" src="${contextPath}/static/img/crontab_ico.png"></center>' : '<center><img width="70px" src="${contextPath}/static/img/quartz_ico.png"></center>');
                                         $("#cronExp_" + job.jobId).html(escapeHtml(job.cronExp));
                                     } else {
                                         $("#execType_" + job.jobId).html('<center><font color="red">手动</font></center>');
@@ -393,7 +394,7 @@
 
             $("#jobName").blur(function () {
                 if (!$("#jobName").val()) {
-                    $("#checkJobName").html("<font color='red'>" + '<i class="glyphicon glyphicon-remove-sign"></i>&nbsp;请填写作业名称' + "</font>");
+                    opencron.tipError($("#checkJobName"),"请填写作业名称");
                     return false;
                 }
                 $.ajax({
@@ -406,10 +407,10 @@
                     },
                     success: function (data) {
                         if (data) {
-                            $("#checkJobName").html("<font color='green'>" + '<i class="glyphicon glyphicon-ok-sign"></i>&nbsp;作业名称可用' + "</font>");
+                            opencron.tipOk($("#checkJobName"),"作业名称可用");
                             return false;
                         } else {
-                            $("#checkJobName").html("<font color='red'>" + '<i class="glyphicon glyphicon-remove-sign"></i>&nbsp;作业名称已存在' + "</font>");
+                            opencron.tipError($("#checkJobName"),"作业名称已存在");
                             return false;
                         }
                     },
@@ -428,7 +429,7 @@
                 }
                 var cronExp = $("#cronExp").val();
                 if (!cronExp) {
-                    $("#checkcronExp").html("<font color='red'>" + '<i class="glyphicon glyphicon-remove-sign"></i>&nbsp;请填写时间规则' + "</font>");
+                    opencron.tipError($("#checkcronExp"),"时间规则不能为空,请填写时间规则");
                     return false;
                 }
                 $.ajax({
@@ -441,10 +442,10 @@
                     },
                     success: function (data) {
                         if (data) {
-                            $("#checkcronExp").html("<font color='green'>" + '<i class="glyphicon glyphicon-ok-sign"></i>&nbsp;语法正确' + "</font>");
+                            opencron.tipOk($("#checkcronExp"),"时间规则格式正确");
                             return;
                         } else {
-                            $("#checkcronExp").html("<font color='red'>" + '<i class="glyphicon glyphicon-remove-sign"></i>&nbsp;语法错误' + "</font>");
+                            opencron.tipOk($("#checkcronExp"),"时间规则格式错误,请填写正确的时间规则");
                             return;
                         }
                     },
@@ -751,8 +752,7 @@
                     </c:if>
                     <td style="width: 25%">
                         <div class="opencron_command">
-                            <a href="#" title="${cron:escapeHtml(r.command)}" onclick="editCmd('${r.jobId}')"
-                               id="command_${r.jobId}">
+                            <a href="#" title="${cron:escapeHtml(r.command)}" class="dot-ellipsis dot-resize-update" onclick="editCmd('${r.jobId}')" id="command_${r.jobId}">
                                     ${cron:escapeHtml(r.command)}
                             </a>
                         </div>
@@ -776,10 +776,10 @@
                             </c:when>
                             <c:otherwise>
                                 <c:if test="${r.cronType eq 0}">
-                                    <img width="70px" src="${contextPath}/static/img/crontab_ico.png">
+                                    <center><img width="70px" src="${contextPath}/static/img/crontab_ico.png"></center>
                                 </c:if>
                                 <c:if test="${r.cronType eq 1}">
-                                    <img width="70px" src="${contextPath}/static/img/quartz_ico.png">
+                                    <center><img width="70px" src="${contextPath}/static/img/quartz_ico.png"></center>
                                 </c:if>
                             </c:otherwise>
                         </c:choose>
@@ -799,10 +799,7 @@
                         <center>
                             <div class="visible-md visible-lg hidden-sm hidden-xs action-buttons">
                                 <c:if test="${r.jobType eq 1}">
-                                    <a href="#" title="流程作业" id="job_${r.jobId}" childOpen="off"
-                                       onclick="showChild('${r.jobId}','${r.flowId}')">
-                                        <i style="font-size:14px;" class="fa fa-angle-double-down"
-                                           id="icon${r.jobId}"></i>
+                                    <a href="#" title="流程作业" id="job_${r.jobId}" childOpen="off" onclick="showChild('${r.jobId}','${r.flowId}')"> <i style="font-size:14px;" class="fa fa-angle-double-down" id="icon${r.jobId}"></i>
                                     </a>&nbsp;&nbsp;
                                 </c:if>
                                 <c:if test="${r.jobType eq 0}">
@@ -847,8 +844,7 @@
                             </c:if>
                             <td style="width: 25%">
                                 <div class="opencron_command">
-                                    <a href="#" title="${cron:escapeHtml(c.command)}" onclick="editCmd('${c.jobId}')"
-                                       id="command_${c.jobId}">
+                                    <a href="#" title="${cron:escapeHtml(c.command)}" class="dot-ellipsis dot-resize-update" onclick="editCmd('${c.jobId}')" id="command_${c.jobId}">
                                             ${cron:escapeHtml(c.command)}
                                     </a>
                                 </div>
@@ -881,8 +877,7 @@
             </tbody>
         </table>
 
-        <cron:pager href="${contextPath}/job/view.htm?agentId=${agentId}&execType=${execType}&redo=${redo}&csrf=${csrf}"
-                    id="${pageBean.pageNo}" size="${pageBean.pageSize}" total="${pageBean.totalCount}"/>
+        <cron:pager href="${contextPath}/job/view.htm?agentId=${agentId}&execType=${execType}&redo=${redo}&csrf=${csrf}" id="${pageBean.pageNo}" size="${pageBean.pageSize}" total="${pageBean.totalCount}"/>
 
     </div>
 
@@ -907,40 +902,28 @@
                         <div class="form-group">
                             <label for="jobName" class="col-lab control-label" title="作业名称必填">作业名称：</label>
                             <div class="col-md-9">
-                                <input type="text" class="form-control " id="jobName">&nbsp;&nbsp;<label
-                                    id="checkJobName"></label>
+                                <input type="text" class="form-control" id="jobName">&nbsp;&nbsp;<label id="checkJobName"></label>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-lab control-label" title="1.手动模式: 管理员手动执行 2.自动模式: 执行器自动执行">运行模式：</label>&nbsp;&nbsp;
-                            <label for="execType1" onclick="hideCronExp()" class="radio-label"><input type="radio"
-                                                                                                      name="execType"
-                                                                                                      value="1"
-                                                                                                      id="execType1">手动&nbsp;&nbsp;&nbsp;</label>
-                            <label for="execType0" onclick="showCronExp()" class="radio-label"><input type="radio"
-                                                                                                      name="execType"
-                                                                                                      value="0"
-                                                                                                      id="execType0">自动</label>
+                            <label for="execType1" onclick="hideCronExp()" class="radio-label"><input type="radio" name="execType" value="1" id="execType1">手动&nbsp;&nbsp;&nbsp;</label>
+                            <label for="execType0" onclick="showCronExp()" class="radio-label"><input type="radio" name="execType" value="0" id="execType0">自动</label>
                         </div>
                         <div class="form-group cronExpDiv">
-                            <label class="col-lab control-label"
-                                   title="1.crontab: unix/linux的时间格式表达式&nbsp;&nbsp;2.quartz: quartz框架的时间格式表达式">规则类型：</label>&nbsp;&nbsp;
-                            <label for="cronType0" class="radio-label"><input type="radio" name="cronType" value="0"
-                                                                              id="cronType0">crontab&nbsp;&nbsp;&nbsp;</label>
-                            <label for="cronType1" class="radio-label"><input type="radio" name="cronType" value="1"
-                                                                              id="cronType1">quartz</label>
+                            <label class="col-lab control-label" title="1.crontab: unix/linux的时间格式表达式&nbsp;&nbsp;2.quartz: quartz框架的时间格式表达式">规则类型：</label>&nbsp;&nbsp;
+                            <label for="cronType0" class="radio-label"><input type="radio" name="cronType" value="0" id="cronType0">crontab&nbsp;&nbsp;&nbsp;</label>
+                            <label for="cronType1" class="radio-label"><input type="radio" name="cronType" value="1" id="cronType1">quartz</label>
                         </div>
                         <br>
                         <div class="form-group cronExpDiv">
                             <label for="cronExp" class="col-lab control-label" title="请采用对应类型的时间格式表达式">时间规则：</label>
                             <div class="col-md-9">
-                                <input type="text" class="form-control " id="cronExp"/>&nbsp;&nbsp;<label
-                                    id="checkcronExp"></label>
+                                <input type="text" class="form-control " id="cronExp"/>&nbsp;&nbsp;<label id="checkcronExp"></label>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="cmd" class="col-lab control-label"
-                                   title="请采用unix/linux的shell支持的命令">执行命令：</label>
+                            <label for="cmd" class="col-lab control-label" title="请采用unix/linux的shell支持的命令">执行命令：</label>
                             <div class="col-md-9">
                                 <textarea class="form-control " id="cmd" name="cmd" style="height: 80px;"></textarea>&nbsp;
                             </div>
@@ -973,12 +956,8 @@
 
                         <div class="form-group">
                             <label class="col-lab control-label" title="作业失败后是否重新执行此作业">重新执行：</label>&nbsp;&nbsp;
-                            <label for="redo1" onclick="showCountDiv()" class="radio-label"><input type="radio"
-                                                                                                   name="redo" value="1"
-                                                                                                   id="redo1"> 是&nbsp;&nbsp;&nbsp;</label>
-                            <label for="redo0" onclick="hideCountDiv()" class="radio-label"><input type="radio"
-                                                                                                   name="redo" value="0"
-                                                                                                   id="redo0"> 否</label>
+                            <label for="redo1" onclick="showCountDiv()" class="radio-label"><input type="radio" name="redo" value="1" id="redo1"> 是&nbsp;&nbsp;&nbsp;</label>
+                            <label for="redo0" onclick="hideCountDiv()" class="radio-label"><input type="radio" name="redo" value="0" id="redo0"> 否</label>
                         </div>
                         <br>
                         <div class="form-group countDiv">
@@ -990,14 +969,8 @@
 
                         <div class="form-group" style="margin-top: 0px;margin-bottom: 22px">
                             <label class="col-lab control-label" title="任务执行失败时是否发信息报警">失败报警：</label>&nbsp;&nbsp;
-                            <label onclick="showContact()" for="warning1" class="radio-label"><input type="radio"
-                                                                                                     name="warning"
-                                                                                                     value="1"
-                                                                                                     id="warning1">是&nbsp;&nbsp;&nbsp;</label>
-                            <label onclick="hideContact()" for="warning0" class="radio-label"><input type="radio"
-                                                                                                     name="warning"
-                                                                                                     value="0"
-                                                                                                     id="warning0">否</label>
+                            <label onclick="showContact()" for="warning1" class="radio-label"><input type="radio" name="warning" value="1" id="warning1">是&nbsp;&nbsp;&nbsp;</label>
+                            <label onclick="hideContact()" for="warning0" class="radio-label"><input type="radio" name="warning" value="0" id="warning0">否</label>
                         </div>
                         <div class="form-group contact">
                             <label for="mobiles" class="col-lab control-label" title="任务执行失败时将发送短信给此手机">报警手机：</label>
@@ -1015,8 +988,7 @@
                         <div class="form-group">
                             <label for="comment" class="col-lab control-label" title="此作业内容的描述">描&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;述：</label>
                             <div class="col-md-9">
-                                <textarea style="height: 50px;" name="comment" id="comment"
-                                          class="form-control"></textarea>&nbsp;
+                                <textarea style="height: 50px;" name="comment" id="comment" class="form-control"></textarea>&nbsp;
                             </div>
                         </div>
 

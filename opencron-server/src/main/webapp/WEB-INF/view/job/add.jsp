@@ -953,8 +953,7 @@
                 <div class="form-group">
                     <label for="comment" class="col-lab control-label wid150"><i class="glyphicon glyphicon-magnet"></i>&nbsp;&nbsp;描&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;述&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
                     <div class="col-md-10">
-                        <textarea class="form-control input-sm" id="comment" name="comment"
-                                  style="height: 50px;"></textarea>
+                        <textarea class="form-control input-sm" id="comment" name="comment" style="height: 50px;"></textarea>
                     </div>
                 </div>
                 <br>
@@ -1006,8 +1005,7 @@
                         <div class="form-group">
                             <label for="cmd1" class="col-lab control-label wid100" title="请采用unix/linux的shell支持的命令">执行命令&nbsp;<b>*</b></label>
                             <div class="col-md-9">
-                                <textarea class="form-control" id="cmd1" name="cmd1"
-                                          style="height:100px;resize:vertical"></textarea>
+                                <textarea class="form-control" id="cmd1" name="cmd1" style="height:100px;resize:vertical"></textarea>
                                 <span class="tips" tip="请采用unix/linux的shell支持的命令">请采用unix/linux的shell支持的命令</span>
                             </div>
                         </div>
@@ -1040,12 +1038,9 @@
                         <br>
 
                         <div class="form-group">
-                            <label class="col-lab control-label wid100"
-                                   title="执行失败时是否自动重新执行">失败重跑&nbsp;&nbsp;&nbsp;</label>&nbsp;&nbsp;
-                            <label for="redo1" class="radio-label"><input type="radio" name="itemRedo" id="redo1"
-                                                                          checked> 是&nbsp;&nbsp;&nbsp;</label>
-                            <label for="redo0" class="radio-label"><input type="radio" name="itemRedo" id="redo0">
-                                否</label><br>
+                            <label class="col-lab control-label wid100" title="执行失败时是否自动重新执行">失败重跑&nbsp;&nbsp;&nbsp;</label>&nbsp;&nbsp;
+                            <label for="redo1" class="radio-label"><input type="radio" name="itemRedo" id="redo1" checked> 是&nbsp;&nbsp;&nbsp;</label>
+                            <label for="redo0" class="radio-label"><input type="radio" name="itemRedo" id="redo0">否</label><br>
                         </div>
                         <br>
                         <div class="form-group countDiv1">
