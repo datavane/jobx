@@ -223,7 +223,6 @@ public class DashboardController extends BaseController {
                 user.setHeaderPath(getWebUrlPath(request) + "/upload/" + name);
             }
             writeJson(response, String.format(format, "success", "url", "/dashboard.htm?csrf=" + csrf, "csrf", csrf));
-            return;
         }
     }
 

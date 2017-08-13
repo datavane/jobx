@@ -66,8 +66,6 @@ var opencron = {
         if (typeof(el) == "string"){
             el = $(el).next();
         }
-
-
         el.html("<font color='red'><i class='glyphicon glyphicon-remove-sign'></i>&nbsp;"+message+"</font>");
     },
     tipDefault:function (el) {
