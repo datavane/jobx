@@ -176,7 +176,7 @@
                     <label for="timeout" class="col-lab control-label wid150"><i class="glyphicon glyphicon-ban-circle"></i>&nbsp;&nbsp;超时时间&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
                     <div class="col-md-10">
                         <input type="text" class="form-control input-sm" id="timeout" name="timeout" value="0">
-                        <span class="tips">执行作业允许的最大时间,超过则为超时(0:忽略超时时间,分钟为单位)</span>
+                        <span class="tips" tip="执行作业允许的最大时间,超过则为超时(0:忽略超时时间,分钟为单位)">执行作业允许的最大时间,超过则为超时(0:忽略超时时间,分钟为单位)</span>
                     </div>
                 </div>
                 <br>

@@ -397,46 +397,27 @@ public class AgentMonitor {
                 }
                 ioList.add(JSON.toJSONString(iostat));
             }
-
         }
         scan.close();
         return ioList;
-
     }
 
     private Double generateDiskSpace(String value) {
         String fix = value.substring(value.length() - 1);
         String space = value.substring(0, value.length() - 1);
 
-        if (fix.equalsIgnoreCase("D")) {
-            return Double.parseDouble(space) * Math.pow(1024, 8);
-        }
-        if (fix.equalsIgnoreCase("N")) {
-            return Double.parseDouble(space) * Math.pow(1024, 7);
-        }
+        Map<String,Integer> diskSpaceMap = new HashMap<String, Integer>(){{
+            put("T",1);
+            put("P",2);
+            put("E",3);
+            put("Z",4);
+            put("Y",5);
+        }};
 
-        if (fix.equalsIgnoreCase("B")) {
-            return Double.parseDouble(space) * Math.pow(1024, 6);
-        }
-
-        if (fix.equalsIgnoreCase("Y")) {
-            return Double.parseDouble(space) * Math.pow(1024, 5);
-        }
-
-        if (fix.equalsIgnoreCase("Z")) {
-            return Double.parseDouble(space) * Math.pow(1024, 4);
-        }
-
-        if (fix.equalsIgnoreCase("E")) {
-            return Double.parseDouble(space) * Math.pow(1024, 3);
-        }
-
-        if (fix.equalsIgnoreCase("P")) {
-            return Double.parseDouble(space) * Math.pow(1024, 2);
-        }
-
-        if (fix.equalsIgnoreCase("T")) {
-            return Double.parseDouble(space) * Math.pow(1024, 1);
+        for(Map.Entry<String,Integer> entry:diskSpaceMap.entrySet()){
+            if(fix.equalsIgnoreCase(entry.getKey())) {
+                return Double.parseDouble(space) * Math.pow(1024, entry.getValue());
+            }
         }
 
         if (fix.equalsIgnoreCase("G")) {
@@ -446,6 +427,7 @@ public class AgentMonitor {
         if (fix.equalsIgnoreCase("M")) {
             return Double.parseDouble(space) / 1024;
         }
+
         return 0D;
     }
 

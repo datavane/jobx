@@ -191,21 +191,20 @@ public abstract class CommonUtils implements Serializable {
 
     public static Map<String, Object> object2Map(Object obj) {
 
-        if (isEmpty(obj))
+        if (isEmpty(obj)) {
             return Collections.EMPTY_MAP;
+        }
         Map<String, Object> resultMap = new HashMap<String, Object>(0);
         // 拿到属性器数组
         try {
             PropertyDescriptor[] pds = Introspector.getBeanInfo(obj.getClass()).getPropertyDescriptors();
             for (int index = 0; pds.length > 1 && index < pds.length; index++) {
                 if (Class.class == pds[index].getPropertyType() || pds[index].getReadMethod() == null) {
-
                     continue;
                 }
                 Object value = pds[index].getReadMethod().invoke(obj);
                 // 只处理简单类型,对于对象类型,集合不处理
                 if (notEmpty(value)) {
-
                     if (isPrototype(pds[index].getPropertyType())//java里的原始类型(去除自己定义类型)
                             || pds[index].getPropertyType().isPrimitive()//基本类型
                             || ReflectUitls.isPrimitivePackageType(pds[index].getPropertyType())

@@ -140,6 +140,12 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <dependency>
+            <groupId>org.hyperic</groupId>
+            <artifactId>sigar</artifactId>
+            <version>1.6.5.132-6</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -214,8 +220,11 @@
             </plugin>
 
         </plugins>
-
     </build>
 
 
 </project>
+
+
+
+

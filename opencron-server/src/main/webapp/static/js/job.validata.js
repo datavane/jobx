@@ -53,8 +53,8 @@ function Validata() {
                         },
                         error: function () {
                             _this.jobNameRemote = true;
-                            opencron.tipError("#jobName" + elemFix, "网络请求错误,请重试!");
                             _this.status = false;
+                            opencron.tipError("#jobName" + elemFix, "网络请求错误,请重试!");
                         }
                     });
                 }
@@ -213,6 +213,7 @@ function Validata() {
                     opencron.tipOk("#timeout" + elemFix);
                 }
             } else {
+                this.status = false;
                 opencron.tipError("#timeout" + elemFix, "超时时间不能为空,请填写(0:忽略超时时间,分钟为单位!");
             }
         },
@@ -455,7 +456,8 @@ function Validata() {
                 $("#cronTip").html('quartz: quartz框架的时间格式表达式');
                 $("#expTip").html('quartz: 请采用quartz框架的时间格式表达式,如 0 0 10 L * ?');
             }
-            if ($("#cronExp").val().length > 0) {
+
+            if ( (arguments[1]||false) && $("#cronExp").val().length > 0) {
                 self.validata.cronExp();
             }
         },
@@ -503,16 +505,16 @@ Validata.prototype.ready = function () {
     });
 
     $("#cronType0").next().click(function () {
-        _this.toggle.cronTip(0);
+        _this.toggle.cronTip(0,true);
     });
     $("#cronType0").parent().parent().click(function () {
-        _this.toggle.cronTip(0);
+        _this.toggle.cronTip(0,true);
     });
     $("#cronType1").next().click(function () {
-        _this.toggle.cronTip(1);
+        _this.toggle.cronTip(1,true);
     });
     $("#cronType1").parent().parent().click(function () {
-        _this.toggle.cronTip(1);
+        _this.toggle.cronTip(1,true);
     });
 
 
@@ -587,7 +589,6 @@ Validata.prototype.ready = function () {
     });
 
     var execType = $('input[type="radio"][name="execType"]:checked').val();
-    console.log(_this.toggle)
     _this.toggle.cronExp(execType == 0);
 
     var redo = $('input[type="radio"][name="redo"]:checked').val();
