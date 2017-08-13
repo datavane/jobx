@@ -799,8 +799,7 @@
                         <center>
                             <div class="visible-md visible-lg hidden-sm hidden-xs action-buttons">
                                 <c:if test="${r.jobType eq 1}">
-                                    <a href="#" title="流程作业" id="job_${r.jobId}" childOpen="off" onclick="showChild('${r.jobId}','${r.flowId}')"> <i style="font-size:14px;" class="fa fa-angle-double-down" id="icon${r.jobId}"></i>
-                                    </a>&nbsp;&nbsp;
+                                    <a href="#" title="流程作业" id="job_${r.jobId}" childOpen="off" onclick="showChild('${r.jobId}','${r.flowId}')"> <i style="font-size:14px;" class="fa fa-angle-double-down" id="icon${r.jobId}"></i></a>&nbsp;&nbsp;
                                 </c:if>
                                 <c:if test="${r.jobType eq 0}">
                                     <a href="#" title="编辑" onclick="editSingle('${r.jobId}')">
@@ -1015,11 +1014,9 @@
                     <form class="form-horizontal" role="form" id="cmdform">
                         <input type="hidden" id="cmdId">
                         <div class="form-group">
-                            <label for="command" class="col-lab control-label"
-                                   title="请采用unix/linux的shell支持的命令">执行命令：</label>
+                            <label for="command" class="col-lab control-label" title="请采用unix/linux的shell支持的命令">执行命令：</label>
                             <div class="col-md-9">
-                                <textarea class="form-control " id="command" name="command"
-                                          style="height: 120px;"></textarea>&nbsp;
+                                <textarea class="form-control " id="command" name="command" style="height: 120px;"></textarea>&nbsp;
                             </div>
                         </div>
                     </form>
