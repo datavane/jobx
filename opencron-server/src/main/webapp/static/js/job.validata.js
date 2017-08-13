@@ -616,7 +616,7 @@ Validata.prototype.ready = function () {
                     $("#jobform").submit();
                 }
             }
-        },100);
+        },10);
     });
 
     $("#subjob-btn").click(function () {
