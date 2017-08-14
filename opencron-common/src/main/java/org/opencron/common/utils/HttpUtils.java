@@ -182,7 +182,7 @@ public abstract class HttpUtils {
         int port;
         do {
             port = random.nextInt(65535);
-        } while (!isLocalPortUsing(port));
+        } while (isLocalPortUsing(port));
 
         return port;
     }
