@@ -112,7 +112,7 @@ public class AgentMonitor {
                      * 如果Agent在运行中,则hold住实时监控的进程,确保可以提供数据
                      */
                     while (agentIsRunning()) {
-                        TimeUnit.MICROSECONDS.sleep(1000);
+                        TimeUnit.MICROSECONDS.sleep(10000);
                     }
                     server.stop();
                 } catch (Exception ex) {
