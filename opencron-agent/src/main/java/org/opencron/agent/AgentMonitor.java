@@ -103,6 +103,10 @@ public class AgentMonitor {
             public void run() {
                 server.start();
                 try {
+                    /**
+                     * 不断的检查Agent服务(默认端口1577)有没有停止,由于当前的socketIO是另一个进程，确保在Agent服务停止的时候实时监控服务也可以停止,
+                     * 如果Agent在运行中,则hold住实时监控的进程,确保可以提供数据
+                     */
                     while (agentIsRunning()) {
                         Thread.sleep(10000);
                     }
@@ -112,6 +116,7 @@ public class AgentMonitor {
                 }
             }
         }).start();
+
     }
 
     private boolean agentIsRunning() throws UnknownHostException {
