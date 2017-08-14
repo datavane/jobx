@@ -68,25 +68,25 @@ BUILD_HOME=${WORKDIR}/build
 [ ! -d ${BUILD_HOME}/dist ] && mkdir ${BUILD_HOME}/dist/
 rm -rf ${BUILD_HOME}/dist/*
 
-function echo_r () {
+echo_r () {
     # Color red: Error, Failed
     [ $# -ne 1 ] && return 1
     echo -e "[${GREEN_COLOR}opencron${RES}] ${RED_COLOR}$1${RES}"
 }
 
-function echo_g () {
+echo_g () {
     # Color green: Success
     [ $# -ne 1 ] && return 1
     echo -e "[${GREEN_COLOR}opencron${RES}] ${GREEN_COLOR}$1${RES}"
 }
 
-function echo_y () {
+echo_y () {
     # Color yellow: Warning
     [ $# -ne 1 ] && return 1
     echo -e "[${GREEN_COLOR}opencron${RES}] ${YELLOW_COLOR}$1${RES}"
 }
 
-function echo_w () {
+echo_w () {
     # Color yellow: White
     [ $# -ne 1 ] && return 1
     echo -e "[${GREEN_COLOR}opencron${RES}] ${WHITE_COLOR}$1${RES}"
