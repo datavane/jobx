@@ -98,18 +98,22 @@ public class AgentMonitor {
             }
         });
 
-        server.start();
-
-        try {
-            while (agentIsRunning()) {
-                Thread.sleep(10000);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                server.start();
+                try {
+                    while (agentIsRunning()) {
+                        Thread.sleep(10000);
+                    }
+                    server.stop();
+                } catch (Exception ex) {
+                    // continue and check the flag
+                }
             }
-            server.stop();
-        } catch (Exception ex) {
-            // continue and check the flag
-        }
-
+        }).start();
     }
+
     private boolean agentIsRunning() throws UnknownHostException {
         //检查当前Agent是否启动中.如果Agent端口已停止,则停止
         int agentPort = Integer.valueOf(Integer.parseInt(Globals.OPENCRON_PORT));
