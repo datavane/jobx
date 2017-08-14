@@ -180,7 +180,7 @@ public class DashboardController extends BaseController {
         String format = "%d_%s";
 
         if (agent.getProxy().equals(Opencron.ConnType.CONN.getType())) {
-            String url = String.format("http://%s:%s", agent.getIp(), 17502);
+            String url = String.format("http://%s:%s", agent.getIp(), PropertyPlaceholder.get("opencorn.monitorPort"));
             return String.format(format, agent.getProxy(), url);
         } else {//代理
             Response req = executeService.monitor(agent);
