@@ -68,6 +68,7 @@ public class AgentProcessor implements Opencron.Iface {
 
     public AgentProcessor(String password) {
         this.password = password;
+        agentMonitor = new AgentMonitor();
     }
 
     @Override
@@ -110,9 +111,6 @@ public class AgentProcessor implements Opencron.Iface {
     public Response monitor(Request request) throws TException {
         Opencron.ConnType connType = Opencron.ConnType.getByName(request.getParams().get("connType"));
         Response response = Response.response(request);
-        if (agentMonitor == null) {
-            agentMonitor = new AgentMonitor();
-        }
         switch (connType) {
             case PROXY:
                 Monitor monitor = agentMonitor.monitor();

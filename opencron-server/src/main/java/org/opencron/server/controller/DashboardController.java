@@ -172,7 +172,7 @@ public class DashboardController extends BaseController {
     @ResponseBody
     public String port(Long agentId) throws Exception {
         Agent agent = agentService.getAgent(agentId);
-        Response req = executeService.monitor(agent);
+
         /**
          * 直联
          */
@@ -180,10 +180,10 @@ public class DashboardController extends BaseController {
         String format = "%d_%s";
 
         if (agent.getProxy().equals(Opencron.ConnType.CONN.getType())) {
-            String port = req.getResult().get("port");
-            String url = String.format("http://%s:%s", agent.getIp(), port);
+            String url = String.format("http://%s:%s", agent.getIp(), 17502);
             return String.format(format, agent.getProxy(), url);
         } else {//代理
+            Response req = executeService.monitor(agent);
             return String.format(format, agent.getProxy(), JSON.toJSONString(req.getResult()));
         }
     }

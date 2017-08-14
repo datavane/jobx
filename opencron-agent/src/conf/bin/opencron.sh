@@ -173,7 +173,7 @@ OPENCRON_PIDDIR="/var/run";
 OPENCRON_PID="$OPENCRON_PIDDIR/opencron.pid";
 
 #shutdownPort for shutdown socket...
-OPENCRON_SHUTDOWNPORT=17502
+OPENCRON_SHUTDOWNPORT=1529
 
 #opencron version
 OPENCRON_VERSION="1.1.0-RELEASE"
