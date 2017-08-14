@@ -101,6 +101,7 @@ public class Bootstrap implements Serializable {
      * the shutdown command string is longer than 1024 characters.
      */
     private Random random = null;
+    private static String opencronBase;
 
 
     public static void main(String[] args) {
@@ -138,6 +139,10 @@ public class Bootstrap implements Serializable {
         }
     }
 
+    public static String getOpencronBase() {
+        return opencronBase;
+    }
+
     /**
      * init start........
      *
@@ -166,7 +171,7 @@ public class Bootstrap implements Serializable {
             }
 
             if (writeDefault) {
-                this.password = DigestUtils.md5Hex(Globals.OPENCRON_DEFPASSWORD).toLowerCase();
+                this.password = DigestUtils.md5Hex(AgentProperties.getProperty("opencorn.password")).toLowerCase();
                 Globals.OPENCRON_PASSWORD_FILE.delete();
                 IOUtils.writeText(Globals.OPENCRON_PASSWORD_FILE, this.password, CHARSET);
             }

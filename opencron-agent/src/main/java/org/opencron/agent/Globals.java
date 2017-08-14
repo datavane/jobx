@@ -20,11 +20,6 @@ public final class Globals {
     public static final String OPENCRON_PASSWORD = System.getProperty("opencron.password");
 
     /**
-     * agent default password
-     */
-    public static final String OPENCRON_DEFPASSWORD = "opencron";
-
-    /**
      * serverurl
      */
     public static final String OPENCRON_SERVER = System.getProperty("opencron.server");
@@ -56,7 +51,6 @@ public final class Globals {
 
 
     public static String OPENCRON_SOCKET_ADDRESS;
-
 
 
 }

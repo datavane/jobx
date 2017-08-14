@@ -94,7 +94,7 @@ PRGDIR=`dirname "$PRG"`
 [ -z "$OPENCRON_BASE" ] && OPENCRON_BASE="$OPENCRON_HOME"
 
 # Ensure that any user defined CLASSPATH variables are not used on startup,
- # but allow them to be specified in setenv.sh, in rare case when it is needed.
+# but allow them to be specified in setenv.sh, in rare case when it is needed.
 CLASSPATH=
 
 if [ -r "$OPENCRON_BASE/bin/setenv.sh" ]; then
@@ -109,7 +109,6 @@ if $cygwin; then
   [ -n "$JRE_HOME" ] && JRE_HOME=`cygpath --unix "$JRE_HOME"`
   [ -n "$OPENCRON_HOME" ] && OPENCRON_HOME=`cygpath --unix "$OPENCRON_HOME"`
   [ -n "$OPENCRON_BASE" ] && OPENCRON_BASE=`cygpath --unix "$OPENCRON_BASE"`
-  [ -n "$CLASSPATH" ] && CLASSPATH=`cygpath --path --unix "$CLASSPATH"`
   [ -n "$CLASSPATH" ] && CLASSPATH=`cygpath --path --unix "$CLASSPATH"`
 fi
 
@@ -126,6 +125,11 @@ case $OPENCRON_BASE in
        echo "Unable to start as OPENCRON_BASE contains a colon (:) character";
        exit 1;
 esac
+
+
+
+
+
 
 # For OS400
 if $os400; then
@@ -172,9 +176,6 @@ OPENCRON_PIDDIR="/var/run";
  fi
 OPENCRON_PID="$OPENCRON_PIDDIR/opencron.pid";
 
-#shutdownPort for shutdown socket...
-OPENCRON_SHUTDOWNPORT=1529
-
 #opencron version
 OPENCRON_VERSION="1.1.0-RELEASE"
 
@@ -198,7 +199,6 @@ if $cygwin; then
   OPENCRON_BASE=`cygpath --absolute --windows "$OPENCRON_BASE"`
   OPENCRON_TMPDIR=`cygpath --absolute --windows "$OPENCRON_TMPDIR"`
   CLASSPATH=`cygpath --path --windows "$CLASSPATH"`
-  JAVA_ENDORSED_DIRS=`cygpath --path --windows "$JAVA_ENDORSED_DIRS"`
 fi
 
 # ----- Execute The Requested Command -----------------------------------------
@@ -316,7 +316,6 @@ case "$1" in
         -Dopencron.server="$OPENCRON_SERVER" \
         -Dopencron.regkey="$OPENCRON_REGKEY" \
         -Dopencron.password="$OPENCRON_PASSWORD" \
-        -Dopencron.shutdown="$OPENCRON_SHUTDOWNPORT" \
         org.opencron.agent.Bootstrap start \
         >> "$OPENCRON_OUT" 2>&1 "&";
 
@@ -368,7 +367,6 @@ case "$1" in
           eval "\"$RUNJAVA\"" \
             -classpath "\"$CLASSPATH\"" \
             -Dopencron.home="$OPENCRON_HOME" \
-            -Dopencron.shutdown="$OPENCRON_SHUTDOWNPORT" \
              org.opencron.agent.Bootstrap stop
 
           # stop failed. Shutdown port disabled? Try a normal kill.

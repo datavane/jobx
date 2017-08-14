@@ -55,11 +55,15 @@ public class AgentMonitor {
     private Map<UUID, SocketIOClient> clients = new HashMap<UUID, SocketIOClient>(0);
 
     public AgentMonitor() {
-        this.start(17502);
+        this.start();
     }
 
-    public void start(final int port) {
+    public void start() {
+
+        final Integer port = Integer.parseInt(AgentProperties.getProperty("opencorn.monitorPort"));
+
         final Configuration configuration = new Configuration();
+
         configuration.setPort(port);
 
         final SocketIOServer server = new SocketIOServer(configuration);
@@ -108,7 +112,7 @@ public class AgentMonitor {
                      * 如果Agent在运行中,则hold住实时监控的进程,确保可以提供数据
                      */
                     while (agentIsRunning()) {
-                        Thread.sleep(10000);
+                        TimeUnit.MICROSECONDS.sleep(1000);
                     }
                     server.stop();
                 } catch (Exception ex) {
