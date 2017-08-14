@@ -113,7 +113,7 @@ public class AgentMonitor {
     private boolean agentIsRunning() throws UnknownHostException {
         //检查当前Agent是否启动中.如果Agent端口已停止,则停止
         int agentPort = Integer.valueOf(Integer.parseInt(Globals.OPENCRON_PORT));
-        return !HttpUtils.usingPort("localhost",agentPort);
+        return HttpUtils.isLocalPortUsing(agentPort);
     }
 
     public Monitor monitor() {

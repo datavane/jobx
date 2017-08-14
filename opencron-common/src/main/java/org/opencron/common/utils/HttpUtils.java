@@ -149,30 +149,29 @@ public abstract class HttpUtils {
     }
 
 
+    /**
+     * true: 要检查的本地端口已被使用 false:要检查的本地端口未被使用
+     * @param port
+     * @return
+     */
     public static boolean isLocalPortUsing(int port) {
-        boolean flag = true;
-        try {
-            flag = usingPort("127.0.0.1", port);
-        } catch (Exception e) {
-        }
-        return flag;
+        return isPortUsing("127.0.0.1", port);
     }
 
     /***
-     *  true:already in using  false:not using
+     *  true:端口已被占用  false:端口未被占用
      * @param host
      * @param port
-     * @throws UnknownHostException
      */
-    public static boolean usingPort(String host, int port) throws UnknownHostException {
-        //未占用
-        boolean flag = false;
-        InetAddress theAddress = InetAddress.getByName(host);
+    public static boolean isPortUsing(String host, int port) {
+        boolean flag = true;//端口已被占用
         try {
-            Socket socket = new Socket(theAddress, port);
-            flag = true;//已使用
+            InetAddress Address = InetAddress.getByName(host);
+            Socket socket = new Socket(Address,port);  //建立一个Socket连接
+            flag = false;//端口未被占用
             socket.close();
         } catch (IOException e) {
+
         }
         return flag;
     }
@@ -183,7 +182,7 @@ public abstract class HttpUtils {
         int port;
         do {
             port = random.nextInt(65535);
-        } while (isLocalPortUsing(port));
+        } while (!isLocalPortUsing(port));
 
         return port;
     }
