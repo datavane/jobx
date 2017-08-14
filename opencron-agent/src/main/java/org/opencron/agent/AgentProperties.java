@@ -33,7 +33,7 @@ import java.util.Properties;
 
 
 /**
- * Utility class to read the bootstrap Catalina configuration.
+ * Utility class to read the bootstrap Opencron configuration.
  *
  * @author benjobs.
  */
