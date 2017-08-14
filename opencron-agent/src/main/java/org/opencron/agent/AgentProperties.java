@@ -35,7 +35,7 @@ import java.util.Properties;
 /**
  * Utility class to read the bootstrap Catalina configuration.
  *
- * @author Remy Maucherat
+ * @author benjobs.
  */
 public class AgentProperties {
 
