@@ -22,21 +22,17 @@
 package org.opencron.agent;
 
 import com.alibaba.fastjson.JSON;
-import com.corundumstudio.socketio.Configuration;
-import com.corundumstudio.socketio.SocketIOClient;
-import com.corundumstudio.socketio.SocketIOServer;
+import com.corundumstudio.socketio.*;
 import com.corundumstudio.socketio.listener.ConnectListener;
 import com.corundumstudio.socketio.listener.DisconnectListener;
 import org.opencron.common.job.Monitor;
-import org.opencron.common.utils.CommandUtils;
-import org.opencron.common.utils.DateUtils;
-import org.opencron.common.utils.LoggerFactory;
-import org.opencron.common.utils.ReflectUitls;
+import org.opencron.common.utils.*;
 import org.slf4j.Logger;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.net.UnknownHostException;
 import java.text.DecimalFormat;
 import java.text.Format;
 import java.util.*;
@@ -56,11 +52,13 @@ public class AgentMonitor {
 
     private Format format = new DecimalFormat("##0.00");
 
-    private boolean stop = false;
-
     private Map<UUID, SocketIOClient> clients = new HashMap<UUID, SocketIOClient>(0);
 
-    public void start(final int port) throws Exception {
+    public AgentMonitor() {
+        this.start(17502);
+    }
+
+    public void start(final int port) {
         final Configuration configuration = new Configuration();
         configuration.setPort(port);
 
@@ -76,14 +74,7 @@ public class AgentMonitor {
                  * 断开连接或者获取数据错误,不在推送数据...
                  */
                 while (clients.get(sessionId) != null) {
-                    Monitor monitor = monitor();
-                    if (monitor == null) {
-                        stop = true;
-                        clients.remove(sessionId);
-                        server.stop();
-                        break;
-                    }
-                    client.sendEvent("monitor", monitor);
+                    client.sendEvent("monitor", monitor());
                     try {
                         TimeUnit.MICROSECONDS.sleep(1000);
                     } catch (InterruptedException e) {
@@ -102,16 +93,27 @@ public class AgentMonitor {
                 clients.remove(client.getSessionId());
                 logger.info("[opencron]:monitor disconnect:SessionId @ {},port @ {} ", client.getSessionId(), port);
                 if (clients.isEmpty()) {
-                    stop = true;
                     logger.info("[opencron]:monitor closed:SessionId @ {},port @ {} ", client.getSessionId(), port);
-                    server.stop();
                 }
             }
         });
 
         server.start();
-        stop = false;
-        logger.debug("[opencron] server started @ {}", port);
+
+        try {
+            while (agentIsRunning()) {
+                Thread.sleep(10000);
+            }
+            server.stop();
+        } catch (Exception ex) {
+            // continue and check the flag
+        }
+
+    }
+    private boolean agentIsRunning() throws UnknownHostException {
+        //检查当前Agent是否启动中.如果Agent端口已停止,则停止
+        int agentPort = Integer.valueOf(Integer.parseInt(Globals.OPENCRON_PORT));
+        return !HttpUtils.usingPort("localhost",agentPort);
     }
 
     public Monitor monitor() {
@@ -429,11 +431,6 @@ public class AgentMonitor {
         }
 
         return 0D;
-    }
-
-
-    public boolean stoped() {
-        return stop;
     }
 
 }

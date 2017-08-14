@@ -165,11 +165,13 @@ public abstract class HttpUtils {
      * @throws UnknownHostException
      */
     public static boolean usingPort(String host, int port) throws UnknownHostException {
+        //未占用
         boolean flag = false;
         InetAddress theAddress = InetAddress.getByName(host);
         try {
-            new Socket(theAddress, port);
-            flag = true;
+            Socket socket = new Socket(theAddress, port);
+            flag = true;//已使用
+            socket.close();
         } catch (IOException e) {
         }
         return flag;

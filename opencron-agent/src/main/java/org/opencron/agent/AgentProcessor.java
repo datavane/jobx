@@ -56,8 +56,6 @@ public class AgentProcessor implements Opencron.Iface {
 
     private String password;
 
-    private Integer socketPort;
-
     private final String REPLACE_REX = "%s:\\sline\\s[0-9]+:";
 
     private String EXITCODE_KEY = "exitCode";
@@ -108,35 +106,17 @@ public class AgentProcessor implements Opencron.Iface {
                 .end();
     }
 
-
     @Override
     public Response monitor(Request request) throws TException {
         Opencron.ConnType connType = Opencron.ConnType.getByName(request.getParams().get("connType"));
         Response response = Response.response(request);
-        Map<String, String> map = new HashMap<String, String>(0);
-
         if (agentMonitor == null) {
             agentMonitor = new AgentMonitor();
         }
-
         switch (connType) {
-            case CONN:
-                if (CommonUtils.isEmpty(agentMonitor, socketPort) || agentMonitor.stoped()) {
-                    //选举一个空闲可用的port
-                    this.socketPort = HttpUtils.freePort();
-                    try {
-                        agentMonitor.start(socketPort);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                logger.debug("[opencron]:getMonitorPort @:{}", socketPort);
-                map.put("port", this.socketPort.toString());
-                response.setResult(map);
-                return response;
             case PROXY:
                 Monitor monitor = agentMonitor.monitor();
-                map = serializableToMap(monitor);
+                Map<String, String> map  = serializableToMap(monitor);
                 response.setResult(map);
                 return response;
             default:
