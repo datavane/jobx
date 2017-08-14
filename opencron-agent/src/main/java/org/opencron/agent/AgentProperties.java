@@ -43,18 +43,16 @@ public class AgentProperties {
 
     private static Properties properties = null;
 
-    static {
-        loadProperties();
-    }
-
     /**
      * @param name The property name
      * @return specified property value
      */
     public static String getProperty(String name) {
+        if ( properties==null ) {
+            loadProperties();
+        }
         return properties.getProperty(name);
     }
-
 
     /**
      * Load properties.
@@ -89,7 +87,7 @@ public class AgentProperties {
             }
         }
 
-        if ((is == null)) {
+        if (is == null) {
             // Do something
             logger.warn("[opencron]Failed to load opencron properties file");
             // That's fine - we have reasonable defaults.

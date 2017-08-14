@@ -101,8 +101,6 @@ public class Bootstrap implements Serializable {
      * the shutdown command string is longer than 1024 characters.
      */
     private Random random = null;
-    private static String opencronBase;
-
 
     public static void main(String[] args) {
 
@@ -139,17 +137,13 @@ public class Bootstrap implements Serializable {
         }
     }
 
-    public static String getOpencronBase() {
-        return opencronBase;
-    }
-
     /**
      * init start........
      *
      * @throws Exception
      */
     private void init() throws Exception {
-        port = Integer.valueOf(Integer.parseInt(Globals.OPENCRON_PORT));
+        port = Integer.valueOf(Globals.OPENCRON_PORT);
         String inputPassword = Globals.OPENCRON_PASSWORD;
         if (notEmpty(inputPassword)) {
             Globals.OPENCRON_PASSWORD_FILE.delete();
@@ -343,7 +337,8 @@ public class Bootstrap implements Serializable {
         /**
          * connect to startup socket and send stop command。。。。。。
          */
-        Socket socket = new Socket("localhost",Integer.valueOf(System.getProperty("opencron.shutdown")));
+        Integer shutdownPort = Integer.valueOf(AgentProperties.getProperty("opencron.shutdown"));
+        Socket socket = new Socket("localhost",shutdownPort);
         OutputStream os = socket.getOutputStream();
         PrintWriter pw = new PrintWriter(os);
         InputStream is = socket.getInputStream();

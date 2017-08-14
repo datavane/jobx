@@ -25,6 +25,7 @@ import com.alibaba.fastjson.JSON;
 import com.corundumstudio.socketio.*;
 import com.corundumstudio.socketio.listener.ConnectListener;
 import com.corundumstudio.socketio.listener.DisconnectListener;
+import org.apache.http.protocol.HTTP;
 import org.opencron.common.job.Monitor;
 import org.opencron.common.utils.*;
 import org.slf4j.Logger;
@@ -97,7 +98,7 @@ public class AgentMonitor {
                 clients.remove(client.getSessionId());
                 logger.info("[opencron]:monitor disconnect:SessionId @ {},port @ {} ", client.getSessionId(), port);
                 if (clients.isEmpty()) {
-                    logger.info("[opencron]:monitor closed:SessionId @ {},port @ {} ", client.getSessionId(), port);
+                    logger.info("[opencron]:monitor client is empty...");
                 }
             }
         });
@@ -106,27 +107,25 @@ public class AgentMonitor {
             @Override
             public void run() {
                 server.start();
+                /**
+                 * 不断的检查Agent服务(默认端口1577)有没有停止,由于当前的socketIO是另一个进程，确保在Agent服务停止的时候实时监控服务也可以停止,
+                 * 如果Agent在运行中,则hold住实时监控的进程,确保可以提供数据
+                 */
+                int port = Integer.valueOf(Globals.OPENCRON_PORT);
+                boolean active = false;
                 try {
-                    /**
-                     * 不断的检查Agent服务(默认端口1577)有没有停止,由于当前的socketIO是另一个进程，确保在Agent服务停止的时候实时监控服务也可以停止,
-                     * 如果Agent在运行中,则hold住实时监控的进程,确保可以提供数据
-                     */
-                    while (agentIsRunning()) {
-                        TimeUnit.MICROSECONDS.sleep(10000);
-                    }
-                    server.stop();
-                } catch (Exception ex) {
-                    // continue and check the flag
+                    do {
+                        if (active) {
+                            TimeUnit.MICROSECONDS.sleep(1000);
+                        }
+                    } while (active = HttpUtils.isLocalPortUsing(port));
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
+
             }
         }).start();
 
-    }
-
-    private boolean agentIsRunning() throws UnknownHostException {
-        //检查当前Agent是否启动中.如果Agent端口已停止,则停止
-        int agentPort = Integer.valueOf(Integer.parseInt(Globals.OPENCRON_PORT));
-        return HttpUtils.isLocalPortUsing(agentPort);
     }
 
     public Monitor monitor() {
@@ -211,13 +210,13 @@ public class AgentMonitor {
 
         Map<String, String> cpuData = new HashMap<String, String>(0);
 
-        if(sysIdle.equals(0L)){
-            if(total.equals(0L)){
+        if (sysIdle.equals(0L)) {
+            if (total.equals(0L)) {
                 cpuData.put("usage", "0.00");
-            }else {
+            } else {
                 cpuData.put("usage", "100.00");
             }
-        }else {
+        } else {
             float sysUsage = (sysIdle.floatValue() / total.floatValue()) * 100;
             float sysRate = 100 - sysUsage;
             if (sysRate == 0.0f) {
@@ -308,7 +307,7 @@ public class AgentMonitor {
                 disk.put("used", format.format(used));
                 disk.put("free", format.format(free));
                 disks.add(disk);
-            }catch (NumberFormatException e) {
+            } catch (NumberFormatException e) {
                 continue;
             }
         }
@@ -421,16 +420,16 @@ public class AgentMonitor {
         String fix = value.substring(value.length() - 1);
         String space = value.substring(0, value.length() - 1);
 
-        Map<String,Integer> diskSpaceMap = new HashMap<String, Integer>(){{
-            put("T",1);
-            put("P",2);
-            put("E",3);
-            put("Z",4);
-            put("Y",5);
+        Map<String, Integer> diskSpaceMap = new HashMap<String, Integer>() {{
+            put("T", 1);
+            put("P", 2);
+            put("E", 3);
+            put("Z", 4);
+            put("Y", 5);
         }};
 
-        for(Map.Entry<String,Integer> entry:diskSpaceMap.entrySet()){
-            if(fix.equalsIgnoreCase(entry.getKey())) {
+        for (Map.Entry<String, Integer> entry : diskSpaceMap.entrySet()) {
+            if (fix.equalsIgnoreCase(entry.getKey())) {
                 return Double.parseDouble(space) * Math.pow(1024, entry.getValue());
             }
         }

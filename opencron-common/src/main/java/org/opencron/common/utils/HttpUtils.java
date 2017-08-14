@@ -171,7 +171,7 @@ public abstract class HttpUtils {
             flag = false;//端口未被占用
             socket.close();
         } catch (IOException e) {
-
+            e.printStackTrace();
         }
         return flag;
     }
