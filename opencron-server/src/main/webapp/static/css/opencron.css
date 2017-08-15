@@ -128,10 +128,11 @@ b{color: red;}
     text-overflow: ellipsis;
 }
 
-@media (min-width: 1440px) {
-   .opencron_command{
-       width: 45em;
-   }
+@media (max-width: 1640px) {
+    .opencron_command{
+        width: 35em;
+
+    }
 }
 
 @media (max-width: 1440px) {
@@ -140,9 +141,28 @@ b{color: red;}
     }
 }
 
+@media (max-width: 1420px) {
+    .opencron_command{
+        width: 28em;
+    }
+}
+
+
+@media (max-width: 1400px) {
+    .opencron_command{
+        width: 23em;
+    }
+}
+
+@media (max-width: 1380px) {
+    .opencron_command{
+        width: 22em;
+    }
+}
+
 @media (max-width: 1366px) {
     .opencron_command{
-        width: 25em;
+        width: 21em;
     }
 }
 
@@ -151,7 +171,6 @@ b{color: red;}
         width: 20em;
     }
 }
-
 
 .btn-float {
     background-color: rgba(0, 0, 0, 0);
