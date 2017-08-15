@@ -68,7 +68,7 @@ public class AgentProcessor implements Opencron.Iface {
 
     public AgentProcessor(String password) {
         this.password = password;
-        agentMonitor = new AgentMonitor();
+        this.agentMonitor = new AgentMonitor();
     }
 
     @Override
@@ -79,7 +79,7 @@ public class AgentProcessor implements Opencron.Iface {
 
         //非直连
         if ( CommonUtils.isEmpty(request.getParams().get("proxy")) ) {
-            String hostName = Globals.OPENCRON_SOCKET_ADDRESS.split(":")[0];
+            String hostName = Configuration.OPENCRON_SOCKET_ADDRESS.split(":")[0];
             int serverPort = Integer.parseInt(request.getParams().get("serverPort"));
 
             AgentHeartBeat agentHeartBeat = agentHeartBeatMap.get(hostName);
@@ -103,7 +103,7 @@ public class AgentProcessor implements Opencron.Iface {
         //返回密码文件的路径...
         return Response.response(request).setSuccess(true)
                 .setExitCode(Opencron.StatusCode.SUCCESS_EXIT.getValue())
-                .setMessage(Globals.OPENCRON_HOME)
+                .setMessage(Configuration.OPENCRON_HOME)
                 .end();
     }
 
@@ -295,7 +295,7 @@ public class AgentProcessor implements Opencron.Iface {
         }
         this.password = newPassword.toLowerCase().trim();
 
-        IOUtils.writeText(Globals.OPENCRON_PASSWORD_FILE, this.password, "UTF-8");
+        IOUtils.writeText(Configuration.OPENCRON_PASSWORD_FILE, this.password, "UTF-8");
 
         return response.setSuccess(true).setExitCode(Opencron.StatusCode.SUCCESS_EXIT.getValue()).end();
     }
@@ -311,7 +311,7 @@ public class AgentProcessor implements Opencron.Iface {
         logger.info("[opencron]:kill pid:{}", pid);
 
         Response response = Response.response(request);
-        String text = CommandUtils.executeShell(Globals.OPENCRON_KILL_SHELL, pid, EXITCODE_SCRIPT);
+        String text = CommandUtils.executeShell(Configuration.OPENCRON_KILL_SHELL, pid, EXITCODE_SCRIPT);
         String message = "";
         Integer exitVal = 0;
 
@@ -464,18 +464,18 @@ public class AgentProcessor implements Opencron.Iface {
     }
 
     public boolean register() {
-        if (CommonUtils.notEmpty(Globals.OPENCRON_SERVER)) {
-            String url = Globals.OPENCRON_SERVER+"/agent/autoreg.do";
+        if (CommonUtils.notEmpty(Configuration.OPENCRON_SERVER)) {
+            String url = Configuration.OPENCRON_SERVER+"/agent/autoreg.do";
             String mac = MacUtils.getMacAddress();
-            String agentPassword = IOUtils.readText(Globals.OPENCRON_PASSWORD_FILE, "UTF-8").trim().toLowerCase();
+            String agentPassword = IOUtils.readText(Configuration.OPENCRON_PASSWORD_FILE, "UTF-8").trim().toLowerCase();
 
             Map<String,Object> params = new HashMap<String, Object>(0);
             params.put("machineId",mac);
             params.put("password",agentPassword);
-            params.put("port", Globals.OPENCRON_PORT);
-            params.put("key", Globals.OPENCRON_REGKEY);
+            params.put("port", Configuration.OPENCRON_PORT);
+            params.put("key", Configuration.OPENCRON_REGKEY);
 
-            logger.info("[opencron]agent auto register staring:{}", Globals.OPENCRON_SERVER);
+            logger.info("[opencron]agent auto register staring:{}", Configuration.OPENCRON_SERVER);
             try {
                 String result = HttpClientUtils.httpPostRequest(url,params);
                 if (result==null) {

@@ -25,7 +25,6 @@ import com.alibaba.fastjson.JSON;
 import com.corundumstudio.socketio.*;
 import com.corundumstudio.socketio.listener.ConnectListener;
 import com.corundumstudio.socketio.listener.DisconnectListener;
-import org.apache.http.protocol.HTTP;
 import org.opencron.common.job.Monitor;
 import org.opencron.common.utils.*;
 import org.slf4j.Logger;
@@ -33,7 +32,6 @@ import org.slf4j.Logger;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
-import java.net.UnknownHostException;
 import java.text.DecimalFormat;
 import java.text.Format;
 import java.util.*;
@@ -59,11 +57,12 @@ public class AgentMonitor {
         this.start();
     }
 
+
     public void start() {
 
         final Integer port = Integer.parseInt(AgentProperties.getProperty("opencorn.monitorPort"));
 
-        final Configuration configuration = new Configuration();
+        final com.corundumstudio.socketio.Configuration configuration = new com.corundumstudio.socketio.Configuration();
 
         configuration.setPort(port);
 
@@ -111,18 +110,23 @@ public class AgentMonitor {
                  * 不断的检查Agent服务(默认端口1577)有没有停止,由于当前的socketIO是另一个进程，确保在Agent服务停止的时候实时监控服务也可以停止,
                  * 如果Agent在运行中,则hold住实时监控的进程,确保可以提供数据
                  */
-                int port = Integer.valueOf(Globals.OPENCRON_PORT);
+                int port = Integer.valueOf(Configuration.OPENCRON_PORT);
+
                 boolean active = false;
+
                 try {
                     do {
                         if (active) {
-                            TimeUnit.MICROSECONDS.sleep(1000);
+                            TimeUnit.MICROSECONDS.sleep(Integer.MAX_VALUE);
                         }
                     } while (active = HttpUtils.isLocalPortUsing(port));
+
+                    server.stop();
+
+                    System.exit(0);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-
             }
         }).start();
 
@@ -134,7 +138,7 @@ public class AgentMonitor {
 
             Monitor monitor = new Monitor();
 
-            String monitorString = executeShell(Globals.OPENCRON_MONITOR_SHELL);
+            String monitorString = executeShell(Configuration.OPENCRON_MONITOR_SHELL);
 
             Monitor.Info info = JSON.parseObject(monitorString, Monitor.Info.class);
 
@@ -387,7 +391,7 @@ public class AgentMonitor {
 
         List<String> ioList = new ArrayList<String>(0);
 
-        String result = CommandUtils.executeShell(Globals.OPENCRON_MONITOR_SHELL, "io");
+        String result = CommandUtils.executeShell(Configuration.OPENCRON_MONITOR_SHELL, "io");
 
         Scanner scan = new Scanner(result);
         boolean isFirst = true;
@@ -444,5 +448,6 @@ public class AgentMonitor {
 
         return 0D;
     }
+
 
 }

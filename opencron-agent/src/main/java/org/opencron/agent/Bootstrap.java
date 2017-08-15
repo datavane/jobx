@@ -42,10 +42,12 @@ import java.io.*;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
 import java.lang.reflect.InvocationTargetException;
+import java.net.ConnectException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.security.AccessControlException;
+import java.util.Properties;
 import java.util.Random;
 
 import static org.opencron.common.utils.CommonUtils.isEmpty;
@@ -143,18 +145,18 @@ public class Bootstrap implements Serializable {
      * @throws Exception
      */
     private void init() throws Exception {
-        port = Integer.valueOf(Globals.OPENCRON_PORT);
-        String inputPassword = Globals.OPENCRON_PASSWORD;
+        port = Integer.valueOf(Configuration.OPENCRON_PORT);
+        String inputPassword = Configuration.OPENCRON_PASSWORD;
         if (notEmpty(inputPassword)) {
-            Globals.OPENCRON_PASSWORD_FILE.delete();
+            Configuration.OPENCRON_PASSWORD_FILE.delete();
             this.password = DigestUtils.md5Hex(inputPassword).toLowerCase();
-            IOUtils.writeText(Globals.OPENCRON_PASSWORD_FILE, this.password, CHARSET);
+            IOUtils.writeText(Configuration.OPENCRON_PASSWORD_FILE, this.password, CHARSET);
         } else {
             boolean writeDefault = false;
             //.password file already exists
-            if (Globals.OPENCRON_PASSWORD_FILE.exists()) {
+            if (Configuration.OPENCRON_PASSWORD_FILE.exists()) {
                 //read password from .password file
-                String filePassowrd = IOUtils.readText(Globals.OPENCRON_PASSWORD_FILE, CHARSET).trim().toLowerCase();
+                String filePassowrd = IOUtils.readText(Configuration.OPENCRON_PASSWORD_FILE, CHARSET).trim().toLowerCase();
                 if (notEmpty(filePassowrd)) {
                     this.password = filePassowrd;
                 }else {
@@ -166,16 +168,20 @@ public class Bootstrap implements Serializable {
 
             if (writeDefault) {
                 this.password = DigestUtils.md5Hex(AgentProperties.getProperty("opencorn.password")).toLowerCase();
-                Globals.OPENCRON_PASSWORD_FILE.delete();
-                IOUtils.writeText(Globals.OPENCRON_PASSWORD_FILE, this.password, CHARSET);
+                Configuration.OPENCRON_PASSWORD_FILE.delete();
+                IOUtils.writeText(Configuration.OPENCRON_PASSWORD_FILE, this.password, CHARSET);
             }
         }
     }
 
     private void start() throws Exception {
+
         try {
+
             TServerSocket serverTransport = new TServerSocket(port);
+
             AgentProcessor agentProcessor = new AgentProcessor(password);
+
             Opencron.Processor processor = new Opencron.Processor(agentProcessor);
             TBinaryProtocol.Factory protFactory = new TBinaryProtocol.Factory(true, true);
             TThreadPoolServer.Args arg = new TThreadPoolServer.Args(serverTransport);
@@ -190,14 +196,14 @@ public class Bootstrap implements Serializable {
                 public void processContext(ServerContext serverContext, TTransport inputTransport, TTransport outputTransport) {
                     TSocket socket = (TSocket) inputTransport;
                     //获取OPENCRON-server的ip
-                    Globals.OPENCRON_SOCKET_ADDRESS = socket.getSocket().getRemoteSocketAddress().toString().substring(1);
+                    Configuration.OPENCRON_SOCKET_ADDRESS = socket.getSocket().getRemoteSocketAddress().toString().substring(1);
                 }
             });
 
             /**
              * write pid to pidfile...
              */
-            IOUtils.writeText(Globals.OPENCRON_PID_FILE, getPid(), CHARSET);
+            IOUtils.writeText(Configuration.OPENCRON_PID_FILE, getPid(), CHARSET);
 
             //new thread to start for thrift server
             new Thread(new Runnable() {
@@ -334,28 +340,36 @@ public class Bootstrap implements Serializable {
      */
 
     private void shutdown() throws Exception {
-        /**
-         * connect to startup socket and send stop command。。。。。。
-         */
-        Integer shutdownPort = Integer.valueOf(AgentProperties.getProperty("opencron.shutdown"));
-        Socket socket = new Socket("localhost",shutdownPort);
-        OutputStream os = socket.getOutputStream();
-        PrintWriter pw = new PrintWriter(os);
-        InputStream is = socket.getInputStream();
-        BufferedReader br = new BufferedReader(new InputStreamReader(is));
-        pw.write(shutdown);
-        pw.flush();
-        socket.shutdownOutput();
-        String reply = null;
-        while (!((reply = br.readLine()) == null)) {
-            logger.info("[opencron]shutdown:{}" + reply);
+
+        String address = "localhost";
+
+        File home = new File(Configuration.OPENCRON_HOME);
+        File conf = new File(home, "conf");
+        File propsFile = new File(conf, "conf.properties");
+        FileInputStream inputStream = new FileInputStream(propsFile);
+
+        Properties prop = new Properties();
+        prop.load(inputStream);
+
+        Integer shutdownPort = Integer.valueOf(prop.getProperty("opencron.shutdown"));
+        // Stop the existing server
+        try  {
+            Socket socket = new Socket(address, shutdownPort);
+            OutputStream stream = socket.getOutputStream();
+            for (int i = 0; i < shutdown.length(); i++) {
+                stream.write(shutdown.charAt(i));
+            }
+            stream.flush();
+            socket.close();
+        } catch (ConnectException ce) {
+            logger.error("[opencron] Agent.stop error:{} ", ce);
+            System.exit(1);
+        } catch (Exception e) {
+            logger.error("[opencron] Agent.stop error:{} ", e);
+            System.exit(1);
         }
-        br.close();
-        is.close();
-        pw.close();
-        os.close();
-        socket.close();
     }
+
 
     private void stopServer() {
         if (this.server != null && this.server.isServing()) {
@@ -363,7 +377,7 @@ public class Bootstrap implements Serializable {
             /**
              * delete pid file...
              */
-            Globals.OPENCRON_PID_FILE.delete();
+            Configuration.OPENCRON_PID_FILE.delete();
             System.exit(0);
         }
     }

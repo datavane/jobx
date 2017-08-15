@@ -48,7 +48,7 @@ public class AgentProperties {
      * @return specified property value
      */
     public static String getProperty(String name) {
-        if ( properties==null ) {
+        if ( properties == null ) {
             loadProperties();
         }
         return properties.getProperty(name);
@@ -60,10 +60,11 @@ public class AgentProperties {
     private static void loadProperties() {
 
         InputStream is = null;
+
         String fileName = "conf.properties";
 
         try {
-            File home = new File(Globals.OPENCRON_HOME);
+            File home = new File(Configuration.OPENCRON_HOME);
             File conf = new File(home, "conf");
             File propsFile = new File(conf, fileName);
             is = new FileInputStream(propsFile);
