@@ -106,6 +106,15 @@
                 }
             },
 
+            warning:function () {
+                var _warning = $('input[type="radio"][name="warning"]:checked').val();
+                if(_warning) {
+                    this.mobiles();
+                    this.email();
+                }
+
+            },
+
             mobiles:function () {
                 var _mobiles = $("#mobiles").val();
                 if (!_mobiles) {
@@ -130,15 +139,6 @@
                 }else{
                     opencron.tipOk("#email");
                 }
-            },
-
-            warning:function () {
-                var _warning = $('input[type="radio"][name="warning"]:checked').val();
-                if(_warning) {
-                    this.mobiles();
-                    this.email();
-                }
-
             },
 
             ping:function() {
@@ -196,13 +196,25 @@
                         _this.pingDone = true;
                     }
                 });
+            },
+            
+            verify:function () {
+                validata.init();
+                validata.name();
+                validata.ip();
+                validata.password();
+                validata.port();
+                validata.warning();
+                validata.ping();
+                return this.status;
+
             }
 
         }
 
         $(document).ready(function () {
 
-            if ($('input[type="radio"][name="proxy"]:checked').val()) {
+            if ($('input[type="radio"][name="proxy"]:checked').val()==0) {
                 $(".proxy").show();
             } else {
                 $(".proxy").hide();
@@ -234,12 +246,7 @@
             });
 
             $("#saveBtn").click(function () {
-                validata.init();
-                validata.name();
-                validata.ip();
-                validata.password();
-                validata.port();
-                validata.warning();
+                validata.verify();
                 var valId = setInterval(function () {
                     if (validata.pingDone) {
                         window.clearInterval(valId);
@@ -247,7 +254,7 @@
                             $("#agentForm").submit();
                         }
                     }
-                },500);
+                },10);
             });
 
             $("#name").blur(function () {
@@ -343,7 +350,7 @@
                         </div>
                         <br>
 
-                        <div class="form-group proxy" style="display: none;">
+                        <div class="form-group proxy">
                             <label for="proxyAgent" class="col-lab control-label wid150"><i class="glyphicon glyphicon-leaf"></i>&nbsp;&nbsp;代&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;理&nbsp;&nbsp;&nbsp;&nbsp;</label>
                             <div class="col-md-10">
                                 <select id="proxyAgent" name="proxyAgent" class="form-control input-sm">
