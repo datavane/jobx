@@ -367,7 +367,8 @@ case "$1" in
           eval "\"$RUNJAVA\"" \
             -classpath "\"$CLASSPATH\"" \
             -Dopencron.home="$OPENCRON_HOME" \
-             org.opencron.agent.Bootstrap stop
+            -Dopencron.pid="$OPENCRON_PID" \
+            org.opencron.agent.Bootstrap stop
 
           # stop failed. Shutdown port disabled? Try a normal kill.
           if [ $? != 0 ]; then

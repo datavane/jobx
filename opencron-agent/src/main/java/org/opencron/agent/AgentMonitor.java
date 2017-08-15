@@ -25,6 +25,8 @@ import com.alibaba.fastjson.JSON;
 import com.corundumstudio.socketio.*;
 import com.corundumstudio.socketio.listener.ConnectListener;
 import com.corundumstudio.socketio.listener.DisconnectListener;
+import org.apache.thrift.transport.TServerSocket;
+import org.apache.thrift.transport.TTransportException;
 import org.opencron.common.job.Monitor;
 import org.opencron.common.utils.*;
 import org.slf4j.Logger;
@@ -112,21 +114,30 @@ public class AgentMonitor {
                  */
                 int port = Integer.valueOf(Configuration.OPENCRON_PORT);
 
-                boolean active = false;
+                boolean active = true;
+                do {
+                    try {
+                        new TServerSocket(port);
+                        /**
+                         * 能进入这一步,说明该端口已经被Agent释放,即Agent已停止
+                         */
+                        active = false;
 
-                try {
-                    do {
-                        if (active) {
-                            TimeUnit.MICROSECONDS.sleep(Integer.MAX_VALUE);
+                        server.stop();
+
+                        System.exit(0);
+                    } catch (TTransportException e) {
+                        /**
+                         * 说明端口被占用,即Agent还在运行中.
+                         */
+                        try {
+                            TimeUnit.SECONDS.sleep(Integer.MAX_VALUE);
+                        } catch (InterruptedException e1) {
+                            //-----
                         }
-                    } while (active = HttpUtils.isLocalPortUsing(port));
+                    }
+                } while (active);
 
-                    server.stop();
-
-                    System.exit(0);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
             }
         }).start();
 
@@ -448,6 +459,5 @@ public class AgentMonitor {
 
         return 0D;
     }
-
 
 }
