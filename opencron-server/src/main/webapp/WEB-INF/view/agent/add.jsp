@@ -215,9 +215,9 @@
         $(document).ready(function () {
 
             if ($('input[type="radio"][name="proxy"]:checked').val()==0) {
-                $(".proxy").show();
-            } else {
                 $(".proxy").hide();
+            } else {
+                $(".proxy").show();
             }
 
             $("#warning0").next().click(function () {
