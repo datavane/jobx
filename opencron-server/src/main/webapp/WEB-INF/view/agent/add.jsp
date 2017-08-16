@@ -227,7 +227,6 @@
                 $(".contact").hide();
             });
 
-
             $("#warning1").next().click(function () {
                 $(".contact").show();
                 validata.warning();
@@ -239,9 +238,15 @@
 
             $("#proxy0").next().click(function () {
                 $(".proxy").hide();
+            })
+            $("#proxy0").parent().click(function () {
+                $(".proxy").hide();
             });
 
             $("#proxy1").next().click(function () {
+                $(".proxy").show();
+            })
+            $("#proxy1").parent().click(function () {
                 $(".proxy").show();
             });
 
