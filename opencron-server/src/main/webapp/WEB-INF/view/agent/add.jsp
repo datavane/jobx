@@ -207,7 +207,6 @@
                 validata.warning();
                 validata.ping();
                 return this.status;
-
             }
 
         }
