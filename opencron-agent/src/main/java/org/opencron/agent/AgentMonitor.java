@@ -25,8 +25,6 @@ import com.alibaba.fastjson.JSON;
 import com.corundumstudio.socketio.*;
 import com.corundumstudio.socketio.listener.ConnectListener;
 import com.corundumstudio.socketio.listener.DisconnectListener;
-import org.apache.thrift.transport.TServerSocket;
-import org.apache.thrift.transport.TTransportException;
 import org.opencron.common.job.Monitor;
 import org.opencron.common.utils.*;
 import org.slf4j.Logger;
@@ -56,19 +54,14 @@ public class AgentMonitor {
     private Map<UUID, SocketIOClient> clients = new HashMap<UUID, SocketIOClient>(0);
 
     public AgentMonitor() {
-        this.start();
-    }
-
-
-    public void start() {
 
         final Integer port = Integer.parseInt(AgentProperties.getProperty("opencorn.monitorPort"));
 
-        final com.corundumstudio.socketio.Configuration configuration = new com.corundumstudio.socketio.Configuration();
+        com.corundumstudio.socketio.Configuration configuration = new com.corundumstudio.socketio.Configuration();
 
         configuration.setPort(port);
 
-        final SocketIOServer server = new SocketIOServer(configuration);
+        SocketIOServer server = new SocketIOServer(configuration);
 
         server.addConnectListener(new ConnectListener() {//添加客户端连接监听器
             @Override
@@ -104,42 +97,7 @@ public class AgentMonitor {
             }
         });
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                server.start();
-                /**
-                 * 检查Agent服务(默认端口1577)有没有停止,由于当前的socketIO是另一个进程，确保在Agent服务停止的时候实时监控服务也可以停止,
-                 * 如果Agent在运行中,则hold住实时监控的进程,确保可以提供数据
-                 */
-                int port = Integer.valueOf(Configuration.OPENCRON_PORT);
-
-                boolean active = true;
-                do {
-                    try {
-                        new TServerSocket(port);
-                        /**
-                         * 能进入这一步,说明该端口已经被Agent释放,即Agent已停止
-                         */
-                        active = false;
-
-                        server.stop();
-
-                        System.exit(0);
-                    } catch (TTransportException e) {
-                        /**
-                         * 说明端口被占用,即Agent还在运行中.
-                         */
-                        try {
-                            TimeUnit.SECONDS.sleep(Integer.MAX_VALUE);
-                        } catch (InterruptedException e1) {
-                            //-----
-                        }
-                    }
-                } while (active);
-
-            }
-        }).start();
+        server.start();
 
     }
 
