@@ -130,23 +130,6 @@ if [ $? -ne 1 ]; then
                 echo_g "download maven successful!";
                 echo_w "install maven Starting"
                 tar -xzvf ${BUILD_HOME}/${MAVEN_NAME}.tar.gz -C ${BUILD_HOME}
-                echo "
-<?xml version=\"1.0\" encoding=\"UTF-8\"?>
-
-<settings xmlns=\"http://maven.apache.org/SETTINGS/1.0.0\"
-          xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"
-          xsi:schemaLocation=\"http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd\">
-
-  <mirrors>
-    <mirror>
-      <id>nexus-aliyun</id>
-      <mirrorOf>*</mirrorOf>
-      <name>Nexus aliyun</name>
-      <url>http://maven.aliyun.com/nexus/content/groups/public</url>
-    </mirror>
-  </mirrors>
-
-</settings>" > ${BUILD_HOME}/${UNPKG_MAVEN_NAME}/conf/settings.xml
                 OPENCRON_MAVEN=${BUILD_HOME}/${UNPKG_MAVEN_NAME}/bin/mvn
             }
         elif [ ${retval} -ne 0 ]; then
