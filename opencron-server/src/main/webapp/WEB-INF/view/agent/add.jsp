@@ -37,16 +37,15 @@
                             url: "${contextPath}/agent/checkname.do",
                             data: {
                                 "name": _name
-                            },
-                            success: function (data) {
-                                if (!data) {
-                                    opencron.tipError("#name","执行器名称已存在!");
-                                    _this.status = false;
-                                }else{
-                                    opencron.tipOk("#name");
-                                }
                             }
-                        });
+                        }).done(function (data) {
+                            if (!data) {
+                                opencron.tipError("#name","执行器名称已存在!");
+                                _this.status = false;
+                            }else{
+                                opencron.tipOk("#name");
+                            }
+                        })
                     }
                 }
             },
@@ -68,14 +67,13 @@
                             url: "${contextPath}/agent/checkhost.do",
                             data: {
                                 "ip": _ip
-                            },
-                            success: function (data) {
-                                if (!data){
-                                    opencron.tipError("#ip","该执行器IP已存在!不能重复添加!");
-                                    _this.status = false;
-                                }else{
-                                    opencron.tipOk("#ip");
-                                }
+                            }
+                        }).done(function (data) {
+                            if (!data){
+                                opencron.tipError("#ip","该执行器IP已存在!不能重复添加!");
+                                _this.status = false;
+                            }else{
+                                opencron.tipOk("#ip");
                             }
                         })
                     }
@@ -108,11 +106,10 @@
 
             warning:function () {
                 var _warning = $('input[type="radio"][name="warning"]:checked').val();
-                if(_warning) {
+                if(_warning == "1") {
                     this.mobiles();
                     this.email();
                 }
-
             },
 
             mobiles:function () {
@@ -160,41 +157,39 @@
                         "port": $("#port").val(),
                         "password": calcMD5($("#password").val())
                     },
-                    dataType:"JSON",
-                    success: function (data) {
-                        if (data) {
-                            $.ajax({
-                                headers: {"csrf": "${csrf}"},
-                                type: "POST",
-                                url: "${contextPath}/verify/guid.do",
-                                data: {
-                                    "proxy": _ping || 0,
-                                    "proxyId": proxyId,
-                                    "ip":$("#ip").val(),
-                                    "port": $("#port").val(),
-                                    "password": calcMD5($("#password").val())
-                                },
-                                dataType:"html",
-                                success:function(data) {
-                                    _this.pingDone = true;
-                                    $("#machineId").val(data);
-                                },
-                                error:function () {
-                                    _this.pingDone = true;
-                                }
-                            });
-                            opencron.tipOk("#port");
-                        } else {
-                            opencron.tipError("#port","通信失败");
-                            _this.status=false;
-                            _this.pingDone = true;
-                        }
-                    },
-                    error: function () {
+                    dataType:"JSON"
+                }).done(function (data) {
+                    if (data) {
+                        $.ajax({
+                            headers: {"csrf": "${csrf}"},
+                            type: "POST",
+                            url: "${contextPath}/verify/guid.do",
+                            data: {
+                                "proxy": _ping || 0,
+                                "proxyId": proxyId,
+                                "ip":$("#ip").val(),
+                                "port": $("#port").val(),
+                                "password": calcMD5($("#password").val())
+                            },
+                            dataType:"html",
+                            success:function(data) {
+                                _this.pingDone = true;
+                                $("#machineId").val(data);
+                            },
+                            error:function () {
+                                _this.pingDone = true;
+                            }
+                        });
+                        opencron.tipOk("#port");
+                    } else {
                         opencron.tipError("#port","通信失败");
                         _this.status=false;
                         _this.pingDone = true;
                     }
+                }).fail(function () {
+                    opencron.tipError("#port","通信失败");
+                    _this.status=false;
+                    _this.pingDone = true;
                 });
             },
             

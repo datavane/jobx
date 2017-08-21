@@ -35,7 +35,7 @@
 
     <!-- Javascript Libraries -->
     <!-- jQuery -->
-    <script type="text/javascript" src="${contextPath}/static/js/jquery.min.js?resId=${resourceId}"></script> <!-- jQuery Library -->
+    <script type="text/javascript" src="${contextPath}/static/js/jquery.js?resId=${resourceId}"></script> <!-- jQuery Library -->
     <script type="text/javascript" src="${contextPath}/static/js/jquery-ui.min.js?resId=${resourceId}"></script> <!-- jQuery UI -->
     <script type="text/javascript" src="${contextPath}/static/js/jquery.easing.1.3.js?resId=${resourceId}"></script> <!-- jQuery Easing - Requirred for Lightbox + Pie Charts-->
 

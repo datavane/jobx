@@ -48,9 +48,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.awt.Image;
 import java.io.File;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.io.Serializable;
+import java.util.*;
 
 import static org.opencron.common.utils.CommonUtils.isEmpty;
 import static org.opencron.common.utils.CommonUtils.notEmpty;
@@ -170,21 +169,24 @@ public class DashboardController extends BaseController {
 
     @RequestMapping(value = "monitor.do",method= RequestMethod.POST)
     @ResponseBody
-    public String port(Long agentId) throws Exception {
-        Agent agent = agentService.getAgent(agentId);
+    public Map<String,Serializable> port(Long agentId) throws Exception {
+        final Agent agent = agentService.getAgent(agentId);
 
         /**
          * 直联
          */
-
-        String format = "%d_%s";
-
         if (agent.getProxy().equals(Opencron.ConnType.CONN.getType())) {
-            String url = String.format("http://%s:%s", agent.getIp(), PropertyPlaceholder.get("opencorn.monitorPort"));
-            return String.format(format, agent.getProxy(), url);
+            final String url = String.format("http://%s:%s", agent.getIp(), PropertyPlaceholder.get("opencorn.monitorPort"));
+            return new HashMap<String,Serializable>(){{
+                put("connType",agent.getProxy());
+                put("data",url);
+            }};
         } else {//代理
-            Response req = executeService.monitor(agent);
-            return String.format(format, agent.getProxy(), JSON.toJSONString(req.getResult()));
+            final Response req = executeService.monitor(agent);
+            return new HashMap<String,Serializable>(){{
+                put("connType",agent.getProxy());
+                put("data",JSON.toJSONString(req.getResult()));
+            }};
         }
     }
 

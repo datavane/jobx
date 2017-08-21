@@ -41,21 +41,19 @@ function Validata() {
                             "jobId":self.jobId,
                             "name": _jobName,
                             "agentId": $("#agentId").val()
-                        },
-                        success: function (data) {
-                            _this.jobNameRemote = true;
-                            if (!data) {
-                                opencron.tipError("#jobName" + elemFix, "作业名称已存在!");
-                                _this.status = false;
-                            } else {
-                                opencron.tipOk("#jobName" + elemFix);
-                            }
-                        },
-                        error: function () {
-                            _this.jobNameRemote = true;
-                            _this.status = false;
-                            opencron.tipError("#jobName" + elemFix, "网络请求错误,请重试!");
                         }
+                    }).done(function (data) {
+                        _this.jobNameRemote = true;
+                        if (!data) {
+                            opencron.tipError("#jobName" + elemFix, "作业名称已存在!");
+                            _this.status = false;
+                        } else {
+                            opencron.tipOk("#jobName" + elemFix);
+                        }
+                    }).fail(function () {
+                        _this.jobNameRemote = true;
+                        _this.status = false;
+                        opencron.tipError("#jobName" + elemFix, "网络请求错误,请重试!");
                     });
                 }
             }
@@ -78,21 +76,19 @@ function Validata() {
                         data: {
                             "cronType": cronType,
                             "cronExp": cronExp
-                        },
-                        success: function (data) {
-                            _this.cronExpRemote = true;
-                            if (data) {
-                                opencron.tipOk($("#expTip"));
-                            } else {
-                                opencron.tipError($("#expTip"), "时间规则语法错误!");
-                                _this.status = false;
-                            }
-                        },
-                        error: function () {
-                            _this.cronExpRemote = true;
-                            opencron.tipError($("#expTip"), "网络请求错误,请重试!");
+                        }
+                    }).done(function (data) {
+                        _this.cronExpRemote = true;
+                        if (data) {
+                            opencron.tipOk($("#expTip"));
+                        } else {
+                            opencron.tipError($("#expTip"), "时间规则语法错误!");
                             _this.status = false;
                         }
+                    }).fail(function () {
+                        _this.cronExpRemote = true;
+                        opencron.tipError($("#expTip"), "网络请求错误,请重试!");
+                        _this.status = false;
                     });
                 }
             }

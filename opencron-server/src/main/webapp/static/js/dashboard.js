@@ -45,66 +45,65 @@ function OpencronChart() {
             "startTime": $("#startTime").val(),
             "endTime": $("#endTime").val()
         },
-        dataType: "json",
-        success: function (data) {
-            if (data.length>0) {
-                $("#overview_loader").hide();
-                $("#record-report-havedata").show();
-                $("#record-report-nodata").hide();
+        dataType: "json"
+    }).done(function (data) {
+        if (data.length>0) {
+            $("#overview_loader").hide();
+            $("#record-report-havedata").show();
+            $("#record-report-nodata").hide();
 
-                //折线图
-                var dataArea = [];
-                var successSum = 0;
-                var failureSum = 0;
-                var killedSum = 0;
-                var singleton = 0;
-                var flow = 0;
-                var crontab = 0;
-                var quartz = 0;
-                var rerun = 0;
-                var auto = 0;
-                var operator = 0;
+            //折线图
+            var dataArea = [];
+            var successSum = 0;
+            var failureSum = 0;
+            var killedSum = 0;
+            var singleton = 0;
+            var flow = 0;
+            var crontab = 0;
+            var quartz = 0;
+            var rerun = 0;
+            var auto = 0;
+            var operator = 0;
 
-                for (var i in data) {
-                    dataArea.push({
-                        date: data[i].date,
-                        success: data[i].success,
-                        failure: data[i].failure,
-                        killed: data[i].killed
-                    });
-                    successSum += parseInt(data[i].success);
-                    failureSum += parseInt(data[i].failure);
-                    killedSum += parseInt(data[i].killed);
-                    singleton += parseInt(data[i].singleton);
-                    flow += parseInt(data[i].flow);
-                    crontab += parseInt(data[i].crontab);
-                    quartz += parseInt(data[i].quartz);
-                    rerun += parseInt(data[i].rerun);
-                    auto += parseInt(data[i].auto);
-                    operator += parseInt(data[i].operator);
-                }
-
-                self.resizeChartData = {
-                    "dataArea": dataArea,
-                    "success": successSum,
-                    "failure": failureSum,
-                    "killed": killedSum,
-                    "singleton": singleton,
-                    "flow": flow,
-                    "crontab": crontab,
-                    "quartz": quartz,
-                    "rerun": rerun,
-                    "auto": auto,
-                    "operator": operator
-                };
-                self.resize();
-            } else {
-                window.setTimeout(function () {
-                    $("#overview_loader").hide();
-                    $("#record-report-havedata").hide();
-                    $("#record-report-nodata").show();
-                }, 750);
+            for (var i in data) {
+                dataArea.push({
+                    date: data[i].date,
+                    success: data[i].success,
+                    failure: data[i].failure,
+                    killed: data[i].killed
+                });
+                successSum += parseInt(data[i].success);
+                failureSum += parseInt(data[i].failure);
+                killedSum += parseInt(data[i].killed);
+                singleton += parseInt(data[i].singleton);
+                flow += parseInt(data[i].flow);
+                crontab += parseInt(data[i].crontab);
+                quartz += parseInt(data[i].quartz);
+                rerun += parseInt(data[i].rerun);
+                auto += parseInt(data[i].auto);
+                operator += parseInt(data[i].operator);
             }
+
+            self.resizeChartData = {
+                "dataArea": dataArea,
+                "success": successSum,
+                "failure": failureSum,
+                "killed": killedSum,
+                "singleton": singleton,
+                "flow": flow,
+                "crontab": crontab,
+                "quartz": quartz,
+                "rerun": rerun,
+                "auto": auto,
+                "operator": operator
+            };
+            self.resize();
+        } else {
+            window.setTimeout(function () {
+                $("#overview_loader").hide();
+                $("#record-report-havedata").hide();
+                $("#record-report-nodata").show();
+            }, 750);
         }
     });
 }
@@ -142,55 +141,54 @@ function OpencronChart() {
         headers:{"csrf":self.csrf},
         type: "POST",
         url: self.path + "/monitor.do",
-        data: "agentId=" + $("#agentId").val(),
+        data: {
+            "agentId":$("#agentId").val()
+        },
         dataType: "html",
-        success: function (dataResult) {
-
-            if (dataResult.toString().indexOf("login") > -1) {
-                window.location.href = self.path;
+    }).done(function (dataResult) {
+        if (dataResult.toString().indexOf("login") > -1) {
+            window.location.href = self.path;
+        }
+        //remobe loader...
+        $(".loader").remove();
+        var connType = dataResult.connType;
+        var data = dataResult.data;
+        //代理
+        if (connType == 1) {
+            self.data = $.parseJSON(data);
+            if (self.intervalId == null) {
+                /**
+                 * 第一个轮询不显示,等下一个轮询开始渲染...
+                 * @type {number}
+                 */
+                self.intervalId = window.setInterval(function () {
+                    self.monitor(connType);
+                }, self.intervalTime);
+            } else {
+                self.render();
             }
-            //remobe loader...
-            $(".loader").remove();
-            var connType = dataResult.toString().charAt(0);
-            var data = dataResult.substring(2);
-            //代理
-            if (connType == 1) {
-                self.data = $.parseJSON(data);
-                if (self.intervalId == null) {
-                    /**
-                     * 第一个轮询不显示,等下一个轮询开始渲染...
-                     * @type {number}
-                     */
-                    self.intervalId = window.setInterval(function () {
-                        self.monitor(connType);
-                    }, self.intervalTime);
-                } else {
-                    self.render();
-                }
-            } else {//直联-->发送websocket...
-                if (self.intervalId != null) {
-                    window.clearInterval(self.intervalId);
-                    self.intervalId = null;
-                    self.clear();
-                }
-
-                self.socket = new io.connect(data, {
-                    extraHeaders: {
-                        'Access-Control-Allow-Origin':this.path
-                    }
-                });
-
-                self.socket.on("monitor", function (data) {
-                    self.data = data;
-                    self.render();
-                });
-                //when close then clear data...
-                self.socket.on("disconnect", function () {
-                    console.log('close');
-                    self.clear();
-                });
+        } else {//直联-->发送websocket...
+            if (self.intervalId != null) {
+                window.clearInterval(self.intervalId);
+                self.intervalId = null;
+                self.clear();
             }
 
+            self.socket = new io.connect(data, {
+                extraHeaders: {
+                    'Access-Control-Allow-Origin':this.path
+                }
+            });
+
+            self.socket.on("monitor", function (data) {
+                self.data = data;
+                self.render();
+            });
+            //when close then clear data...
+            self.socket.on("disconnect", function () {
+                console.log('close');
+                self.clear();
+            });
         }
     });
 };
