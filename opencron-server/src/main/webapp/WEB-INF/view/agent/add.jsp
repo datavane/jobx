@@ -13,11 +13,8 @@
 
             status:true,
 
-            pingDone:false,
-
             init:function () {
                 this.status = true;
-                this.pingDone = false;
             },
 
             name:function () {
@@ -138,7 +135,7 @@
                 }
             },
 
-            ping:function() {
+            ping:function(callback) {
                 $("#pingResult").html("<img src='${contextPath}/static/img/icon-loader.gif'> <font color='#2fa4e7'>检测中...</font>");
                 var _ping = $('input[type="radio"][name="proxy"]:checked').val();
                 var proxyId = null;
@@ -173,20 +170,20 @@
                                 "password": calcMD5($("#password").val())
                             }
                         }).done(function (data) {
-                            _this.pingDone = true;
                             $("#machineId").val(data);
+                            if(callback){
+                                callback();
+                            }
                         }).fail(function () {
                             opencron.tipOk("#port");
                         });
                     } else {
                         opencron.tipError("#port","通信失败");
                         _this.status=false;
-                        _this.pingDone = true;
                     }
                 }).fail(function () {
                     opencron.tipError("#port","通信失败");
                     _this.status=false;
-                    _this.pingDone = true;
                 });
             },
             
@@ -197,7 +194,6 @@
                 validata.password();
                 validata.port();
                 validata.warning();
-                validata.ping();
                 return this.status;
             }
 
@@ -242,15 +238,14 @@
             });
 
             $("#saveBtn").click(function () {
-                validata.verify();
-                var valId = setInterval(function () {
-                    if (validata.pingDone) {
-                        window.clearInterval(valId);
-                        if(validata.status) {
-                            $("#agentForm").submit();
-                        }
-                    }
-                },10);
+                //普通字段校验
+                var status = validata.verify();
+                if(status){
+                    //验证连接是否通...
+                    validata.ping(function () {
+                        $("#agentForm").submit()
+                    })
+                }
             });
 
             $("#name").blur(function () {
