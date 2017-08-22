@@ -33,8 +33,8 @@
                         var _this = this;
                         $.ajax({
                             headers: {"csrf": "${csrf}"},
-                            type: "POST",
                             url: "${contextPath}/agent/checkname.do",
+                            type: "POST",
                             data: {
                                 "name": _name
                             }
@@ -106,7 +106,7 @@
 
             warning:function () {
                 var _warning = $('input[type="radio"][name="warning"]:checked').val();
-                if(_warning == "1") {
+                if ( _warning == "1" ) {
                     this.mobiles();
                     this.email();
                 }
@@ -148,39 +148,36 @@
                 var _this=this;
                 $.ajax({
                     headers: {"csrf": "${csrf}"},
-                    type: "POST",
                     url: "${contextPath}/verify/ping.do",
+                    type: "POST",
+                    dataType:"json",
                     data: {
                         "proxy": _ping || 0,
                         "proxyId": proxyId,
                         "ip":$("#ip").val(),
                         "port": $("#port").val(),
                         "password": calcMD5($("#password").val())
-                    },
-                    dataType:"JSON"
+                    }
                 }).done(function (data) {
                     if (data) {
                         $.ajax({
                             headers: {"csrf": "${csrf}"},
-                            type: "POST",
                             url: "${contextPath}/verify/guid.do",
+                            type: "POST",
+                            dataType:"html",
                             data: {
                                 "proxy": _ping || 0,
                                 "proxyId": proxyId,
                                 "ip":$("#ip").val(),
                                 "port": $("#port").val(),
                                 "password": calcMD5($("#password").val())
-                            },
-                            dataType:"html",
-                            success:function(data) {
-                                _this.pingDone = true;
-                                $("#machineId").val(data);
-                            },
-                            error:function () {
-                                _this.pingDone = true;
                             }
+                        }).done(function (data) {
+                            _this.pingDone = true;
+                            $("#machineId").val(data);
+                        }).fail(function () {
+                            opencron.tipOk("#port");
                         });
-                        opencron.tipOk("#port");
                     } else {
                         opencron.tipError("#port","通信失败");
                         _this.status=false;
