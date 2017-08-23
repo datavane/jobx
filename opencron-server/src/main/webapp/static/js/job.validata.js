@@ -604,16 +604,29 @@ Validata.prototype.ready = function () {
 
     $("#save-btn").click(function () {
         _this.validata.verify();
-        var valId = setInterval(function () {
-            if (_this.validata.jobNameRemote && _this.validata.cronExpRemote) {
-                window.clearInterval(valId);
-                if(_this.validata.status) {
-                    var cmd = $("#cmd").val();
-                    $("#command").val(toBase64(cmd));
-                    $("#jobform").submit();
+        if(_this.validata.status){
+            var valId = setInterval(function () {
+                if (_this.validata.jobNameRemote ) {
+                    var cleanFlag = false;
+                    var checkExp = $('input[type="radio"][name="execType"]:checked').val() == 0;
+                    if( checkExp ){
+                        if(_this.validata.cronExpRemote){
+                            cleanFlag = true;
+                        }
+                    }else {
+                        cleanFlag = true;
+                    }
+                    if(cleanFlag){
+                        window.clearInterval(valId);
+                        if(_this.validata.status) {
+                            var cmd = $("#cmd").val();
+                            $("#command").val(toBase64(cmd));
+                            $("#jobform").submit();
+                        }
+                    }
                 }
-            }
-        },10);
+            },10);
+        }
     });
 
     $("#subjob-btn").click(function () {
