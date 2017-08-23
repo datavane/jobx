@@ -39,13 +39,13 @@ function OpencronChart() {
     var self = this;
     $.ajax({
         headers:{"csrf":self.csrf},
-        type: "POST",
         url: self.path + "/record.do",
+        type: "POST",
+        dataType: "json",
         data: {
             "startTime": $("#startTime").val(),
             "endTime": $("#endTime").val()
-        },
-        dataType: "json"
+        }
     }).done(function (data) {
         if (data.length>0) {
             $("#overview_loader").hide();
@@ -141,10 +141,10 @@ function OpencronChart() {
         headers:{"csrf":self.csrf},
         type: "POST",
         url: self.path + "/monitor.do",
+        dataType: "json",
         data: {
             "agentId":$("#agentId").val()
-        },
-        dataType: "html",
+        }
     }).done(function (dataResult) {
         if (dataResult.toString().indexOf("login") > -1) {
             window.location.href = self.path;

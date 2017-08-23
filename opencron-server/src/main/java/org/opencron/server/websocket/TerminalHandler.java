@@ -52,7 +52,7 @@ public class TerminalHandler extends TextWebSocketHandler {
 			final Terminal terminal = TerminalContext.remove(sshSessionId);
 			if (terminal!=null) {
 				try {
-					session.sendMessage(new TextMessage("Welcome to Opencron Terminal! Connect Starting."));
+					session.sendMessage(new TextMessage("Welcome to opencron Terminal! Connect Starting."));
 					getClient(session,terminal);
 					int cols = Integer.parseInt(session.getAttributes().get("cols").toString());
 					int rows = Integer.parseInt(session.getAttributes().get("rows").toString());
@@ -90,7 +90,7 @@ public class TerminalHandler extends TextWebSocketHandler {
 				}
 			}
 		} catch (Exception e) {
-			session.sendMessage(new TextMessage("Sorry! Opencron Terminal was closed, please try again. "));
+			session.sendMessage(new TextMessage("Sorry! opencron Terminal was closed, please try again. "));
 			terminalClient.disconnect();
 			session.close();
 		}

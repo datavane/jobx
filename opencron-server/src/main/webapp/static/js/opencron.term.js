@@ -59,21 +59,24 @@
             self.term.resize(self.offset.cols, self.offset.rows);
             $.ajax({
                 headers: {"csrf": self.args[1]},
-                type:'POST',
                 url: '/terminal/resize.do',
+                type:'POST',
+                cache:false,
                 data: {
                     "token": self.args[0],
                     "cols": self.offset.cols,
                     "rows": self.offset.rows,
                     "width": self.offset.width,
-                    "heigh": self.offset.heigh,
-                    "jsid":new Date().getTime()
+                    "heigh": self.offset.heigh
                 }
             });
         }
     });
 
-    var params = "?cols=" + self.offset.cols + "&rows=" + self.offset.rows + "&width=" + self.offset.width + "&height=" + self.offset.height;
+    var params = '?' + $.param(self.offset || {});
+
+    console.log(params);
+
     window.WebSocket = window.WebSocket || window.MozWebSocket;
     if(window.WebSocket) {
         self.socket = new WebSocket(this.contextPath + '/terminal.ws' + params);
@@ -110,8 +113,9 @@
         if (sendInput && sendInput.length > 0) {
             $.ajax({
                 headers:{"csrf":self.args[1]},
-                type:'POST',
                 url: '/terminal/sendAll.do',
+                type:'POST',
+                cache:false,
                 data:{
                     "token":self.args[0],
                     "cmd":encodeURIComponent(encodeURIComponent(sendInput)),
@@ -200,12 +204,12 @@
     //同步到后台服务器
     $.ajax({
         headers:{"csrf":this.args[1]},
-        type:"POST",
         url:"/terminal/theme.do",
+        type:"POST",
+        cache:false,
         data:{
             "token":this.args[0],
-            "theme": this.themeName,
-            "jsid":new Date().getTime()
+            "theme": this.themeName
         }
     });
 };
