@@ -166,12 +166,11 @@ public abstract class HttpUtils {
     public static boolean isPortUsing(String host, int port) {
         boolean flag = true;//端口已被占用
         try {
-            InetAddress Address = InetAddress.getByName(host);
-            Socket socket = new Socket(Address,port);  //建立一个Socket连接
+            InetAddress address = InetAddress.getByName(host);
+            Socket socket = new Socket(address,port);  //建立一个Socket连接
             flag = false;//端口未被占用
             socket.close();
         } catch (IOException e) {
-            e.printStackTrace();
         }
         return flag;
     }
