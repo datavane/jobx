@@ -182,10 +182,10 @@ public class DashboardController extends BaseController {
                 put("data",url);
             }};
         } else {//代理
-            final Response req = executeService.monitor(agent);
+            final Response resp = executeService.monitor(agent);
             return new HashMap<String,Serializable>(){{
                 put("connType",agent.getProxy());
-                put("data",JSON.toJSONString(req.getResult()));
+                put("data",JSON.toJSONString(resp.getResult()));
             }};
         }
     }
