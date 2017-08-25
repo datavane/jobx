@@ -40,6 +40,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.ServletContext;
 import java.io.*;
 import java.util.*;
 
@@ -55,6 +56,9 @@ public class NoticeService {
     @Autowired
     private HomeService homeService;
 
+    @Autowired
+    private ServletContext servletContext;
+
     private Template template;
 
     private Logger logger = LoggerFactory.getLogger(getClass());
@@ -62,7 +66,7 @@ public class NoticeService {
     @PostConstruct
     public void initConfig() throws Exception {
         Configuration configuration = new Configuration();
-        File file = new File(getClass().getClassLoader().getResource("/").getPath().replace("classes","layouts"));
+        File file = new File(servletContext.getRealPath("/WEB-INF/layouts"));
         configuration.setDirectoryForTemplateLoading(file);
         configuration.setDefaultEncoding("UTF-8");
         this.template = configuration.getTemplate("email.template");
