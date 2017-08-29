@@ -43,7 +43,9 @@ import javax.servlet.http.HttpSession;
 
 import java.io.File;
 import java.net.URLDecoder;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.opencron.server.service.TerminalService.*;
 import static org.opencron.common.utils.WebUtils.*;
@@ -59,12 +61,13 @@ public class TerminalController extends BaseController {
     private TerminalService termService;
 
     @RequestMapping(value = "ssh.do",method= RequestMethod.POST)
-    public void ssh(HttpSession session, HttpServletResponse response, Terminal terminal) throws Exception {
+    @ResponseBody
+    public Map<String,String> ssh(HttpSession session, HttpServletResponse response, Terminal terminal) throws Exception {
         User user = OpencronTools.getUser(session);
 
-        String json = "{\"status\":\"%s\",\"url\":\"%s\"}";
-
         terminal = termService.getById(terminal.getId());
+        Map<String,String> map = new HashMap<String,String>(0);
+
         Terminal.AuthStatus authStatus = termService.auth(terminal);
         //登陆认证成功
         if (authStatus.equals(Terminal.AuthStatus.SUCCESS)) {
@@ -72,11 +75,13 @@ public class TerminalController extends BaseController {
             terminal.setUser(user);
             TerminalContext.put(token, terminal);
             OpencronTools.setSshSessionId(session, token);
-            writeJson(response, String.format(json, "success", "/terminal/open.htm?token=" + token + "&csrf=" + OpencronTools.getCSRF(session)));
+            map.put("status","success");
+            map.put("url","/terminal/open.htm?token=" + token + "&csrf=" + OpencronTools.getCSRF(session));
         } else {
             //重新输入密码进行认证...
-            writeJson(response, String.format(json, authStatus.status, "null"));
+            map.put("status",authStatus.status);
         }
+        return map;
     }
 
     @RequestMapping("ssh2.htm")
