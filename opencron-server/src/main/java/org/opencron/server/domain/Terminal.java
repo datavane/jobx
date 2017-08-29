@@ -23,6 +23,7 @@
 package org.opencron.server.domain;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import org.opencron.common.utils.DigestUtils;
 import org.opencron.common.utils.RSAUtils;
 import org.opencron.server.job.OpencronTools;
 
@@ -125,12 +126,19 @@ public class Terminal implements Serializable{
         this.userName = userName;
     }
 
-    public String getPassword() throws Exception {
-        byte[] decodedData = RSAUtils.decryptByPrivateKey(this.authorization, OpencronTools.Auth.getPrivateKey());
-        return new String(decodedData);
+    public String getPassword() {
+        try {
+            byte[] decodedData = RSAUtils.decryptByPrivateKey(this.authorization, OpencronTools.Auth.getPrivateKey());
+            return new String(decodedData);
+        } catch (Exception e) {
+        }
+        return null;
     }
 
     public void setPassword(String password) throws Exception {
+        if (password!=null) {
+            password = DigestUtils.passBase64(password);
+        }
         this.authorization = RSAUtils.encryptByPublicKey(password.getBytes(), OpencronTools.Auth.getPublicKey());
     }
 

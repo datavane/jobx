@@ -25,83 +25,88 @@
             });
         });
 
-        function ssh(id, type) {
+        /**
+         *
+         * @param id
+         * @param type
+         *  true:用于判断登录之后是否有后续操作，true:有后续操作，false:无
+         */
+        function ssh(id, failCallback) {
             $.ajax({
                 headers:{"csrf":"${csrf}"},
-                type: "POST",
                 url: "${contextPath}/terminal/ssh.do",
+                type: "POST",
                 data: {"id":id},
-                dataType: "JSON",
-                success: function (json) {
-                    if(json&&json.toString().indexOf("login")>-1){
-                        window.location.href="${contextPath}";
+                dataType: "json"
+            }).done(function (json) {
+                if(json&&json.toString().indexOf("login")>-1){
+                    window.location.href="${contextPath}";
+                }
+                if (json.status == "authfail" || json.status == "keyauthfail") {
+
+                    if (!failCallback) {
+                        alert("用户名密码错误,登录失败");
+                    } else {
+                        failCallback();
                     }
-                    if (json.status == "authfail" || json.status == "keyauthfail") {
-                        if (type == 2) {
-                            alert("用户名密码错误,登录失败");
-                        } else {
-                            editSsh(id,0);
-                        }
-                    } else if (json.status == "hostfail") {
-                        alert("DNS解析失败");
-                    } else if (json.status == "genericfail") {
-                        alert("连接失败请重试");
-                    } else if (json.status == "success") {
-                        var url = '${contextPath}' + json.url;
-                        swal({
-                            title: "",
-                            text: "登陆成功,您确定要打开终端吗？",
-                            type: "warning",
-                            showCancelButton: true,
-                            closeOnConfirm: false,
-                            confirmButtonText: "打开"
-                        });
+                } else if (json.status == "hostfail") {
+                    alert("DNS解析失败");
+                } else if (json.status == "genericfail") {
+                    alert("连接失败请重试");
+                } else if (json.status == "success") {
+                    var url = '${contextPath}' + json.url;
+                    swal({
+                        title: "",
+                        text: "登陆成功,您确定要打开终端吗？",
+                        type: "warning",
+                        showCancelButton: true,
+                        closeOnConfirm: false,
+                        confirmButtonText: "打开"
+                    });
 
-                        /**
-                         *
-                         * 默认打开新的弹窗浏览器会阻止,有的浏览器如Safair连询问用户是否打开新窗口的对话框都没有.
-                         * 这里页面自己弹出询问框,当用户点击"打开"产生了真正的点击行为,然后利用事件冒泡就触发了包裹它的a标签,使得可以在新窗口打开a标签的连接
-                         *
-                         */
-                        if ($("#openLink").length == 0) {
-                            $(".sweet-alert").find(".confirm").wrap("<a id='openLink' href='" + url + "'  target='_blank'/></a>");
-                        } else {
-                            $("#openLink").attr("href", url);
-                        }
+                    /**
+                     *
+                     * 默认打开新的弹窗浏览器会阻止,有的浏览器如Safair连询问用户是否打开新窗口的对话框都没有.
+                     * 这里页面自己弹出询问框,当用户点击"打开"产生了真正的点击行为,然后利用事件冒泡就触发了包裹它的a标签,使得可以在新窗口打开a标签的连接
+                     *
+                     */
+                    if ($("#openLink").length == 0) {
+                        $(".sweet-alert").find(".confirm").wrap("<a id='openLink' href='" + url + "'  target='_blank'/></a>");
+                    } else {
+                        $("#openLink").attr("href", url);
+                    }
 
-                        $("#openLink").click(function () {
+                    $("#openLink").click(function () {
 
+                        $("div[class^='sweet-']").remove();
+
+                        //更改最后登录日期
+                        window.setTimeout(function(){
+                            $.ajax({
+                                headers:{"csrf":"${csrf}"},
+                                url: "${contextPath}/terminal/detail.do",
+                                type: "POST",
+                                data: {"id":id},
+                                dataType: "json"
+                            }).done(function (json) {
+                                $("#time_"+id).text(json.logintime);
+                            })
+                        },5000);
+
+                    });
+
+                    $(".sweet-alert").find(".cancel").click(function () {
+                        window.setTimeout(function () {
                             $("div[class^='sweet-']").remove();
-
-                            //更改最后登录日期
-                            window.setTimeout(function(){
-                                $.ajax({
-                                    headers:{"csrf":"${csrf}"},
-                                    type: "POST",
-                                    url: "${contextPath}/terminal/detail.do",
-                                    data: "id="+id,
-                                    dataType: "JSON",
-                                    success: function (json) {
-                                        $("#time_"+id).text(json.logintime);
-                                    }
-                                })
-                            },5000);
-
-                        });
-
-                        $(".sweet-alert").find(".cancel").click(function () {
-                            window.setTimeout(function () {
-                                $("div[class^='sweet-']").remove();
-                            }, 500);
-                        });
-                    }
+                        }, 50);
+                    });
                 }
             });
         }
 
-        function editSsh(id,type) {
+        function edit(id) {
             $(".error_msg").empty();
-            if (type == 1) {
+            if (arguments[1]||false) {
                 $("#sshform").attr("action","edit");
                 $("#sshTitle").text("编辑终端");
                 $("#sshbtn").text("保存");
@@ -112,19 +117,18 @@
             }
             $.ajax({
                 headers:{"csrf":"${csrf}"},
-                type: "POST",
                 url: "${contextPath}/terminal/detail.do",
-                data: "id="+id,
-                dataType: "JSON",
-                success: function (json) {
-                    $("#sshid").val(id);
-                    $("#sshuser").val(json.user);
-                    $("#sshname").val(unEscapeHtml(json.name));
-                    $("#sshport").val(json.port);
-                    $("#sshhost").val(json.host).attr("readonly","readonly");
-                    $("#sshuser")[0].focus();
-                    $("#sshModal").modal("show");
-                }
+                type: "POST",
+                data: {"id":id},
+                dataType: "json"
+            }).done(function (json) {
+                $("#sshid").val(id);
+                $("#sshuser").val(json.user);
+                $("#sshname").val(unEscapeHtml(json.name));
+                $("#sshport").val(json.port);
+                $("#sshhost").val(json.host).attr("readonly","readonly");
+                $("#sshuser")[0].focus();
+                $("#sshModal").modal("show");
             });
         }
 
@@ -140,29 +144,28 @@
             },function () {
                 $.ajax({
                     headers:{"csrf":"${csrf}"},
-                    type: "POST",
                     url: "${contextPath}/terminal/delete.do",
+                    type: "POST",
                     data: {"id":id},
-                    dataType: "JSON",
-                    success: function (message) {
-                        if (message) {
-                            alertMsg("删除成功!");
-                            $("#tr_" + id).remove();
-                        }else {
-                            alert("删除失败!")
-                        }
+                    dataType: "json"
+                }).done(function (message) {
+                    if (message) {
+                        alertMsg("删除成功!");
+                        $("#tr_" + id).remove();
+                    }else {
+                        alert("删除失败!")
                     }
                 });
             });
         }
 
-        function saveSsh() {
+        function save() {
 
             $(".error_msg").empty();
 
             var user = $("#sshuser").val();
             var name = $("#sshname").val();
-            var pwd = $("#sshpwd").val();
+            var pwd =  $("#sshpwd").val();
             var port = $("#sshport").val();
             var host = $("#sshhost").val();
             var falg = true;
@@ -237,40 +240,38 @@
             if (action == "add") {
                 $.ajax({
                     headers:{"csrf":"${csrf}"},
-                    type: "POST",
                     url: "${contextPath}/terminal/exists.do",
+                    type: "POST",
                     data: {
                         "host":host
                     },
-                    dataType: "JSON",
-                    success: function (status) {
-                        if(!status){
-                            $.ajax({
-                                headers:{"csrf":"${csrf}"},
-                                type: "POST",
-                                url: "${contextPath}/terminal/save.do",
-                                data: {
-                                    "name":name,
-                                    "userName": user,
-                                    "password": pwd,
-                                    "port": port,
-                                    "host": host
-                                },
-                                dataType: "html",
-                                success: function (status) {
-                                    $("#sshModal").modal("hide");
-                                    $("#sshform")[0].reset();
-                                    if (status == "success") {
-                                        alertMsg("恭喜你添加终端成功!");
-                                        location.reload();
-                                    } else {
-                                        alert("用户名密码错误,添加终端失败");
-                                    }
-                                }
-                            });
-                        }else {
-                            alert("添加终端失败,该机器终端实例已存在!");
-                        }
+                    dataType: "json"
+                }).done(function (status) {
+                    if(!status){
+                        $.ajax({
+                            headers:{"csrf":"${csrf}"},
+                            url: "${contextPath}/terminal/save.do",
+                            type: "POST",
+                            data: {
+                                "name":name,
+                                "userName": user,
+                                "password": pwd,
+                                "port": port,
+                                "host": host
+                            },
+                            dataType: "html"
+                        }).done(function (status) {
+                            $("#sshModal").modal("hide");
+                            $("#sshform")[0].reset();
+                            if (status == "success") {
+                                alertMsg("恭喜你添加终端成功!");
+                                location.reload();
+                            } else {
+                                alert("用户名密码错误,添加终端失败");
+                            }
+                        });
+                    }else {
+                        alert("添加终端失败,该机器终端实例已存在!");
                     }
                 });
             }else {
@@ -282,27 +283,28 @@
                         "id":$("#sshid").val(),
                         "name":name,
                         "userName": user,
-                        "password": pwd,
+                        "password": toBase64(pwd),
                         "port": port,
                         "host": host
                     },
-                    dataType: "html",
-                    success: function (status) {
-                        $("#sshModal").modal("hide");
-                        $("#sshform")[0].reset();
-                        if(action == "login") {
-                            if (status == "success") {
-                                ssh($("#sshid").val(), 0);
-                            }else {
-                                alert("用户名密码错误,登陆终端失败!");
-                            }
+                    dataType: "html"
+                }).done(function (status) {
+                    $("#sshModal").modal("hide");
+                    $("#sshform")[0].reset();
+                    if(action == "login") {
+                        if (status == "success") {
+                            ssh($("#sshid").val(),function () {
+                                edit(id,false);
+                            });
                         }else {
-                            if (status == "success") {
-                                alertMsg("恭喜你修改终端成功!");
-                                location.reload();
-                            } else {
-                                alert("用户名密码错误,修改终端失败");
-                            }
+                            alert("用户名密码错误,登陆终端失败!");
+                        }
+                    }else {
+                        if (status == "success") {
+                            alertMsg("恭喜你修改终端成功!");
+                            location.reload();
+                        } else {
+                            alert("用户名密码错误,修改终端失败");
                         }
                     }
                 });
@@ -319,7 +321,6 @@
             $("#sshbtn").text("保存");
             $("#sshid").empty();
             $("#sshModal").modal("show");
-
         }
 
         function sortPage(field) {
@@ -448,7 +449,7 @@
                                 <a href="javascript:ssh('${t.id}')" title="登录">
                                     <i aria-hidden="true" class="fa fa-tv"></i>
                                 </a>&nbsp;&nbsp;
-                                <a href="javascript:editSsh('${t.id}',1)" title="编辑">
+                                <a href="javascript:edit('${t.id}')" title="编辑">
                                     <i aria-hidden="true" class="fa fa-edit"></i>
                                 </a>&nbsp;&nbsp;
                                 <a href="javascript:del('${t.id}')" title="删除">
@@ -521,7 +522,7 @@
                 </div>
                 <div class="modal-footer">
                     <center>
-                        <button type="button" class="btn btn-sm" id="sshbtn" onclick="saveSsh()">保存</button>
+                        <button type="button" class="btn btn-sm" id="sshbtn" onclick="save()">保存</button>
                         &nbsp;&nbsp;
                         <button type="button" class="btn btn-sm" data-dismiss="modal">关闭</button>
                     </center>
