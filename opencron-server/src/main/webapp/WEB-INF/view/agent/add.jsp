@@ -157,6 +157,7 @@
                     }
                 }).done(function (data) {
                     if (data) {
+                        opencron.tipOk("#port");
                         $.ajax({
                             headers: {"csrf": "${csrf}"},
                             url: "${contextPath}/verify/guid.do",
@@ -174,8 +175,6 @@
                             if(callback){
                                 callback();
                             }
-                        }).fail(function () {
-                            opencron.tipOk("#port");
                         });
                     } else {
                         opencron.tipError("#port","通信失败");
