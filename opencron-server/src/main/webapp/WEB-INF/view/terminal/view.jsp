@@ -255,7 +255,7 @@
                             data: {
                                 "name":name,
                                 "userName": user,
-                                "password": pwd,
+                                "password": toBase64(pwd),
                                 "port": port,
                                 "host": host
                             },
