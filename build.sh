@@ -53,13 +53,13 @@ PRGDIR=`dirname "$PRG"`
 
 WORKDIR="`readlink -f ${PRGDIR}`"
 
-MAVEN_URL="http://mirror.bit.edu.cn/apache/maven/maven-3/3.5.0/binaries/apache-maven-3.5.0-bin.tar.gz";
+MAVEN_URL="http://mirror.bit.edu.cn/apache/maven/maven-3/3.5.2/binaries/apache-maven-3.5.2-bin.tar.gz";
 
-MAVEN_NAME="apache-maven-3.5.0-bin"
+MAVEN_NAME="apache-maven-3.5.2-bin"
 
-UNPKG_MAVEN_NAME="apache-maven-3.5.0";
+UNPKG_MAVEN_NAME="apache-maven-3.5.2";
 
-OPENCRON_VERSION="1.1.0-RELEASE";
+OPENCRON_VERSION="1.2.0-RELEASE";
 
 BUILD_HOME=${WORKDIR}/build
 
@@ -115,7 +115,7 @@ if [ $? -ne 1 ]; then
 
     if [ -x "${BUILD_HOME}/${UNPKG_MAVEN_NAME}" ] ; then
         echo_w "maven is already download,now config setting...";
-        OPENCRON_MAVEN=${BUILD_HOME}/${UNPKG_MAVEN_NAME}/bin/mvn
+        MVN=${BUILD_HOME}/${UNPKG_MAVEN_NAME}/bin/mvn
     else
         echo_w "download maven Starting..."
         echo_w "checking network connectivity ... "
@@ -123,14 +123,13 @@ if [ $? -ne 1 ]; then
         ping_count=2
         ping -c ${ping_count} ${net_check_ip} >/dev/null
         retval=$?
-
         if [ ${retval} -eq 0 ] ; then
             echo_w "network is connectioned,download maven Starting... "
             wget -P ${BUILD_HOME} $MAVEN_URL && {
                 echo_g "download maven successful!";
                 echo_w "install maven Starting"
                 tar -xzvf ${BUILD_HOME}/${MAVEN_NAME}.tar.gz -C ${BUILD_HOME}
-                OPENCRON_MAVEN=${BUILD_HOME}/${UNPKG_MAVEN_NAME}/bin/mvn
+                MVN=${BUILD_HOME}/${UNPKG_MAVEN_NAME}/bin/mvn
             }
         elif [ ${retval} -ne 0 ]; then
             echo_r "ERROR:network is blocked! download maven failed,please check your network!build error! bye!"
@@ -138,15 +137,13 @@ if [ $? -ne 1 ]; then
         fi
     fi
 
-elif [ "$OPENCRON_MAVEN"x = ""x ]; then
-
-    OPENCRON_MAVEN="mvn";
-
+elif [ "$MVN"x = ""x ]; then
+    MVN="mvn";
 fi
 
 echo_w "build opencron Starting...";
 
-$OPENCRON_MAVEN clean install -Dmaven.test.skip=true;
+$MVN clean install -Dmaven.test.skip=true;
 
 retval=$?
 
