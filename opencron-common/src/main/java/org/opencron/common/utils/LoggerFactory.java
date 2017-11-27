@@ -26,6 +26,7 @@ import org.apache.log4j.PropertyConfigurator;
 import org.slf4j.Logger;
 
 import java.io.File;
+import java.net.URL;
 
 /**
  * Created by benjobs on 14-4-28.
@@ -33,11 +34,19 @@ import java.io.File;
 public abstract class LoggerFactory {
 
     public static Logger getLogger(@SuppressWarnings("rawtypes") Class clazz) {
-        String currPath = LoggerFactory.class.getProtectionDomain().getCodeSource().getLocation().getFile();
-        File file = new File(currPath);
-        String path = file.getParentFile().getParentFile() + "/conf/log4j.properties";
-        if (!new File(path).exists()) {
-            throw new ExceptionInInitializerError("[opencron] error: can not found log4j.properties...");
+
+        ClassLoader loader = Thread.currentThread().getContextClassLoader();
+        URL url = loader.getResource("log4j.properties");
+        String path;
+        if (url==null) {
+            String currPath = LoggerFactory.class.getProtectionDomain().getCodeSource().getLocation().getFile();
+            File file = new File(currPath);
+            path = file.getParentFile().getParentFile() + "/conf/log4j.properties";
+            if (!new File(path).exists()) {
+                throw new ExceptionInInitializerError("[opencron] error: can not found log4j.properties...");
+            }
+        }else {
+            path = url.getPath();
         }
         PropertyConfigurator.configure(path);
         return org.slf4j.LoggerFactory.getLogger(clazz);

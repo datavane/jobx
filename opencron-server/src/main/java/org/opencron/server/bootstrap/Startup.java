@@ -10,11 +10,15 @@ import org.eclipse.jetty.util.component.AbstractLifeCycle;
 import org.eclipse.jetty.webapp.WebAppContext;
 import org.opencron.common.utils.CommonUtils;
 import org.opencron.common.utils.NetUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 
 
 public class Startup {
+
+    private static Logger logger  = LoggerFactory.getLogger(Startup.class);
 
     private final static String warName = "opencron-server.war";
 
@@ -32,9 +36,9 @@ public class Startup {
                 throw new IllegalArgumentException("[opencron] server port error: " + port );
             }
             startPort = port;
-            System.out.printf("[opencron]Server At port %d Starting...",startPort);
+            logger.info("[opencron]Server At port {} Starting...",startPort);
         }else {
-            System.out.printf("[opencron]Server At default port %d Starting...",startPort);
+            logger.info("[opencron]Server At default port {} Starting...",startPort);
         }
 
 
