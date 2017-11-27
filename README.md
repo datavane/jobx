@@ -50,10 +50,10 @@ IE10+
 ## opencron-agent 安装步骤:
 ```
 
-1·)下载源码: 
+1)下载源码: 
 > git clone https://github.com/wolfboys/opencron.git
 
-2 ):修改server端的jdbc连接信息
+2):修改server端的jdbc连接信息
    1:创建数据,数据库名字可以是opencron或者其他
    2:进入opencron-server/src/main/resources 修改config.properties里的jdbc连接信息
    
