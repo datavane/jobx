@@ -104,13 +104,14 @@ IE10+
 ## opencron-server 部署步骤:
 
 ```
-1):编译好项目源码
+1):编译好项目源码找到
 
 2):部署启动server
   由两种部署方式,  
   1:jetty: 该项目已经对Jetty做了支持,选择Jetty容器启动非常简单,运行项目根路径下的server.sh即可完成启动
   2:tomcat 或者其他web服务器 
   tomcat发布项目步骤:
+     找到build/dist/opencron-server.war
      tomcat部署有两种部署方式
      1):直接部署到webapps下:
         1:下载tomcat8或者以上版本(http://tomcat.apache.org)
