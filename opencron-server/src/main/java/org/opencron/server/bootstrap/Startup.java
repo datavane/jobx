@@ -1,7 +1,12 @@
 package org.opencron.server.bootstrap;
 
 
+import org.apache.tomcat.util.scan.StandardJarScanner;
+import org.eclipse.jetty.apache.jsp.JettyJasperInitializer;
+import org.eclipse.jetty.jsp.JettyJspServlet;
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.util.component.AbstractLifeCycle;
 import org.eclipse.jetty.webapp.WebAppContext;
 import org.opencron.common.utils.CommonUtils;
 import org.opencron.common.utils.NetUtils;
@@ -15,7 +20,7 @@ public class Startup {
 
     private final static String artifactName = "opencron-server";
 
-    private static int startPort = 8080;
+    private static int startPort = 8090;
 
     public static void main(String[] args) {
 
@@ -42,16 +47,50 @@ public class Startup {
             appContext.setDescriptor(baseDir + "/src/main/webapp/WEB-INF/web.xml");
             appContext.setResourceBase(baseDir + "/src/main/webapp");
         }
+
+        //for jsp support
+        appContext.addBean(new JspStarter(appContext));
+        appContext.addServlet(JettyJspServlet.class, "*.jsp");
+
+        //init param
         appContext.setThrowUnavailableOnStartupException(true);	// 在启动过程中允许抛出异常终止启动并退出 JVM
-        appContext.setContextPath("/");
         appContext.setInitParameter("org.eclipse.jetty.servlet.Default.dirAllowed", "false");
         appContext.setInitParameter("org.eclipse.jetty.servlet.Default.useFileMappedBuffer", "false");
 
+        appContext.setContextPath("/");
+        appContext.setParentLoaderPriority(true);
+        appContext.setClassLoader(Thread.currentThread().getContextClassLoader());
+
+        server.setStopAtShutdown(true);
         server.setHandler(appContext);
         try {
             server.start();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    private static class JspStarter extends AbstractLifeCycle implements ServletContextHandler.ServletContainerInitializerCaller {
+
+        JettyJasperInitializer jasperInitializer;
+        ServletContextHandler context;
+
+        public JspStarter(ServletContextHandler context) {
+            this.jasperInitializer = new JettyJasperInitializer();
+            this.context = context;
+            this.context.setAttribute("org.apache.tomcat.JarScanner", new StandardJarScanner());
+        }
+
+        @Override
+        protected void doStart() throws Exception {
+            ClassLoader old = Thread.currentThread().getContextClassLoader();
+            Thread.currentThread().setContextClassLoader(context.getClassLoader());
+            try {
+                jasperInitializer.onStartup(null, context.getServletContext());
+                super.doStart();
+            } finally {
+                Thread.currentThread().setContextClassLoader(old);
+            }
         }
     }
 
