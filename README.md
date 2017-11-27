@@ -104,7 +104,7 @@ IE10+
 ## opencron-server 部署步骤:
 
 ```
-1):编译好项目源码，找到 build/dist/opencron-server.war
+1):编译好项目源码
 
 2):部署启动server
   由两种部署方式,  
