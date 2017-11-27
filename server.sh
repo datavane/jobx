@@ -186,10 +186,6 @@ done
 
 LOG_PATH="$WORKDIR"/$APP_ARTIFACT/logs
 
-if [ ! -d "$LOG_PATH" ] ;then
-    mkdir $LOG_PATH;
-fi
-
 #start JettyServer....
 echo_g "[opencron] server Starting...."
 
