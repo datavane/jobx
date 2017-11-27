@@ -158,32 +158,48 @@ PRGDIR=`dirname "$PRG"`
 
 WORKDIR=`cd "$PRGDIR" >/dev/null; pwd`;
 
+APP_ARTIFACT=opencron-server
+
 APP_VERSION="1.1.0-RELEASE";
 
-APP_NAME=opencron-server-$APP_VERSION
+APP_NAME=$APP_ARTIFACT-$APP_VERSION
 
-APP_PATH="$WORKDIR"/opencron-server/target/${APP_NAME}
+APP_PATH="$WORKDIR"/$APP_ARTIFACT/target/$APP_NAME
 
-if [ ! -d $APP_PATH ];then
+if [ ! -d "$APP_PATH" ];then
    echo_r "[opencron] please build project first!"
    exit 1;
 fi
 
-LIB_PATH="${APP_PATH}"/WEB-INF/lib
+LIB_PATH="$APP_PATH"/WEB-INF/lib
 
 # Add jars to classpath
 if [ ! -z "$CLASSPATH" ] ; then
   CLASSPATH="$CLASSPATH":
 fi
-CLASSPATH="$CLASSPATH""${APP_PATH}"/WEB-INF/classes
+CLASSPATH="$CLASSPATH""$APP_PATH"/WEB-INF/classes
 
-for jar in ${LIB_PATH}/*
+for jar in $LIB_PATH/*
 do
   CLASSPATH="$CLASSPATH":"$jar"
 done
 
+LOG_PATH="$WORKDIR"/$APP_ARTIFACT/logs
+
+if [ ! -d "$LOG_PATH" ] ;then
+    mkdir $LOG_PATH;
+fi
+
 #start JettyServer....
 echo_g "[opencron] server Starting...."
+
 eval "\"$RUNJAVA\"" \
         -classpath "\"$CLASSPATH\"" \
-        org.opencron.server.bootstrap.Startup $1
+        org.opencron.server.bootstrap.Startup $1 \
+        >/dev/null 2>&1 "&";
+
+echo_g "[opencron] please see log for more detail: $LOG_PATH/opencron.out "
+
+exit $?
+
+
