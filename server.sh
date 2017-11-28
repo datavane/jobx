@@ -184,6 +184,12 @@ do
   CLASSPATH="$CLASSPATH":"$jar"
 done
 
+JETTY_LIB="$WORKDIR"/$APP_ARTIFACT/jettylib
+for jar in $JETTY_LIB/*
+do
+  CLASSPATH="$CLASSPATH":"$jar"
+done
+
 LOG_PATH="$WORKDIR"/$APP_ARTIFACT/logs
 
 #start JettyServer....

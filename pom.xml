@@ -415,6 +415,27 @@
             </dependency>
 
             <dependency>
+                <groupId>jstl</groupId>
+                <artifactId>jstl</artifactId>
+                <version>1.2</version>
+            </dependency>
+
+            <dependency>
+                <groupId>taglibs</groupId>
+                <artifactId>standard</artifactId>
+                <version>1.1.2</version>
+            </dependency>
+
+
+            <!-- provided dependencies-->
+            <dependency>
+                <groupId>javax.websocket</groupId>
+                <artifactId>javax.websocket-api</artifactId>
+                <version>1.1</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <dependency>
                 <groupId>javax.servlet</groupId>
                 <artifactId>javax.servlet-api</artifactId>
                 <version>3.1.0</version>
@@ -437,7 +458,6 @@
                 <artifactId>standard</artifactId>
                 <version>1.1.2</version>
             </dependency>
-
 
             <!--jetty-->
             <dependency>
@@ -471,8 +491,20 @@
             </dependency>
 
             <dependency>
-                <groupId>org.eclipse.jetty</groupId>
-                <artifactId>jetty-unixsocket</artifactId>
+                <groupId>org.eclipse.jetty.websocket</groupId>
+                <artifactId>websocket-servlet</artifactId>
+                <version>${jetty.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.eclipse.jetty.websocket</groupId>
+                <artifactId>websocket-api</artifactId>
+                <version>${jetty.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.eclipse.jetty.websocket</groupId>
+                <artifactId>websocket-common</artifactId>
                 <version>${jetty.version}</version>
             </dependency>
 
@@ -500,6 +532,48 @@
                 <version>${jetty.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-http</artifactId>
+                <version>${jetty.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-io</artifactId>
+                <version>${jetty.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-xml</artifactId>
+                <version>${jetty.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-security</artifactId>
+                <version>${jetty.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.eclipse.jdt.core.compiler</groupId>
+                <artifactId>ecj</artifactId>
+                <version>4.4.2</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mortbay.jasper</groupId>
+                <artifactId>apache-jsp</artifactId>
+                <version>8.5.9.1</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mortbay.jasper</groupId>
+                <artifactId>apache-el</artifactId>
+                <version>8.5.9.1</version>
+            </dependency>
+            <!--jetty end-->
 
             <!-- Objenesis -->
             <dependency>
@@ -517,6 +591,12 @@
                 <groupId>com.dyuproject.protostuff</groupId>
                 <artifactId>protostuff-runtime</artifactId>
                 <version>${protostuff.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.maven</groupId>
+                <artifactId>maven-model</artifactId>
+                <version>3.0</version>
             </dependency>
 
         </dependencies>
