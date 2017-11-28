@@ -51,7 +51,7 @@ done
 # Get standard environment variables
 PRGDIR=`dirname "$PRG"`
 
-WORKDIR="`readlink -f ${PRGDIR}`"
+WORKDIR=`cd "$PRGDIR" >/dev/null; pwd`;
 
 MAVEN_URL="http://mirror.bit.edu.cn/apache/maven/maven-3/3.5.2/binaries/apache-maven-3.5.2-bin.tar.gz";
 
