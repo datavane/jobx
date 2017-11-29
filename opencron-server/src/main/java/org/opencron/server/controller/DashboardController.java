@@ -218,12 +218,15 @@ public class DashboardController extends BaseController {
                 return;
             }
 
+
             if (user.getHeaderpic() != null) {
                 String name = user.getUserId() + "_140" + user.getPicExtName();
-                String path = httpSession.getServletContext().getRealPath(File.separator) + "upload" + File.separator + name;
+                String path = httpSession.getServletContext().getRealPath("/").replaceFirst("/$","") + "/upload/" + name;
                 IOUtils.writeFile(new File(path), user.getHeaderpic().getBinaryStream());
                 user.setHeaderPath(getWebUrlPath(request) + "/upload/" + name);
+                session.setAttribute(OpencronTools.LOGIN_USER, user);
             }
+
             writeJson(response, String.format(format, "success", "url", "/dashboard.htm?csrf=" + csrf, "csrf", csrf));
         }
     }
@@ -263,8 +266,7 @@ public class DashboardController extends BaseController {
         }
 
         String rootPath = httpSession.getServletContext().getRealPath("/");
-        rootPath +=  rootPath.endsWith("/")?"":"/";
-        String path = rootPath + "upload/";
+        String path = rootPath.replaceFirst("/$","") + "/upload/";
 
         String picName = user.getUserId() + extensionName.toLowerCase();
 

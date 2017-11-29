@@ -51,7 +51,7 @@ done
 # Get standard environment variables
 PRGDIR=`dirname "$PRG"`
 
-WORKDIR="`readlink -f ${PRGDIR}`"
+WORKDIR=`cd "$PRGDIR" >/dev/null; pwd`;
 
 MAVEN_URL="http://mirror.bit.edu.cn/apache/maven/maven-3/3.5.2/binaries/apache-maven-3.5.2-bin.tar.gz";
 
@@ -59,14 +59,13 @@ MAVEN_NAME="apache-maven-3.5.2-bin"
 
 UNPKG_MAVEN_NAME="apache-maven-3.5.2";
 
-OPENCRON_VERSION="1.2.0-RELEASE";
+OPENCRON_VERSION="1.1.0-RELEASE";
 
-BUILD_HOME=${WORKDIR}/build
+MAVEN_PATH="/tmp";
 
-[ ! -d ${BUILD_HOME} ] && mkdir ${BUILD_HOME}
+[ ! -d "$MAVEN_PATH" ] && mkdir $MAVEN_PATH;
 
-[ ! -d ${BUILD_HOME}/dist ] && mkdir ${BUILD_HOME}/dist/
-rm -rf ${BUILD_HOME}/dist/*
+DIST_HOME="${WORKDIR}/dist"
 
 echo_r () {
     # Color red: Error, Failed
@@ -113,9 +112,9 @@ if [ $? -ne 1 ]; then
 
     echo_y "WARNING:maven is not install!"
 
-    if [ -x "${BUILD_HOME}/${UNPKG_MAVEN_NAME}" ] ; then
+    if [ -x "/tmp/${UNPKG_MAVEN_NAME}" ] ; then
         echo_w "maven is already download,now config setting...";
-        MVN=${BUILD_HOME}/${UNPKG_MAVEN_NAME}/bin/mvn
+        MVN=/tmp/${UNPKG_MAVEN_NAME}/bin/mvn
     else
         echo_w "download maven Starting..."
         echo_w "checking network connectivity ... "
@@ -125,11 +124,11 @@ if [ $? -ne 1 ]; then
         retval=$?
         if [ ${retval} -eq 0 ] ; then
             echo_w "network is connectioned,download maven Starting... "
-            wget -P ${BUILD_HOME} $MAVEN_URL && {
+            wget -P "/tmp" $MAVEN_URL && {
                 echo_g "download maven successful!";
                 echo_w "install maven Starting"
-                tar -xzvf ${BUILD_HOME}/${MAVEN_NAME}.tar.gz -C ${BUILD_HOME}
-                MVN=${BUILD_HOME}/${UNPKG_MAVEN_NAME}/bin/mvn
+                tar -xzvf /tmp/${MAVEN_NAME}.tar.gz -C /tmp
+                MVN=/tmp/${UNPKG_MAVEN_NAME}/bin/mvn
             }
         elif [ ${retval} -ne 0 ]; then
             echo_r "ERROR:network is blocked! download maven failed,please check your network!build error! bye!"
@@ -148,9 +147,10 @@ $MVN clean install -Dmaven.test.skip=true;
 retval=$?
 
 if [ ${retval} -eq 0 ] ; then
-    cp ${WORKDIR}/opencron-agent/target/opencron-agent-${OPENCRON_VERSION}.tar.gz ${BUILD_HOME}/dist/
-    cp ${WORKDIR}/opencron-server/target/opencron-server.war ${BUILD_HOME}/dist/
-    echo -e "[${GREEN_COLOR}opencron${RES}] ${WHITE_COLOR}build opencron @ Version ${BLUE_COLOR}${OPENCRON_VERSION}${RES} successfully! please goto${RES} ${GREEN_COLOR}${BUILD_HOME}/dist${RES}"
+    [ ! -d "${DIST_HOME}" ] && mkdir ${DIST_HOME} || rm -rf  ${DIST_HOME}/* ;
+    cp ${WORKDIR}/opencron-agent/target/opencron-agent-${OPENCRON_VERSION}.tar.gz ${DIST_HOME}
+    cp ${WORKDIR}/opencron-server/target/opencron-server.war ${DIST_HOME}
+    echo -e "[${GREEN_COLOR}opencron${RES}] ${WHITE_COLOR}build opencron @ Version ${BLUE_COLOR}${OPENCRON_VERSION}${RES} successfully! please goto${RES} ${GREEN_COLOR}${DIST_HOME}${RES}"
     exit 0
 else
     echo_r "build opencron failed! please try again "

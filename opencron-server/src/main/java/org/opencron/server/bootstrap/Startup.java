@@ -9,28 +9,29 @@ public class Startup {
 
     public static void main(String[] args) {
 
-        MavenUtils mavenUtils = MavenUtils.get(Startup.class.getClassLoader());
+        String launcher = System.getProperty("server.launcher");
 
-        String artifactName = mavenUtils.getArtifactId();
+        String artifact = null;
+        String jettyJarPath = null;
+        File warFile = null;
 
-        String warName = artifactName.concat(".war");
-
-        System.setProperty("catalina.home", "./".concat(artifactName));
-
-        File warFile = new File("./".concat(artifactName).concat("/target/").concat(warName));
-        if (!warFile.exists()) {
-            throw new IllegalArgumentException("[opencron] start server error,please build project with maven first!");
+        //dev 开发者模式通过ide启动的main
+        if (launcher == null) {
+            artifact = MavenUtils.get(Thread.currentThread().getContextClassLoader()).getArtifactId();
+            jettyJarPath = "./".concat(artifact).concat("/jetty");
+            warFile = new File( "./".concat(artifact).concat("/target/").concat(artifact).concat(".war") );
+            System.setProperty("catalina.home","./".concat(artifact));
+        }else if (launcher.equals("jetty")){
+            //server.sh脚本启动的...
+            jettyJarPath = "./jetty";
+            System.setProperty("catalina.home","./");
         }
-
-        //add jetty jar...
-        String jettyJarPath = "./"+artifactName+"/target/jettylib";
-
-        ExtClasspathLoader.loadJarByPath(jettyJarPath);
-
+        ExtClasspathLoader.scanJar(jettyJarPath);
         JettyLauncher jettyLauncher = new JettyLauncher();
-        jettyLauncher.start(warFile.getPath(),args);
+        jettyLauncher.start(artifact,warFile,launcher!=null,args);
 
     }
+
 
 }
 

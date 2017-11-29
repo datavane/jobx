@@ -59,37 +59,6 @@
             <artifactId>sitemesh</artifactId>
         </dependency>
 
-        <!--jetty-->
-        <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-util</artifactId>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-webapp</artifactId>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-server</artifactId>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.eclipse.jetty.websocket</groupId>
-            <artifactId>websocket-server</artifactId>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-servlet</artifactId>
-            <scope>provided</scope>
-        </dependency>
-
         <!--和tomcat有冲突.-->
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
@@ -238,7 +207,7 @@
                         </dependency>
 
                     </artifactItems>
-                    <outputDirectory>${project.build.directory}/jettylib</outputDirectory>
+                    <outputDirectory>${project.build.directory}/../jetty</outputDirectory>
                 </configuration>
             </plugin>
 

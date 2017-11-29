@@ -70,17 +70,33 @@ public final class ExtClasspathLoader {
         }
     }
 
-    public static void loadJarByPath(String path) {
+    public static void loadJar(String jarFilePath) {
+        File jarFile = new File(jarFilePath);
+        if (!jarFile.exists()) {
+            throw new IllegalArgumentException("[opencron] jarFilePath:"+jarFilePath+" is not exists");
+        }
+        if (jarFile.isFile()) {
+            throw new IllegalArgumentException("[opencron] jarFile "+jarFilePath+" is not file");
+        }
+        loadPath(jarFile.getAbsolutePath());
+    }
+
+    public static void scanJar(String path) {
         File jarDir = new File(path);
         if (!jarDir.exists()) {
-            throw new IllegalArgumentException("[opencron] jarPath is not exists");
+            throw new IllegalArgumentException("[opencron] jarPath:"+path+" is not exists");
         }
         if (!jarDir.isDirectory()) {
-            throw new IllegalArgumentException("[opencron] jarPath is not directory");
+            throw new IllegalArgumentException("[opencron] jarPath:"+path+" is not directory");
+        }
+
+        if ( jarDir.listFiles().length == 0 ) {
+            throw new IllegalArgumentException("[opencron] have not jar in path:"+path);
         }
 
         for (File jarFile:jarDir.listFiles()) {
             loadPath(jarFile.getAbsolutePath());
         }
     }
+
 }

@@ -16,7 +16,13 @@
 			<!-- Profile Menu -->
 			<div class="text-center s-widget m-b-25 dropdown" id="profile-menu">
 				<a href="" id="header-img" data-toggle="dropdown" class="animated a-hover">
-					<img class="profile-pic" id="profile-pic" width="140px;" height="140px;"  onerror="javascript:this.src='${contextPath}/static/img/profile-pic.jpg'" src="${contextPath}/upload/${opencron_user.userId}${opencron_user.picExtName}?<%=System.currentTimeMillis()%>">
+					<img class="profile-pic" id="profile-pic" width="140px;" height="140px;"  onerror="javascript:this.src='${contextPath}/static/img/profile-pic.jpg'"
+					<c:if test="${opencron_user.headerPath == null}  ">
+						 src="${contextPath}/upload/${opencron_user.userId}${opencron_user.picExtName}?<%=System.currentTimeMillis()%>">
+					</c:if>
+					<c:if test="${opencron_user.headerPath != null}">
+						src="${opencron_user.headerPath}?<%=System.currentTimeMillis()%>">
+					</c:if>
 					<div class="change-text" id="change-img" href="javascript:void(0);">更换头像</div>
 				</a>
 				<h4 class="m-0">${opencron_user.userName}</h4>
