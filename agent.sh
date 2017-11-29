@@ -104,7 +104,7 @@ fi
 
 [ -d "${DEPLOY_PATH}" ] && rm -rf ${DEPLOY_PATH}/* || mkdir -p ${DEPLOY_PATH}
 
-tar -xzvf ${DIST_PATH}/${APP_TAR_NAME} -C ${DEPLOY_PATH}/../
+tar -xzvf ${DIST_PATH}/${APP_TAR_NAME} -C ${DEPLOY_PATH}/../ >/dev/null 2>&1
 
 #startup
 /bin/bash +x "${DEPLOY_PATH}/bin/startup.sh" "$@"

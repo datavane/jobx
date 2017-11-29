@@ -187,7 +187,7 @@ fi
 [ -d "${DEPLOY_PATH}" ] && rm -rf ${DEPLOY_PATH}/* || mkdir -p ${DEPLOY_PATH}
 
 #将target下的war包解到dist下
-cp ${DIST_PATH}/${APP_WAR_NAME} ${DEPLOY_PATH} && cd ${DEPLOY_PATH} && jar xvf ${APP_WAR_NAME} && rm -rf ${DEPLOY_PATH}/${APP_WAR_NAME}
+cp ${DIST_PATH}/${APP_WAR_NAME} ${DEPLOY_PATH} && cd ${DEPLOY_PATH} && jar xvf ${APP_WAR_NAME} >/dev/null 2>&1 && rm -rf ${DEPLOY_PATH}/${APP_WAR_NAME}
 
 #copy jettyJar
 mkdir ${DEPLOY_PATH}/jetty && cp ${WORKDIR}/${APP_ARTIFACT}/jetty/*.jar ${DEPLOY_PATH}/jetty
