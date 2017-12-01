@@ -13,8 +13,13 @@
 
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>classpath*:opencron.xml</param-value>
+        <param-value>
+            classpath*:app-place.xml,
+            classpath*:app-datasource.xml,
+            classpath*:app-websocket.xml
+        </param-value>
     </context-param>
+
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
@@ -73,9 +78,9 @@
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <init-param>
             <param-name>contextConfigLocation</param-name>
-            <param-value>classpath*:/applicationContext-mvc.xml</param-value>
+            <param-value>classpath*:app-springmvc.xml</param-value>
         </init-param>
-        <load-on-startup>1</load-on-startup>
+        <load-on-startup>2</load-on-startup>
         <async-supported>true</async-supported>
     </servlet>
 
