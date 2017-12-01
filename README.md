@@ -89,11 +89,15 @@ IE10+
 > sh startup.sh
 这里可以接受两个参数，分别是服务启动的端口和密码，默认端口是:1577,默认密码:opencron
 如要指定参数启动命令如下:
-> sh startup.sh -P10001 -p123456
+> sh startup.sh -P10001 -p123456 -shttp://127.0.0.1:8080 -kopencron@2016
 参数说明:
 -P (大写的p)为agent启动的端口，选填，如果不输入默认启动端口是1577
 -p (小写的p)为当前agent的连接密码,选填，如果不输入默认连接该机器的密码是opencron
+以下两个参数为agent自动注册需要的两个参数
+-s 填写opencron-server部署之后的访问地址 
+-k 填写自动发现的密码,对应 opencron-server/src/main/resources/config.properties 里的opencron.autoRegKey
 更多详细的启动信息请查看logs/opencron.out
+
 
 5)停止opencron-agent 进入opencron-agent/bin 执行：
 > cd opencron-agent/bin
