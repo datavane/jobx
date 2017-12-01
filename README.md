@@ -67,41 +67,45 @@ IE10+
 > sh build.sh
 编译完成的文件在build/dist下
 
-3)部署agent，将opencron-agent-${version}.tar.gz包拷贝到要管理任务的目标服务器,解包,会看到以下目录
----bin/
-|  startup.sh          #agent的启动脚本,调用的是opencron.sh来完成
-|  shutdown.sh         #agent停止脚本，调用的是opencron.sh来完成
-|  opencron.sh         #agent控制启动|停止的脚本
-|  monitor.sh          #实时监控获取数据需要的脚本,由系统调度
-|  kill.sh             #kill任务时需要的脚本,由系统调度
----conf/
-| log4j.properties     #log4j配置文件
----lib/
-| *.jar                #agent运行需要的jar文件
----temp/
-| *.sh                 #用于存放项目生成的零时文件的目录
----logs
-| opencron.out         #项目启动会产生的Log文件
+3) 执行运行agent.sh即可 或者手动部署agent
 
-> tar -xzvf opencron-agent-${version}.tar.gz
-3)启动opencron-agent 进入opencron-agent/bin
-> cd opencron-agent/bin
-> sh startup.sh
-这里可以接受四个参数，分别是服务启动的端口和密码(默认端口是:1577,默认密码:opencron)以及agent自动注册的url和密码 
-如要指定参数启动命令如下:
-> sh startup.sh -P10001 -p123456 -shttp://127.0.0.1:8080 -kopencron@2016
-参数说明:
--P (大写的p)为agent启动的端口，选填，如果不输入默认启动端口是1577
--p (小写的p)为当前agent的连接密码,选填，如果不输入默认连接该机器的密码是opencron
-以下两个参数为agent自动注册需要的两个参数（选填）
--s 填写opencron-server部署之后的访问地址 
--k 填写自动发现的密码,对应 opencron-server/src/main/resources/config.properties 里的opencron.autoRegKey
-更多详细的启动信息请查看logs/opencron.out
-
-
-5)停止opencron-agent 进入opencron-agent/bin 执行：
-> cd opencron-agent/bin
-> sh shutdown.sh
+    手动部署agent步骤
+    
+    将opencron-agent-${version}.tar.gz包拷贝到要管理任务的目标服务器,解包,会看到以下目录
+    ---bin/
+    |  startup.sh          #agent的启动脚本,调用的是opencron.sh来完成
+    |  shutdown.sh         #agent停止脚本，调用的是opencron.sh来完成
+    |  opencron.sh         #agent控制启动|停止的脚本
+    |  monitor.sh          #实时监控获取数据需要的脚本,由系统调度
+    |  kill.sh             #kill任务时需要的脚本,由系统调度
+    ---conf/
+    | log4j.properties     #log4j配置文件
+    ---lib/
+    | *.jar                #agent运行需要的jar文件
+    ---temp/
+    | *.sh                 #用于存放项目生成的零时文件的目录
+    ---logs
+    | opencron.out         #项目启动会产生的Log文件
+    
+    > tar -xzvf opencron-agent-${version}.tar.gz
+    3)启动opencron-agent 进入opencron-agent/bin
+    > cd opencron-agent/bin
+    > sh startup.sh
+    这里可以接受四个参数，分别是服务启动的端口和密码(默认端口是:1577,默认密码:opencron)以及agent自动注册的url和密码 
+    如要指定参数启动命令如下:
+    > sh startup.sh -P10001 -p123456 -shttp://127.0.0.1:8080 -kopencron@2016
+    参数说明:
+    -P (大写的p)为agent启动的端口，选填，如果不输入默认启动端口是1577
+    -p (小写的p)为当前agent的连接密码,选填，如果不输入默认连接该机器的密码是opencron
+    以下两个参数为agent自动注册需要的两个参数（选填）
+    -s 填写opencron-server部署之后的访问地址 
+    -k 填写自动发现的密码,对应 opencron-server/src/main/resources/config.properties 里的opencron.autoRegKey
+    更多详细的启动信息请查看logs/opencron.out
+    
+    
+    5)停止opencron-agent 进入opencron-agent/bin 执行：
+    > cd opencron-agent/bin
+    > sh shutdown.sh
 
 ```
   
