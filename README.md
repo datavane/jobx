@@ -36,7 +36,7 @@ opencron的出现将彻底的解决上面所有问题.功能如下:
 Java JDK 1.7 or greater
 http://www.oracle.com/technetwork/java/javase/overview/index.html
 
-Tomcat server 7.0 or greater
+Tomcat server 8.0 or greater
 https://tomcat.apache.org
 
 Browser 
