@@ -59,12 +59,19 @@
             <artifactId>sitemesh</artifactId>
         </dependency>
 
-        <!--和tomcat有冲突.-->
+
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>apache-jsp</artifactId>
             <scope>provided</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-core</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -119,95 +126,167 @@
                         <dependency>
                             <groupId>javax.servlet</groupId>
                             <artifactId>javax.servlet-api</artifactId>
+                            <outputDirectory>${project.build.directory}/../jetty</outputDirectory>
                         </dependency>
 
                         <dependency>
                             <groupId>javax.servlet.jsp</groupId>
                             <artifactId>jsp-api</artifactId>
+                            <outputDirectory>${project.build.directory}/../jetty</outputDirectory>
                         </dependency>
 
                         <dependency>
                             <groupId>org.eclipse.jetty</groupId>
                             <artifactId>jetty-util</artifactId>
+                            <outputDirectory>${project.build.directory}/../jetty</outputDirectory>
                         </dependency>
 
                         <dependency>
                             <groupId>org.eclipse.jetty</groupId>
                             <artifactId>jetty-webapp</artifactId>
+                            <outputDirectory>${project.build.directory}/../jetty</outputDirectory>
                         </dependency>
 
                         <dependency>
                             <groupId>org.eclipse.jetty</groupId>
                             <artifactId>jetty-server</artifactId>
+                            <outputDirectory>${project.build.directory}/../jetty</outputDirectory>
                         </dependency>
 
                         <dependency>
                             <groupId>org.eclipse.jetty.websocket</groupId>
                             <artifactId>websocket-server</artifactId>
+                            <outputDirectory>${project.build.directory}/../jetty</outputDirectory>
                         </dependency>
 
                         <dependency>
                             <groupId>org.eclipse.jetty.websocket</groupId>
                             <artifactId>websocket-servlet</artifactId>
+                            <outputDirectory>${project.build.directory}/../jetty</outputDirectory>
                         </dependency>
 
                         <dependency>
                             <groupId>org.eclipse.jetty.websocket</groupId>
                             <artifactId>websocket-common</artifactId>
+                            <outputDirectory>${project.build.directory}/../jetty</outputDirectory>
                         </dependency>
 
                         <dependency>
                             <groupId>org.eclipse.jetty.websocket</groupId>
                             <artifactId>websocket-api</artifactId>
+                            <outputDirectory>${project.build.directory}/../jetty</outputDirectory>
                         </dependency>
 
                         <dependency>
                             <groupId>org.eclipse.jetty</groupId>
                             <artifactId>jetty-servlet</artifactId>
+                            <outputDirectory>${project.build.directory}/../jetty</outputDirectory>
                         </dependency>
 
                         <dependency>
                             <groupId>org.eclipse.jetty</groupId>
                             <artifactId>apache-jsp</artifactId>
+                            <outputDirectory>${project.build.directory}/../jetty</outputDirectory>
                         </dependency>
 
                         <dependency>
                             <groupId>org.mortbay.jasper</groupId>
                             <artifactId>apache-jsp</artifactId>
+                            <outputDirectory>${project.build.directory}/../jetty</outputDirectory>
                         </dependency>
 
                         <dependency>
                             <groupId>org.mortbay.jasper</groupId>
                             <artifactId>apache-el</artifactId>
+                            <outputDirectory>${project.build.directory}/../jetty</outputDirectory>
                         </dependency>
 
                         <dependency>
                             <groupId>org.eclipse.jetty</groupId>
                             <artifactId>jetty-http</artifactId>
+                            <outputDirectory>${project.build.directory}/../jetty</outputDirectory>
                         </dependency>
 
                         <dependency>
                             <groupId>org.eclipse.jetty</groupId>
                             <artifactId>jetty-io</artifactId>
+                            <outputDirectory>${project.build.directory}/../jetty</outputDirectory>
                         </dependency>
 
                         <dependency>
                             <groupId>org.eclipse.jetty</groupId>
                             <artifactId>jetty-xml</artifactId>
+                            <outputDirectory>${project.build.directory}/../jetty</outputDirectory>
                         </dependency>
 
                         <dependency>
                             <groupId>org.eclipse.jetty</groupId>
                             <artifactId>jetty-security</artifactId>
+                            <outputDirectory>${project.build.directory}/../jetty</outputDirectory>
                         </dependency>
 
                         <dependency>
                             <groupId>org.eclipse.jdt.core.compiler</groupId>
                             <artifactId>ecj</artifactId>
+                            <outputDirectory>${project.build.directory}/../jetty</outputDirectory>
+                        </dependency>
+
+                        <dependency>
+                            <groupId>javax.servlet</groupId>
+                            <artifactId>javax.servlet-api</artifactId>
+                            <outputDirectory>${project.build.directory}/../tomcat</outputDirectory>
+                        </dependency>
+
+                        <dependency>
+                            <groupId>javax.servlet.jsp</groupId>
+                            <artifactId>jsp-api</artifactId>
+                            <outputDirectory>${project.build.directory}/../tomcat</outputDirectory>
+                        </dependency>
+
+                        <dependency>
+                            <groupId>org.apache.tomcat.embed</groupId>
+                            <artifactId>tomcat-embed-core</artifactId>
+                            <outputDirectory>${project.build.directory}/../tomcat</outputDirectory>
+                        </dependency>
+
+                        <dependency>
+                            <groupId>org.apache.tomcat.embed</groupId>
+                            <artifactId>tomcat-embed-el</artifactId>
+                            <outputDirectory>${project.build.directory}/../tomcat</outputDirectory>
+                        </dependency>
+
+                        <dependency>
+                            <groupId>org.apache.tomcat.embed</groupId>
+                            <artifactId>tomcat-embed-jasper</artifactId>
+                            <outputDirectory>${project.build.directory}/../tomcat</outputDirectory>
+                        </dependency>
+
+                        <dependency>
+                            <groupId>org.eclipse.jdt.core.compiler</groupId>
+                            <artifactId>ecj</artifactId>
+                            <outputDirectory>${project.build.directory}/../tomcat</outputDirectory>
+                        </dependency>
+
+                        <dependency>
+                            <groupId>org.apache.tomcat.embed</groupId>
+                            <artifactId>tomcat-embed-websocket</artifactId>
+                            <outputDirectory>${project.build.directory}/../tomcat</outputDirectory>
+                        </dependency>
+
+                        <dependency>
+                            <groupId>org.apache.tomcat.embed</groupId>
+                            <artifactId>tomcat-embed-logging-juli</artifactId>
+                            <outputDirectory>${project.build.directory}/../tomcat</outputDirectory>
+                        </dependency>
+
+                        <dependency>
+                            <groupId>org.apache.tomcat.embed</groupId>
+                            <artifactId>tomcat-embed-logging-log4j</artifactId>
+                            <outputDirectory>${project.build.directory}/../tomcat</outputDirectory>
                         </dependency>
 
                     </artifactItems>
-                    <outputDirectory>${project.build.directory}/../jetty</outputDirectory>
+
                 </configuration>
             </plugin>
 
