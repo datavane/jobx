@@ -192,6 +192,8 @@ cp ${DIST_PATH}/${APP_WAR_NAME} ${DEPLOY_PATH} && cd ${DEPLOY_PATH} && jar xvf $
 #copy jettyJar
 mkdir ${DEPLOY_PATH}/jetty && cp ${WORKDIR}/${APP_ARTIFACT}/jetty/*.jar ${DEPLOY_PATH}/jetty
 
+mkdir ${DEPLOY_PATH}/tomcat && cp ${WORKDIR}/${APP_ARTIFACT}/tomcat/*.jar ${DEPLOY_PATH}/tomcat
+
 #copy startup.sh
 cp  ${STARTUP_SHELL} ${DEPLOY_PATH}
 
