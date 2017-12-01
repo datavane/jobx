@@ -32,23 +32,6 @@ echo_w () {
     echo -e "[${GREEN_COLOR}opencron${RES}] ${WHITE_COLOR}$1${RES}"
 }
 
-echo -ne "${GREEN_COLOR}"
-cat<<EOT
-
-      --------------------------------------------
-    /                                              \\
-   /   ___  _ __   ___ _ __   ___ _ __ ___  _ __    \\
-  /   / _ \| '_ \ / _ \ '_ \ / __| '__/ _ \| '_ \\    \\
- /   | (_) | |_) |  __/ | | | (__| | | (_) | | | |    \\
- \\    \___/| .__/ \___|_| |_|\___|_|  \___/|_| |_|    /
-  \\        |_|                                       /
-   \\                                                /
-    \\       --opencron,Let's crontab easy!         /
-      --------------------------------------------
-
-EOT
-echo -ne "${RES}";
-
 # OS specific support.  $var _must_ be set to either true or false.
 cygwin=false
 darwin=false
