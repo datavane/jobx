@@ -67,8 +67,10 @@ IE10+
 > sh build.sh
 编译完成的文件在build/dist下
 
-3) 执行运行agent.sh即可 或者手动部署agent
+3) 部署agent
 
+  执行运行agent.sh即可 或者手动部署agent
+  
     手动部署agent步骤
     
     将opencron-agent-${version}.tar.gz包拷贝到要管理任务的目标服务器,解包,会看到以下目录
