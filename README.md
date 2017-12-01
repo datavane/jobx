@@ -67,7 +67,7 @@ IE10+
 > sh build.sh
 编译完成的文件在build/dist下
 
-3) 部署agent
+4) 部署agent
 
   执行运行agent.sh即可 或者手动部署agent
   
@@ -90,7 +90,7 @@ IE10+
     | opencron.out         #项目启动会产生的Log文件
     
     > tar -xzvf opencron-agent-${version}.tar.gz
-    3)启动opencron-agent 进入opencron-agent/bin
+    1)启动opencron-agent 进入opencron-agent/bin
     > cd opencron-agent/bin
     > sh startup.sh
     这里可以接受四个参数，分别是服务启动的端口和密码(默认端口是:1577,默认密码:opencron)以及agent自动注册的url和密码 
@@ -105,7 +105,7 @@ IE10+
     更多详细的启动信息请查看logs/opencron.out
     
     
-    5)停止opencron-agent 进入opencron-agent/bin 执行：
+    2)停止opencron-agent 进入opencron-agent/bin 执行：
     > cd opencron-agent/bin
     > sh shutdown.sh
 
