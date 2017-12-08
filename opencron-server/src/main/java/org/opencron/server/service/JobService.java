@@ -390,6 +390,11 @@ public class JobService {
             return false;
         }
 
+        //必须是自动执行.
+        if ( !job.getExecType().equals(ExecType.AUTO.getStatus()) ) {
+            return false;
+        }
+
         CronType cronType = CronType.getByType(job.getCronType());
 
         switch (cronType) {

@@ -801,22 +801,25 @@
                                 </a>
                             </c:if>&nbsp;
 
-                            <c:choose>
-                                <c:when test="${r.pause eq null or r.pause eq false}">
+                            <c:if test="${r.execType eq 0}">
+                                <c:choose>
+                                    <c:when test="${r.pause eq null or r.pause eq false}">
                                         <span>
                                         <a id="pause_${r.jobId}" href="#" title="暂停" onclick="pauseJob('${r.jobId}',true)">
                                            <i aria-hidden="true" class="fa fa-pause-circle-o"></i>
                                         </a>
                                         </span>
-                                </c:when>
-                                <c:otherwise>
+                                    </c:when>
+                                    <c:otherwise>
                                        <span>
                                         <a id="pause_${r.jobId}" href="#" title="恢复" onclick="pauseJob('${r.jobId}',false)">
                                            <i aria-hidden="true" class="fa fa-history"></i>
                                         </a>
                                         </span>
-                                </c:otherwise>
-                            </c:choose>&nbsp;
+                                    </c:otherwise>
+                                </c:choose>
+                            </c:if>
+                            &nbsp;
 
                             <span id="execButton_${r.jobId}">
                                     <a href="#" title="执行" onclick="executeJob('${r.jobId}')">
