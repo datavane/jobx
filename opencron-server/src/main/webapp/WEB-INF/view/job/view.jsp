@@ -722,17 +722,22 @@
             <c:forEach var="r" items="${pageBean.result}" varStatus="index">
                 <tr class="trGroup${r.flowId}">
                     <c:if test="${r.jobType eq 0}">
-                        <td id="jobName_${r.jobId}">${cron:substr(r.jobName, 0,20 ,"..." )}</td>
+                        <td id="jobName_${r.jobId}" title="${r.jobName}">${cron:substr(r.jobName, 0,20 ,"..." )}</td>
                     </c:if>
                     <c:if test="${r.jobType eq 1}">
-                        <td class="name_${r.flowId}_1">${cron:substr(r.jobName, 0,20 ,"..." )}</td>
-                        <td style="display: none;" class="name_${r.flowId}_2" rowspan="${fn:length(r.children)+1}">
-                                ${cron:substr(r.jobName, 0,20 ,"..." )}
+                        <td class="name_${r.flowId}_1" title="${r.jobName}">${cron:substr(r.jobName, 0,20 ,"..." )}</td>
+                        <td style="display: none;"
+                            class="name_${r.flowId}_2"
+                            rowspan="${fn:length(r.children)+1}"
+                            title="${r.jobName}">${cron:substr(r.jobName, 0,20 ,"..." )}
+
                             <c:forEach var="c" items="${r.children}" varStatus="index">
                                 <div class="down">
-                                    <i aria-hidden="true" style="font-size:14px" class="fa fa-arrow-down"></i></div>
-                                ${cron:substr(r.jobName, 0,20 ,"..." )}
+                                    <i aria-hidden="true" style="font-size:14px" class="fa fa-arrow-down"></i>
+                                </div>
+                                <span title="${c.jobName}">${cron:substr(c.jobName, 0,20 ,"..." )}</span>
                             </c:forEach>
+
                         </td>
                     </c:if>
                     <td><a href="${contextPath}/agent/detail/${r.agentId}.htm?csrf=${csrf}">${r.agentName}</a></td>
