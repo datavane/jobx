@@ -818,8 +818,8 @@
                                         </span>
                                     </c:otherwise>
                                 </c:choose>
+                                &nbsp;
                             </c:if>
-                            &nbsp;
 
                             <span id="execButton_${r.jobId}">
                                     <a href="#" title="执行" onclick="executeJob('${r.jobId}')">
