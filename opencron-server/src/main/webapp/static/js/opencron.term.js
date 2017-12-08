@@ -118,7 +118,7 @@
                 cache:false,
                 data:{
                     "token":self.args[0],
-                    "cmd":encodeURIComponent(encodeURIComponent(sendInput)),
+                    "cmd":encodeURIComponent(sendInput),
                     "jsid":new Date()
                 }
             });
