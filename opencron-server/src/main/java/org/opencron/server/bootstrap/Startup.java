@@ -3,6 +3,8 @@ package org.opencron.server.bootstrap;
 import org.opencron.common.utils.ExtClasspathLoader;
 import org.opencron.common.utils.MavenUtils;
 
+import java.io.File;
+
 public class Startup {
 
     private static final int MIN_PORT = 0;
@@ -12,6 +14,8 @@ public class Startup {
     private static int startPort = 8080;
 
     private static boolean devMode = true;
+
+    private static final String workspace = "work";
 
     public static void main(String[] args) throws Exception {
 
@@ -39,12 +43,12 @@ public class Startup {
 
         String jarPath;
         if (devMode) {
-            String artifact =  MavenUtils.get(Thread.currentThread().getContextClassLoader()).getArtifactId();
-            jarPath = "./".concat(artifact).concat("/").concat(launcher);
-            System.setProperty("catalina.home","./".concat(artifact));
-        }else {
-            jarPath = "./".concat(launcher);
-            System.setProperty("catalina.home","./");
+            String artifact = MavenUtils.get(Thread.currentThread().getContextClassLoader()).getArtifactId();
+            jarPath = artifact + File.separator + workspace + File.separator + launcher;
+            System.setProperty("catalina.home", artifact + File.separator + workspace);
+        } else {
+            jarPath = workspace + File.separator + launcher;
+            System.setProperty("catalina.home", workspace);
         }
         //load jars.
         ExtClasspathLoader.scanJar(jarPath);

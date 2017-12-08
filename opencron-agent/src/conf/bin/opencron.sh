@@ -39,7 +39,7 @@
 #                   used
 # -----------------------------------------------------------------------------
 
-# opencron logo...
+#echo color
 GREEN_COLOR="\E[1;32m";
 RES="\E[0m";
 
@@ -127,10 +127,6 @@ case $OPENCRON_BASE in
 esac
 
 
-
-
-
-
 # For OS400
 if $os400; then
   # Set job priority to standard for interactive (interactive - 6) by using
@@ -160,6 +156,20 @@ else
   fi
 fi
 
+#check java exists.
+$RUNJAVA >/dev/null 2>&1
+
+if [ $? -ne 1 ];then
+  echo_r "ERROR: java is not install,please install java first!"
+  exit 1;
+fi
+
+#check openjdk
+if [ "`${RUNJAVA} -version 2>&1 | head -1|grep "openjdk"|wc -l`"x == "1"x ]; then
+  echo_r "ERROR: please uninstall OpenJDK and install jdk first"
+  exit 1;
+fi
+
 
 if [ -z "$OPENCRON_OUT" ] ; then
   OPENCRON_OUT="$OPENCRON_BASE"/logs/opencron.out
@@ -177,7 +187,7 @@ OPENCRON_PIDDIR="/var/run";
 OPENCRON_PID="$OPENCRON_PIDDIR/opencron.pid";
 
 #opencron version
-OPENCRON_VERSION="1.1.0-RELEASE"
+OPENCRON_VERSION="1.2.0-RELEASE"
 
 # Add bootstrap.jar to classpath
 if [ ! -z "$CLASSPATH" ] ; then

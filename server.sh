@@ -112,6 +112,12 @@ if [ $? -ne 1 ];then
   exit 1;
 fi
 
+#check openjdk
+if [ "`${RUNJAVA} -version 2>&1 | head -1|grep "openjdk"|wc -l`"x == "1"x ]; then
+  echo_r "ERROR: please uninstall OpenJDK and install jdk first"
+  exit 1;
+fi
+
 # OS specific support.  $var _must_ be set to either true or false.
 cygwin=false
 darwin=false
@@ -169,13 +175,11 @@ fi
 
 [ -d "${DEPLOY_PATH}" ] && rm -rf ${DEPLOY_PATH}/* || mkdir -p ${DEPLOY_PATH}
 
-#将target下的war包解到dist下
+# unpackage war to dist
 cp ${DIST_PATH}/${APP_WAR_NAME} ${DEPLOY_PATH} && cd ${DEPLOY_PATH} && jar xvf ${APP_WAR_NAME} >/dev/null 2>&1 && rm -rf ${DEPLOY_PATH}/${APP_WAR_NAME}
 
-#copy jettyJar
-mkdir ${DEPLOY_PATH}/jetty && cp ${WORKDIR}/${APP_ARTIFACT}/jetty/*.jar ${DEPLOY_PATH}/jetty
-
-mkdir ${DEPLOY_PATH}/tomcat && cp ${WORKDIR}/${APP_ARTIFACT}/tomcat/*.jar ${DEPLOY_PATH}/tomcat
+#copy jars...
+cp -r ${WORKDIR}/${APP_ARTIFACT}/work ${DEPLOY_PATH}
 
 #copy startup.sh
 cp  ${STARTUP_SHELL} ${DEPLOY_PATH}
