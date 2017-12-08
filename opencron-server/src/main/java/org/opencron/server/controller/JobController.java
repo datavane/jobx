@@ -330,6 +330,12 @@ public class JobController extends BaseController {
         return true;
     }
 
+    @RequestMapping(value = "pause.do", method = RequestMethod.POST)
+    @ResponseBody
+    public boolean pause(Job jobBean) {
+        return jobService.pauseJob(jobBean);
+    }
+
     @RequestMapping("detail/{id}.htm")
     public String showDetail(HttpSession session, Model model,@PathVariable("id") Long id) {
         JobVo jobVo = jobService.getJobVoById(id);

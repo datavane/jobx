@@ -128,38 +128,37 @@ b{color: red;}
     text-overflow: ellipsis;
 }
 
-@media (max-width: 1640px) {
+@media (max-width: 1900px) {
     .opencron_command{
-        width: 35em;
+        width: 60em;
     }
 }
 
-@media (max-width: 1440px) {
+@media (max-width: 1800px) {
     .opencron_command{
-        width: 30em;
+        width: 50em;
     }
 }
 
-@media (max-width: 1420px) {
+@media (max-width: 1700px) {
     .opencron_command{
-        width: 28em;
+        width: 42em;
     }
 }
 
-
-@media (max-width: 1400px) {
+@media (max-width: 1600px) {
     .opencron_command{
-        width: 23em;
+        width: 32em;
+    }
+}
+
+@media (max-width: 1500px) {
+    .opencron_command{
+        width: 25em;
     }
 }
 
 @media (max-width: 1380px) {
-    .opencron_command{
-        width: 22em;
-    }
-}
-
-@media (max-width: 1366px) {
     .opencron_command{
         width: 21em;
     }
@@ -167,7 +166,14 @@ b{color: red;}
 
 @media (max-width: 1280px) {
     .opencron_command{
-        width: 20em;
+        width: 18em;
+    }
+}
+
+
+@media (max-width: 1136px) {
+    .opencron_command{
+        width: 15em;
     }
 }
 

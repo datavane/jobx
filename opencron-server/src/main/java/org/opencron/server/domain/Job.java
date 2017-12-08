@@ -75,6 +75,8 @@ public class Job implements Serializable {
 
     private Boolean deleted;//是否删除
 
+    private Boolean pause;//任务是否暂停(true:已经暂停,false:未暂停)
+
     //运行超时的截止时间
     private Integer timeout;
 
@@ -261,6 +263,14 @@ public class Job implements Serializable {
 
     public void setDeleted(Boolean deleted) {
         this.deleted = deleted;
+    }
+
+    public Boolean getPause() {
+        return pause;
+    }
+
+    public void setPause(Boolean pause) {
+        this.pause = pause;
     }
 
     public Integer getTimeout() {

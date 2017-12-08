@@ -15,6 +15,23 @@ function alertMsg(msg){
     });
 }
 
+function ajax(params,callback) {
+    $.ajax({
+        headers: params.headers,
+        type:  params.type||"GET",
+        url:params.url,
+        data:params.data,
+        success:function (data) {
+            if (callback) {
+                callback(data);
+            }
+        },
+        error: function () {
+            alert("网络繁忙请刷新页面重试!");
+        }
+    });
+}
+
 function goback() {
     swal({
         title: "",

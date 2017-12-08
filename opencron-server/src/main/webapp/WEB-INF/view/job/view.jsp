@@ -15,114 +15,118 @@
 
     <script type="text/javascript">
 
-        function showCronExp() {
-            $(".cronExpDiv").show()
-        }
-        function hideCronExp() {
-            $(".cronExpDiv").hide()
-        }
-        function showCountDiv() {
-            $(".countDiv").show()
-        }
-        function hideCountDiv() {
-            $(".countDiv").hide()
-        }
-        function showContact() {
-            $(".contact").show()
-        }
-        function hideContact() {
-            $(".contact").hide()
-        }
+        var toggle = {
+            cronexp:{
+                show:function () {
+                    $(".cronExpDiv").show();
+                },
+                hide:function () {
+                    $(".cronExpDiv").hide()
+                }
+            },
+            count:{
+                show:function () {
+                    $(".countDiv").show();
+                },
+                hide:function () {
+                    $(".countDiv").hide();
+                }
+            },
+            contact:{
+                show:function () {
+                    $(".contact").show()
+                },
+                hide:function () {
+                    $(".contact").hide()
+                }
+            }
+        };
 
         function editSingle(id) {
-            $.ajax({
+            ajax({
                 headers: {"csrf": "${csrf}"},
                 type: "POST",
                 url: "${contextPath}/job/editsingle.do",
-                data: {"id": id},
-                success: function (obj) {
-                    $("#jobform")[0].reset();
-                    if (obj != null) {
-                        $("#checkJobName").html("");
-                        $("#checkcronExp").html("");
-                        $("#id").val(obj.jobId);
-                        $("#magentId").val(obj.agentId);
-                        $("#jobName").val(unEscapeHtml(obj.jobName));
-                        $("#agent").val(obj.agentName + "   " + obj.ip);
-                        $("#cronExp").val(obj.cronExp);
-                        $("#cmd").val(obj.command);
-                        if (obj.execType == 1) {
-                            $("#execType1").prop("checked", true);
-                            $("#execType1").parent().removeClass("checked").addClass("checked");
-                            $("#execType1").parent().attr("aria-checked", true);
-                            $("#execType0").parent().removeClass("checked");
-                            $("#execType0").parent().attr("aria-checked", false);
-                            hideCronExp();
-                        } else {
-                            $("#execType0").prop("checked", true);
-                            $("#execType0").parent().removeClass("checked").addClass("checked");
-                            $("#execType0").parent().attr("aria-checked", true);
-                            $("#execType1").parent().removeClass("checked");
-                            $("#execType1").parent().attr("aria-checked", false);
-                            showCronExp();
-                        }
-                        if (obj.cronType == 1) {
-                            $("#cronType1").prop("checked", true);
-                            $("#cronType1").parent().removeClass("checked").addClass("checked");
-                            $("#cronType1").parent().attr("aria-checked", true);
-                            $("#cronType0").parent().removeClass("checked");
-                            $("#cronType0").parent().attr("aria-checked", false);
-                        } else {
-                            $("#cronType0").prop("checked", true);
-                            $("#cronType0").parent().removeClass("checked").addClass("checked");
-                            $("#cronType0").parent().attr("aria-checked", true);
-                            $("#cronType1").parent().removeClass("checked");
-                            $("#cronType1").parent().attr("aria-checked", false);
-                        }
-                        if (obj.redo == 1) {
-                            $("#redo1").prop("checked", true);
-                            $("#redo1").parent().removeClass("checked").addClass("checked");
-                            $("#redo1").parent().attr("aria-checked", true);
-                            $("#redo0").parent().removeClass("checked");
-                            $("#redo0").parent().attr("aria-checked", false);
-                            showCountDiv();
-                        } else {
-                            $("#redo0").prop("checked", true);
-                            $("#redo0").parent().removeClass("checked").addClass("checked");
-                            $("#redo0").parent().attr("aria-checked", true);
-                            $("#redo1").parent().removeClass("checked");
-                            $("#redo1").parent().attr("aria-checked", false);
-                            hideCountDiv();
-                        }
-                        $("#runCount").val(obj.runCount);
-                        if (obj.warning == true) {
-                            showContact();
-                            $("#warning1").prop("checked", true);
-                            $("#warning1").parent().removeClass("checked").addClass("checked");
-                            $("#warning1").parent().attr("aria-checked", true);
-                            $("#warning1").parent().prop("onclick", "showContact()");
-                            $("#warning0").parent().removeClass("checked");
-                            $("#warning0").parent().attr("aria-checked", false);
-                        } else {
-                            hideContact();
-                            $("#warning0").prop("checked", true);
-                            $("#warning0").parent().removeClass("checked").addClass("checked");
-                            $("#warning0").parent().attr("aria-checked", true);
-                            $("#warning1").parent().removeClass("checked");
-                            $("#warning1").parent().attr("aria-checked", false);
-                        }
-                        $("#mobiles").val(obj.mobiles);
-                        $("#email").val(obj.emailAddress);
-                        $("#comment").val(unEscapeHtml(obj.comment));
-                        $("#runAs").val(obj.runAs);
-                        $("#successExit").val(obj.successExit);
-                        $("#timeout").val(obj.timeout);
-                        $('#jobModal').modal('show');
-                        return;
+                data: {"id": id}
+            },function (obj) {
+                $("#jobform")[0].reset();
+                if (obj != null) {
+                    $("#checkJobName").html("");
+                    $("#checkcronExp").html("");
+                    $("#id").val(obj.jobId);
+                    $("#magentId").val(obj.agentId);
+                    $("#jobName").val(unEscapeHtml(obj.jobName));
+                    $("#agent").val(obj.agentName + "   " + obj.host);
+                    $("#cronExp").val(obj.cronExp);
+                    $("#cmd").val(obj.command);
+                    if (obj.execType == 1) {
+                        toggle.cronexp.hide();
+                        $("#execType1").prop("checked", true);
+                        $("#execType1").parent().removeClass("checked").addClass("checked");
+                        $("#execType1").parent().attr("aria-checked", true);
+                        $("#execType0").parent().removeClass("checked");
+                        $("#execType0").parent().attr("aria-checked", false);
+                    } else {
+                        toggle.cronexp.show();
+                        $("#execType0").prop("checked", true);
+                        $("#execType0").parent().removeClass("checked").addClass("checked");
+                        $("#execType0").parent().attr("aria-checked", true);
+                        $("#execType1").parent().removeClass("checked");
+                        $("#execType1").parent().attr("aria-checked", false);
                     }
-                },
-                error: function () {
-                    alert("网络繁忙请刷新页面重试!");
+                    if (obj.cronType == 1) {
+                        $("#cronType1").prop("checked", true);
+                        $("#cronType1").parent().removeClass("checked").addClass("checked");
+                        $("#cronType1").parent().attr("aria-checked", true);
+                        $("#cronType0").parent().removeClass("checked");
+                        $("#cronType0").parent().attr("aria-checked", false);
+                    } else {
+                        $("#cronType0").prop("checked", true);
+                        $("#cronType0").parent().removeClass("checked").addClass("checked");
+                        $("#cronType0").parent().attr("aria-checked", true);
+                        $("#cronType1").parent().removeClass("checked");
+                        $("#cronType1").parent().attr("aria-checked", false);
+                    }
+                    if (obj.redo == 1) {
+                        toggle.count.show();
+                        $("#redo1").prop("checked", true);
+                        $("#redo1").parent().removeClass("checked").addClass("checked");
+                        $("#redo1").parent().attr("aria-checked", true);
+                        $("#redo0").parent().removeClass("checked");
+                        $("#redo0").parent().attr("aria-checked", false);
+                    } else {
+                        toggle.count.hide();
+                        $("#redo0").prop("checked", true);
+                        $("#redo0").parent().removeClass("checked").addClass("checked");
+                        $("#redo0").parent().attr("aria-checked", true);
+                        $("#redo1").parent().removeClass("checked");
+                        $("#redo1").parent().attr("aria-checked", false);
+                    }
+                    $("#runCount").val(obj.runCount);
+                    if (obj.warning == true) {
+                        toggle.contact.show();
+                        $("#warning1").prop("checked", true);
+                        $("#warning1").parent().removeClass("checked").addClass("checked");
+                        $("#warning1").parent().attr("aria-checked", true);
+                        $("#warning1").parent().bind("click",toggle.contact.show);
+                        $("#warning0").parent().removeClass("checked");
+                        $("#warning0").parent().attr("aria-checked", false);
+                    } else {
+                        toggle.contact.hide();
+                        $("#warning0").prop("checked", true);
+                        $("#warning0").parent().removeClass("checked").addClass("checked");
+                        $("#warning0").parent().attr("aria-checked", true);
+                        $("#warning1").parent().removeClass("checked");
+                        $("#warning1").parent().attr("aria-checked", false);
+                    }
+                    $("#mobiles").val(obj.mobiles);
+                    $("#email").val(obj.emailAddress);
+                    $("#comment").val(unEscapeHtml(obj.comment));
+                    $("#runAs").val(obj.runAs);
+                    $("#successExit").val(obj.successExit);
+                    $("#timeout").val(obj.timeout);
+                    $('#jobModal').modal('show');
+                    return;
                 }
             });
         }
@@ -253,24 +257,19 @@
             if (execType == 1) {
                 doSave(jobObj);
             } else {//需要验证时间规则...
-                $.ajax({
+                ajax({
                     headers: {"csrf": "${csrf}"},
                     type: "POST",
                     url: "${contextPath}/verify/exp.do",
                     data: {
                         "cronType": cronType,
                         "cronExp": cronExp
-                    },
-                    success: function (data) {
-                        if (data) {
-                            doSave(jobObj);
-                        } else {
-                            alert("时间规则语法错误!");
-                            return false;
-                        }
-                    },
-                    error: function () {
-                        alert("网络异常，请刷新页面重试!");
+                    }
+                },function (data) {
+                    if (data) {
+                        doSave(jobObj);
+                    } else {
+                        alert("时间规则语法错误!");
                         return false;
                     }
                 });
@@ -279,93 +278,81 @@
         }
 
         function doSave(job) {
-            $.ajax({
+            ajax({
                 headers: {"csrf": "${csrf}"},
                 type: "POST",
                 url: "${contextPath}/job/checkname.do",
                 data: {
                     "id": job.jobId,
                     "name": job.jobName
-                },
-                success: function (data) {
+                }
+            },function (result) {
+                if (result) {
+                    ajax({
+                        headers: {"csrf": "${csrf}"},
+                        type: "POST",
+                        url: "${contextPath}/job/edit.do",
+                        data: {
+                            "jobId": job.jobId,
+                            "cronType": job.cronType,
+                            "cronExp": job.cronExp,
+                            "agentId": job.agentId,
+                            "command": job.command,
+                            "runAs": job.runAs,
+                            "successExit": job.successExit,
+                            "execType": job.execType,
+                            "jobName": job.jobName,
+                            "redo": job.redo,
+                            "runCount": job.runCount,
+                            "warning": job.warning,
+                            "mobiles": job.mobiles,
+                            "emailAddress": job.emailAddress,
+                            "comment": job.comment,
+                            "timeout": job.timeout
+                        }
+                    },function (data) {
+                        if (data) {
+                            $('#jobModal').modal('hide');
+                            alertMsg("修改成功");
 
-                    if (data) {
-                        $.ajax({
-                            headers: {"csrf": "${csrf}"},
-                            type: "POST",
-                            url: "${contextPath}/job/edit.do",
-                            data: {
-                                "jobId": job.jobId,
-                                "cronType": job.cronType,
-                                "cronExp": job.cronExp,
-                                "agentId": job.agentId,
-                                "command": job.command,
-                                "runAs": job.runAs,
-                                "successExit": job.successExit,
-                                "execType": job.execType,
-                                "jobName": job.jobName,
-                                "redo": job.redo,
-                                "runCount": job.runCount,
-                                "warning": job.warning,
-                                "mobiles": job.mobiles,
-                                "emailAddress": job.emailAddress,
-                                "comment": job.comment,
-                                "timeout": job.timeout
-                            },
-                            success: function (data) {
-                                if (data) {
-                                    $('#jobModal').modal('hide');
-                                    alertMsg("修改成功");
+                            $("#jobName_" + job.jobId).html(escapeHtml(job.jobName));
+                            $("#command_" + job.jobId).html(escapeHtml(passBase64(job.command)));
 
-                                    $("#jobName_" + job.jobId).html(escapeHtml(job.jobName));
-                                    $("#command_" + job.jobId).html(escapeHtml(passBase64(job.command)));
-
-                                    if (job.execType == "0") {
-                                        $("#execType_" + job.jobId).html('<center><font color="green">自动</font></center>');
-                                        $("#cronType_" + job.jobId).html(job.cronType == "0" ? '<center><img width="70px" src="${contextPath}/static/img/crontab_ico.png"></center>' : '<center><img width="70px" src="${contextPath}/static/img/quartz_ico.png"></center>');
-                                        $("#cronExp_" + job.jobId).html(escapeHtml(job.cronExp));
-                                    } else {
-                                        $("#execType_" + job.jobId).html('<center><font color="red">手动</font></center>');
-                                        $("#cronType_" + job.jobId).html('<center><div class="none">--</div></center>');
-                                        $("#cronExp_" + job.jobId).html('<center><div class="none">--</div></center>');
-                                    }
-
-                                    if (job.redo == "0") {
-                                        $("#redo_" + job.jobId).html('<font color="green">否</font>');
-                                    } else {
-                                        $("#redo_" + job.jobId).html('<font color="red">是</font>');
-                                    }
-                                    $("#runCount_" + job.jobId).html(job.runCount);
-                                    return false;
-                                } else {
-                                    alert("修改失败");
-                                }
-                            },
-                            error: function () {
-                                alert("网络繁忙请刷新页面重试!");
-                                return false;
+                            if (job.execType == "0") {
+                                $("#execType_" + job.jobId).html('<span class="text-center" color="green">自动</span>');
+                                $("#cronType_" + job.jobId).html(job.cronType == "0" ? '<img class="text-center" width="70px" src="${contextPath}/static/img/crontab_ico.png">' : '<img  class="text-center" width="70px" src="${contextPath}/static/img/quartz_ico.png">');
+                                $("#cronExp_" + job.jobId).html(escapeHtml(job.cronExp));
+                            } else {
+                                $("#execType_" + job.jobId).html('<span class="text-center" color="red">手动</span>');
+                                $("#cronType_" + job.jobId).html('<div class="none text-center">--</div>');
+                                $("#cronExp_" + job.jobId).html('<div class="none text-center">--</div>');
                             }
-                        });
+
+                            if (job.redo == "0") {
+                                $("#redo_" + job.jobId).html('<span color="green">否</span>');
+                            } else {
+                                $("#redo_" + job.jobId).html('<span color="red">是</span>');
+                            }
+                            $("#runCount_" + job.jobId).html(job.runCount);
+                        } else {
+                            alert("修改失败");
+                        }
                         return false;
-                    } else {
-                        alert("作业名已存在!");
-                        return false;
-                    }
-                },
-                error: function () {
-                    alert("网络繁忙请刷新页面重试!");
+                    });
+                } else {
+                    alert("作业名已存在!");
                     return false;
                 }
             });
         }
 
         $(document).ready(function () {
-            $("#execType0").next().attr("onclick", "showCronExp()");
-            $("#execType1").next().attr("onclick", "hideCronExp()");
-            $("#redo1").next().attr("onclick", "showCountDiv()");
-            $("#redo0").next().attr("onclick", "hideCountDiv()");
-            $("#warning1").next().attr("onclick", "showContact()");
-            $("#warning0").next().attr("onclick", "hideContact()");
+            $("#execType0").next().bind("click",toggle.cronexp.show);
+            $("#execType1").next().bind("click",toggle.cronexp.hide);
+            $("#redo1").next().bind("click",toggle.count.show);
+            $("#redo0").next().bind("click",toggle.count.hide);
+            $("#warning1").next().bind("click",toggle.contact.show);
+            $("#warning0").next().bind("click",toggle.contact.hide);
 
             $("#size").change(function () {
                 doUrl();
@@ -397,27 +384,21 @@
                     opencron.tipError($("#checkJobName"),"请填写作业名称");
                     return false;
                 }
-                $.ajax({
+                ajax({
                     headers: {"csrf": "${csrf}"},
                     type: "POST",
                     url: "${contextPath}/job/checkname.do",
                     data: {
                         "id": $("#id").val(),
                         "name": $("#jobName").val()
-                    },
-                    success: function (data) {
-                        if (data) {
-                            opencron.tipOk($("#checkJobName"),"作业名称可用");
-                            return false;
-                        } else {
-                            opencron.tipError($("#checkJobName"),"作业名称已存在");
-                            return false;
-                        }
-                    },
-                    error: function () {
-                        alert("网络繁忙请刷新页面重试!");
-                        return false;
                     }
+                },function (data) {
+                    if (data) {
+                        opencron.tipOk($("#checkJobName"),"作业名称可用");
+                    } else {
+                        opencron.tipError($("#checkJobName"),"作业名称已存在");
+                    }
+                    return false;
                 });
             });
 
@@ -432,31 +413,25 @@
                     opencron.tipError($("#checkcronExp"),"时间规则不能为空,请填写时间规则");
                     return false;
                 }
-                $.ajax({
+                ajax({
                     headers: {"csrf": "${csrf}"},
                     type: "POST",
                     url: "${contextPath}/verify/exp.do",
                     data: {
                         "cronType": cronType,
                         "cronExp": cronExp
-                    },
-                    success: function (data) {
-                        if (data) {
-                            opencron.tipOk($("#checkcronExp"),"时间规则格式正确");
-                            return;
-                        } else {
-                            opencron.tipOk($("#checkcronExp"),"时间规则格式错误,请填写正确的时间规则");
-                            return;
-                        }
-                    },
-                    error: function () {
-                        alert("网络异常，请刷新页面重试!");
                     }
+                },function (data) {
+                    if (data) {
+                        opencron.tipOk($("#checkcronExp"),"时间规则格式正确");
+                    } else {
+                        opencron.tipOk($("#checkcronExp"),"时间规则格式错误,请填写正确的时间规则");
+                    }
+                    return;
                 });
             });
 
         });
-
 
         function doUrl() {
             var pageSize = $("#size").val();
@@ -468,39 +443,74 @@
             window.location.href = "${contextPath}/job/view.htm?agentId=" + agentId + "&cronType=" + cronType + "&jobType=" + jobType + "&execType=" + execType + "&redo=" + redo + "&pageSize=" + pageSize + "&csrf=${csrf}";
         }
 
+        function pauseJob(id,status) {
+            var msg = status?"暂停":"恢复";
+            swal({
+                title: "",
+                text: "您确定要"+msg+"这个作业吗？",
+                type: "warning",
+                showCancelButton: true,
+                closeOnConfirm: false,
+                confirmButtonText: msg
+            }, function () {
+                ajax({
+                    headers: {"csrf": "${csrf}"},
+                    type: "POST",
+                    url: "${contextPath}/job/pause.do",
+                    data: {
+                        "jobId": id,
+                        "pause":status
+                    }
+                },function (data) {
+                    var pauseElem = $("#pause_"+id);
+                    if(data) {
+                        if (status){
+                            pauseElem.attr("title","恢复");
+                            pauseElem.click(function () {
+                                pauseJob(id,false);
+                            });
+                            pauseElem.find("i").removeClass("fa-pause-circle-o").addClass("fa-history");
+                        }else {
+                            pauseElem.attr("title","暂停");
+                            pauseElem.click(function () {
+                                pauseJob(id,true);
+                            });
+                            pauseElem.find("i").addClass("fa-pause-circle-o").removeClass("fa-history");
+                        }
+                        alertMsg(msg+"成功!");
+                    }
+                })
+            });
+        }
+
         function executeJob(id) {
-            $.ajax({
+            ajax({
                 headers: {"csrf": "${csrf}"},
                 type: "POST",
                 url: "${contextPath}/job/canrun.do",
-                data: {"id": id},
-                success: function (data) {
-                    if (!data) {
-                        swal({
-                            title: "",
-                            text: "您确定要执行这个作业吗？",
-                            type: "warning",
-                            showCancelButton: true,
-                            closeOnConfirm: false,
-                            confirmButtonText: "执行"
-                        }, function () {
-                            $.ajax({
-                                headers: {"csrf": "${csrf}"},
-                                type: "POST",
-                                url: "${contextPath}/job/execute.do",
-                                data: {"id": id}
-                            });
-                            alertMsg("该作业已启动,正在执行中.");
+                data: {"id": id}
+            },function (data) {
+                if (!data) {
+                    swal({
+                        title: "",
+                        text: "您确定要执行这个作业吗？",
+                        type: "warning",
+                        showCancelButton: true,
+                        closeOnConfirm: false,
+                        confirmButtonText: "执行"
+                    }, function () {
+                        ajax({
+                            headers: {"csrf": "${csrf}"},
+                            type: "POST",
+                            url: "${contextPath}/job/execute.do",
+                            data: {"id": id}
                         });
-                    } else {
-                        alert("当前作业已在运行中,不能重复执行!");
-                    }
-                },
-                error: function () {
-                    alert("网络异常，请刷新页面重试!");
+                        alertMsg("该作业已启动,正在执行中.");
+                    });
+                } else {
+                    alert("当前作业已在运行中,不能重复执行!");
                 }
             });
-
         }
 
         function showChild(id, flowId) {
@@ -523,21 +533,17 @@
         }
 
         function editCmd(id) {
-            $.ajax({
+            ajax({
                 headers: {"csrf": "${csrf}"},
                 type: "POST",
                 url: "${contextPath}/job/editsingle.do",
-                data: {"id": id},
-                success: function (obj) {
-                    $("#cmdform")[0].reset();
-                    if (obj != null) {
-                        $("#cmdId").val(obj.jobId);
-                        $("#command").val(obj.command);
-                        $('#cmdModal').modal('show');
-                    }
-                },
-                error: function () {
-                    alert("网络繁忙请刷新页面重试!");
+                data: {"id": id}
+            },function (obj) {
+                $("#cmdform")[0].reset();
+                if (obj != null) {
+                    $("#cmdId").val(obj.jobId);
+                    $("#command").val(obj.command);
+                    $('#cmdModal').modal('show');
                 }
             });
         }
@@ -555,30 +561,25 @@
                 return false;
             }
 
-            $.ajax({
+            ajax({
                 headers: {"csrf": "${csrf}"},
                 type: "POST",
                 url: "${contextPath}/job/editcmd.do",
                 data: {
                     "jobId": jobId,
                     "command": toBase64(command)
-                },
-                success: function (data) {
-                    if (data) {
-                        $('#cmdModal').modal('hide');
-                        alertMsg("修改成功");
-                        $("#command_" + jobId).attr("title", command);
-                        if (command.length > 50) {
-                            command = command.substring(0, 50) + "...";
-                        }
-                        $("#command_" + jobId).html(escapeHtml(command));
-                    } else {
-                        alert("修改失败");
+                }
+            },function (data) {
+                if (data) {
+                    $('#cmdModal').modal('hide');
+                    alertMsg("修改成功");
+                    $("#command_" + jobId).attr("title", command);
+                    if (command.length > 50) {
+                        command = command.substring(0, 50) + "...";
                     }
-                },
-                error: function () {
-                    alert("网络繁忙请刷新页面重试!");
-                    return false;
+                    $("#command_" + jobId).html(escapeHtml(command));
+                } else {
+                    alert("修改失败");
                 }
             });
         }
@@ -592,37 +593,32 @@
                 closeOnConfirm: false,
                 confirmButtonText: "删除"
             }, function () {
-                $.ajax({
+                ajax({
                     headers: {"csrf": "${csrf}"},
                     type: "POST",
                     url: "${contextPath}/job/checkdel.do",
-                    data: {"id": id},
-                    success: function (data) {
-                        if (data == "error") {
-                            alert("该作业不存在,删除失败!")
-                        } else if (data == "false") {
-                            alert("该作业正在运行中,删除失败!")
-                        } else {
-                            $.ajax({
-                                headers: {"csrf": "${csrf}"},
-                                type: "POST",
-                                url: "${contextPath}/job/delete.do",
-                                data: {"id": id},
-                                success: function (data) {
-                                    if (data) {
-                                        alertMsg("删除作业成功");
-                                        location.reload();
-                                    } else {
-                                        alertMsg("删除作业失败");
-                                    }
-                                },
-                                error: function () {
-                                    alert("删除作业失败!")
-                                }
-                            });
-                        }
+                    data: {"id": id}
+                },function (data) {
+                    if (data == "error") {
+                        alert("该作业不存在,删除失败!")
+                    } else if (data == "false") {
+                        alert("该作业正在运行中,删除失败!")
+                    } else {
+                        ajax({
+                            headers: {"csrf": "${csrf}"},
+                            type: "POST",
+                            url: "${contextPath}/job/delete.do",
+                            data: {"id": id}
+                        },function (data) {
+                            if (data) {
+                                alertMsg("删除作业成功");
+                                location.reload();
+                            } else {
+                                alertMsg("删除作业失败");
+                            }
+                        });
                     }
-                });
+                })
             });
         }
     </script>
@@ -712,15 +708,12 @@
                 <th>执行器</th>
                 <th>作业人</th>
                 <th>执行命令</th>
-                <th><center>作业类型</center></th>
-                <th><center>运行模式</center></th>
-                <th><center>规则类型</center></th>
-                <th><center>时间规则</center></th>
-                <th>
-                    <center>
-                        <i class="icon-time bigger-110 hidden-480"></i>
-                        操作
-                    </center>
+                <th>作业类型</th>
+                <th>运行模式</th>
+                <th>规则类型</th>
+                <th>时间规则</th>
+                <th class="text-center">
+                    <i class="icon-time bigger-110 hidden-480"></i>操作
                 </th>
             </tr>
             </thead>
@@ -729,16 +722,16 @@
             <c:forEach var="r" items="${pageBean.result}" varStatus="index">
                 <tr class="trGroup${r.flowId}">
                     <c:if test="${r.jobType eq 0}">
-                        <td id="jobName_${r.jobId}">${r.jobName}</td>
+                        <td id="jobName_${r.jobId}">${cron:substr(r.jobName, 0,20 ,"..." )}</td>
                     </c:if>
                     <c:if test="${r.jobType eq 1}">
-                        <td class="name_${r.flowId}_1">${r.jobName}</td>
+                        <td class="name_${r.flowId}_1">${cron:substr(r.jobName, 0,20 ,"..." )}</td>
                         <td style="display: none;" class="name_${r.flowId}_2" rowspan="${fn:length(r.children)+1}">
-                                ${r.jobName}
+                                ${cron:substr(r.jobName, 0,20 ,"..." )}
                             <c:forEach var="c" items="${r.children}" varStatus="index">
                                 <div class="down">
                                     <i aria-hidden="true" style="font-size:14px" class="fa fa-arrow-down"></i></div>
-                                ${c.jobName}
+                                ${cron:substr(r.jobName, 0,20 ,"..." )}
                             </c:forEach>
                         </td>
                     </c:if>
@@ -757,17 +750,13 @@
                             </a>
                         </div>
                     </td>
-                    <td>
-                        <center>
-                            <c:if test="${r.jobType eq 0}">单一作业</c:if>
-                            <c:if test="${r.jobType eq 1}">流程作业</c:if>
-                        </center>
+                    <td class="text-center">
+                        <c:if test="${r.jobType eq 0}">单一作业</c:if>
+                        <c:if test="${r.jobType eq 1}">流程作业</c:if>
                     </td>
-                    <td id="execType_${r.jobId}">
-                        <center>
-                            <c:if test="${r.execType eq 1}"><font color="red">手动</font></c:if>
-                            <c:if test="${r.execType eq 0}"><font color="green">自动</font></c:if>
-                        </center>
+                    <td id="execType_${r.jobId}" class="text-center">
+                        <c:if test="${r.execType eq 1}"><font color="red">手动</font></c:if>
+                        <c:if test="${r.execType eq 0}"><font color="green">自动</font></c:if>
                     </td>
                     <td id="cronType_${r.jobId}">
                         <c:choose>
@@ -776,10 +765,10 @@
                             </c:when>
                             <c:otherwise>
                                 <c:if test="${r.cronType eq 0}">
-                                    <center><img width="70px" src="${contextPath}/static/img/crontab_ico.png"></center>
+                                    <img class="text-center" width="70px" src="${contextPath}/static/img/crontab_ico.png">
                                 </c:if>
                                 <c:if test="${r.cronType eq 1}">
-                                    <center><img width="70px" src="${contextPath}/static/img/quartz_ico.png"></center>
+                                    <img class="text-center" width="70px" src="${contextPath}/static/img/quartz_ico.png">
                                 </c:if>
                             </c:otherwise>
                         </c:choose>
@@ -795,36 +784,54 @@
                             </c:otherwise>
                         </c:choose>
                     </td>
-                    <td>
-                        <center>
-                            <div class="visible-md visible-lg hidden-sm hidden-xs action-buttons">
-                                <c:if test="${r.jobType eq 1}">
-                                    <a href="#" title="流程作业" id="job_${r.jobId}" childOpen="off" onclick="showChild('${r.jobId}','${r.flowId}')"> <i style="font-size:14px;" class="fa fa-angle-double-down" id="icon${r.jobId}"></i></a>&nbsp;&nbsp;
-                                </c:if>
-                                <c:if test="${r.jobType eq 0}">
-                                    <a href="#" title="编辑" onclick="editSingle('${r.jobId}')">
-                                        <i class="glyphicon glyphicon-pencil"></i>
-                                    </a>
-                                </c:if>
-                                <c:if test="${r.jobType eq 1}">
-                                    <a title="编辑" href="${contextPath}/job/editflow.htm?id=${r.jobId}&csrf=${csrf}">
-                                        <i class="glyphicon glyphicon-pencil"></i>
-                                    </a>
-                                </c:if>
-                                &nbsp;&nbsp;
-                                <span id="execButton_${r.jobId}">
-                                    <a href="#" title="执行" onclick="executeJob('${r.jobId}')">
-                                       <i aria-hidden="true" class="fa fa-play-circle"></i>
-                                    </a>&nbsp;&nbsp;
-                                </span>
-                                <a href="#" onclick="remove('${r.jobId}')" title="删除">
-                                    <i aria-hidden="true" class="fa fa-times"></i>
-                                </a>&nbsp;&nbsp;
-                                <a href="${contextPath}/job/detail/${r.jobId}.htm?csrf=${csrf}" title="查看详情">
-                                    <i class="glyphicon glyphicon-eye-open"></i>
+                    <td class="text-center">
+                        <div class="visible-md visible-lg hidden-sm hidden-xs action-buttons">
+                            <c:if test="${r.jobType eq 1}">
+                                <a href="#" title="流程作业" id="job_${r.jobId}" childOpen="off" onclick="showChild('${r.jobId}','${r.flowId}')"> <i style="font-size:14px;" class="fa fa-angle-double-down" id="icon${r.jobId}"></i></a>&nbsp;&nbsp;
+                            </c:if>
+                            <c:if test="${r.jobType eq 0}">
+                                <a href="#" title="编辑" onclick="editSingle('${r.jobId}')">
+                                    <i class="glyphicon glyphicon-pencil"></i>
                                 </a>
-                            </div>
-                        </center>
+                            </c:if>
+
+                            <c:if test="${r.jobType eq 1}">
+                                <a title="编辑" href="${contextPath}/job/editflow.htm?id=${r.jobId}&csrf=${csrf}">
+                                    <i class="glyphicon glyphicon-pencil"></i>
+                                </a>
+                            </c:if>&nbsp;
+
+                            <c:choose>
+                                <c:when test="${r.pause eq null or r.pause eq false}">
+                                        <span>
+                                        <a id="pause_${r.jobId}" href="#" title="暂停" onclick="pauseJob('${r.jobId}',true)">
+                                           <i aria-hidden="true" class="fa fa-pause-circle-o"></i>
+                                        </a>
+                                        </span>
+                                </c:when>
+                                <c:otherwise>
+                                       <span>
+                                        <a id="pause_${r.jobId}" href="#" title="恢复" onclick="pauseJob('${r.jobId}',false)">
+                                           <i aria-hidden="true" class="fa fa-history"></i>
+                                        </a>
+                                        </span>
+                                </c:otherwise>
+                            </c:choose>&nbsp;
+
+                            <span id="execButton_${r.jobId}">
+                                    <a href="#" title="执行" onclick="executeJob('${r.jobId}')">
+                                       <i aria-hidden="true" class="fa fa-play"></i>
+                                    </a>
+                                </span>&nbsp;
+
+                            <a href="#" onclick="remove('${r.jobId}')" title="删除">
+                                <i aria-hidden="true" class="fa fa-times"></i>
+                            </a>&nbsp;
+
+                            <a href="${contextPath}/job/detail/${r.jobId}.htm?csrf=${csrf}" title="查看详情">
+                                <i class="glyphicon glyphicon-eye-open"></i>
+                            </a>
+                        </div>
                     </td>
                 </tr>
                 <%--子作业--%>
@@ -848,8 +855,8 @@
                                     </a>
                                 </div>
                             </td>
-                            <td>
-                                <center>流程作业</center>
+                            <td class="text-center">
+                                流程作业
                             </td>
                             <td>
                                 <div class="none">--</div>
@@ -860,14 +867,12 @@
                             <td>
                                 <div class="none">--</div>
                             </td>
-                            <td>
-                                <center>
-                                    <div class="visible-md visible-lg hidden-sm hidden-xs action-buttons">
-                                        <a href="${contextPath}/job/detail/${c.jobId}.htm?csrf=${csrf}" title="查看详情">
-                                            <i class="glyphicon glyphicon-eye-open"></i>
-                                        </a>
-                                    </div>
-                                </center>
+                            <td class="text-center">
+                                <div class="visible-md visible-lg hidden-sm hidden-xs action-buttons">
+                                    <a href="${contextPath}/job/detail/${c.jobId}.htm?csrf=${csrf}" title="查看详情">
+                                        <i class="glyphicon glyphicon-eye-open"></i>
+                                    </a>
+                                </div>
                             </td>
                         </tr>
                     </c:forEach>
@@ -906,8 +911,8 @@
                         </div>
                         <div class="form-group">
                             <label class="col-lab control-label" title="1.手动模式: 管理员手动执行 2.自动模式: 执行器自动执行">运行模式：</label>&nbsp;&nbsp;
-                            <label for="execType1" onclick="hideCronExp()" class="radio-label"><input type="radio" name="execType" value="1" id="execType1">手动&nbsp;&nbsp;&nbsp;</label>
-                            <label for="execType0" onclick="showCronExp()" class="radio-label"><input type="radio" name="execType" value="0" id="execType0">自动</label>
+                            <label for="execType1" onclick="toggle.cronexp.hide()" class="radio-label"><input type="radio" name="execType" value="1" id="execType1">手动&nbsp;&nbsp;&nbsp;</label>
+                            <label for="execType0" onclick="toggle.cronexp.show()" class="radio-label"><input type="radio" name="execType" value="0" id="execType0">自动</label>
                         </div>
                         <div class="form-group cronExpDiv">
                             <label class="col-lab control-label" title="1.crontab: unix/linux的时间格式表达式&nbsp;&nbsp;2.quartz: quartz框架的时间格式表达式">规则类型：</label>&nbsp;&nbsp;
@@ -955,8 +960,8 @@
 
                         <div class="form-group">
                             <label class="col-lab control-label" title="作业失败后是否重新执行此作业">重新执行：</label>&nbsp;&nbsp;
-                            <label for="redo1" onclick="showCountDiv()" class="radio-label"><input type="radio" name="redo" value="1" id="redo1"> 是&nbsp;&nbsp;&nbsp;</label>
-                            <label for="redo0" onclick="hideCountDiv()" class="radio-label"><input type="radio" name="redo" value="0" id="redo0"> 否</label>
+                            <label for="redo1" onclick="toggle.count.show()" class="radio-label"><input type="radio" name="redo" value="1" id="redo1"> 是&nbsp;&nbsp;&nbsp;</label>
+                            <label for="redo0" onclick="toggle.count.hide()" class="radio-label"><input type="radio" name="redo" value="0" id="redo0"> 否</label>
                         </div>
                         <br>
                         <div class="form-group countDiv">
@@ -968,8 +973,8 @@
 
                         <div class="form-group" style="margin-top: 0px;margin-bottom: 22px">
                             <label class="col-lab control-label" title="任务执行失败时是否发信息报警">失败报警：</label>&nbsp;&nbsp;
-                            <label onclick="showContact()" for="warning1" class="radio-label"><input type="radio" name="warning" value="1" id="warning1">是&nbsp;&nbsp;&nbsp;</label>
-                            <label onclick="hideContact()" for="warning0" class="radio-label"><input type="radio" name="warning" value="0" id="warning0">否</label>
+                            <label onclick="toggle.contact.show()" for="warning1" class="radio-label"><input type="radio" name="warning" value="1" id="warning1">是&nbsp;&nbsp;&nbsp;</label>
+                            <label onclick="toggle.contact.hide()" for="warning0" class="radio-label"><input type="radio" name="warning" value="0" id="warning0">否</label>
                         </div>
                         <div class="form-group contact">
                             <label for="mobiles" class="col-lab control-label" title="任务执行失败时将发送短信给此手机">报警手机：</label>
@@ -993,11 +998,9 @@
 
                     </form>
                 </div>
-                <div class="modal-footer">
-                    <center>
-                        <button type="button" class="btn btn-sm" onclick="save()">保存</button>&nbsp;&nbsp;
-                        <button type="button" class="btn btn-sm" data-dismiss="modal">关闭</button>
-                    </center>
+                <div class="modal-footer text-center">
+                    <button type="button" class="btn btn-sm" onclick="save()">保存</button>&nbsp;&nbsp;
+                    <button type="button" class="btn btn-sm" data-dismiss="modal">关闭</button>
                 </div>
             </div>
         </div>
@@ -1021,11 +1024,9 @@
                         </div>
                     </form>
                 </div>
-                <div class="modal-footer">
-                    <center>
-                        <button type="button" class="btn btn-sm" onclick="saveCmd()">保存</button>&nbsp;&nbsp;
-                        <button type="button" class="btn btn-sm" data-dismiss="modal">关闭</button>
-                    </center>
+                <div class="modal-footer text-center">
+                    <button type="button" class="btn btn-sm" onclick="saveCmd()">保存</button>&nbsp;&nbsp;
+                    <button type="button" class="btn btn-sm" data-dismiss="modal">关闭</button>
                 </div>
             </div>
         </div>
