@@ -200,9 +200,15 @@ b{color: red;}
     -webkit-transition-duration: 500ms;
     transition-duration: 500ms;
 }
+
 .btn-float:hover i {
     -webkit-transform: rotate(360deg);
     -ms-transform: rotate(360deg);
     -o-transform: rotate(360deg);
     transform: rotate(360deg);
+}
+
+.modal-footer button {
+    display: inline-block;
+    text-align: center;
 }

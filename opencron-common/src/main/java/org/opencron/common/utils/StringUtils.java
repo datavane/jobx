@@ -38,6 +38,17 @@ public abstract class StringUtils {
         return org.springframework.util.StringUtils.hasText(str);
     }
 
+    public static boolean isChinese(String string){
+        int n = 0;
+        for(int i = 0; i < string.length(); i++) {
+            n = (int)string.charAt(i);
+            if((19968 <= n && n <40869)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static String joinString(Object[] arrays, String separator) {
         return joinString(Arrays.asList(arrays), separator);
     }

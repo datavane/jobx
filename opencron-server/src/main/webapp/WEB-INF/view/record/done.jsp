@@ -39,16 +39,12 @@
     </style>
 
     <script type="text/javascript">
-
-
         $(document).ready(function(){
             $("#size").change(function(){doUrl();});
             $("#success").change(function(){doUrl();});
             $("#agentId").change(function(){doUrl();});
             $("#jobId").change(function(){doUrl();});
             $("#execType").change(function(){doUrl();});
-            rewidth();
-            $(window).resize(rewidth);
         });
 
         function doUrl() {

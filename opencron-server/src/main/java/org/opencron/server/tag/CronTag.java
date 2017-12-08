@@ -50,6 +50,9 @@ public class CronTag {
             str = str + "";
         }
         int len = str.length();
+        if (StringUtils.isChinese(str)) {
+            end = end/3;
+        }
         if (len > end && index < end) {
             return str.substring(index, end) + tempStr;
         }
