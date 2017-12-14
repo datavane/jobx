@@ -8,7 +8,7 @@ GREEN_COLOR="\E[1;32m";
 YELLOW_COLOR="\E[1;33m";
 RES="\E[0m";
 
-echo -ne "${GREEN_COLOR}"
+printf "${GREEN_COLOR}\n"
 cat<<EOT
 
       --------------------------------------------
@@ -23,30 +23,30 @@ cat<<EOT
       --------------------------------------------
 
 EOT
-echo -ne "${RES}";
+printf "${RES}\n"
 
 echo_r () {
     # Color red: Error, Failed
     [ $# -ne 1 ] && return 1
-    echo -e "[${GREEN_COLOR}opencron${RES}] ${RED_COLOR}$1${RES}"
+    printf "[${BLUE_COLOR}opencron${RES}] ${RED_COLOR}$1${RES}\n"
 }
 
 echo_g () {
     # Color green: Success
     [ $# -ne 1 ] && return 1
-    echo -e "[${GREEN_COLOR}opencron${RES}] ${GREEN_COLOR}$1${RES}"
+    printf "[${BLUE_COLOR}opencron${RES}] ${GREEN_COLOR}$1${RES}\n"
 }
 
 echo_y () {
     # Color yellow: Warning
     [ $# -ne 1 ] && return 1
-    echo -e "[${GREEN_COLOR}opencron${RES}] ${YELLOW_COLOR}$1${RES}"
+    printf "[${BLUE_COLOR}opencron${RES}] ${YELLOW_COLOR}$1${RES}\n"
 }
 
 echo_w () {
     # Color yellow: White
     [ $# -ne 1 ] && return 1
-    echo -e "[${GREEN_COLOR}opencron${RES}] ${WHITE_COLOR}$1${RES}"
+    printf "[${BLUE_COLOR}opencron${RES}] ${WHITE_COLOR}$1${RES}\n"
 }
 
 
@@ -74,13 +74,13 @@ if [ -z "$JAVA_HOME" -a -z "$JRE_HOME" ]; then
     fi
   fi
   if [ -z "$JAVA_HOME" -a -z "$JRE_HOME" ]; then
-    echo "Neither the JAVA_HOME nor the JRE_HOME environment variable is defined"
-    echo "At least one of these environment variable is needed to run this program"
+    echo_r "Neither the JAVA_HOME nor the JRE_HOME environment variable is defined"
+    echo_r "At least one of these environment variable is needed to run this program"
     exit 1
   fi
 fi
 if [ -z "$JAVA_HOME" -a "$1" = "debug" ]; then
-  echo "JAVA_HOME should point to a JDK in order to run in debug mode."
+  echo_r "JAVA_HOME should point to a JDK in order to run in debug mode."
   exit 1
 fi
 if [ -z "$JRE_HOME" ]; then
@@ -91,16 +91,16 @@ fi
 if [ "$1" = "debug" ] ; then
   if [ "$os400" = "true" ]; then
     if [ ! -x "$JAVA_HOME"/bin/java -o ! -x "$JAVA_HOME"/bin/javac ]; then
-      echo "The JAVA_HOME environment variable is not defined correctly"
-      echo "This environment variable is needed to run this program"
-      echo "NB: JAVA_HOME should point to a JDK not a JRE"
+      echo_r "The JAVA_HOME environment variable is not defined correctly"
+      echo_r "This environment variable is needed to run this program"
+      echo_r "NB: JAVA_HOME should point to a JDK not a JRE"
       exit 1
     fi
   else
     if [ ! -x "$JAVA_HOME"/bin/java -o ! -x "$JAVA_HOME"/bin/jdb -o ! -x "$JAVA_HOME"/bin/javac ]; then
-      echo "The JAVA_HOME environment variable is not defined correctly"
-      echo "This environment variable is needed to run this program"
-      echo "NB: JAVA_HOME should point to a JDK not a JRE"
+      echo_r "The JAVA_HOME environment variable is not defined correctly"
+      echo_r "This environment variable is needed to run this program"
+      echo_r "NB: JAVA_HOME should point to a JDK not a JRE"
       exit 1
     fi
   fi
@@ -230,7 +230,7 @@ if [ ${retval} -eq 0 ] ; then
     [ ! -d "${DIST_HOME}" ] && mkdir ${DIST_HOME} || rm -rf  ${DIST_HOME}/* ;
     cp ${WORKDIR}/opencron-agent/target/opencron-agent-${OPENCRON_VERSION}.tar.gz ${DIST_HOME}
     cp ${WORKDIR}/opencron-server/target/opencron-server.war ${DIST_HOME}
-    echo -e "[${GREEN_COLOR}opencron${RES}] ${WHITE_COLOR}build opencron @ Version ${BLUE_COLOR}${OPENCRON_VERSION}${RES} successfully! please goto${RES} ${GREEN_COLOR}${DIST_HOME}${RES}"
+    printf "[${BLUE_COLOR}opencron${RES}] ${WHITE_COLOR}build opencron @Version ${OPENCRON_VERSION} successfully! please goto${RES} ${GREEN_COLOR}${DIST_HOME}${RES}\n"
     exit 0
 else
     echo_r "build opencron failed! please try again "
