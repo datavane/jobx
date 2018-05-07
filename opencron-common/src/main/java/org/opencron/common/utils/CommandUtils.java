@@ -52,11 +52,7 @@ public abstract class CommandUtils implements Serializable {
         try {
             if (!shellFile.exists()) {
                 PrintWriter out = new PrintWriter(new OutputStreamWriter(new FileOutputStream(tempShellFilePath)));
-                if (CommonUtils.notEmpty(runAs)) {
-                    out.write( "#!/bin/bash\n\nsu - "+runAs+" -c \""+command+"\"\n\n"+exitScript);
-                }else {
-                    out.write("#!/bin/bash\n\n" + command + exitScript);
-                }
+                out.write("#!/bin/bash\n\n" + command + exitScript);
                 out.flush();
                 out.close();
             }
