@@ -208,11 +208,7 @@ if [ -z "$OPENCRON_TMPDIR" ] ; then
   OPENCRON_TMPDIR="$OPENCRON_BASE"/temp
 fi
 
-OPENCRON_PIDDIR="/var/run";
- if [ ! -x "$OPENCRON_PIDDIR" ] ; then
-   mkdir $OPENCRON_PIDDIR;
- fi
-OPENCRON_PID="$OPENCRON_PIDDIR/opencron.pid";
+OPENCRON_PID="$OPENCRON_BASE/opencron.pid";
 
 #opencron version
 OPENCRON_VERSION="1.1.0-RELEASE"
