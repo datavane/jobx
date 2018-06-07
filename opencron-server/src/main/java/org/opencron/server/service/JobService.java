@@ -104,7 +104,7 @@ public class JobService {
                 "AND cronType=? " +
                 "AND execType = ? " +
                 "AND T.deleted=0 " +
-                "AND T.pause=0" +
+                "AND T.pause=0 " +
                 "AND D.agentId=? ";
 
         List<JobVo> jobs = queryDao.sqlQuery(JobVo.class, sql, cronType.getType(), execType.getStatus(), agent.getAgentId());
