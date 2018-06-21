@@ -110,13 +110,15 @@ do
   CLASSPATH="$CLASSPATH":"$jar"
 done
 
+MAIN="com.jobxhub.server.bootstrap.Startup"
+
 #start server....
 printf "[${BLUE_COLOR}jobx${RES}] ${WHITE_COLOR} server Starting.... ${RES}\n"
 
 eval "\"$RUNJAVA\"" \
         -classpath "\"$CLASSPATH\"" \
         -Dserver.launcher=tomcat \
-        com.jobxhub.server.bootstrap.Startup $1 \
+        ${MAIN} $1 \
         >/dev/null 2>&1 "&";
 
 printf "[${BLUE_COLOR}jobx${RES}] ${WHITE_COLOR} please see log for more detail:${RES}${GREEN_COLOR} $LOG_PATH/jobx.out ${RES}\n"

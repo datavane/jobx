@@ -217,6 +217,7 @@ if [ ! -z "$CLASSPATH" ] ; then
   CLASSPATH="$CLASSPATH":
 fi
 CLASSPATH="$CLASSPATH""$JOBX_BASE"/lib/jobx-agent-${JOBX_VERSION}.jar
+MAIN="com.jobxhub.agent.bootstrap.JobXAgent"
 
 # Bugzilla 37848: When no TTY is available, don't output to console
 have_tty=0
@@ -355,7 +356,7 @@ case "$1" in
         -Djobx.port="$JOBX_PORT" \
         -Djobx.host="$JOBX_HOST" \
         -Djobx.password="$JOBX_PASSWORD" \
-        com.jobxhub.agent.bootstrap.JobXAgent start >> $JOBX_OUT 2>&1 "&";
+        ${MAIN} start >> $JOBX_OUT 2>&1 "&";
 
       if [ ! -z "$JOBX_PID" ]; then
          echo +x $! > "$JOBX_PID"
@@ -406,7 +407,7 @@ case "$1" in
             -classpath "\"$CLASSPATH\"" \
             -Djobx.home="$JOBX_HOME" \
             -Djobx.pid="$JOBX_PID" \
-            com.jobxhub.agent.bootstrap.JobXAgent stop >> $JOBX_OUT 2>&1 "&";
+            ${MAIN} stop >> $JOBX_OUT 2>&1 "&";
 
           # stop failed. Shutdown port disabled? Try a normal kill.
           if [ $? != 0 ]; then
