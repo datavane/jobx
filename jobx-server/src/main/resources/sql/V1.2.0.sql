@@ -92,7 +92,7 @@ create table `t_record` (
   `record_id` bigint(20) not null auto_increment,
   `agent_id` bigint(20),
   `command` text,
-  `execUser` varchar(50),
+  `exec_user` varchar(50),
   `start_time` datetime,
   `end_time` datetime,
   `exec_type` tinyint(1),
