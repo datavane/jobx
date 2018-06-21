@@ -97,7 +97,7 @@ APP_ARTIFACT=jobx-server
 
 LIB_PATH="$WORKDIR"/WEB-INF/lib
 
-LOG_PATH="$WORKDIR"/work/logs
+LOG_PATH="$WORKDIR"/container/logs
 if [ ! -d "${LOG_PATH}" ] ; then
   mkdir -p ${LOG_PATH}
 fi

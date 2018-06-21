@@ -45,7 +45,7 @@ public class Startup {
 
     private static final int MAX_PORT = 65535;
 
-    private static final String workspace = "work";
+    private static final String workspace = "container";
 
     private static int startPort = 20501;
 
