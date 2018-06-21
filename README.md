@@ -17,7 +17,7 @@ V1.2.0 by 2018-xx-xx
 
     7)server在集群情况下处理分布式session的缓存实现redis和memcached可选
     
-    8)特别增加对JAVA定时任务的支持,切入到方法级别的调度
+    8)可以自由定义任务的执行身份
     
     9)简化安装部署流程,提供三个脚本一键安装启动项目(build.sh,agent.sh,server.sh)
     
