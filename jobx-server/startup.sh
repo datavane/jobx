@@ -98,10 +98,10 @@ APP_ARTIFACT=jobx-server
 LIB_PATH="$WORKDIR"/WEB-INF/lib
 
 LOG_PATH="$WORKDIR"/work/logs
-
 if [ ! -d "${LOG_PATH}" ] ; then
   mkdir -p ${LOG_PATH}
 fi
+LOG_PATH=${LOG_PATH}/jobx.out
 
 # Add jars to classpath
 if [ ! -z "$CLASSPATH" ] ; then
@@ -123,9 +123,9 @@ eval "\"$RUNJAVA\"" \
         -classpath "\"$CLASSPATH\"" \
         -Dserver.launcher=tomcat \
         ${MAIN} $1 \
-        >/dev/null 2>&1 "&";
+        >${LOG_PATH} 2>&1 "&";
 
-printf "[${BLUE_COLOR}jobx${RES}] ${WHITE_COLOR} please see log for more detail:${RES}${GREEN_COLOR} $LOG_PATH/jobx.out ${RES}\n"
+printf "[${BLUE_COLOR}jobx${RES}] ${WHITE_COLOR} please see log for more detail:${RES}${GREEN_COLOR} $LOG_PATH ${RES}\n"
 
 exit $?
 
