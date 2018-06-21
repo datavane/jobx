@@ -120,7 +120,9 @@ public class Config implements Serializable {
     }
 
     public void setExecUser(String execUser) {
-        this.execUser = execUser;
+        if (execUser!=null) {
+            this.execUser = execUser.trim().replaceAll("\\s+,\\s+",",");
+        }
     }
 
     public String getVersion() {

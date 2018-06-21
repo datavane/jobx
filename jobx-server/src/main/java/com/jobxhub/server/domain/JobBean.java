@@ -139,7 +139,9 @@ public class JobBean {
     }
 
     public void setExecUser(String execUser) {
-        this.execUser = execUser;
+        if (execUser!=null) {
+            this.execUser = execUser.trim();
+        }
     }
 
     public String getCommand() {
