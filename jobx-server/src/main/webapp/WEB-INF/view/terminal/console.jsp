@@ -79,7 +79,7 @@
                     <label style="color:#777;font-weight: normal; "><i aria-hidden="true" class="fa fa-send"></i>&nbsp;<span id="sendLabel">命令</span></label>&nbsp;&nbsp;<input id="sendInput" class="send-input" size="30" placeholder="发送到所有终端会话请在这里输入" type="text">
                     &nbsp;<div class="btn btn-success btn-sm" id="sendBtn">发送</div>
                 </li>
-                <li style="float: right;margin-right: 15px;"><a href="https://github.com/wolfboys/jobx" target="_blank"><i aria-hidden="true" class="fa fa-github" style="font-size:35px;position:absolute;top:8px"></i></a></li>
+                <li style="float: right;margin-right: 15px;"><a href="https://github.com/jobxhub/jobx" target="_blank"><i aria-hidden="true" class="fa fa-github" style="font-size:35px;position:absolute;top:8px"></i></a></li>
             </ul>
         </div>
     </div>

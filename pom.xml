@@ -21,9 +21,9 @@
     <packaging>pom</packaging>
 
     <scm>
-        <url>scm:git:git@github.com:wolfboys/jobx.git</url>
-        <connection>scm:git:git@github.com:wolfboys/jobx.git</connection>
-        <developerConnection>scm:git:git@github.com:wolfboys/jobx.git</developerConnection>
+        <url>scm:git:git@github.com:jobxhub/jobx.git</url>
+        <connection>scm:git:git@github.com:jobxhub/jobx.git</connection>
+        <developerConnection>scm:git:git@github.com:jobxhub/jobx.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
 
@@ -39,7 +39,7 @@
         <developer>
             <name>benjobs</name>
             <email>benjobs@qq.com</email>
-            <url>https://github.com/wolfboys</url>
+            <url>https://github.com/jobxhub</url>
             <roles>
                 <role>Architect</role>
                 <role>Developer</role>

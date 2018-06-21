@@ -114,7 +114,7 @@ Browser IE10+
 
 ```
 1)下载源码: 
-  > git clone https://github.com/wolfboys/jobx.git
+  > git clone https://github.com/jobxhub/jobx.git
 
 2):修改server端的配置信息
    1:创建数据,数据库名字可以是jobx或者其他

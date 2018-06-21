@@ -331,7 +331,7 @@
             <ul class="error_contact">
                 <li class="fa fa-wechat"></li>
                 <a href="tencent://message/?uin=123322242&Site=121ask.com&Menu=yes"> <li class="fa fa-qq"></li></a>
-                <a href="https://github.com/wolfboys/jobx/issues" target="_blank"><li class="fa fa-github" style="font-size:48px"></li></a>
+                <a href="https://github.com/jobxhub/jobx/issues" target="_blank"><li class="fa fa-github" style="font-size:48px"></li></a>
                 <a href="mailto:benjobs@qq.com" target="_blank"><li class="fa fa-envelope"></li></a>
             </ul>
 
