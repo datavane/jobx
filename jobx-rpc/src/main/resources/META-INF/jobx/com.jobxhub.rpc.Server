@@ -1,0 +1,5 @@
+netty=com.jobxhub.rpc.netty.NettyServer
+mina=com.jobxhub.rpc.mina.MinaServer
+
+#default NettyServer
+com.jobxhub.rpc.netty.NettyServer

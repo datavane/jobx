@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jobxhub.server.dao.RoleDao">
+
+    <select id="getAll" resultType="com.jobxhub.server.domain.RoleBean">
+        select role_id as roleId,role_name as roleName,description from t_role
+    </select>
+
+    <select id="getById" parameterType="java.lang.Long" resultType="com.jobxhub.server.domain.RoleBean">
+        select role_id as roleId,role_name as roleName,description from t_role where role_id = #{roleId}
+    </select>
+
+    <insert id="save" parameterType="com.jobxhub.server.domain.RoleBean" useGeneratedKeys="true" keyProperty="roleId">
+        insert into t_user (
+          role_name,
+          description
+        ) values (
+          #{roleName},
+          #{description}
+        );
+    </insert>
+
+</mapper>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+
+    <bean id="config" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+        <property name="locations">
+            <list>
+                <value>classpath*:*.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="propertyConfigurer" class="com.jobxhub.common.util.PropertyPlaceholder">
+        <property name="properties" ref="config"/>
+        <property name="ignoreResourceNotFound" value="true"/>
+    </bean>
+
+    <bean id="KETAMA_HASH" class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean">
+        <property name="staticField" value="net.spy.memcached.DefaultHashAlgorithm.KETAMA_HASH"/>
+    </bean>
+
+    <bean id="memcachedClient" class="net.spy.memcached.spring.MemcachedClientFactoryBean">
+        <!-- 一个字符串，包括由空格或逗号分隔的主机或IP地址与端口号 -->
+        <property name="servers" value="${memcached.servers}"/>
+        <!-- 指定要使用的协议(BINARY,TEXT),默认是TEXT -->
+        <property name="protocol" value="${memcached.protocol}"/>
+        <!-- 设置默认的转码器(默认以net.spy.memcached.transcoders.SerializingTranscoder) -->
+        <property name="transcoder">
+            <bean class="net.spy.memcached.transcoders.SerializingTranscoder">
+                <property name="compressionThreshold" value="1024"/>
+            </bean>
+        </property>
+        <!-- 以毫秒为单位设置默认的操作超时时间 -->
+        <property name="opTimeout" value="${memcached.opTimeout}"/>
+        <property name="timeoutExceptionThreshold" value="${memcached.timeoutExceptionThreshold}"/>
+        <!-- 设置哈希算法 -->
+        <property name="hashAlg" ref="KETAMA_HASH"/>
+        <!-- 设置定位器类型(ARRAY_MOD,CONSISTENT),默认是ARRAY_MOD -->
+        <property name="locatorType" value="${memcached.locatorType}"/>
+        <!-- 设置故障模式(取消，重新分配，重试)，默认是重新分配 -->
+        <property name="failureMode" value="${memcached.failureMode}"/>
+        <!-- 想使用Nagle算法，设置为true -->
+        <property name="useNagleAlgorithm" value="${memcached.useNagleAlgorithm}"/>
+    </bean>
+
+    <bean class="com.jobxhub.server.session.cached.MemcachedManager">
+        <property name="memcachedClient" ref="memcachedClient"/>
+        <property name="expire" value="${memcached.expire}"/>
+    </bean>
+
+</beans>

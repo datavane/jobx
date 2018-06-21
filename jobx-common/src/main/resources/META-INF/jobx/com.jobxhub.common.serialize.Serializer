@@ -1,0 +1,9 @@
+fastjson=com.jobxhub.common.serialize.fastjson.FastJsonSerializer
+fst=com.jobxhub.common.serialize.fst.FstSerializer
+hessian2=com.jobxhub.common.serialize.hessian2.Hessian2Serializer
+kryo=com.jobxhub.common.serialize.kryo.KryoSerializer
+java=com.jobxhub.common.serialize.java.JavaSerializer
+nativejava=com.jobxhub.common.serialize.nativejava.NativeJavaSerializer
+
+#default Serializer
+com.jobxhub.common.serialize.kryo.KryoSerializer

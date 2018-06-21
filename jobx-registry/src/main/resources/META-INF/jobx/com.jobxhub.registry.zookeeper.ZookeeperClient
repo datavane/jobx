@@ -1,0 +1,5 @@
+curator=com.jobxhub.registry.zookeeper.curator.CuratorZookeeperClient
+zkclient=com.jobxhub.registry.zookeeper.zkclient.ZkclientZookeeperClient
+
+#def zkClient
+com.jobxhub.registry.zookeeper.zkclient.ZkclientZookeeperClient
