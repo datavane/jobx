@@ -99,6 +99,10 @@ LIB_PATH="$WORKDIR"/WEB-INF/lib
 
 LOG_PATH="$WORKDIR"/work/logs
 
+if [ ! -d "${LOG_PATH}" ] ; then
+  mkdir -p ${LOG_PATH}
+fi
+
 # Add jars to classpath
 if [ ! -z "$CLASSPATH" ] ; then
   CLASSPATH="$CLASSPATH":
