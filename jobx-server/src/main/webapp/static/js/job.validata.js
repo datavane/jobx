@@ -558,7 +558,7 @@ Validata.prototype.ready = function () {
 
     $("#cronExp").blur(function () {
         _this.validata.cronExp();
-    }).focus(function () {
+    }).dblclick(function () {
         new CronInput(_this.contextPath,function (exp) {
            $("#cronExp").val(exp);
         });

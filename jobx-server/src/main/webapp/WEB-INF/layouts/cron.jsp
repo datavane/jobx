@@ -30,6 +30,7 @@
                                     <option value="${i}">${i}年</option>
                                 </c:forEach>
                             </select>
+                          <%--  <span class="btn btn-exprepeat">从<input type="text" id="year_start">重复</span>--%>
                         </td>
                         <td>
                             <select id="month" size="8" multiple="multiple" >
@@ -45,30 +46,31 @@
                                 <c:forEach var="i" begin="1" end="31" step="1">
                                     <option value="${i}">${i}日</option>
                                 </c:forEach>
+                                <option value="L">末日</option>
                             </select>
                         </td>
                         <td>
                             <select id="week" size="8" multiple="multiple" >
-                                <option value="*" selected="selected" id="everyweek">每星期</option>
                                 <c:forEach var="i" begin="1" end="7" step="1">
                                     <option value="${i}">星期${i}</option>
                                 </c:forEach>
+                                <option value="*" selected="selected" id="everyweek">每星期</option>
                             </select>
                         </td>
                         <td>
                             <select id="hour" size="8" multiple="multiple" >
-                                <option value="*" selected="selected">每时</option>
                                 <c:forEach var="i" begin="0" end="23" step="1">
                                     <option value="${i}">${i}时</option>
                                 </c:forEach>
+                                <option value="*" selected="selected">每时</option>
                             </select>
                         </td>
                         <td>
                             <select id="minutes" size="8" multiple="multiple" >
-                                <option value="*" selected="selected">每分</option>
                                 <c:forEach var="i" begin="0" end="59" step="1">
                                     <option value="${i}">${i}分</option>
                                 </c:forEach>
+                                <option value="*" selected="selected">每分</option>
                             </select>
                         </td>
                         <td>
