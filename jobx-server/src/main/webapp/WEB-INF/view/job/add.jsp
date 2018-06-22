@@ -365,7 +365,7 @@
                     <label for="cronExp" class="col-lab control-label wid150"><i class="glyphicon glyphicon-filter"></i>&nbsp;&nbsp;时间规则&nbsp;&nbsp;<b>*&nbsp;</b></label>
                     <div class="col-md-10">
                         <input type="text" class="form-control input-sm" id="cronExp" name="cronExp">
-                        <span class="tips" id="expTip" tip="请采用quartz框架的时间格式表达式">请采用quartz框架的时间格式表达式(双击控件输入)</span>
+                        <span class="tips" id="expTip" tip="请采用quartz框架的时间格式表达式(双击控件输入)">请采用quartz框架的时间格式表达式(双击控件输入)</span>
                     </div>
                 </div>
 
