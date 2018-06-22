@@ -117,10 +117,19 @@ done
 MAIN="com.jobxhub.server.bootstrap.Startup"
 
 [ -z "${JOBX_LAUNCHER}" ] && JOBX_LAUNCHER="tomcat";
+
+if [ $# -gt 0 ] ;then
+  JOBX_PORT=$1
+  if [ ! -z "$JOBX_PORT" ];then
+      if [ $JOBX_PORT -lt 0 ] || [ $JOBX_PORT -gt 65535 ];then
+         echo_r "port error,muse be between 0 and 65535!"
+      fi
+  fi
+fi
 [ -z "${JOBX_PORT}" ] && JOBX_PORT="20501";
 
 #start server....
-printf "[${BLUE_COLOR}jobx${RES}] ${WHITE_COLOR} server Starting @ [${JOBX_PORT}].... ${RES}\n"
+printf "[${BLUE_COLOR}jobx${RES}] ${WHITE_COLOR} server Starting @ [${GREEN_COLOR}${JOBX_PORT}${RES}].... ${RES}\n"
 
 eval "\"$RUNJAVA\"" \
         -classpath "\"$CLASSPATH\"" \
