@@ -137,8 +137,7 @@ eval "\"$RUNJAVA\"" \
         -classpath "\"$CLASSPATH\"" \
         -Dserver.launcher=${JOBX_LAUNCHER} \
         -Dserver.port=${JOBX_PORT} \
-        ${MAIN} $1 \
-        >> ${LOG_PATH} 2>&1 "&";
+        ${MAIN} $1 >> ${LOG_PATH} 2>&1 "&";
 
 printf "[${BLUE_COLOR}jobx${RES}] ${WHITE_COLOR} please see log for more detail:${RES}${GREEN_COLOR} $LOG_PATH ${RES}\n"
 
