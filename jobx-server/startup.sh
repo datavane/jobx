@@ -116,8 +116,10 @@ done
 
 MAIN="com.jobxhub.server.bootstrap.Startup"
 
+#default launcher
 [ -z "${JOBX_LAUNCHER}" ] && JOBX_LAUNCHER="tomcat";
 
+#server'port
 if [ $# -gt 0 ] ;then
   JOBX_PORT=$1
   if [ ! -z "$JOBX_PORT" ];then
