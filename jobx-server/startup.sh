@@ -116,14 +116,18 @@ done
 
 MAIN="com.jobxhub.server.bootstrap.Startup"
 
+[ -z "${JOBX_LAUNCHER}" ] && JOBX_LAUNCHER="tomcat";
+[ -z "${JOBX_PORT}" ] && JOBX_PORT="20501";
+
 #start server....
-printf "[${BLUE_COLOR}jobx${RES}] ${WHITE_COLOR} server Starting.... ${RES}\n"
+printf "[${BLUE_COLOR}jobx${RES}] ${WHITE_COLOR} server Starting @ [${JOBX_PORT}].... ${RES}\n"
 
 eval "\"$RUNJAVA\"" \
         -classpath "\"$CLASSPATH\"" \
-        -Dserver.launcher=tomcat \
+        -Dserver.launcher=${JOBX_LAUNCHER} \
+        -Dserver.port=${JOBX_PORT} \
         ${MAIN} $1 \
-        >${LOG_PATH} 2>&1 "&";
+        >> ${LOG_PATH} 2>&1 "&";
 
 printf "[${BLUE_COLOR}jobx${RES}] ${WHITE_COLOR} please see log for more detail:${RES}${GREEN_COLOR} $LOG_PATH ${RES}\n"
 
