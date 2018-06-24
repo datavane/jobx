@@ -122,10 +122,13 @@ MAIN="com.jobxhub.server.bootstrap.Startup"
 #server'port
 if [ $# -gt 0 ] ;then
   JOBX_PORT=$1
-  if [ ! -z "$JOBX_PORT" ];then
+  if [ "$JOBX_PORT" -gt 0 ] 2>/dev/null ;then
       if [ $JOBX_PORT -lt 0 ] || [ $JOBX_PORT -gt 65535 ];then
-         echo_r "port error,muse be between 0 and 65535!"
+         echo_r "server'port error,muse be between 0 and 65535!"
       fi
+  else
+      echo_r "server'port bust be number."
+      exit 1;
   fi
 fi
 [ -z "${JOBX_PORT}" ] && JOBX_PORT="20501";
