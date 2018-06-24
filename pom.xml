@@ -78,8 +78,9 @@
         <curator.version>4.0.0</curator.version>
         <zkclient.version>0.10</zkclient.version>
         <jetty.version>9.4.8.v20171121</jetty.version>
-        <tomcat.version>8.0.32</tomcat.version>
-        <asm.version>6.0</asm.version>
+        <tomcat.version>8.5.2</tomcat.version>
+        <asm.version>5.2</asm.version>
+        <cglib.version>3.2.5</cglib.version>
     </properties>
 
     <dependencies>
@@ -497,19 +498,19 @@
             <dependency>
                 <groupId>org.aspectj</groupId>
                 <artifactId>aspectjweaver</artifactId>
-                <version>1.7.4</version>
+                <version>1.8.13</version>
             </dependency>
 
             <dependency>
                 <groupId>cglib</groupId>
                 <artifactId>cglib</artifactId>
-                <version>2.2.2</version>
+                <version>${cglib.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>cglib</groupId>
                 <artifactId>cglib-nodep</artifactId>
-                <version>3.2.1</version>
+                <version>${cglib.version}</version>
             </dependency>
 
             <dependency>
