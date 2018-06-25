@@ -169,7 +169,16 @@ public class JobXAgent implements Serializable {
         if (isEmpty(this.host)) {
             this.host = PropertiesLoader.getProperty(Constants.PARAM_JOBX_HOST_KEY);
         }
-        if (notEmpty(this.host) && NetUtils.isValidAddress(this.host)) {
+        if (isEmpty(this.host)) {
+            //自动探测ip
+            this.host = NetUtils.getLocalHost();
+        }
+
+        if (isEmpty(this.host)) {
+            throw new ExceptionInInitializerError("[JobX] agent host must be not empty.");
+        }
+
+        if(NetUtils.isValidAddress(this.host)){
             throw new ExceptionInInitializerError("[JobX] agent host is valid");
         }
 
