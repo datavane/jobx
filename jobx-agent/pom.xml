@@ -78,36 +78,6 @@
                 </configuration>
             </plugin>
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <version>3.0.2</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>copy</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <outputDirectory>${project.build.directory}/lib</outputDirectory>
-                    <excludeTransitive>false</excludeTransitive>
-                    <stripVersion>true</stripVersion>
-                    <excludeTransitive>false</excludeTransitive>
-                    <stripVersion>false</stripVersion>
-                    <artifactItems>
-                        <dependency>
-                            <groupId>com.jobxhub</groupId>
-                            <artifactId>jobx-executor</artifactId>
-                            <version>${project.version}</version>
-                            <type>so</type>
-                            <destFileName>executor.so</destFileName>
-                            <outputDirectory>${project.build.directory}/bin</outputDirectory>
-                        </dependency>
-                    </artifactItems>
-                </configuration>
-            </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
