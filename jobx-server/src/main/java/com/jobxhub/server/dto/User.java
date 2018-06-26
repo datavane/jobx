@@ -21,7 +21,6 @@
 package com.jobxhub.server.dto;
 
 import com.google.common.base.Function;
-import com.jobxhub.common.util.CommonUtils;
 import com.jobxhub.server.domain.UserBean;
 import org.springframework.beans.BeanUtils;
 
