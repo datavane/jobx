@@ -15,7 +15,6 @@
         <module>jobx-examples</module>
         <module>jobx-api</module>
         <module>jobx-agent</module>
-        <module>jobx-executor</module>
         <module>jobx-server</module>
     </modules>
     <packaging>pom</packaging>
@@ -116,13 +115,6 @@
                 <groupId>com.jobxhub</groupId>
                 <artifactId>jobx-rpc</artifactId>
                 <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.jobxhub</groupId>
-                <artifactId>jobx-executor</artifactId>
-                <version>${project.version}</version>
-                <type>so</type>
             </dependency>
 
             <dependency>

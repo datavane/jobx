@@ -24,13 +24,6 @@
             <artifactId>jobx-rpc</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.jobxhub</groupId>
-            <artifactId>jobx-executor</artifactId>
-            <version>${project.version}</version>
-            <type>so</type>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>com.corundumstudio.socketio</groupId>
             <artifactId>netty-socketio</artifactId>
         </dependency>
