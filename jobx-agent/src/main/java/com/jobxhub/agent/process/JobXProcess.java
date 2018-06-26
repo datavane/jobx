@@ -290,7 +290,7 @@ public class JobXProcess {
                 Field field = ReflectUtils.getField(process.getClass(), "pid");
                 return field.getInt(process);
             }else if(CommonUtils.isWindows()) {
-                Field field = process.getClass().getDeclaredField("handle");
+                Field field = ReflectUtils.getField(process.getClass(), "handle");
                 field.setAccessible(true);
                 long handl =field.getLong(process);
                 Kernel32 kernel = Kernel32.INSTANCE;
