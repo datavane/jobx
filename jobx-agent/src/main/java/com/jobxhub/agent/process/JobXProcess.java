@@ -27,6 +27,9 @@ import com.jobxhub.common.logging.LoggerFactory;
 import com.jobxhub.common.util.CommonUtils;
 import com.jobxhub.common.util.IOUtils;
 import com.jobxhub.common.util.ReflectUtils;
+import com.sun.jna.Pointer;
+import com.sun.jna.platform.win32.Kernel32;
+import com.sun.jna.platform.win32.WinNT;
 import org.apache.log4j.*;
 
 import java.io.File;
@@ -54,9 +57,10 @@ public class JobXProcess {
     private final int timeout;
     private final CountDownLatch startupLatch;
     private final CountDownLatch completeLatch;
-    private volatile int processId;
     private File logFile;
+    private volatile Integer processId;
     private volatile Process process;
+
     private String execUser;
     private final String runAsUserBinary = Constants.JOBX_EXECUTE_AS_USER_LIB;
 
@@ -95,19 +99,16 @@ public class JobXProcess {
             this.watchTimeOut();
             this.process = builder.start();
             this.processId = processId(this.process);
-            if (this.processId == 0) {
+            if (processId == null) {
                 this.logger.debug("[JobX]Spawned thread with unknown process id");
             } else {
-                this.logger.debug("[JobX]Spawned thread with process id " + this.processId);
+                this.logger.debug("[JobX]Spawned thread with process id " + processId);
             }
-
             this.startupLatch.countDown();
-
             ProcessLogger outputLogger = ProcessLogger.getLoger(this.process.getInputStream(), this.processLogger, Level.INFO);
             ProcessLogger errorLogger = ProcessLogger.getLoger(this.process.getErrorStream(), this.processLogger, Level.ERROR);
             outputLogger.start();
             errorLogger.start();
-
             try {
                 exitCode = this.process.waitFor();
             } catch (InterruptedException e) {
@@ -149,7 +150,7 @@ public class JobXProcess {
                 @Override
                 public void run() {
                     //kill job...
-                    hardKill();
+                    kill();
                     timer.cancel();
                 }
             }, timeout * 60 * 1000);
@@ -201,9 +202,23 @@ public class JobXProcess {
      *
      * @return The process id or -1 if it cannot be fetched
      */
-    public int getProcessId() {
+    public int getProcessId(String pid) {
         checkStarted();
         return this.processId;
+    }
+
+    public void kill() {
+        if (CommonUtils.isUnix()) {
+            try {
+                boolean success = softKill(1000*5,TimeUnit.SECONDS);
+                if (success) {
+                    return;
+                }
+            }catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        hardKill();
     }
 
     /**
@@ -213,7 +228,7 @@ public class JobXProcess {
      * @param unit The time unit
      * @return true iff this soft kill kills the process in the given wait time.
      */
-    public boolean softKill(long time, TimeUnit unit)
+    private boolean softKill(long time, TimeUnit unit)
             throws InterruptedException {
         checkStarted();
         if (this.processId != 0 && isStarted()) {
@@ -243,21 +258,29 @@ public class JobXProcess {
     /**
      * Force kill this process
      */
-    public void hardKill() {
+    private void hardKill() {
         checkStarted();
         if (isRunning()) {
-            if (this.processId != 0) {
+            if (this.processId != null) {
                 try {
-                    if (isRunAsUser()) {
-                        String cmd =
-                                String.format("%s %s %s -9 %d", this.runAsUserBinary,
-                                        this.execUser, KILL_COMMAND, this.processId);
-                        Runtime.getRuntime().exec(cmd);
-                    } else {
-                        String cmd = String.format("%s -9 %d", KILL_COMMAND, this.processId);
-                        Runtime.getRuntime().exec(cmd);
+                    String cmd = "";
+                    if (CommonUtils.isUnix()) {
+                        if (isRunAsUser()) {
+                            cmd = String.format("%s %s %s -9 %d",
+                                    this.runAsUserBinary,
+                                    this.execUser, KILL_COMMAND,
+                                    this.processId);
+                        } else {
+                            cmd = String.format("%s -9 %d", KILL_COMMAND, this.processId);
+                        }
+                    }else if(CommonUtils.isWindows()) {
+                        cmd = String.format("cmd.exe /c taskkill /PID %s /F /T ",this.processId) ;
                     }
-                } catch (IOException e) {
+                    Runtime runtime =Runtime.getRuntime();
+                    Process process = runtime.exec(cmd);
+                    process.waitFor();
+                    process.destroy();
+                }catch (Exception e) {
                     this.processLogger.error("[JobX]Kill attempt failed.", e);
                 }
             }
@@ -271,11 +294,20 @@ public class JobXProcess {
      * @return The id of the process
      */
     private int processId(Process process) {
-        int processId = 0;
         try {
-            Field field = ReflectUtils.getField(process.getClass(), "pid");
-            processId = field.getInt(process);
-        } catch (Throwable e) {
+            if (CommonUtils.isUnix()) {
+                Field field = ReflectUtils.getField(process.getClass(), "pid");
+                return field.getInt(process);
+            }else if(CommonUtils.isWindows()) {
+                Field field = process.getClass().getDeclaredField("handle");
+                field.setAccessible(true);
+                long handl =field.getLong(process);
+                Kernel32 kernel = Kernel32.INSTANCE;
+                WinNT.HANDLE handle = new WinNT.HANDLE();
+                handle.setPointer(Pointer.createConstant(handl));
+                return kernel.GetProcessId(handle);
+            }
+        }catch (Exception e) {
             e.printStackTrace();
         }
         return processId;
