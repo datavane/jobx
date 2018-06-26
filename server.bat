@@ -118,55 +118,61 @@ set "JOBX_BASE=%JOBX_HOME%"
 
 @REM #################################################################################################
 set APP_ARTIFACT=jobx-server
-set APP_VERSION="1.2.0-RELEASE";
+set APP_VERSION=1.2.0-RELEASE
 set APP_WAR_NAME=%APP_ARTIFACT%-%APP_VERSION%.war
-set MAVEN_TARGET_WAR="%WORK_DIR%"/%APP_ARTIFACT%/target/%APP_WAR_NAME%
-set DIST_PATH=%WORK_DIR%/dist/
-set DEPLOY_PATH=${WORK_DIR}/dist/jobx-server
-
+set MAVEN_TARGET_WAR=%WORK_DIR%\%APP_ARTIFACT%\target\%APP_WAR_NAME%
+set DIST_PATH=%WORK_DIR%\dist
+set DEPLOY_PATH=%WORK_DIR%\dist\jobx-server
+set CONTAINER_PATH=%DEPLOY_PATH%\container
 @REM #################################################################################################
 @REM 先检查dist下是否有war包
-if exist %DIST_PATH%/%APP_WAR_NAME% (
+
+if exist "%DIST_PATH%\%APP_WAR_NAME%" goto initEnv
+@REM dist下没有war包则检查server的target下是否有war包.
+
+if exist "%MAVEN_TARGET_WAR%" (
+    copy %MAVEN_TARGET_WAR% %DIST_PATH%
     goto initEnv
 ) else (
-    @REM dist下没有war包则检查server的target下是否有war包.
-   if exist %MAVEN_TARGET_WAR% (
-        cp %MAVEN_TARGET_WAR% %DIST_PATH%
-        goto initEnv
-   ) else (
-        echo "[JobX] please build project first!"
-        goto exit
-   )
-)
-
-if exist %DEPLOY_PATH% (
-    rd %DEPLOY_PATH%
-)else (
-    md %DEPLOY_PATH%
+    echo [JobX] please build project first!
+    goto exit
 )
 
 :initEnv
-cp %DIST_PATH%\%APP_WAR_NAME% %DEPLOY_PATH%
-cd %DEPLOY_PATH%
-%_RUNJAR% xvf %APP_WAR_NAME%
-del %DEPLOY_PATH%\%APP_WAR_NAME%
-cp -r %WORK_DIR%\%APP_ARTIFACT%\container %DEPLOY_PATH%
-set LOG_PATH=%WORK_DIR%\container\logs
+if not exist "%DEPLOY_PATH%" (
+    mkdir %DEPLOY_PATH%
+    copy %DIST_PATH%\%APP_WAR_NAME% %DEPLOY_PATH%
+    cd %DEPLOY_PATH%
+    %_RUNJAR% xvf %APP_WAR_NAME% 1>nul
+    del %DEPLOY_PATH%\%APP_WAR_NAME%
+)
+
+if not exist "%CONTAINER_PATH%" (
+    mkdir %CONTAINER_PATH%
+    xcopy %WORK_DIR%\%APP_ARTIFACT%\container %CONTAINER_PATH% /E 1>nul
+)
+
+set LOG_PATH=%CONTAINER_PATH%\logs
 if exist %LOG_PATH% (
     set LOG_PATH=%LOG_PATH%\jobx.out
 )else (
     md %LOG_PATH%
     set LOG_PATH=%LOG_PATH%\jobx.out
 )
+
+if "%CLASSPATH%" == "" goto emptyClasspath
+set CLASSPATH=%CLASSPATH%;
+:emptyClasspath
+set CLASSPATH=%CLASSPATH%%DEPLOY_PATH%\WEB-INF\classes
 goto doStart
 
 :doStart
 if "%TITLE%" == "" set TITLE=JobX-Server
-set EXECJAVA=start "%TITLE%" %_RUNJAVA%
+@REM set EXECJAVA=start "%TITLE%" %_RUNJAVA%
 set MAIN=com.jobxhub.server.bootstrap.Startup
 set JOBX_LAUNCHER="tomcat";
 set JOBX_PORT=8090
-%EXECJAVA% ^
+%_RUNJAVA% ^
     -classpath "%CLASSPATH%" ^
     -Dserver.launcher=%JOBX_LAUNCHER% ^
     -Dserver.port=%JOBX_PORT% ^
