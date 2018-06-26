@@ -164,6 +164,7 @@ if "%CLASSPATH%" == "" goto emptyClasspath
 set CLASSPATH=%CLASSPATH%;
 :emptyClasspath
 set CLASSPATH=%CLASSPATH%%DEPLOY_PATH%\WEB-INF\classes
+echo %CLASSPATH%
 goto doStart
 
 :doStart
