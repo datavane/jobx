@@ -25,7 +25,7 @@
                         <source>
                             <directory>src/main/c</directory>
                             <fileNames>
-                                <fileName>jobx-executor.c</fileName>
+                                <fileName>executor.c</fileName>
                             </fileNames>
                         </source>
                     </sources>
