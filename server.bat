@@ -127,12 +127,12 @@ set DEPLOY_PATH=${WORK_DIR}/dist/jobx-server
 @REM #################################################################################################
 @REM 先检查dist下是否有war包
 if exist %DIST_PATH%/%APP_WAR_NAME% (
-    goto initEvn
+    goto initEnv
 ) else (
     @REM dist下没有war包则检查server的target下是否有war包.
    if exist %MAVEN_TARGET_WAR% (
         cp %MAVEN_TARGET_WAR% %DIST_PATH%
-        goto initEvn
+        goto initEnv
    ) else (
         echo "[JobX] please build project first!"
         goto exit
@@ -145,17 +145,19 @@ if exist %DEPLOY_PATH% (
     md %DEPLOY_PATH%
 )
 
-:initEvn
+:initEnv
 cp %DIST_PATH%\%APP_WAR_NAME% %DEPLOY_PATH%
 cd %DEPLOY_PATH%
 %_RUNJAR% xvf %APP_WAR_NAME%
 del %DEPLOY_PATH%\%APP_WAR_NAME%
 cp -r %WORK_DIR%\%APP_ARTIFACT%\container %DEPLOY_PATH%
 set LOG_PATH=%WORK_DIR%\container\logs
-if [ ! -d "%LOG_PATH%" ] ; then
-  md -p %LOG_PATH%
-fi
-set LOG_PATH=%LOG_PATH%\jobx.out
+if exist %LOG_PATH% (
+    set LOG_PATH=%LOG_PATH%\jobx.out
+)else (
+    md %LOG_PATH%
+    set LOG_PATH=%LOG_PATH%\jobx.out
+)
 goto doStart
 
 :doStart
