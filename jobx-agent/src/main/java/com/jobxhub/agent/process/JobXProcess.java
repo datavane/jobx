@@ -197,16 +197,6 @@ public class JobXProcess {
         this.startupLatch.await();
     }
 
-    /**
-     * Get the process id for this process, if it has started.
-     *
-     * @return The process id or -1 if it cannot be fetched
-     */
-    public int getProcessId(String pid) {
-        checkStarted();
-        return this.processId;
-    }
-
     public void kill() {
         if (CommonUtils.isUnix()) {
             try {
@@ -295,6 +285,7 @@ public class JobXProcess {
      */
     private int processId(Process process) {
         try {
+            checkStarted();
             if (CommonUtils.isUnix()) {
                 Field field = ReflectUtils.getField(process.getClass(), "pid");
                 return field.getInt(process);
@@ -346,10 +337,6 @@ public class JobXProcess {
      */
     public boolean isRunAsUser() {
         return CommonUtils.isLinux() && CommonUtils.notEmpty(execUser);
-    }
-
-    public String getRunAsUser() {
-        return this.execUser;
     }
 
     private Logger getLogger(String name) {
