@@ -133,7 +133,7 @@ echo Using JOBX_BASE:   "%JOBX_BASE%"
 echo Using JOBX_HOME:   "%JOBX_HOME%"
 echo Using JOBX_TMPDIR: "%JOBX_TMPDIR%"
 
-if "%TITLE%" == "" set TITLE=JobX
+if "%TITLE%" == "" set TITLE=JobX-Agent
 set _EXECJAVA=start "%TITLE%" %_RUNJAVA%
 set MAINCLASS=com.jobxhub.agent.bootstrap.JobXAgent
 

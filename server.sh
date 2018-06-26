@@ -103,22 +103,22 @@ done
 # Get standard environment variables
 PRGDIR=`dirname "$PRG"`
 
-WORKDIR=`cd "$PRGDIR" >/dev/null; pwd`;
+WORK_DIR=`cd "$PRGDIR" >/dev/null; pwd`;
 
 # Get standard environment variables
 ###############################################################################################
 APP_ARTIFACT=jobx-server
 APP_VERSION="1.2.0-RELEASE";
 APP_WAR_NAME=${APP_ARTIFACT}-${APP_VERSION}.war
-MAVEN_TARGET_WAR="${WORKDIR}"/${APP_ARTIFACT}/target/${APP_WAR_NAME}
-DIST_PATH=${WORKDIR}/dist/
+MAVEN_TARGET_WAR="${WORK_DIR}"/${APP_ARTIFACT}/target/${APP_WAR_NAME}
+DIST_PATH=${WORK_DIR}/dist/
 ###############################################################################################
 
 [ ! -d "${DIST_PATH}" ] && mkdir -p "${DIST_PATH}"
 
-DEPLOY_PATH=${WORKDIR}/dist/jobx-server
+DEPLOY_PATH=${WORK_DIR}/dist/jobx-server
 
-STARTUP_SHELL=${WORKDIR}/${APP_ARTIFACT}/startup.sh
+STARTUP_SHELL=${WORK_DIR}/${APP_ARTIFACT}/startup.sh
 
 #先检查dist下是否有war包
 if [ ! -f "${DIST_PATH}/${APP_WAR_NAME}" ] ; then
@@ -137,7 +137,7 @@ fi
 cp ${DIST_PATH}/${APP_WAR_NAME} ${DEPLOY_PATH} && cd ${DEPLOY_PATH} && jar xvf ${APP_WAR_NAME} >/dev/null 2>&1 && rm -rf ${DEPLOY_PATH}/${APP_WAR_NAME}
 
 #copy jars...
-cp -r ${WORKDIR}/${APP_ARTIFACT}/container ${DEPLOY_PATH}
+cp -r ${WORK_DIR}/${APP_ARTIFACT}/container ${DEPLOY_PATH}
 
 #copy startup.sh
 cp  ${STARTUP_SHELL} ${DEPLOY_PATH} && chmod +x ${DEPLOY_PATH}/startup.sh >/dev/null 2>&1
