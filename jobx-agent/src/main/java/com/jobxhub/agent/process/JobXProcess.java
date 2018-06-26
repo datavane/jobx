@@ -153,7 +153,7 @@ public class JobXProcess {
                     kill();
                     timer.cancel();
                 }
-            }, timeout * 60 * 1000);
+            }, 0,timeout * 60 * 1000);
         }
     }
 
