@@ -98,7 +98,7 @@ public class JobXProcess {
         try {
             this.watchTimeOut();
             this.process = builder.start();
-            this.processId = processId(this.process);
+            this.processId = getProcessId();
             if (processId == null) {
                 this.logger.debug("[JobX]Spawned thread with unknown process id");
             } else {
@@ -283,25 +283,26 @@ public class JobXProcess {
      *
      * @return The id of the process
      */
-    private int processId(Process process) {
+    private Integer getProcessId() {
         try {
             checkStarted();
+            if (this.process == null) return null;
             if (CommonUtils.isUnix()) {
-                Field field = ReflectUtils.getField(process.getClass(), "pid");
-                return field.getInt(process);
+                Field field = ReflectUtils.getField(this.process.getClass(), "pid");
+                return field.getInt(this.process);
             }else if(CommonUtils.isWindows()) {
-                Field field = ReflectUtils.getField(process.getClass(), "handle");
+                Field field = ReflectUtils.getField(this.process.getClass(), "handle");
                 field.setAccessible(true);
-                long handl =field.getLong(process);
                 Kernel32 kernel = Kernel32.INSTANCE;
                 WinNT.HANDLE handle = new WinNT.HANDLE();
+                long handl = field.getLong(this.process);
                 handle.setPointer(Pointer.createConstant(handl));
                 return kernel.GetProcessId(handle);
             }
         }catch (Exception e) {
             e.printStackTrace();
         }
-        return processId;
+        return null;
     }
 
     /**
