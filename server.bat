@@ -121,15 +121,14 @@ set APP_ARTIFACT=jobx-server
 set APP_VERSION=1.2.0-RELEASE
 set APP_WAR_NAME=%APP_ARTIFACT%-%APP_VERSION%.war
 set MAVEN_TARGET_WAR=%WORK_DIR%\%APP_ARTIFACT%\target\%APP_WAR_NAME%
-set DIST_PATH=%WORK_DIR%\dist
-set DEPLOY_PATH=%WORK_DIR%\dist\jobx-server
+set DIST_PATH=%WORK_DIR%dist
+set DEPLOY_PATH=%WORK_DIR%dist\jobx-server
 set CONTAINER_PATH=%DEPLOY_PATH%\container
 @REM #################################################################################################
 @REM 先检查dist下是否有war包
 
 if exist "%DIST_PATH%\%APP_WAR_NAME%" goto initEnv
 @REM dist下没有war包则检查server的target下是否有war包.
-
 if exist "%MAVEN_TARGET_WAR%" (
     copy %MAVEN_TARGET_WAR% %DIST_PATH%
     goto initEnv
@@ -160,24 +159,27 @@ if exist %LOG_PATH% (
     set LOG_PATH=%LOG_PATH%\jobx.out
 )
 
-if "%CLASSPATH%" == "" goto emptyClasspath
-set CLASSPATH=%CLASSPATH%;
-:emptyClasspath
-set CLASSPATH=%CLASSPATH%%DEPLOY_PATH%\WEB-INF\classes
-echo %CLASSPATH%
+set jar_dir=%DEPLOY_PATH%\WEB-INF\lib
+setLocal EnableDelayedExpansion
+set CLASSPATH="%CLASSPATH%;
+for /R %jar_dir% %%a in (*.jar) do set CLASSPATH=!CLASSPATH!;%%a
+set CLASSPATH=!CLASSPATH!;%DEPLOY_PATH%\WEB-INF\classes"
 goto doStart
 
 :doStart
 if "%TITLE%" == "" set TITLE=JobX-Server
-@REM set EXECJAVA=start "%TITLE%" %_RUNJAVA%
+set EXECJAVA=start "%TITLE%" %_RUNJAVA%
 set MAIN=com.jobxhub.server.bootstrap.Startup
-set JOBX_LAUNCHER="tomcat";
+set JOBX_LAUNCHER=tomcat
 set JOBX_PORT=8090
+cd %DEPLOY_PATH%
 %_RUNJAVA% ^
     -classpath "%CLASSPATH%" ^
-    -Dserver.launcher=%JOBX_LAUNCHER% ^
-    -Dserver.port=%JOBX_PORT% ^
+    -Dserver.launcher="%JOBX_LAUNCHER%" ^
+    -Dserver.port="%JOBX_PORT%" ^
     %MAIN% start >> %LOG_PATH%
+
+echo Starting @ %JOBX_PORT%
 goto end
 
 :exit
