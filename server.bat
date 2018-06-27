@@ -28,16 +28,6 @@
 
 @REM In debug mode we need a real JDK (JAVA_HOME)
 
-echo\
-echo                                       _______
-echo     /\   _________       ______  _____   /  /
-echo    (())  ______  / ________   /   ___  \/  /
-echo     \/   ___ _  / _  __ \_   __ \  ___    /
-echo          / /_/ /  / /_/ /   /_/ /  __   . \
-echo          \____/   \____/ /_.___/  __   / \_\__
-echo                                 _____ /
-echo\
-
 if ""%1"" == ""debug"" goto needJavaHome
 @REM Otherwise either JRE or JDK are fine
 if not "%JRE_HOME%" == "" goto gotJreHome
@@ -120,17 +110,14 @@ set "JOBX_BASE=%JOBX_HOME%"
 set APP_ARTIFACT=jobx-server
 set APP_VERSION=1.2.0-RELEASE
 set APP_WAR_NAME=%APP_ARTIFACT%-%APP_VERSION%.war
-set MAVEN_TARGET_WAR=%WORK_DIR%\%APP_ARTIFACT%\target\%APP_WAR_NAME%
-set DIST_PATH=%WORK_DIR%\dist
-set DEPLOY_PATH=%WORK_DIR%\dist\jobx-server
+set MAVEN_TARGET_WAR=%JOBX_HOME%%APP_ARTIFACT%\target\%APP_WAR_NAME%
+set DIST_PATH=%JOBX_HOME%dist
+set DEPLOY_PATH=%DIST_PATH%\%APP_ARTIFACT%
 set CONTAINER_PATH=%DEPLOY_PATH%\container
-set STARTUP_SHELL=%WORK_DIR%\%APP_ARTIFACT%\startup.bat
-set EXECUTABLE=%DEPLOY_PATH%\startup.bat
 @REM #################################################################################################
-@REM 先检查dist下是否有war包
 
 if exist "%DIST_PATH%\%APP_WAR_NAME%" goto initEnv
-@REM dist下没有war包则检查server的target下是否有war包.
+if not exist %DIST_PATH% mkdir %DIST_PATH%
 if exist "%MAVEN_TARGET_WAR%" (
     copy %MAVEN_TARGET_WAR% %DIST_PATH%
     goto initEnv
@@ -147,29 +134,46 @@ if not exist "%DEPLOY_PATH%" (
     %_RUNJAR% xvf %APP_WAR_NAME% 1>nul
     del %DEPLOY_PATH%\%APP_WAR_NAME%
 )
+
+@REM cd to DEPLOY_PATH
+cd %DEPLOY_PATH%
+
 @REM copy container to deploy_path
 if not exist "%CONTAINER_PATH%" (
     mkdir %CONTAINER_PATH%
-    xcopy %WORK_DIR%\%APP_ARTIFACT%\container %CONTAINER_PATH% /E 1>nul
+    xcopy %JOBX_HOME%%APP_ARTIFACT%\container %CONTAINER_PATH% /E 1>nul
 )
+@REM create log
+set LOG_PATH=%CONTAINER_PATH%\logs
+if exist %LOG_PATH% (
+    set LOG_PATH=%LOG_PATH%\jobx.out
+)else (
+    md %LOG_PATH%
+    set LOG_PATH=%LOG_PATH%\jobx.out
+)
+@REM set classpath
+set jar_dir=%DEPLOY_PATH%\WEB-INF\lib
+setLocal EnableDelayedExpansion
+set CLASSPATH="%CLASSPATH%;
+for /R %jar_dir% %%a in (*.jar) do set CLASSPATH=!CLASSPATH!;%%a
+set CLASSPATH=!CLASSPATH!;%DEPLOY_PATH%\WEB-INF\classes"
+goto doStart
 
-@REM copy startup.sh
-copy %STARTUP_SHELL% %DEPLOY_PATH%
-
-@REM startup
-if exist "%EXECUTABLE%" goto okExec
-echo Cannot find "%EXECUTABLE%"
-echo This file is needed to run this program
-goto exit
-
-:okExec
-call "%EXECUTABLE%" start
-
-:end
-
+:doStart
+if "%TITLE%" == "" set TITLE=JobX-Server
+set EXECJAVA=start "%TITLE%" %_RUNJAVA%
+set MAIN="com.jobxhub.server.bootstrap.Startup"
+set JOBX_LAUNCHER=tomcat
+set JOBX_PORT=8090
+%EXECJAVA% ^
+    -classpath "%CLASSPATH%" ^
+    -Dserver.launcher="%JOBX_LAUNCHER%" ^
+    -Dserver.port="%JOBX_PORT%" ^
+    %MAIN% start >> %LOG_PATH%
+goto end
 
 :exit
-exit /b 1
+exit 1
 
 :end
-exit /b 0
+exit 0

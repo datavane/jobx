@@ -42,7 +42,7 @@ call "%EXECUTABLE%" start
 :end
 
 :exit
-exit /b 1
+exit 1
 
 :end
-exit /b 0
+exit 0

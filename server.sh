@@ -63,6 +63,10 @@ if [ -z "$RUNJAVA" ]; then
   RUNJAVA="$JAVA_HOME"/bin/java
 fi
 
+if [ -z "$RUNJAR" ]; then
+  RUNJAR="$JAVA_HOME"/bin/jar
+fi
+
 #check java exists.
 $RUNJAVA >/dev/null 2>&1
 
@@ -110,15 +114,13 @@ WORK_DIR=`cd "$PRGDIR" >/dev/null; pwd`;
 APP_ARTIFACT=jobx-server
 APP_VERSION="1.2.0-RELEASE";
 APP_WAR_NAME=${APP_ARTIFACT}-${APP_VERSION}.war
-MAVEN_TARGET_WAR="${WORK_DIR}"/${APP_ARTIFACT}/target/${APP_WAR_NAME}
+MAVEN_TARGET_WAR=${WORK_DIR}/${APP_ARTIFACT}/target/${APP_WAR_NAME}
 DIST_PATH=${WORK_DIR}/dist/
+DEPLOY_PATH=${DIST_PATH}${APP_ARTIFACT}
+LIB_PATH=${DEPLOY_PATH}/WEB-INF/lib
+CONTAINER_PATH=${DEPLOY_PATH}/container
+LOG_PATH=${CONTAINER_PATH}/logs
 ###############################################################################################
-
-[ ! -d "${DIST_PATH}" ] && mkdir -p "${DIST_PATH}"
-
-DEPLOY_PATH=${WORK_DIR}/dist/jobx-server
-
-STARTUP_SHELL=${WORK_DIR}/${APP_ARTIFACT}/startup.sh
 
 #先检查dist下是否有war包
 if [ ! -f "${DIST_PATH}/${APP_WAR_NAME}" ] ; then
@@ -130,35 +132,61 @@ if [ ! -f "${DIST_PATH}/${APP_WAR_NAME}" ] ; then
       cp ${MAVEN_TARGET_WAR} ${DIST_PATH};
    fi
 fi
+if [ ! -f "${DEPLOY_PATH}" ] ; then
+    mkdir -p ${DEPLOY_PATH}
+    # unpackage war to dist
+    cp ${DIST_PATH}/${APP_WAR_NAME} ${DEPLOY_PATH}
+    cd ${DEPLOY_PATH}
+    ${RUNJAR} xvf ${APP_WAR_NAME} >/dev/null 2>&1
+    rm -rf ${DEPLOY_PATH}/${APP_WAR_NAME}
+    #copy jars...
+    cp -r ${WORK_DIR}/${APP_ARTIFACT}/container ${DEPLOY_PATH}
+fi
+if [ ! -d "${LOG_PATH}" ] ; then
+  mkdir -p ${LOG_PATH}
+fi
+LOG_PATH=${LOG_PATH}/jobx.out
 
-[ -d "${DEPLOY_PATH}" ] && rm -rf ${DEPLOY_PATH}/* || mkdir -p ${DEPLOY_PATH}
-
-# unpackage war to dist
-cp ${DIST_PATH}/${APP_WAR_NAME} ${DEPLOY_PATH} && cd ${DEPLOY_PATH} && jar xvf ${APP_WAR_NAME} >/dev/null 2>&1 && rm -rf ${DEPLOY_PATH}/${APP_WAR_NAME}
-
-#copy jars...
-cp -r ${WORK_DIR}/${APP_ARTIFACT}/container ${DEPLOY_PATH}
-
-#copy startup.sh
-cp  ${STARTUP_SHELL} ${DEPLOY_PATH} && chmod +x ${DEPLOY_PATH}/startup.sh >/dev/null 2>&1
-
-#startup
-EXECUTABLE=${DEPLOY_PATH}/startup.sh
-
-# Check that target executable exists
-if $os400; then
-  # -x will Only work on the os400 if the files are:
-  # 1. owned by the user
-  # 2. owned by the PRIMARY group of the user
-  # this will not work if the user belongs in secondary groups
-  eval
-else
-  if [ ! -x "$EXECUTABLE" ]; then
-    echo "Cannot find $EXECUTABLE"
-    echo "The file is absent or does not have execute permission"
-    echo "This file is needed to run this program"
-    exit 1
-  fi
+# Add jars to classpath
+if [ ! -z "$CLASSPATH" ] ; then
+  CLASSPATH="$CLASSPATH":
 fi
 
-exec "$EXECUTABLE" "$@"
+for jar in ${LIB_PATH}/*
+do
+  CLASSPATH="$CLASSPATH":"$jar"
+done
+CLASSPATH="$CLASSPATH":${DEPLOY_PATH}/WEB-INF/classes
+
+#default launcher
+[ -z "${JOBX_LAUNCHER}" ] && JOBX_LAUNCHER="tomcat";
+
+#server'port
+if [ $# -gt 0 ] ;then
+  JOBX_PORT=$1
+  if [ "$JOBX_PORT" -gt 0 ] 2>/dev/null ;then
+      if [ $JOBX_PORT -lt 0 ] || [ $JOBX_PORT -gt 65535 ];then
+         echo_r "server'port error,muse be between 0 and 65535!"
+      fi
+  else
+      echo_r "server'port bust be number."
+      exit 1;
+  fi
+fi
+[ -z "${JOBX_PORT}" ] && JOBX_PORT="20501";
+
+#start server....
+printf "[${BLUE_COLOR}jobx${RES}] ${WHITE_COLOR} server Starting @ [${GREEN_COLOR}${JOBX_PORT}${RES}].... ${RES}\n"
+
+MAIN="com.jobxhub.server.bootstrap.Startup"
+cd ${DEPLOY_PATH}
+eval "\"$RUNJAVA\"" \
+        -classpath "$CLASSPATH" \
+        -Dserver.launcher=${JOBX_LAUNCHER} \
+        -Dserver.port=${JOBX_PORT} \
+        ${MAIN} $1 >> ${LOG_PATH} 2>&1 "&";
+
+printf "[${BLUE_COLOR}jobx${RES}] ${WHITE_COLOR} please see log for more detail:${RES}${GREEN_COLOR} $LOG_PATH ${RES}\n"
+
+exit $?
+
