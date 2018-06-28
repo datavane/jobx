@@ -135,10 +135,10 @@ fi
 if [ ! -f "${DEPLOY_PATH}" ] ; then
     mkdir -p ${DEPLOY_PATH}
     # unpackage war to dist
-    cp ${DIST_PATH}/${APP_WAR_NAME} ${DEPLOY_PATH}
-    cd ${DEPLOY_PATH}
-    ${RUNJAR} xvf ${APP_WAR_NAME} >/dev/null 2>&1
-    rm -rf ${DEPLOY_PATH}/${APP_WAR_NAME}
+    cp ${DIST_PATH}/${APP_WAR_NAME} ${DEPLOY_PATH} &&
+    cd ${DEPLOY_PATH} &&
+    ${RUNJAR} xvf ${APP_WAR_NAME} >/dev/null 2>&1 &&
+    rm -rf ${DEPLOY_PATH}/${APP_WAR_NAME}  &&
     #copy jars...
     cp -r ${WORK_DIR}/${APP_ARTIFACT}/container ${DEPLOY_PATH}
 fi
@@ -180,11 +180,11 @@ printf "[${BLUE_COLOR}jobx${RES}] ${WHITE_COLOR} server Starting @ [${GREEN_COLO
 
 MAIN="com.jobxhub.server.bootstrap.Startup"
 cd ${DEPLOY_PATH}
-eval "\"$RUNJAVA\"" \
+eval "$RUNJAVA" \
         -classpath "$CLASSPATH" \
         -Dserver.launcher=${JOBX_LAUNCHER} \
         -Dserver.port=${JOBX_PORT} \
-        ${MAIN} $1 >> ${LOG_PATH} 2>&1 "&";
+        ${MAIN} $1 >> ${LOG_PATH} 2>&1 &
 
 printf "[${BLUE_COLOR}jobx${RES}] ${WHITE_COLOR} please see log for more detail:${RES}${GREEN_COLOR} $LOG_PATH ${RES}\n"
 
