@@ -163,13 +163,12 @@ public class JobXProcess {
      * @return String
      */
     public String getLogMessage() {
-        String log = IOUtils.readText(this.logFile, Constants.CHARSET_UTF8);
+        String log = IOUtils.readText(this.logFile, CommonUtils.isWindows()?Constants.CHARSET_GBK:Constants.CHARSET_UTF8);
         if (CommonUtils.notEmpty(log)) {
             return log.split(IOUtils.FIELD_TERMINATED_BY)[0];
         }
         return null;
     }
-
 
     public void deleteLog() {
         if (this.logFile.exists()) {
@@ -198,17 +197,19 @@ public class JobXProcess {
     }
 
     public void kill() {
-        if (CommonUtils.isUnix()) {
-            try {
-                boolean success = softKill(1000*5,TimeUnit.SECONDS);
-                if (success) {
-                    return;
+        if (isStarted()) {
+            if (CommonUtils.isUnix()) {
+                try {
+                    boolean success = softKill(1000*5,TimeUnit.SECONDS);
+                    if (success) {
+                        return;
+                    }
+                }catch (Exception e) {
+                    e.printStackTrace();
                 }
-            }catch (Exception e) {
-                e.printStackTrace();
             }
+            hardKill();
         }
-        hardKill();
     }
 
     /**
@@ -218,19 +219,17 @@ public class JobXProcess {
      * @param unit The time unit
      * @return true iff this soft kill kills the process in the given wait time.
      */
-    private boolean softKill(long time, TimeUnit unit)
-            throws InterruptedException {
-        checkStarted();
+    private boolean softKill(long time, TimeUnit unit) throws InterruptedException {
         if (this.processId != 0 && isStarted()) {
             try {
                 if (isRunAsUser()) {
                     String cmd = String.format(
-                                    "%s %s %s %d",
-                                    runAsUserBinary,
-                                    this.execUser,
-                                    KILL_COMMAND,
-                                    this.processId
-                            );
+                            "%s %s %s %d",
+                            runAsUserBinary,
+                            this.execUser,
+                            KILL_COMMAND,
+                            this.processId
+                    );
                     Runtime.getRuntime().exec(cmd);
                 } else {
                     String cmd = String.format("%s %d", KILL_COMMAND, this.processId);
@@ -249,7 +248,6 @@ public class JobXProcess {
      * Force kill this process
      */
     private void hardKill() {
-        checkStarted();
         if (isRunning()) {
             if (this.processId != null) {
                 try {
@@ -285,7 +283,6 @@ public class JobXProcess {
      */
     private Integer getProcessId() {
         try {
-            checkStarted();
             if (this.process == null) return null;
             if (CommonUtils.isUnix()) {
                 Field field = ReflectUtils.getField(this.process.getClass(), "pid");
@@ -341,17 +338,17 @@ public class JobXProcess {
     }
 
     private Logger getLogger(String name) {
-        Logger logger = Logger.getLogger(name);
-        logger.removeAllAppenders();
-        logger.setLevel(Level.INFO);
-        logger.setAdditivity(false);
         FileAppender appender = new RollingFileAppender();
+        appender.setEncoding(CommonUtils.isWindows()?Constants.CHARSET_GBK:Constants.CHARSET_UTF8);
+        appender.setFile(this.logFile.getAbsolutePath());
+        appender.setAppend(false);
         PatternLayout layout = new PatternLayout();
         appender.setLayout(layout);
-        appender.setFile(this.logFile.getAbsolutePath());
-        appender.setEncoding(Constants.CHARSET_UTF8);
-        appender.setAppend(false);
         appender.activateOptions();
+        Logger logger = Logger.getLogger(name);
+        logger.setLevel(Level.INFO);
+        logger.setAdditivity(false);
+        logger.removeAllAppenders();
         logger.addAppender(appender);
         return logger;
     }

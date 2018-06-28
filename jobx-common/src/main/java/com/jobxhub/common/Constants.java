@@ -154,7 +154,9 @@ public class Constants {
 
     public static final String PARAM_ANYHOST_VALUE = "0.0.0.0";
 
-    public static final String CHARSET_UTF8 = "utf-8";
+    public static final String CHARSET_GBK = "GBK";
+
+    public static final String CHARSET_UTF8 = "UTF-8";
 
     public static final int WEB_THREADPOOL_SIZE = 500;
 

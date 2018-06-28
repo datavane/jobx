@@ -24,8 +24,10 @@ package com.jobxhub.agent.util;
 import com.google.common.base.Joiner;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
+import java.nio.charset.Charset;
 
+import com.jobxhub.common.Constants;
+import com.jobxhub.common.util.CommonUtils;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
@@ -45,7 +47,7 @@ public class ProcessLogger extends Thread {
 
     public static ProcessLogger getLoger(InputStream inputStream, Logger logger, Level level) {
         return new ProcessLogger(
-                new InputStreamReader(inputStream, StandardCharsets.UTF_8),
+                new InputStreamReader(inputStream, Charset.forName(CommonUtils.isWindows()?Constants.CHARSET_GBK:Constants.CHARSET_UTF8)),
                 logger,
                 level,
                 30);

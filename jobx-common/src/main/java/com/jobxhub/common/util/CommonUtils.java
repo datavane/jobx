@@ -630,14 +630,12 @@ public abstract class CommonUtils implements Serializable {
         return sb.toString().substring(0, len);
     }
 
+    public static String getSystemCharset(){
+        return System.getProperty("file.encoding");
+    }
 
     public static void main(String[] args) {
-        Integer[] arr = new Integer[]{1, 2, 3, 4};
-        arr = arrayInsertIndex(arr, 0, 7);
-
-        for (Integer val : arr) {
-            System.out.println(val);
-        }
+        System.out.println(getSystemCharset());
     }
 
 
