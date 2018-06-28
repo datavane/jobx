@@ -24,6 +24,7 @@ import com.jobxhub.server.domain.TerminalBean;
 import com.jobxhub.server.tag.PageBean;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -41,7 +42,7 @@ public interface TerminalDao {
 
     void update(TerminalBean terminalBean);
 
-    void updateLoginTime(Long id);
+    void updateLoginTime(@Param("id")Long id,@Param("loginTime")Date date);
 
     void updateTheme(@Param("id") Long id,@Param("theme") String theme);
 

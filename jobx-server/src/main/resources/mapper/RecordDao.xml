@@ -49,7 +49,7 @@
 
     <select id="getByPageBean" resultMap="RecordBean">
         select <include refid="query_Record"/>,
-        case when r.status in (1,3,5,6) then r.end_time when r.status in (0,2,4) then NOW() end as end_time,
+        case when r.status in (1,3,5,6) then r.end_time when r.status in (0,2,4) then #{pager.filter.currTime} end as end_time,
         t.job_name,
         a.name as agent_name,
         a.host,
@@ -327,7 +327,7 @@
               #{recordId},
               #{message},
               #{startTime}
-        ON DUPLICATE KEY UPDATE message = values(message)
+        ON DUPLICATE KEY UPDATE message = values(message),start_time=values(start_time)
     </insert>
 
     <delete id="deleteMessage">

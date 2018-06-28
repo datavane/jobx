@@ -183,7 +183,7 @@
             #{successExit},
             #{timeout},
             #{token},
-            now(),
+            #{updateTime},
             #{createType}
         )
     </insert>
@@ -207,7 +207,7 @@
             success_exit  =     #{successExit},
             timeout       =     #{timeout},
             token         =     #{token},
-            update_time   =     now(),
+            update_time   =     #{updateTime},
             create_type   =     #{createType}
         where job_id      =     #{jobId}
 	</update>

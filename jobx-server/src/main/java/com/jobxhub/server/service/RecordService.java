@@ -50,6 +50,7 @@ public class RecordService {
     public void getPageBean(HttpSession session, PageBean<Record> pageBean,Record record,boolean status) {
         pageBean.put("record",record);
         pageBean.put("running",status);
+        pageBean.put("currTime",new Date());
         if (!JobXTools.isPermission(session)) {
             User user = JobXTools.getUser(session);
             pageBean.put("userId",user.getUserId());

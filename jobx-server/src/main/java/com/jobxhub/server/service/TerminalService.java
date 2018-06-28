@@ -201,7 +201,8 @@ public class TerminalService {
     }
 
     public void login(Long id) {
-        terminalDao.updateLoginTime(id);
+        Date date = new Date();
+        terminalDao.updateLoginTime(id,date);
     }
 
     public List<Terminal> getByUser(Long userId) {

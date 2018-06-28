@@ -87,7 +87,7 @@
         ) values (
             #{groupName},
             #{comment},
-            now(),
+            #{createTime},
             #{userId}
         )
     </insert>

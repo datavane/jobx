@@ -103,6 +103,7 @@ public class JobService {
     public void merge(Job job) {
         JobBean jobBean = JobBean.transfer.apply(job);
         if (job.getJobId() == null) {
+            jobBean.setUpdateTime(new Date());
             jobDao.save(jobBean);
             job.setJobId(jobBean.getJobId());
         } else {

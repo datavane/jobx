@@ -123,7 +123,7 @@
 
     <update id="updateLoginTime">
         update t_terminal
-        set login_time = now()
+        set login_time = #{loginTime}
         where id = #{id}
 	</update>
 
