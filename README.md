@@ -350,7 +350,7 @@ server {
    由于考虑到权限的问题,当前登录的用户不能随便指定任务的执行身份,需要超级管理员权限的用户(jobx)登录,在设置页面统一设置运行身份,多个运行身份用","分割,然后超级管理员在编辑用户
    为该用户指定可以执行的身份(可选择多个),这样用户在创建任务的时候就可以选择指定身份去执行了
 
- 2) executor.so:cannot execure binary file
+ 2) executor.so:cannot execute binary file
    需要授权agent/bin下面的所有文件777权限   
    > chmod 777 jobx-agent/bin/*
    如果授权完还提示这个错,则需要进入源码目录(JobX/jobx-executor/src/main/c/executor.c),手动gcc编译下executor.c文件,然后将编译完的文件命名成executor.so,放到jobx-agent/bin下
