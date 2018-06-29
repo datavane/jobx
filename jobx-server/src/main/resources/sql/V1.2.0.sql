@@ -100,6 +100,7 @@ create table `t_record` (
   `user_id` bigint(20),
   `job_id` bigint(20),
   `job_type` tinyint(1),
+  `job_name` varchar(50),
   `parent_id` bigint(20),
   `pid` varchar(64),
   `redo_num` int(10),

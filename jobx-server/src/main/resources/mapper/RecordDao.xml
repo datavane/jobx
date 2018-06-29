@@ -39,6 +39,7 @@
         r.user_id,
         r.job_id,
         r.job_type,
+        r.job_name,
         r.parent_id,
         r.pid,
         r.redo_num,
@@ -50,7 +51,6 @@
     <select id="getByPageBean" resultMap="RecordBean">
         select <include refid="query_Record"/>,
         case when r.status in (1,3,5,6) then r.end_time when r.status in (0,2,4) then #{pager.filter.currTime} end as end_time,
-        t.job_name,
         a.name as agent_name,
         a.host,
         t.cron_exp,
@@ -90,7 +90,7 @@
                 and r.exec_type = #{pager.filter.record.execType}
             </if>
 
-            <if test="pager.filter.record.jobName != null">
+            <if test="pager.filter.record.jobName != null and pager.filter.record.jobName !='' ">
                 and t.job_name like concat('%',#{pager.filter.record.jobName},'%')
             </if>
 
@@ -138,7 +138,7 @@
                 and r.exec_type = #{filter.record.execType}
             </if>
 
-            <if test="filter.record.jobName != null">
+            <if test="filter.record.jobName != null and filter.record.jobName !='' ">
                 and t.job_name like concat('%',#{filter.record.jobName},'%')
             </if>
         </if>
@@ -155,7 +155,6 @@
     <select id="getById" parameterType="java.lang.Long" resultMap="RecordBean">
         select <include refid="query_Record"/>,
         r.end_time,
-        t.job_name,
         a.name as agent_name,
         a.host,
         t.cron_exp,
@@ -228,7 +227,6 @@
     <select id="getRedoList" parameterType="java.lang.Long" resultMap="RecordBean">
         select <include refid="query_Record"/>,
         r.end_time,
-        t.job_name,
         a.name as agent_name,
         a.host,
         t.cron_exp,
@@ -271,6 +269,7 @@
             user_id,
             job_id,
             job_type,
+            job_name,
             exec_user,
             parent_id,
             pid,
@@ -288,6 +287,7 @@
             #{userId},
             #{jobId},
             #{jobType},
+            #{jobName},
             #{execUser},
             #{parentId},
             #{pid},

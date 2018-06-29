@@ -136,8 +136,10 @@ alter table `t_record` drop column `redo`;
 alter table `t_record` drop column `runCount`;
 alter table `t_record` drop column `message`;
 alter table `t_record` add column `exec_user` varchar(50);
+alter table `t_record` add column `job_name` varchar(50);
 alter table `t_record` add index qa_success(`success`);
 
+update `t_record` as r inner join `t_job` as t set r.job_name=t.job_name where r.job_id = t.job_id;
                      
 --t_user
 alter table `t_user` change column `userId` `user_id` bigint(20) auto_increment;
