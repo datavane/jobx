@@ -121,6 +121,16 @@ function Validata() {
             }
         },
 
+        agentId:function(){
+            if ($("#agentId").length>0) {
+                var agentId = $("#agentId").val();
+                if (!agentId) {
+                    jobx.tipError("#agentId", "请选择执行器");
+                    this.status = false;
+                }
+            }
+        },
+
         successExit: function () {
             var prefix = arguments[0] || "";
             var successExit = $("#successExit" + prefix).val();
@@ -232,6 +242,7 @@ function Validata() {
             if (jobType == 0) {
                 this.command();
                 this.platform();
+                this.agentId();
                 this.successExit();
             } else {
 
