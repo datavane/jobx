@@ -133,71 +133,74 @@ Browser IE10+
    
    #zookeeper
    jobx.registry=zookeeper://${zookeeper_host}:2181?bakup=${zookeeper_host1}:2181,${zookeeper_host2}:2181
-3):进入源码目录并执行编译:
-   cd jobx
-   sh build.sh
-编译完成的文件在build/dist下
-
-
-## jobx-agent 部署安装步骤
-
-1) 执行运行agent.sh即可 或者手动部署agent
-  
-    手动部署agent步骤
-    
-    将jobx-agent-${version}.tar.gz包拷贝到要管理任务的目标服务器,解包,会看到以下目录
-    ---bin/
-    |  startup.sh          #agent的启动脚本,调用的是jobx.sh来完成
-    |  shutdown.sh         #agent停止脚本，调用的是jobx.sh来完成
-    |  jobx.sh         #agent控制启动|停止的脚本
-    |  monitor.sh          #实时监控获取数据需要的脚本,由系统调度
-    |  kill.sh             #kill任务时需要的脚本,由系统调度
-    ---conf/
-       conf.properties     #agent配置文件 
-    |  log4j.properties    #log4j配置文件
-    ---lib/
-    | *.jar                #agent运行需要的jar文件
-    ---temp/
-    | *.sh                 #用于存放项目生成的零时文件的目录
-    ---logs
-    | jobx.out         #项目启动会产生的Log文件
-    
-    > tar -xzvf jobx-agent-${version}.tar.gz
-    1)修改conf/conf.properties里的配置信息
-        #zookepper注册中心
-        jobx.registry=zookeeper://${zookeeper_host}:2181
-        #agent Ip,确保server可以通过此ip访问到该agent(主要实现agent自动注册)
-        jobx.host=127.0.0.1
-    2)启动jobx-agent 进入jobx-agent/bin
-    > cd jobx-agent/bin
-    > sh startup.sh
-    这里可以接受两个参数，分别是服务启动的端口和密码(默认端口是:1577,默认密码:jobx)以及agent自动注册的url和密码 
-    如要指定参数启动命令如下:
-    > sh startup.sh -P10001 -p123456
-    参数说明:
-    -P (大写的p)为agent启动的端口，选填，如果不输入默认启动端口是1577
-    -p (小写的p)为当前agent的连接密码,选填，如果不输入默认连接该机器的密码是jobx
-    以下两个参数为agent自动注册需要的两个参数（选填）
-    该脚本启动之后agent就自动注册到server端了
-    更多详细的启动信息请查看logs/jobx.out
-    
-    3)停止jobx-agent 进入jobx-agent/bin 执行：
-    > cd jobx-agent/bin
-    > sh shutdown.sh
-
-```
-  
-## jobx-server 部署步骤:
-
-```
-1):编译好项目源码
-
-2):部署启动server
    
-  1) *nix平台执行 server.sh,window平台执行server.bat即可完成启动
+3):修改agent端配置信息
+   cd JobX/jobx-agent/src/conf/conf
+   
+   #zookepper注册中心
+   jobx.registry=zookeeper://127.0.0.1:2181   
 
+4):进入源码目录执行编译:
+   *nix平台执行 sh build.sh
+   window平台双击 build.bat
+   编译完成的文件在build/dist下
+
+5):启动agent
+    1）自动化部署
+        *nix平台:  执行 sh agent.sh
+        window平台: 需要进入jobx-agent/target下,解包jobx-agent-${version}.tar.gz到指定的位置,进入bin,执行startup.bat
+
+    2) 手动部署agent步骤
+    
+        将jobx-agent-${version}.tar.gz包拷贝到要管理任务的目标服务器,解包,会看到以下目录
+        ---bin/
+        |  startup.sh          #agent的启动脚本,调用的是jobx.sh来完成
+        |  shutdown.sh         #agent停止脚本，调用的是jobx.sh来完成
+        |  jobx.sh         #agent控制启动|停止的脚本
+        |  monitor.sh          #实时监控获取数据需要的脚本,由系统调度
+        |  kill.sh             #kill任务时需要的脚本,由系统调度
+        ---conf/
+           conf.properties     #agent配置文件 
+        |  log4j.properties    #log4j配置文件
+        ---lib/
+        | *.jar                #agent运行需要的jar文件
+        ---temp/
+        | *.sh                 #用于存放项目生成的零时文件的目录
+        ---logs
+        | jobx.out         #项目启动会产生的Log文件
+        
+        > tar -xzvf jobx-agent-${version}.tar.gz
+        1)修改conf/conf.properties里的配置信息
+            #zookepper注册中心
+            jobx.registry=zookeeper://${zookeeper_host}:2181
+            #agent Ip,确保server可以通过此ip访问到该agent(主要实现agent自动注册)
+            jobx.host=127.0.0.1
+        2)启动jobx-agent 进入jobx-agent/bin
+        > cd jobx-agent/bin
+        > sh startup.sh
+        这里可以接受两个参数，分别是服务启动的端口和密码(默认端口是:1577,默认密码:jobx)以及agent自动注册的url和密码 
+        如要指定参数启动命令如下:
+        > sh startup.sh -P10001 -p123456
+        参数说明:
+        -P (大写的p)为agent启动的端口，选填，如果不输入默认启动端口是1577
+        -p (小写的p)为当前agent的连接密码,选填，如果不输入默认连接该机器的密码是jobx
+        以下两个参数为agent自动注册需要的两个参数（选填）
+        该脚本启动之后agent就自动注册到server端了
+        更多详细的启动信息请查看logs/jobx.out
+        
+        3)停止jobx-agent 进入jobx-agent/bin 执行：
+        > cd jobx-agent/bin
+        > sh shutdown.sh
+
+
+6):启动server
+   
+  1) 自动化部署
+     *nix平台执行 server.sh
+     window平台执行server.bat即可完成启动
+     
   2) 手动发布 tomcat或者其他web服务器 
-  tomcat发布项目步骤:
+     tomcat发布项目步骤:
      找到build/dist/jobx-server.war
      tomcat部署有两种部署方式
      1):直接部署到webapps下:
@@ -283,9 +286,9 @@ Browser IE10+
            
         启动tomcat,打开浏览器以$ip:$port的方式访问,如:  http://192.168.0.188:8080   
         
-  不论哪种方式部署,第一次会自动创建表,默认初始用户名jobx,密码jobx,第一次登陆会提示修改密码.
+        不论哪种方式部署,第一次会自动创建表,默认初始用户名jobx,密码jobx,第一次登陆会提示修改密码.
       
-3):进入到jobx的管理端,如果agent也启动了,应该可以直接在server的执行器页面看到agent,则添加任务即可...
+  3):进入到jobx的管理端,如果agent也启动了,应该可以直接在server的执行器页面看到agent,则添加任务即可...
 
 ```  
 
