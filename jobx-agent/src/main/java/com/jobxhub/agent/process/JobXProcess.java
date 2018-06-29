@@ -248,29 +248,28 @@ public class JobXProcess {
      * Force kill this process
      */
     private void hardKill() {
-        if (isRunning()) {
-            if (this.processId != null) {
-                try {
-                    String cmd = "";
-                    if (CommonUtils.isUnix()) {
-                        if (isRunAsUser()) {
-                            cmd = String.format("%s %s %s -9 %d",
-                                    this.runAsUserBinary,
-                                    this.execUser, KILL_COMMAND,
-                                    this.processId);
-                        } else {
-                            cmd = String.format("%s -9 %d", KILL_COMMAND, this.processId);
-                        }
-                    }else if(CommonUtils.isWindows()) {
-                        cmd = String.format("cmd.exe /c taskkill /PID %s /F /T ",this.processId) ;
+        if ( isRunning() && this.processId != null ) {
+            try {
+                String cmd = "";
+                if (CommonUtils.isUnix()) {
+                    if (isRunAsUser()) {
+                        cmd = String.format("%s %s %s -9 %d",
+                                this.runAsUserBinary,
+                                this.execUser, KILL_COMMAND,
+                                this.processId);
+                    } else {
+                        cmd = String.format("%s -9 %d", KILL_COMMAND, this.processId);
                     }
-                    Runtime runtime =Runtime.getRuntime();
-                    Process process = runtime.exec(cmd);
-                    process.waitFor();
-                    process.destroy();
-                }catch (Exception e) {
-                    this.processLogger.error("[JobX]Kill attempt failed.", e);
+                }else if(CommonUtils.isWindows()) {
+                    cmd = String.format("cmd.exe /c taskkill /PID %s /F /T ",this.processId) ;
                 }
+                Runtime runtime =Runtime.getRuntime();
+                Process process = runtime.exec(cmd);
+                process.waitFor();
+                process.destroy();
+                this.processLogger.error("[JobX]Kill attempt successful.");
+            }catch (Exception e) {
+                this.processLogger.error("[JobX]Kill attempt failed.", e);
             }
             this.process.destroy();
         }

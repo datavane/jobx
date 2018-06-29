@@ -28,8 +28,6 @@ import com.jobxhub.common.job.Action;
 import com.jobxhub.common.job.Request;
 import com.jobxhub.common.job.RequestFile;
 import com.jobxhub.common.job.Response;
-import com.jobxhub.common.util.CommonUtils;
-import com.jobxhub.common.util.IOUtils;
 import com.jobxhub.rpc.InvokeCallback;
 import com.jobxhub.server.util.Parser;
 import com.jobxhub.server.job.JobXInvoker;
@@ -94,9 +92,7 @@ public class ExecuteService {
             @Override
             public void run() {
                 final Record record = new Record(job, execType,JobType.SIMPLE);
-
                 record.setCommand(Parser.parse(job));
-
                 InvokeCallback invokeCallback = new ExecuteCallback(job,execType,record);
                 try {
                     checkPing(job, record);
