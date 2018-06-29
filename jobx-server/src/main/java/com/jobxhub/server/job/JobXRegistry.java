@@ -103,12 +103,10 @@ public class JobXRegistry {
         List<Agent> agentList = this.agentService.getAll();
         if (CommonUtils.notEmpty(agentList)) {
             for (Agent agent : agentList) {
-                executeService.ping(agent,true);
+                if(agent.getStatus() == Constants.ConnStatus.DISCONNECTED.getValue()) {
+                    executeService.ping(agent,true);
+                }
             }
-        }
-
-        if (!Constants.JOBX_CLUSTER) {
-            return;
         }
 
         //扫描zookeeper里已有的agent,连接....

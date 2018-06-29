@@ -275,7 +275,7 @@ public class ExecuteService {
             }
 
             //处理agent失联之后上报的log...
-            if (!response.getResult().isEmpty()) {
+           /* if (!response.getResult().isEmpty()) {
                 Map<String,String> result = response.getResult();
                 for (Map.Entry<String,String> entry:result.entrySet()) {
                     if (entry.getKey().length() == 32) {
@@ -293,7 +293,7 @@ public class ExecuteService {
                         }
                     }
                 }
-            }
+            }*/
         }
 
         if (update) {
