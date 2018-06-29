@@ -259,43 +259,113 @@
     </select>
 
     <insert id="save" parameterType="com.jobxhub.server.domain.RecordBean" useGeneratedKeys="true" keyProperty="recordId">
-        insert into t_record (
-            agent_id,
-            command,
-            start_time,
-            end_time,
-            exec_type,
-            group_id,
-            user_id,
-            job_id,
-            job_type,
-            job_name,
-            exec_user,
-            parent_id,
-            pid,
-            redo_num,
-            return_code,
-            status,
-            success
-        ) values (
-            #{agentId},
-            #{command},
-            #{startTime},
-            #{endTime},
-            #{execType},
-            #{groupId},
-            #{userId},
-            #{jobId},
-            #{jobType},
-            #{jobName},
-            #{execUser},
-            #{parentId},
-            #{pid},
-            #{redoNum},
-            #{returnCode},
-            #{status},
-            #{success}
-        );
+        insert into t_record
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="agentId != null" >
+                agent_id,
+            </if>
+            <if test="command != null" >
+                command,
+            </if>
+            <if test="startTime != null" >
+                start_time,
+            </if>
+            <if test="endTime != null" >
+                end_time,
+            </if>
+            <if test="execType != null" >
+                exec_type,
+            </if>
+            <if test="groupId != null" >
+                group_id,
+            </if>
+            <if test="userId != null" >
+                user_id,
+            </if>
+            <if test="jobId != null" >
+                job_id,
+            </if>
+            <if test="jobType != null" >
+                job_type,
+            </if>
+            <if test="jobName != null" >
+                job_name,
+            </if>
+            <if test="execUser != null" >
+                exec_user,
+            </if>
+            <if test="parentId != null" >
+                parent_id,
+            </if>
+            <if test="pid != null" >
+                pid,
+            </if>
+            <if test="redoNum != null" >
+                redo_num,
+            </if>
+            <if test="returnCode != null" >
+                return_code,
+            </if>
+            <if test="status != null" >
+                status,
+            </if>
+            <if test="success != null" >
+                success
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="agentId != null" >
+                #{agentId},
+            </if>
+            <if test="command != null" >
+                #{command},
+            </if>
+            <if test="startTime != null" >
+                #{startTime},
+            </if>
+            <if test="endTime != null" >
+                #{endTime},
+            </if>
+            <if test="execType != null" >
+                #{execType},
+            </if>
+            <if test="groupId != null" >
+                #{groupId},
+            </if>
+            <if test="userId != null" >
+                #{userId},
+            </if>
+            <if test="jobId != null" >
+                #{jobId},
+            </if>
+            <if test="jobType != null" >
+                #{jobType},
+            </if>
+            <if test="jobName != null" >
+                #{jobName},
+            </if>
+            <if test="execUser != null" >
+                #{execUser},
+            </if>
+            <if test="parentId != null" >
+                #{parentId},
+            </if>
+            <if test="pid != null" >
+                #{pid},
+            </if>
+            <if test="redoNum != null" >
+                #{redoNum},
+            </if>
+            <if test="returnCode != null" >
+                #{returnCode},
+            </if>
+            <if test="status != null" >
+                #{status},
+            </if>
+            <if test="success != null" >
+                #{success}
+            </if>
+        </trim>
     </insert>
 
     <update id="update" parameterType="com.jobxhub.server.domain.RecordBean">

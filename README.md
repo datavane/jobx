@@ -193,9 +193,10 @@ Browser IE10+
 1):编译好项目源码
 
 2):部署启动server
-  由两种部署方式,  
-  1:自动部署执行server.sh即可,该项目已经内置了Tomcat和Jetty,要实现自动部署很简单,运行项目根路径下的server.sh即可完成启动(默认运行的是Tomcat)
-  2:手动发布 tomcat或者其他web服务器 
+   
+  1) *nix平台执行 server.sh,window平台执行server.bat即可完成启动
+
+  2) 手动发布 tomcat或者其他web服务器 
   tomcat发布项目步骤:
      找到build/dist/jobx-server.war
      tomcat部署有两种部署方式
@@ -340,6 +341,20 @@ server {
 
 }
 
+
+```
+
+## 常见问题:
+```
+ 1)创建作业运行身份无法选择？
+   由于考虑到权限的问题,当前登录的用户不能随便指定任务的执行身份,需要超级管理员权限的用户(jobx)登录,在设置页面统一设置运行身份,多个运行身份用","分割,然后超级管理员在编辑用户
+   为该用户指定可以执行的身份(可选择多个),这样用户在创建任务的时候就可以选择指定身份去执行了
+
+ 2) executor.so:cannot execure binary file
+   需要授权agent/bin下面的所有文件777权限   
+   > chmod 777 jobx-agent/bin/*
+   如果授权完还提示这个错,则需要进入源码目录(JobX/jobx-executor/src/main/c/executor.c),手动gcc编译下executor.c文件,然后将编译完的文件命名成executor.so,放到jobx-agent/bin下
+   并且授777权限
 
 ```
 
