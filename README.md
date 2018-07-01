@@ -3,39 +3,35 @@
 
 V1.2.0 by 2018-xx-xx
 ```
-    1)Window端支持强势来袭,实现全平台编译和安装
+    1)支持Window端,实现全平台编译和安装
 
-    2)更换项目rpc调度框架thrift为Netty和Mina
+    2)简化安装部署流程,提供三个脚本一键安装启动项目(build.sh,agent.sh,server.sh)
     
-    3)引入zookeeper,更改连续心跳检测机制为zookeeper通知的方式
+    3)更换项目rpc调度框架thrift为Netty和Mina
     
-    4)基于zookeeper,agent实现自动注册
+    4)引入zookeeper,更改心跳检测机制
     
-    5)基于zookeeper实现server集群,动态增减server,job自动分配,实现高可用
+    5)基于zookeeper,agent实现自动注册
     
-    6)server端支持单机和集群两种部署方式,对用户来说一个参数决定哪种部署方式
+    6)基于zookeeper实现server集群,动态增减server,job自动分配,实现高可用
+    
+    7)server端支持单机和集群两种部署方式,对用户来说一个参数决定哪种部署方式
 
-    7)server在集群情况下处理分布式session的缓存实现redis和memcached可选
-    
     8)可以自由定义任务的执行身份
     
-    9)简化安装部署流程,提供三个脚本一键安装启动项目(build.sh,agent.sh,server.sh)
+    9)server内置tomcat和jetty组件,支持开发者模式,大大减轻运维部署的难度
     
-    10)server内置tomcat和jetty组件,支持开发者模式,大大减轻运维部署的难度
-    
-    11)改进首页实时监控,大幅度提升agent端性能
-    
-    12)webssh新增基于privateKey方式的登录
+    10)webssh新增基于privateKey方式的登录
   
-    13)支持上传文件到agent
+    11)支持上传文件到agent
     
-    14)更强大的任务流调度
+    12)更强大的任务流调度
     
-    15)支持对外提供api的方式,允许通过接口调度任务
+    13)支持对外提供api的方式,允许通过接口调度任务
     
-    16)新增一系列的examples调度使用实例
+    14)新增一系列的examples调度使用实例
     
-    17)修复一系列已知bug,增强稳定性和可用性
+    15)修复一系列已知bug,增强稳定性和可用性
     
     此版本是里程碑版本,从底层架构到项目实现都进行重新规划,大大提高了可用性和稳定性,建议所有人升级``
  ```   
