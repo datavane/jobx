@@ -32,6 +32,8 @@
     <link rel="stylesheet" href='${contextPath}/static/css/prettify.min.css?resId=${resourceId}' />
     <link rel="shortcut icon" href="${contextPath}/static/img/favicon.ico?resId=${resourceId}" />
     <link rel="stylesheet" href="${contextPath}/static/css/glyphicons.css?resId=${resourceId}" />
+    <link rel="stylesheet" href="${contextPath}/static/js/toastr/toastr.css?resId=${resourceId}"/>
+
 
     <!-- Javascript Libraries -->
     <!-- jQuery -->
@@ -87,6 +89,8 @@
     <script src="${contextPath}/static/js/input-mask.min.js"></script> <!-- Input Mask -->
     <script src="${contextPath}/static/js/spinner.min.js"></script> <!-- Spinner -->
     <script src="${contextPath}/static/js/slider.min.js"></script> <!-- Input Slider -->
+    <script src="${contextPath}/static/js/toastr/toastr.js"></script> <!-- toastr -->
+
 
     <!--flot
     <script type="text/javascript" src="${contextPath}/static/js/flot/jquery.flot.js?resId=${resourceId}" ></script>
