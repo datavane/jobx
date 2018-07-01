@@ -60,7 +60,7 @@ public class JobXProcess {
     private File logFile;
     private volatile Integer processId;
     private volatile Process process;
-
+    private boolean killed = false;
     private String execUser;
     private final String runAsUserBinary = Constants.JOBX_EXECUTE_AS_USER_LIB;
 
@@ -74,7 +74,7 @@ public class JobXProcess {
         this.completeLatch = new CountDownLatch(1);
         this.execUser = execUser;
         List<String> commandLine = getCommandLine(command);
-        if (isRunAsUser()) {
+        if (isExecAsUser()) {
             this.command = ExecuteUser.buildCommand(execUser,commandLine);
         }else {
             this.command = commandLine;
@@ -139,6 +139,9 @@ public class JobXProcess {
             //最后以特殊不了见的字符作为log和exitCode+结束时间的分隔符.
             this.processLogger.info(IOUtils.FIELD_TERMINATED_BY + exitCode + IOUtils.TAB + new Date().getTime());
             this.process.destroy();
+            if (this.killed) {
+                exitCode = Constants.StatusCode.KILL.getValue();
+            }
             return exitCode;
         }
     }
@@ -198,17 +201,20 @@ public class JobXProcess {
 
     public void kill() {
         if (isStarted()) {
-            if (CommonUtils.isUnix()) {
-                try {
-                    boolean success = softKill(1000*5,TimeUnit.SECONDS);
-                    if (success) {
-                        return;
+            try {
+                if (CommonUtils.isWindows()) {
+                    killed = true;
+                    hardKill();
+                }else {
+                    boolean flag = softKill(1000*5,TimeUnit.SECONDS);
+                    if (!flag) {
+                        hardKill();
                     }
-                }catch (Exception e) {
-                    e.printStackTrace();
                 }
+            }catch (Exception e) {
+                killed = false;
+                logger.info("[JobX]Kill attempt failed：{}",e.getMessage());
             }
-            hardKill();
         }
     }
 
@@ -222,7 +228,7 @@ public class JobXProcess {
     private boolean softKill(long time, TimeUnit unit) throws InterruptedException {
         if (this.processId != 0 && isStarted()) {
             try {
-                if (isRunAsUser()) {
+                if (isExecAsUser()) {
                     String cmd = String.format(
                             "%s %s %s %d",
                             runAsUserBinary,
@@ -252,7 +258,7 @@ public class JobXProcess {
             try {
                 String cmd = "";
                 if (CommonUtils.isUnix()) {
-                    if (isRunAsUser()) {
+                    if (isExecAsUser()) {
                         cmd = String.format("%s %s %s -9 %d",
                                 this.runAsUserBinary,
                                 this.execUser, KILL_COMMAND,
@@ -271,7 +277,7 @@ public class JobXProcess {
             }catch (Exception e) {
                 this.processLogger.error("[JobX]Kill attempt failed.", e);
             }
-            this.process.destroy();
+            this.processId = null;
         }
     }
 
@@ -332,7 +338,7 @@ public class JobXProcess {
      * runUser only support linux...
      * @return
      */
-    public boolean isRunAsUser() {
+    public boolean isExecAsUser() {
         return CommonUtils.isLinux() && CommonUtils.notEmpty(execUser);
     }
 

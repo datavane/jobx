@@ -90,8 +90,6 @@ public class Constants {
 
     public static final String PARAM_TIMEOUT_KEY = "timeout";
 
-    public static final String PARAM_EXECTYPE_KEY = "execType";
-
     public static final String PARAM_EXECUSER_KEY = "execUser";
 
     public static final String PARAM_BACKUP_KEY = "backup";
@@ -111,10 +109,6 @@ public class Constants {
     public static final String PARAM_JOBX_SHUTDOWN_KEY = "jobx.shutdown";
 
     public static final String PARAM_JOBX_REGISTRY_KEY = "jobx.registry";
-
-    public static final String PARAM_LOG2HBASE_KEY = "jobx.log2hbase";
-
-    public static final String PARAM_HBASE_ZOOKEEPER_QUORUM = "hbase.zookeeper.quorum";
 
     public static final String PARAM_JOBX_HOME_KEY = "jobx.home";
 
@@ -199,6 +193,7 @@ public class Constants {
      * ExecuteUser lib
      */
     public static final String JOBX_EXECUTE_AS_USER_LIB =  JOBX_HOME + "/bin/executor.so";
+
 
     public enum CachedProvider implements Serializable {
 

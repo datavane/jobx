@@ -22,7 +22,6 @@ package com.jobxhub.agent.service;
 
 import com.alibaba.fastjson.JSON;
 import com.jobxhub.agent.process.JobXProcess;
-import com.jobxhub.agent.util.PropertiesLoader;
 import com.jobxhub.common.Constants;
 import com.jobxhub.common.api.AgentJob;
 import com.jobxhub.common.ext.ExtensionLoader;
@@ -119,7 +118,6 @@ public class AgentService implements ServerHandler, AgentJob {
             case RESTART:
                 restart(request);
                 break;
-
         }
         return null;
     }
