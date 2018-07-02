@@ -32,8 +32,8 @@
             <tr>
                 <td><i class="glyphicon glyphicon-tasks"></i>&nbsp;任务名称</td>
                 <td>
-                    <c:if test="${empty record.jobName}">batchJob</c:if>
-                    <c:if test="${!empty record.jobName}">${record.jobName}</c:if>
+                    <c:if test="${record.execType ne 4}"><a href="${contextPath}/job/detail/${record.jobId}.htm">${record.jobName}</a></c:if>
+                    <c:if test="${record.execType eq 4}"><span class="label label-primary">&nbsp;&nbsp;现&nbsp;场&nbsp;&nbsp;</span></c:if>
                 </td>
                 <td><i class="glyphicon glyphicon-leaf"></i>&nbsp;执&nbsp;&nbsp;行&nbsp;&nbsp;器</td>
                 <td>${record.agentName}</td>
@@ -64,7 +64,7 @@
                         <span class="label label-warning">&nbsp;&nbsp;被&nbsp;杀&nbsp;&nbsp;</span>
                     </c:if>
                     <c:if test="${record.success eq 3}">
-                        <span class="label label-warning">&nbsp;&nbsp;超&nbsp;时&nbsp;&nbsp;</span>
+                        <span class="label label-primary">&nbsp;&nbsp;超&nbsp;时&nbsp;&nbsp;</span>
                     </c:if>
                 </td>
 

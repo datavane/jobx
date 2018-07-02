@@ -105,19 +105,19 @@ button.toast-close-button {
   overflow: hidden;
   margin: 0 0 6px;
   padding: 15px 15px 15px 50px;
-  width: 300px;
-  -moz-border-radius: 3px 3px 3px 3px;
-  -webkit-border-radius: 3px 3px 3px 3px;
-  border-radius: 3px 3px 3px 3px;
+  width: 350px;
+  -moz-border-radius: 1px;
+  -webkit-border-radius: 1px;
+  border-radius: 1px;
   background-position: 15px center;
   background-repeat: no-repeat;
   -moz-box-shadow: 0 0 12px #999999;
   -webkit-box-shadow: 0 0 12px #999999;
-  box-shadow: 0 0 12px #999999;
+  box-shadow: 0 0 20px #999999;
   color: #FFFFFF;
-  opacity: 0.8;
-  -ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=80);
-  filter: alpha(opacity=80);
+  opacity: 0.95;
+  -ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=95);
+  filter: alpha(opacity=95);
 }
 #toast-container > div.rtl {
   direction: rtl;

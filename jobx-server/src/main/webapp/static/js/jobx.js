@@ -1,9 +1,9 @@
 
-window.alert = function(msg){
-    swal("", msg , "error");
+window.alert = function(msg) {
+    toastr.success(msg);
 }
 
-function alertMsg(msg){
+function alertMsg(msg) {
     swal({
         title: "",
         text: msg,

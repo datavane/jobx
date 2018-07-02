@@ -85,6 +85,8 @@ public class Record implements Serializable {
 
     public Record(Job job, Constants.ExecType execType, Constants.JobType jobType) {
         this.setJobId(job.getJobId());
+        this.setJobType(jobType.getCode());
+        this.setJobName(job.getJobName());
         this.setExecType(execType.getStatus());
         this.setAgentId(job.getAgentId());
         this.setUserId(job.getUserId());
@@ -93,7 +95,6 @@ public class Record implements Serializable {
         this.setSuccess(Constants.ResultStatus.SUCCESSFUL.getStatus());
         this.setStatus(Constants.RunStatus.RUNNING.getStatus());//任务还未完成
         this.setPid(CommonUtils.uuid());
-        this.setJobType(jobType.getCode());
         this.start();
     }
 

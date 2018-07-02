@@ -253,21 +253,27 @@
                     <tr class="tr-flow_${empty r.groupId ? "" : r.groupId}">
                         <c:if test="${r.jobType eq 0}">
                             <td id="row_${r.recordId}" rowspan="1">
-                                    ${empty r.jobName ? 'batchJob' : r.jobName}
-                                    <c:forEach var="c" items="${r.redoList}" varStatus="index">
+                                        <c:if test="${r.execType ne 4}"><a href="${contextPath}/job/detail/${r.jobId}.htm">${r.jobName}</a></c:if>
+                                        <c:if test="${r.execType eq 4}"><span class="label label-primary">&nbsp;&nbsp;现&nbsp;场&nbsp;&nbsp;</span></c:if>
+                                        <c:forEach var="c" items="${r.redoList}" varStatus="index">
                                         <div style="display: none" class="redoNum_${r.recordId}">
-                                            <div class="div-circle"><span class="span-circle">${c.redoNum}</span></div>${c.jobName}
+                                            <div class="div-circle"><span class="span-circle">${c.redoNum}</span></div>
+                                            <c:if test="${c.execType ne 4}"><a href="${contextPath}/job/detail/${c.jobId}.htm">${c.jobName}</a></c:if>
+                                            <c:if test="${c.execType eq 4}"><span class="label label-primary">&nbsp;&nbsp;现&nbsp;场&nbsp;&nbsp;</span></c:if>
                                         </div>
                                     </c:forEach>
                             </td>
                         </c:if>
                         <c:if test="${r.jobType eq 1}">
                             <td id="row_${r.groupId}" rowspan="1">
-                                ${r.jobName}
-                                <c:if test="${r.redoCount ne 0}">
+                                    <c:if test="${r.execType ne 4}"><a href="${contextPath}/job/detail/${r.jobId}.htm">${r.jobName}</a></c:if>
+                                    <c:if test="${r.execType eq 4}"><span class="label label-primary">&nbsp;&nbsp;现&nbsp;场&nbsp;&nbsp;</span></c:if>
+                                    <c:if test="${r.redoCount ne 0}">
                                     <c:forEach var="rc" items="${r.redoList}" varStatus="index">
                                         <div class="redoNum_${r.recordId} groupIndex_${r.groupId}" style="display: none">
-                                            <span class="span-circle">${rc.redoNum}</span>${rc.jobName}
+                                            <span class="span-circle">${rc.redoNum}</span>
+                                            <c:if test="${rc.execType ne 4}"><a href="${contextPath}/job/detail/${rc.jobId}.htm">${rc.jobName}</a></c:if>
+                                            <c:if test="${rc.execType eq 4}"><span class="label label-primary">&nbsp;&nbsp;现&nbsp;场&nbsp;&nbsp;</span></c:if>
                                         </div>
                                     </c:forEach>
                                 </c:if>
@@ -290,7 +296,7 @@
                                 <span class="label label-warning">&nbsp;&nbsp;被&nbsp;杀&nbsp;&nbsp;</span>
                             </c:if>
                             <c:if test="${r.success eq 3}">
-                                <span class="label label-warning">&nbsp;&nbsp;超&nbsp;时&nbsp;&nbsp;</span>
+                                <span class="label label-primary">&nbsp;&nbsp;超&nbsp;时&nbsp;&nbsp;</span>
                             </c:if>
                             <c:if test="${r.success eq 4}">
                                 <span class="label label-warning">&nbsp;&nbsp;失&nbsp;联&nbsp;&nbsp;</span>
@@ -298,10 +304,10 @@
                         </td>
                         <td>
                             <c:if test="${r.execType eq 0}"><span class="label label-default">&nbsp;&nbsp;自&nbsp;动&nbsp;&nbsp;</span></c:if>
-                            <c:if test="${r.execType eq 1}"><span class="label label-info">&nbsp;&nbsp;手&nbsp;动&nbsp;&nbsp;</span></c:if>
-                            <c:if test="${r.execType eq 2}"><span class="label label-info">&nbsp;&nbsp;接&nbsp;口&nbsp;&nbsp;</span></c:if>
-                            <c:if test="${r.execType eq 3}"><span class="label label-warning">&nbsp;&nbsp;重&nbsp;跑&nbsp;&nbsp;</span></c:if>
-                            <c:if test="${r.execType eq 4}"><span class="label label-default" style="color: green;font-weight:bold">&nbsp;&nbsp;现&nbsp;场&nbsp;&nbsp;</span></c:if>
+                            <c:if test="${r.execType eq 1}"><span class="label label-default">&nbsp;&nbsp;手&nbsp;动&nbsp;&nbsp;</span></c:if>
+                            <c:if test="${r.execType eq 2}"><span class="label label-default">&nbsp;&nbsp;接&nbsp;口&nbsp;&nbsp;</span></c:if>
+                            <c:if test="${r.execType eq 3}"><span class="label label-default">&nbsp;&nbsp;重&nbsp;跑&nbsp;&nbsp;</span></c:if>
+                            <c:if test="${r.execType eq 4}"><span class="label label-default">&nbsp;&nbsp;现&nbsp;场&nbsp;&nbsp;</span></c:if>
                         </td>
                         <td>
                             <c:if test="${r.jobType eq 1}">流程任务</c:if>
@@ -341,7 +347,7 @@
                                         <span class="label label-warning">&nbsp;&nbsp;被&nbsp;杀&nbsp;&nbsp;</span>
                                     </c:if>
                                     <c:if test="${rc.success eq 3}">
-                                        <span class="label label-warning">&nbsp;&nbsp;超&nbsp;时&nbsp;&nbsp;</span>
+                                        <span class="label label-primary">&nbsp;&nbsp;超&nbsp;时&nbsp;&nbsp;</span>
                                     </c:if>
                                 </td>
                                 <td><span class="label label-warning">&nbsp;&nbsp;重&nbsp;跑&nbsp;&nbsp;</span></td>

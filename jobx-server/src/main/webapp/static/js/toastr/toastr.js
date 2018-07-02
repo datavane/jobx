@@ -34,14 +34,14 @@
                     "closeButton": true,
                     "debug": false,
                     "newestOnTop": false,
-                    "progressBar": false,
+                    "progressBar": true,
                     "rtl": false,
                     "positionClass": "toast-top-right",
                     "preventDuplicates": false,
                     "onclick": null,
                     "showDuration": 300,
                     "hideDuration": 1000,
-                    "timeOut": 3000,
+                    "timeOut": 2000,
                     "extendedTimeOut": 1000,
                     "showEasing": "swing",
                     "hideEasing": "linear",
@@ -164,6 +164,7 @@
                     .addClass(options.positionClass);
 
                 $container.appendTo($(options.target));
+                console.log($container.html)
                 return $container;
             }
 

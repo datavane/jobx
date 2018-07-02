@@ -12,6 +12,11 @@
     <link rel="stylesheet" href="${contextPath}/static/js/ztree/css/zTreeStyle/zTreeStyle.css" type="text/css">
 
     <script type="text/javascript">
+
+        function goAlert() {
+            toastr.warning("哈哈哈哈....")
+        }
+
         var toggle = {
             contact:{
                 show:function () {
@@ -1093,5 +1098,3 @@
 </body>
 
 </html>
-
-
