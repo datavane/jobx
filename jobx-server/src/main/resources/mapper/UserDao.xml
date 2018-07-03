@@ -57,6 +57,10 @@
         where u.user_name=#{userName}
     </select>
 
+    <select id="getExecUser" parameterType="java.lang.Long" resultType="java.lang.String">
+        select exec_user from t_user where user_id=#{userId}
+    </select>
+
     <select id="getByPageBean" resultMap="UserBean">
         select
         <include refid="query_User"/>
