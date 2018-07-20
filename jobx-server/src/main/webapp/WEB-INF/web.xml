@@ -89,7 +89,6 @@
         <url-pattern>/</url-pattern>
     </servlet-mapping>
 
-
     <filter>
         <filter-name>sitemesh</filter-name>
         <filter-class>org.sitemesh.config.ConfigurableSiteMeshFilter</filter-class>
@@ -97,6 +96,19 @@
 
     <filter-mapping>
         <filter-name>sitemesh</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>corsFilter</filter-name>
+        <filter-class>org.apache.catalina.filters.CorsFilter</filter-class>
+        <init-param>
+            <param-name>cors.allowed.origins</param-name>
+            <param-value>http://www.jobx.org</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>corsFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
@@ -115,3 +127,6 @@
     </error-page>
 
 </web-app>
+
+
+

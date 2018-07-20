@@ -136,7 +136,7 @@ public class Constants {
 
     public static final String PARAM_LISTPATH_ISDIRECTORY_KEY = "isDirectory";
 
-    public static final String PARAM_CSRF_NAME_KEY = "csrf";
+    public static final String PARAM_XSRF_NAME_KEY = "xsrf";
 
     public static final String PARAM_LOGIN_MSG_KEY = "loginMsg";
 

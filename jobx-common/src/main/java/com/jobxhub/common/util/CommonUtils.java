@@ -22,10 +22,12 @@
 package com.jobxhub.common.util;
 
 import com.jobxhub.common.Constants;
+import com.jobxhub.common.util.collection.CollectionUtils;
 import com.jobxhub.common.util.collection.HashMap;
 
 import java.io.File;
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.util.*;
 
 
@@ -248,6 +250,22 @@ public abstract class CommonUtils implements Serializable {
 
     public static Float toFloat(Object val) {
         return toFloat(val, 0f);
+    }
+
+    public static Map<String, Object> toMap(Object object) {
+        if (isEmpty(object)) return Collections.EMPTY_MAP;
+        List<Field> fields = ReflectUtils.getAllFields(object.getClass());
+        if (isEmpty(fields)) return Collections.EMPTY_MAP;
+        Map<String,Object> map = new HashMap<String, Object>(0);
+        try {
+            for (Field field:fields) {
+                field.setAccessible(true);
+                map.put(field.getName(),field.get(object));
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return map;
     }
 
     /**

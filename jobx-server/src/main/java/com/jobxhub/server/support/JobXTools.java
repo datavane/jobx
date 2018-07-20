@@ -107,7 +107,7 @@ public final class JobXTools {
         session.removeAttribute(Constants.PARAM_PERMISSION_KEY);
         session.removeAttribute(Constants.PARAM_HTTP_SESSION_ID_KEY);
         session.removeAttribute(Constants.PARAM_TERMINAL_TOKEN_KEY);
-        session.removeAttribute(Constants.PARAM_CSRF_NAME_KEY);
+        session.removeAttribute(Constants.PARAM_XSRF_NAME_KEY);
         TerminalSession.exit(request);
         session.removeAttribute(Constants.PARAM_LOGIN_MSG_KEY);
         session.removeAttribute(Constants.PARAM_CONTEXT_PATH_NAME_KEY);
@@ -121,15 +121,15 @@ public final class JobXTools {
         return resourceId;
     }
 
-    public static String generateCSRF(HttpServletRequest request, HttpServletResponse response) {
+    public static String generateXSRF(HttpServletRequest request, HttpServletResponse response) {
         String token;
         HttpSession session = request.getSession();
         synchronized (session) {
-            token = (String) session.getAttribute(Constants.PARAM_CSRF_NAME_KEY);
+            token = (String) session.getAttribute(Constants.PARAM_XSRF_NAME_KEY);
             if (null == token) {
                 token = CommonUtils.uuid();
-                session.setAttribute(Constants.PARAM_CSRF_NAME_KEY, token);
-                CookieUtils.setCookie(response, Constants.PARAM_CSRF_NAME_KEY, token, -1, request.getServerName());
+                session.setAttribute(Constants.PARAM_XSRF_NAME_KEY, token);
+                CookieUtils.setCookie(response, Constants.PARAM_XSRF_NAME_KEY, token, -1, request.getServerName());
             }
         }
         return token;

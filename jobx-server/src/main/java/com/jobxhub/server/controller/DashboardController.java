@@ -194,52 +194,6 @@ public class DashboardController extends BaseController {
         }
     }
 
-    @RequestMapping(value = "login.do", method = RequestMethod.POST)
-    @ResponseBody
-    @RequestRepeat
-    public Map login(HttpSession session, HttpServletRequest request, HttpServletResponse response, @RequestParam String username, @RequestParam String password) throws Exception {
-
-        //用户信息验证
-        int status = userService.login(request, username, password);
-
-        if (status == 500) {
-            return ParamsMap.map().set("msg", "用户名密码错误");
-        }
-        if (status == 200) {
-            //登陆成功了则生成csrf...
-            String csrf = JobXTools.generateCSRF(request, response);
-            logger.info("[JobX]login seccussful,generate csrf:{}", csrf);
-
-            User user = JobXTools.getUser(session);
-            //提示用户更改默认密码
-            byte[] salt = DigestUtils.decodeHex(user.getSalt());
-            byte[] hashPassword = DigestUtils.sha1(DigestUtils.md5Hex(Constants.PARAM_DEF_PASSWORD_KEY).toUpperCase().getBytes(), salt, 1024);
-            String hashPass = DigestUtils.encodeHex(hashPassword);
-
-            if (user.getUserName().equals(Constants.PARAM_DEF_USER_KEY) && user.getPassword().equals(hashPass)) {
-                return ParamsMap.map().set("status", "edit").set("userId", user.getUserId());
-            }
-
-            if (user.getHeaderPic() != null) {
-                String name = user.getUserId() + "_140" + user.getPicExtName();
-                String path = request.getServletContext().getRealPath("/").replaceFirst("/$", "") + "/upload/" + name;
-                IOUtils.writeFile(new File(path), new ByteArrayInputStream(user.getHeaderPic()));
-                user.setHeaderPath(getWebUrlPath(request) + "/upload/" + name);
-                session.setAttribute(Constants.PARAM_LOGIN_USER_KEY, user);
-            }
-            return ParamsMap.map().set("status", "success").set("url", "/dashboard.htm");
-        }
-
-        return ParamsMap.map().set("status", "error");
-    }
-
-
-    @RequestMapping("logout.htm")
-    public String logout(HttpServletRequest request) throws Exception {
-        JobXTools.invalidSession(request);
-        return "redirect:/";
-    }
-
     @RequestMapping(value = "headpic/upload.do", method = RequestMethod.POST)
     @ResponseBody
     @RequestRepeat

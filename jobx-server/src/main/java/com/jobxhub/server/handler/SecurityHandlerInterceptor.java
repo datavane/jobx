@@ -51,92 +51,7 @@ public class SecurityHandlerInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-
-        request.setAttribute("uri", request.getRequestURI());
-
-        HttpSession session = request.getSession();
-
-        if (session.getAttribute(Constants.PARAM_SKIN_NAME_KEY) == null) {
-            Cookie cookie = CookieUtils.getCookie(request, Constants.PARAM_SKIN_NAME_KEY);
-            if (cookie != null) {
-                String skin = cookie.getValue();
-                session.setAttribute(Constants.PARAM_SKIN_NAME_KEY, skin);
-            }
-        }
-
-        String requestURI = request.getContextPath() + request.getServletPath();
-
-        //
-        // 考虑到以后升级可能会改css或者js,用户重新升级部署后肯能有缓存,导致项目失败,
-        // 特此加上防止用户端有缓存的Id来防止资源缓存,每次项目启动会生成一个随机码添加到所有的资源引用后
-        //
-        session.setAttribute("resourceId", JobXTools.getResourceId());
-
-        //静态资源,页面
-        if (requestURI.equals("/")
-                || requestURI.contains("/static/")
-                || requestURI.contains("/WEB-INF")
-                || requestURI.contains("/login")
-                || requestURI.contains("/api")
-                || requestURI.contains("/upload")) {
-
-            return super.preHandle(request, response, handler);
-        }
-
-        String port = request.getServerPort() == 80 ? "" : (":" + request.getServerPort());
-        String path = request.getContextPath().replaceAll("/$", "");
-        String urlPath = request.getScheme() + "://" + request.getServerName() + port + path;
-
-        String referer = request.getHeader("referer");
-        if (referer != null && !referer.startsWith(urlPath)) {
-            response.sendRedirect("/");
-            if (logger.isInfoEnabled()) {
-                logger.info("[JobX]Bad request,redirect to login page");
-            }
-            JobXTools.invalidSession(request);
-            return false;
-        }
-
-        try {
-            User user = JobXTools.getUser(session);
-            if (user == null) {
-                //跳到登陆页面
-                response.sendRedirect("/");
-                if (logger.isInfoEnabled()) {
-                    logger.info("[JobX]User not login,redirect to login page");
-                }
-                return false;
-            }
-        } catch (IllegalStateException e) {
-            if (logger.isInfoEnabled()) {
-                logger.info("[JobX]Session already invalidated,redirect to login page");
-            }
-            response.sendRedirect("/");
-            return false;
-        }
-
-        //普通管理员不可访问的资源
-        if (!JobXTools.isPermission(session) &&
-                (requestURI.contains("/config/")
-                        || requestURI.contains("/user/view")
-                        || requestURI.contains("/user/add")
-                        || requestURI.contains("/agent/add")
-                        || requestURI.contains("/agent/edit"))) {
-            if (logger.isInfoEnabled()) {
-                logger.info("[JobX]illegal or limited access");
-            }
-            return false;
-        }
-
         if (handler instanceof HandlerMethod) {
-            if (!verifyCSRF(request)) {
-                response.sendRedirect("/");
-                if (logger.isInfoEnabled()) {
-                    logger.info("[JobX]Bad request,redirect to login page");
-                }
-                JobXTools.invalidSession(request);
-                return false;
-            }
             if (verifyRepeat(request,(HandlerMethod)handler)) {
                 RequestRepeat requestRepeat = ((HandlerMethod) handler).getMethodAnnotation(RequestRepeat.class);
                 //需要显示页面...
@@ -146,7 +61,6 @@ public class SecurityHandlerInterceptor extends HandlerInterceptorAdapter {
                 return false;
             }
         }
-
         return super.preHandle(request, response, handler);
     }
 
@@ -190,17 +104,17 @@ public class SecurityHandlerInterceptor extends HandlerInterceptorAdapter {
         return false;
     }
 
-    private boolean verifyCSRF(HttpServletRequest request) {
+    private boolean verifyXSRF(HttpServletRequest request) {
 
-        String cookieCSRF = CookieUtils.getCookieValue(request, Constants.PARAM_CSRF_NAME_KEY);
-        if (CommonUtils.isEmpty(cookieCSRF)) {
+        String cookieXSRF = CookieUtils.getCookieValue(request, Constants.PARAM_XSRF_NAME_KEY);
+        if (CommonUtils.isEmpty(cookieXSRF)) {
             return false;
         }
-        String sessionCSRF = (String) request.getSession().getAttribute(Constants.PARAM_CSRF_NAME_KEY);
-        if (CommonUtils.isEmpty(sessionCSRF)) {
+        String sessionXSRF = (String) request.getSession().getAttribute(Constants.PARAM_XSRF_NAME_KEY);
+        if (CommonUtils.isEmpty(sessionXSRF)) {
             return false;
         }
-        return cookieCSRF.equals(sessionCSRF);
+        return cookieXSRF.equals(sessionXSRF);
     }
 
 

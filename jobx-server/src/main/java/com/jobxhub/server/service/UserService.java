@@ -71,7 +71,7 @@ public class UserService {
 
         //拿到数据库的数据盐
         byte[] salt = DigestUtils.decodeHex(user.getSalt());
-        String saltPassword = DigestUtils.encodeHex(DigestUtils.sha1(password.getBytes(), salt, 1024));
+        String saltPassword = DigestUtils.encodeHex(DigestUtils.sha1(password.toUpperCase().getBytes(), salt, 1024));
 
         if (saltPassword.equals(user.getPassword())) {
             if (user.getRoleId() == 999L) {
