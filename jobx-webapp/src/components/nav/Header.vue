@@ -202,7 +202,8 @@
       img {
         padding-left:15px;
         padding-bottom: 15px;
-        width: 155px
+        width: 155px;
+        height: 100px;
       }
     }
   }
