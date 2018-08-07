@@ -53,11 +53,7 @@
   </section>
 </template>
 <script type="application/ecmascript">
-  import 'datatables'
   export default {
-    mounted() {
-      this.$dataTable()
-    },
     methods:{
     }
   }

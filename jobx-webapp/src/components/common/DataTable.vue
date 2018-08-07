@@ -1,0 +1,129 @@
+<template>
+    <div class="table-responsive">
+        <table id="data-table" class="table">
+            <thead>
+            <tr>
+                <th v-for="h in column">{{h.header}}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="page in pager.data">
+                <td v-for="col in column">{{page[col.data]}}</td>
+            </tr>
+            </tbody>
+        </table>
+        <nav>
+            <ul class="pagination justify-content-center">
+                <li class="page-item pagination-first"
+                    :class="pager.pageNo===1?'disabled':''">
+                    <a class="page-link" @click="gotoPage(1)"></a>
+                </li>
+
+                <li class="page-item pagination-prev"
+                    :class="pager.pageNo===1?'disabled':''">
+                    <a class="page-link"
+                       @click="gotoPage(pager.pageNo-1)"></a>
+                </li>
+
+                <li class="page-item" v-for="index in preNo">
+                    <a class="page-link"
+                       @click="gotoPage(index)">{{index}}
+                    </a>
+                </li>
+
+                <li class="page-item active">
+                    <a class="page-link">{{pager.pageNo}}</a>
+                </li>
+
+                <li class="page-item"
+                    v-for="index in nextNo">
+                    <a class="page-link"
+                       @click="gotoPage(index)">{{index}}
+                    </a>
+                </li>
+
+                <li class="page-item pagination-next"
+                    :class="pager.pageNo===pager.pageTotal?'disabled':''">
+                    <a class="page-link"
+                        @click="gotoPage(pager.pageNo-1)">
+                    </a>
+                </li>
+
+                <li class="page-item pagination-last"
+                    :class="pager.pageNo===pager.pageTotal?'disabled':''">
+                    <a class="page-link"
+                       @click="gotoPage(pager.pageTotal)">
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+    </div>
+</template>
+
+<script type="text/ecmascript-6">
+    export default {
+        props: ["url", "column"],
+        data() {
+            return {
+                pager: {},
+                offset: 3, //前后取多少页
+                preNo: [],
+                nextNo: []
+            };
+        },
+        mounted() {
+            this.getPager();
+        },
+
+        methods: {
+            getPager(data) {
+                this.$http.post(this.url, data || {}).then(resp => {
+                    this.pager = resp.body;
+                    this.preNo = [];
+                    let preStart = 1;
+                    if (this.pager.pageNo > 1) {
+                        if (this.pager.pageNo - this.offset > 1) {
+                            preStart = this.pager.pageNo - this.offset;
+                            if (this.pager.pageTotal - this.pager.pageNo < this.offset) {
+                                preStart -=
+                                    this.offset - (this.pager.pageTotal - this.pager.pageNo);
+                            }
+                        }
+                        for (let i = preStart; i < this.pager.pageNo; i++) {
+                            this.preNo.push(i);
+                        }
+                    }
+                    this.nextNo = [];
+                    if (this.pager.pageNo < this.pager.pageTotal) {
+                        let nextLen = this.offset * 2 - this.preNo.length;
+                        let nextEnd =
+                            this.pager.pageNo + nextLen > this.pager.pageTotal
+                                ? this.pager.pageTotal
+                                : this.pager.pageNo + nextLen;
+                        for (let i = this.pager.pageNo + 1; i <= nextEnd; i++) {
+                            this.nextNo.push(i);
+                        }
+                    }
+                });
+            },
+            gotoPage(pageNo) {
+                this.getPager({
+                    pageNo: pageNo,
+                    pageSize: this.pager.pageSize,
+                    order: this.pager.order,
+                    orderBy: this.pager.orderBy
+                });
+            }
+        }
+    };
+</script>
+
+<style scoped>
+</style>
+
+ 
+
+
+  
+

@@ -5,6 +5,8 @@ import qs from 'qs'
 import storage from '@/utils/storage.js'
 import constant from '@/utils/constant.js'
 
+axios.defaults.withCredentials=true;
+
 axios.interceptors.request.use(config => {
     config.headers = {
         'X-Requested-With': 'XMLHttpRequest',
@@ -24,6 +26,7 @@ axios.interceptors.response.use(
         }
         switch (result.code) {
             case 500:
+            
 
             break
             case 203:

@@ -9,7 +9,7 @@
         {{slogan}}
       </div>
       <div class="login__block__body">
-        <span class="error_msg" v-if="info.length>0" :style="{color:status?'green':'red'}">{{info}}</span>
+        <span class="error_msg" v-if="info.length>0" :class="status?'green':'red'">{{info}}</span>
         <div class="form-group user__name">
           <input type="text" class="form-control text-center" v-model="userName" placeholder="Address">
         </div>
@@ -96,5 +96,11 @@
   .error_msg {
     margin-top:-15px;
     margin-bottom:8px;
+  }
+  .green{
+    color: green;
+  }
+  .red{
+    color: red;
   }
 </style>

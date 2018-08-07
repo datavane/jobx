@@ -52,7 +52,7 @@
   import 'jquery.flot'
   import 'jquery-flot-resize'
   import 'flot.curvedlines'
-  import Footer from "@/components/nav/Footer"
+  import Footer from "@/components/common/Footer"
 
   export default {
     components: {

@@ -22,6 +22,7 @@ import 'autosize'
 Vue.config.productionTip = false
 Vue.prototype.$storage = storage
 Vue.prototype.$const = constant
+
 Vue.prototype.$http = http
 Vue.use(plugin)
 
