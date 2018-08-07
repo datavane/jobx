@@ -33,6 +33,7 @@ import com.jobxhub.common.util.CommonUtils;
 import com.jobxhub.common.util.IOUtils;
 import com.jobxhub.server.annotation.RequestRepeat;
 import com.jobxhub.server.dto.Agent;
+import com.jobxhub.server.dto.RestResult;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletResponse;
@@ -52,7 +53,7 @@ import org.springframework.web.multipart.MultipartFile;
 import static com.jobxhub.common.util.WebUtils.*;
 
 
-@Controller
+@RestController
 @RequestMapping("agent")
 public class AgentController extends BaseController {
 
@@ -62,13 +63,10 @@ public class AgentController extends BaseController {
     @Autowired
     private ExecuteService executeService;
 
-    @RequestMapping("view.htm")
-    public String queryAllAgent(HttpSession session, Agent agent, Model model, PageBean pageBean) {
+    @RequestMapping(value = "view.do",method = RequestMethod.POST)
+    public RestResult queryAllAgent(HttpSession session, Agent agent,PageBean pageBean) {
         agentService.getPageBean(session, agent, pageBean);
-        model.addAttribute("connAgents", agentService.getOwnerByConnType(session));
-        model.addAttribute("agentName", agent.getName());
-        model.addAttribute("agentStatus", agent.getStatus());
-        return "/agent/view";
+        return RestResult.rest(pageBean);
     }
 
     @RequestMapping("refresh.htm")

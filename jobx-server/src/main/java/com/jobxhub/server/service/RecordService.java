@@ -69,7 +69,7 @@ public class RecordService {
                 recordList.add(item);
             }
             pageBean.setResult(recordList);
-            pageBean.setTotalCount(count);
+            pageBean.setTotalRecord(count);
         }
     }
 

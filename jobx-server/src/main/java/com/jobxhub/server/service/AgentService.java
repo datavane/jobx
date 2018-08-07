@@ -116,7 +116,7 @@ public class AgentService {
             int count = agentDao.getCount(pageBean.getFilter());
             List<Agent> agents = Lists.transform(agentList,Agent.transfer);
             pageBean.setResult(agents);
-            pageBean.setTotalCount(count);
+            pageBean.setTotalRecord(count);
         }
     }
 

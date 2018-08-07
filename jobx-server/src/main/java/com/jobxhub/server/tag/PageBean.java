@@ -23,6 +23,7 @@
 package com.jobxhub.server.tag;
 
 import com.jobxhub.common.util.CommonUtils;
+import com.jobxhub.common.util.collection.ParamsMap;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
@@ -45,11 +46,12 @@ public class PageBean<T> implements Serializable {
     private Integer offset;
     protected String orderBy = null;
     protected String order = null;
+    protected Integer pageTotal = 0;//总共多少页
     protected boolean autoCount = true;
 
     // -- 返回结果 --//
     protected List<T> result = Collections.emptyList();
-    protected long totalCount = -1;
+    protected long totalRecord = 0;
 
     private Map<String,Object> filter = new HashMap<String, Object>();
 
@@ -60,7 +62,6 @@ public class PageBean<T> implements Serializable {
     public PageBean(final int pageSize) {
         setPageSize(pageSize);
     }
-
 
     public PageBean(final Integer pageNo, final Integer pageSize) {
         if (pageNo != null) {
@@ -115,9 +116,8 @@ public class PageBean<T> implements Serializable {
      */
     public void setPageSize(final Integer pageSize) {
         this.pageSize = pageSize;
-
         if (CommonUtils.toInt(pageSize, 15) < 1) {
-            this.pageSize = 1;
+            this.pageSize = 15;
         }
     }
 
@@ -198,36 +198,24 @@ public class PageBean<T> implements Serializable {
     /**
      * 取得总记录数, 默认值为-1.
      */
-    public long getTotalCount() {
-        return totalCount;
+    public long getTotalRecord() {
+        return totalRecord;
     }
 
     /**
      * 设置总记录数.
      */
-    public void setTotalCount(final Integer totalCount) {
-        this.totalCount = totalCount;
+    public void setTotalRecord(final Integer totalRecord) {
+        this.totalRecord = totalRecord;
+        this.pageTotal = totalRecord/pageSize+(totalRecord%pageSize>0?1:0);
     }
 
-    /**
-     * 根据pageSize与totalCount计算总页数, 默认值为-1.
-     */
-    public long getTotalPages() {
-        if (totalCount < 0)
-            return -1;
-
-        long count = totalCount / CommonUtils.toInt(pageSize);
-        if (totalCount % CommonUtils.toInt(pageSize) > 0) {
-            count++;
-        }
-        return count;
-    }
 
     /**
      * 是否还有下一页.
      */
     public boolean hasNext() {
-        return (CommonUtils.toInt(pageNo) + 1 <= getTotalPages());
+        return CommonUtils.toInt(pageNo) + 1 <= this.pageTotal;
     }
 
     /**
@@ -284,5 +272,18 @@ public class PageBean<T> implements Serializable {
         if ( key!=null && val!=null ) {
             this.filter.put(key, val);
         }
+    }
+
+    public Map<String, Object> toMap() {
+        return ParamsMap.map()
+                .set("pageNo",pageNo)
+                .set("pageSize",pageSize)
+                .set("pageTotal",pageTotal)
+                .set("totalRecord",totalRecord)
+                .set("order",order)
+                .set("orderBy",orderBy)
+                .set("filter",filter)
+                .set("data",result);
+
     }
 }

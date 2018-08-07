@@ -1,11 +1,13 @@
 package com.jobxhub.server.dto;
 
 import com.jobxhub.common.util.CommonUtils;
+import com.jobxhub.server.tag.PageBean;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class RestResult {
+
     private int code;
     private Map<String,Object> body = new HashMap<String,Object>();
 
@@ -15,6 +17,13 @@ public class RestResult {
     public RestResult(int code,Map<String,Object> body){
         this.code = code;
         this.body = body;
+    }
+
+    public static RestResult rest(PageBean<?> pageBean) {
+        RestResult result = new RestResult();
+        result.setCode(RestStatus.Ok.getStatus());
+        result.setBody(pageBean.toMap());
+        return result;
     }
 
     public static RestResult rest(int code) {

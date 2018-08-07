@@ -47,7 +47,7 @@ public class Startup {
 
     private static final String workspace = "container";
 
-    private static int startPort = 20501;
+    private static int startPort = 9090;
 
     private static boolean devMode = true;
 

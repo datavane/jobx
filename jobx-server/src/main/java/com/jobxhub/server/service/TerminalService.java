@@ -177,7 +177,7 @@ public class TerminalService {
         if (CommonUtils.notEmpty(beanList)) {
             int count = terminalDao.getCount(pageBean.getFilter());
             pageBean.setResult(beanList);
-            pageBean.setTotalCount(count);
+            pageBean.setTotalRecord(count);
         }
     }
 

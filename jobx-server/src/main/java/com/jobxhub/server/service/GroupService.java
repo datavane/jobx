@@ -60,7 +60,7 @@ public class GroupService {
                 groups.add(group);
             }
             pageBean.setResult(groups);
-            pageBean.setTotalCount(count);
+            pageBean.setTotalRecord(count);
         }
     }
 

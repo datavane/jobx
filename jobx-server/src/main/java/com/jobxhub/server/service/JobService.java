@@ -95,7 +95,7 @@ public class JobService {
         List<JobBean> jobs = jobDao.getByPageBean(pageBean);
         if (CommonUtils.notEmpty(jobs)) {
             int count = jobDao.getCount(pageBean.getFilter());
-            pageBean.setTotalCount(count);
+            pageBean.setTotalRecord(count);
             pageBean.setResult(Lists.transform(jobs, Job.transfer));
         }
     }
@@ -215,7 +215,7 @@ public class JobService {
         int count = jobDao.getCount(pageBean.getFilter());
 
         pageBean.setResult(Lists.transform(jobs, Job.transfer));
-        pageBean.setTotalCount(count);
+        pageBean.setTotalRecord(count);
         return pageBean;
     }
 

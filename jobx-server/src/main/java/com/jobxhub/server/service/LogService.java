@@ -54,7 +54,7 @@ public class LogService {
         if (CommonUtils.notEmpty(logBeans)) {
             int count = logDao.getCount(pageBean.getFilter());
             pageBean.setResult(Lists.transform(logBeans,Log.transfer));
-            pageBean.setTotalCount(count);
+            pageBean.setTotalRecord(count);
         }
     }
 

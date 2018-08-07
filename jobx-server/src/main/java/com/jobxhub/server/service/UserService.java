@@ -100,7 +100,7 @@ public class UserService {
         List<UserBean> userList = userDao.getByPageBean(pageBean);
         int count = userDao.getCount(pageBean.getFilter());
         pageBean.setResult(Lists.transform(userList, User.transfer));
-        pageBean.setTotalCount(count);
+        pageBean.setTotalRecord(count);
         return pageBean;
     }
 
