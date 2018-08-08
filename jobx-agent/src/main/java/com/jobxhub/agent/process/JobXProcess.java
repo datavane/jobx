@@ -58,13 +58,13 @@ public class JobXProcess {
     private final CountDownLatch startupLatch;
     private final CountDownLatch completeLatch;
     private File logFile;
-    private volatile Integer processId;
-    private volatile Process process;
-    private boolean killed = false;
+    private Integer processId;
+    private Process process;
+    private Boolean killed = false;
     private String execUser;
     private final String runAsUserBinary = Constants.JOBX_EXECUTE_AS_USER_LIB;
 
-    public JobXProcess(String command, int timeout, String pid, String execUser) {
+    public JobXProcess(String command, Integer timeout, String pid, String execUser) {
         this.workingDir = IOUtils.getTmpdir();
         this.timeout = timeout;
         this.logFile = new File(Constants.JOBX_LOG_PATH + "/." + pid + ".log");
@@ -85,18 +85,18 @@ public class JobXProcess {
      * Execute this process, blocking until it has completed.
      */
     public int start() {
-
         if (this.isStarted() || this.isComplete()) {
             throw new IllegalStateException("[JobX]The process can only be used once.");
         }
 
-        ProcessBuilder builder = new ProcessBuilder(this.command);
-        builder.directory(new File(this.workingDir));
-        builder.redirectErrorStream(true);
-
         int exitCode = -1;
         try {
+            ProcessBuilder builder = new ProcessBuilder(this.command);
+            builder.directory(new File(this.workingDir));
+            builder.redirectErrorStream(true);
+
             this.watchTimeOut();
+
             this.process = builder.start();
             this.processId = getProcessId();
             if (processId == null) {
@@ -153,10 +153,10 @@ public class JobXProcess {
                 @Override
                 public void run() {
                     //kill job...
-                    kill();
+                    kill(Constants.StatusCode.TIME_OUT);
                     timer.cancel();
                 }
-            }, 0,timeout * 60 * 1000);
+            }, timeout * 60 * 1000);
         }
     }
 
@@ -199,7 +199,7 @@ public class JobXProcess {
         this.startupLatch.await();
     }
 
-    public void kill() {
+    public void kill(Constants.StatusCode statusCode) {
         if (isStarted()) {
             try {
                 if (CommonUtils.isWindows()) {

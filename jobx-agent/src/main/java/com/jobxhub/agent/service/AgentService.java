@@ -268,7 +268,7 @@ public class AgentService implements ServerHandler, AgentJob {
         Response response = Response.response(request);
         JobXProcess jobXProcess = processMap.get(pid);
         if (jobXProcess!=null) {
-            jobXProcess.kill();
+            jobXProcess.kill(Constants.StatusCode.KILL);
             response.setExitCode(Constants.StatusCode.SUCCESS_EXIT.getValue()).end();
             if (logger.isInfoEnabled()) {
                 logger.info("[JobX]:kill successful");
