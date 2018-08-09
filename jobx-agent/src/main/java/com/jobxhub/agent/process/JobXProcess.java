@@ -58,8 +58,8 @@ public class JobXProcess {
     private final CountDownLatch startupLatch;
     private final CountDownLatch completeLatch;
     private File logFile;
-    private volatile Integer processId;
-    private volatile Process process;
+    private Integer processId;
+    private Process process;
     private boolean killed = false;
     private String execUser;
     private final String runAsUserBinary = Constants.JOBX_EXECUTE_AS_USER_LIB;
@@ -156,7 +156,7 @@ public class JobXProcess {
                     kill();
                     timer.cancel();
                 }
-            }, 0,timeout * 60 * 1000);
+            },timeout * 60 * 1000);
         }
     }
 
