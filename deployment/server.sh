@@ -107,40 +107,42 @@ done
 # Get standard environment variables
 PRGDIR=`dirname "$PRG"`
 
-WORK_DIR=`cd "$PRGDIR" >/dev/null; pwd`;
+WORKDIR=`cd "$PRGDIR" >/dev/null; pwd`;
+WORKBASE=`cd "$PRGDIR"/../ >/dev/null; pwd`;
 
 # Get standard environment variables
 ###############################################################################################
 APP_ARTIFACT=jobx-server
 APP_VERSION="1.2.0-RELEASE";
 APP_WAR_NAME=${APP_ARTIFACT}-${APP_VERSION}.war
-MAVEN_TARGET_WAR=${WORK_DIR}/${APP_ARTIFACT}/target/${APP_WAR_NAME}
-DIST_PATH=${WORK_DIR}/dist/
-DEPLOY_PATH=${DIST_PATH}${APP_ARTIFACT}
+MAVEN_TARGET_WAR=${WORKBASE}/${APP_ARTIFACT}/target/${APP_WAR_NAME}
+DEPLOY_PATH=${WORKDIR}/${APP_ARTIFACT}
 LIB_PATH=${DEPLOY_PATH}/WEB-INF/lib
 CONTAINER_PATH=${DEPLOY_PATH}/container
 LOG_PATH=${CONTAINER_PATH}/logs
+CONFIG_TEMPLATE=${WORKDIR}/conf.properties
+CONFIG_PATH=${DEPLOY_PATH}/WEB-INF/classes/config.properties
 ###############################################################################################
 
 #先检查dist下是否有war包
-if [ ! -f "${DIST_PATH}/${APP_WAR_NAME}" ] ; then
+if [ ! -f "${WORKDIR}/${APP_WAR_NAME}" ] ; then
     #dist下没有war包则检查server的target下是否有war包.
    if [ ! -f "${MAVEN_TARGET_WAR}" ] ; then
       echo_w "[JobX] please build project first!"
       exit 0;
    else
-      cp ${MAVEN_TARGET_WAR} ${DIST_PATH};
+      cp ${MAVEN_TARGET_WAR} ${WORKDIR};
    fi
 fi
 if [ ! -f "${DEPLOY_PATH}" ] ; then
     mkdir -p ${DEPLOY_PATH}
     # unpackage war to dist
-    cp ${DIST_PATH}/${APP_WAR_NAME} ${DEPLOY_PATH} &&
+    cp ${WORKDIR}/${APP_WAR_NAME} ${DEPLOY_PATH} &&
     cd ${DEPLOY_PATH} &&
     ${RUNJAR} xvf ${APP_WAR_NAME} >/dev/null 2>&1 &&
     rm -rf ${DEPLOY_PATH}/${APP_WAR_NAME}  &&
     #copy jars...
-    cp -r ${WORK_DIR}/${APP_ARTIFACT}/container ${DEPLOY_PATH}
+    cp -r ${WORKBASE}/${APP_ARTIFACT}/container ${DEPLOY_PATH}
 fi
 if [ ! -d "${LOG_PATH}" ] ; then
   mkdir -p ${LOG_PATH}
@@ -157,6 +159,53 @@ do
   CLASSPATH="$CLASSPATH":"$jar"
 done
 CLASSPATH="$CLASSPATH":${DEPLOY_PATH}/WEB-INF/classes
+
+#read user config...
+config_jdbc_url=`awk -F '=' '{if($1~/jdbc.url/) print}' ${CONFIG_TEMPLATE}`
+config_jdbc_username=`awk -F '=' '{if($1~/jdbc.username/) print}' ${CONFIG_TEMPLATE}`
+config_jdbc_password=`awk -F '=' '{if($1~/jdbc.password/) print}' ${CONFIG_TEMPLATE}`
+config_cluster=`awk -F '=' '{if($1~/jobx.cluster/) print}' ${CONFIG_TEMPLATE}`
+config_cached=`awk -F '=' '{if($1~/jobx.cached/) print}' ${CONFIG_TEMPLATE}`
+config_redis_host=`awk -F '=' '{if($1~/redis.host/) print}' ${CONFIG_TEMPLATE}`
+config_redis_password=`awk -F '=' '{if($1~/redis.password/) print}' ${CONFIG_TEMPLATE}`
+config_redis_port=`awk -F '=' '{if($1~/redis.port/) print}' ${CONFIG_TEMPLATE}`
+config_memcached_servers=`awk -F '=' '{if($1~/memcached.servers/) print}' ${CONFIG_TEMPLATE}`
+config_memcached_protocol=`awk -F '=' '{if($1~/memcached.protocol/) print}' ${CONFIG_TEMPLATE}`
+
+config_jdbc_url=${config_jdbc_url//\//\\/}
+config_jdbc_url=${config_jdbc_url//:/\\:}
+config_jdbc_url=${config_jdbc_url//=/\\=}
+config_jdbc_url=${config_jdbc_url//\?/\\?}
+config_jdbc_url=${config_jdbc_url//&/\\&}
+config_redis_host=${config_redis_host//\//\\/}
+config_redis_host=${config_redis_host//:/\\:}
+config_memcached_servers=${config_memcached_servers//\//\\/}
+config_memcached_servers=${config_memcached_servers//:/\\:}
+
+if [ ${darwin} ] ; then
+    sed -i "" "s/^jdbc\.url.*$/${config_jdbc_url}/g" ${CONFIG_PATH}
+    sed -i "" "s/^jdbc\.username.*$/${config_jdbc_username}/g" ${CONFIG_PATH}
+    sed -i "" "s/^jdbc\.password.*$/${config_jdbc_password}/g" ${CONFIG_PATH}
+    sed -i "" "s/^jobx\.cluster.*$/${config_cluster}/g" ${CONFIG_PATH}
+    sed -i "" "s/^jobx\.cached.*$/${config_cached}/g" ${CONFIG_PATH}
+    sed -i "" "s/^redis\.host.*$/${config_redis_host}/g" ${CONFIG_PATH}
+    sed -i "" "s/^redis\.password.*$/${config_redis_password}/g" ${CONFIG_PATH}
+    sed -i "" "s/^redis\.port.*$/${config_redis_port}/g" ${CONFIG_PATH}
+    sed -i "" "s/^memcached\.servers.*$/${config_memcached_servers}/g" ${CONFIG_PATH}
+    sed -i "" "s/^memcached\.protocol.*$/${config_memcached_protocol}/g" ${CONFIG_PATH}
+else
+    sed -i "s/^jdbc\.url.*$/${config_jdbc_url}/g" ${CONFIG_PATH}
+    sed -i "s/^jdbc\.username.*$/${config_jdbc_username}/g" ${CONFIG_PATH}
+    sed -i "s/^jdbc\.password.*$/${config_jdbc_password}/g" ${CONFIG_PATH}
+    sed -i "s/^jobx\.cluster.*$/${config_cluster}/g" ${CONFIG_PATH}
+    sed -i "s/^jobx\.cached.*$/${config_cached}/g" ${CONFIG_PATH}
+    sed -i "s/^redis\.host.*$/${config_redis_host}/g" ${CONFIG_PATH}
+    sed -i "s/^redis\.password.*$/${config_redis_password}/g" ${CONFIG_PATH}
+    sed -i "s/^redis\.port.*$/${config_redis_port}/g" ${CONFIG_PATH}
+    sed -i "s/^memcached\.servers.*$/${config_memcached_servers}/g" ${CONFIG_PATH}
+    sed -i "s/^memcached\.protocol.*$/${config_memcached_protocol}/g" ${CONFIG_PATH}
+fi
+
 
 #default launcher
 [ -z "${JOBX_LAUNCHER}" ] && JOBX_LAUNCHER="tomcat";

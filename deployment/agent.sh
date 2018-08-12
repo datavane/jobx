@@ -58,34 +58,54 @@ done
 PRGDIR=`dirname "$PRG"`
 
 WORKDIR=`cd "$PRGDIR" >/dev/null; pwd`;
+WORKBASE=`cd "$PRGDIR"/../ >/dev/null; pwd`;
 
 # Get standard environment variables
 ###############################################################################################
 APP_ARTIFACT=jobx-agent
 APP_VERSION="1.2.0-RELEASE";
 APP_TAR_NAME=${APP_ARTIFACT}-${APP_VERSION}.tar.gz
-MAVEN_TARGET_TAR="${WORKDIR}"/${APP_ARTIFACT}/target/${APP_TAR_NAME}
-DIST_PATH=${WORKDIR}/dist/
+MAVEN_TARGET_TAR="${WORKBASE}"/${APP_ARTIFACT}/target/${APP_TAR_NAME}
+DEPLOY_PATH=${WORKDIR}/jobx-agent
+CONFIG_TEMPLATE=${WORKDIR}/conf.properties
+CONFIG_PATH=${DEPLOY_PATH}/conf/conf.properties
 ###############################################################################################
 
-[ ! -d "${DIST_PATH}" ] && mkdir -p "${DIST_PATH}"
-
-DEPLOY_PATH=${WORKDIR}/dist/jobx-agent
-
 #先检查dist下是否有war包
-if [ ! -f "${DIST_PATH}/${APP_TAR_NAME}" ] ; then
+if [ ! -f "${WORKDIR}/${APP_TAR_NAME}" ] ; then
     #dist下没有tar包则检查agent的target下是否有tar包.
    if [ ! -f "${MAVEN_TARGET_TAR}" ] ; then
       echo_r "[JobX] please build project first!"
       exit 0;
    else
-      cp ${MAVEN_TARGET_TAR} ${DIST_PATH};
+      cp ${MAVEN_TARGET_TAR} ${WORKDIR};
    fi
 fi
 
 [ -d "${DEPLOY_PATH}" ] && rm -rf ${DEPLOY_PATH}/* || mkdir -p ${DEPLOY_PATH}
 
-tar -xzvf ${DIST_PATH}/${APP_TAR_NAME} -C ${DEPLOY_PATH}/../ >/dev/null 2>&1 && chmod +x ${DEPLOY_PATH}/bin/* >/dev/null 2>&1
+#untar..
+tar -xzvf ${WORKDIR}/${APP_TAR_NAME} && chmod +x ${DEPLOY_PATH}/bin/* >/dev/null 2>&1
+
+#read user config...
+config_password=`awk -F '=' '{if($1~/jobx.password/) print}' ${CONFIG_TEMPLATE}`
+config_port=`awk -F '=' '{if($1~/jobx.port/) print}' ${CONFIG_TEMPLATE}`
+config_registry=`awk -F '=' '{if($1~/jobx.registry/) print}' ${CONFIG_TEMPLATE}`
+#config_registry=$(echo ${config_registry}|sed -r 's/%//g')
+config_registry=${config_registry//\//\\/}
+config_registry=${config_registry//:/\\:}
+config_registry=${config_registry//=/\\=}
+config_registry=${config_registry//\?/\\?}
+config_registry=${config_registry//&/\\&}
+if [ ${darwin} ] ; then
+    sed -i "" "s/^jobx\.password.*$/${config_password}/g" ${CONFIG_PATH}
+    sed -i "" "s/^jobx\.port.*$/${config_port}/g" ${CONFIG_PATH}
+    sed -i "" "s/^jobx\.registry.*$/${config_registry}/g" ${CONFIG_PATH}
+else
+    sed -i "s/^jobx\.password.*$/${config_password}/g" ${CONFIG_PATH}
+    sed -i "s/^jobx\.port.*$/${config_port}/g" ${CONFIG_PATH}
+    sed -i "s/^jobx\.registry.*$/${config_registry}/g" ${CONFIG_PATH}
+fi
 
 EXECUTABLE=${DEPLOY_PATH}/bin/startup.sh
 

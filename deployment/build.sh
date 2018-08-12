@@ -53,13 +53,13 @@ done
 PRGDIR=`dirname "$PRG"`
 
 WORKDIR=`cd "$PRGDIR" >/dev/null; pwd`;
+WORKBASE=`cd "$PRGDIR"/../ >/dev/null; pwd`;
 
 # Get standard environment variables
 ##############################################################################################
 JOBX_VERSION="1.2.0-RELEASE";                                                               ##
-JOBX_AGENT=${WORKDIR}/jobx-agent/target/jobx-agent-${JOBX_VERSION}.tar.gz                   ##
-JOBX_SERVER=${WORKDIR}/jobx-server/target/jobx-server-${JOBX_VERSION}.war                   ##
-DIST_HOME="${WORKDIR}/dist"                                                                 ##
+JOBX_AGENT=${WORKBASE}/jobx-agent/target/jobx-agent-${JOBX_VERSION}.tar.gz                  ##
+JOBX_SERVER=${WORKBASE}/jobx-server/target/jobx-server-${JOBX_VERSION}.war                  ##
 ##############################################################################################
 
 echo_r () {
@@ -151,7 +151,6 @@ if [ "$1" = "debug" ] ; then
     fi
   fi
 fi
-
 # Don't override the endorsed dir if the user has set it previously
 if [ -z "$JAVA_ENDORSED_DIRS" ]; then
   # Set the default -Djava.endorsed.dirs argument
@@ -170,37 +169,28 @@ if [ -z "$JAVACMD" ] ; then
     JAVACMD="`which java`"
   fi
 fi
-
 #check java exists.
 $JAVACMD >/dev/null 2>&1
-
 if [ $? -ne 1 ];then
   echo_r "ERROR: java is not install,please install java first!"
   exit 1;
 fi
-
 #check openjdk
 if [ "`$JAVACMD -version 2>&1 | head -1|grep "openjdk"|wc -l`"x == "1"x ]; then
   echo_r "ERROR: please uninstall OpenJDK and install JDK 1.7+ first"
   exit 1;
 fi
-
 echo_w "build jobx Starting...";
-
-if [ ! -f "${WORKDIR}/.mvn/mvnw" ];then
-    echo_r "ERROR: ${WORKDIR}/.mvn/mvnw is not exists,This file is needed to run this program!"
+if [ ! -f "${WORKBASE}/.mvn/mvnw" ];then
+    echo_r "ERROR: ${WORKBASE}/.mvn/mvnw is not exists,This file is needed to run this program!"
     exit 1;
 fi
-
-${WORKDIR}/.mvn/mvnw clean install -Dmaven.test.skip=true;
-
+${WORKBASE}/.mvn/mvnw -f ${WORKBASE}/pom.xml clean install -Dmaven.test.skip=true;
 retval=$?
-
 if [ ${retval} -eq 0 ] ; then
-    [ ! -d "${DIST_HOME}" ] && mkdir ${DIST_HOME} || rm -rf  ${DIST_HOME}/* ;
-    cp ${JOBX_AGENT} ${DIST_HOME}
-    cp ${JOBX_SERVER} ${DIST_HOME}
-    printf "[${BLUE_COLOR}jobx${RES}] ${WHITE_COLOR}build jobx @Version ${JOBX_VERSION} successfully! please goto${RES} ${GREEN_COLOR}${DIST_HOME}${RES}\n"
+    cp ${JOBX_AGENT} ${WORKDIR}
+    cp ${JOBX_SERVER} ${WORKDIR}
+    printf "[${BLUE_COLOR}jobx${RES}] ${WHITE_COLOR}build jobx @Version ${JOBX_VERSION} successfully! please goto${RES} ${GREEN_COLOR}${WORKDIR}${RES}\n"
     exit 0
 else
     echo_r "build jobx failed! please try again "
