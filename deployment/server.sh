@@ -171,16 +171,24 @@ config_redis_password=`awk -F '=' '{if($1~/redis.password/) print}' ${CONFIG_TEM
 config_redis_port=`awk -F '=' '{if($1~/redis.port/) print}' ${CONFIG_TEMPLATE}`
 config_memcached_servers=`awk -F '=' '{if($1~/memcached.servers/) print}' ${CONFIG_TEMPLATE}`
 config_memcached_protocol=`awk -F '=' '{if($1~/memcached.protocol/) print}' ${CONFIG_TEMPLATE}`
-
 config_jdbc_url=${config_jdbc_url//\//\\/}
-config_jdbc_url=${config_jdbc_url//:/\\:}
 config_jdbc_url=${config_jdbc_url//=/\\=}
-config_jdbc_url=${config_jdbc_url//\?/\\?}
-config_jdbc_url=${config_jdbc_url//&/\\&}
+config_jdbc_url=${config_jdbc_url//&/\\&
+config_jdbc_username=${config_jdbc_username//\//\\/}
+config_jdbc_username=${config_jdbc_username//=/\\=}
+config_jdbc_username=${config_jdbc_username//&/\\&/}
+config_jdbc_password=${config_jdbc_password//\//\\/}
+config_jdbc_password=${config_jdbc_password//=/\\=}
+config_jdbc_password=${config_jdbc_password//&/\\&/}
 config_redis_host=${config_redis_host//\//\\/}
-config_redis_host=${config_redis_host//:/\\:}
+config_redis_host=${config_redis_host//=/\\=}
+config_redis_host=${config_redis_host//&/\\&/}
+config_redis_password=${config_redis_password//\//\\/}
+config_redis_password=${config_redis_password//=/\\=}
+config_redis_password=${config_redis_password//&/\\&/}
 config_memcached_servers=${config_memcached_servers//\//\\/}
-config_memcached_servers=${config_memcached_servers//:/\\:}
+config_memcached_servers=${config_memcached_servers//=/\\=}
+config_memcached_servers=${config_memcached_servers//&/\\&/}
 
 if [ ${darwin} ] ; then
     sed -i "" "s/^jdbc\.url.*$/${config_jdbc_url}/g" ${CONFIG_PATH}
