@@ -161,36 +161,24 @@ done
 CLASSPATH="$CLASSPATH":${DEPLOY_PATH}/WEB-INF/classes
 
 #read user config...
-config_jdbc_url=`awk -F '=' '{if($1~/jdbc.url/) print}' ${CONFIG_TEMPLATE}`
-config_jdbc_username=`awk -F '=' '{if($1~/jdbc.username/) print}' ${CONFIG_TEMPLATE}`
-config_jdbc_password=`awk -F '=' '{if($1~/jdbc.password/) print}' ${CONFIG_TEMPLATE}`
-config_cluster=`awk -F '=' '{if($1~/jobx.cluster/) print}' ${CONFIG_TEMPLATE}`
-config_cached=`awk -F '=' '{if($1~/jobx.cached/) print}' ${CONFIG_TEMPLATE}`
-config_redis_host=`awk -F '=' '{if($1~/redis.host/) print}' ${CONFIG_TEMPLATE}`
-config_redis_password=`awk -F '=' '{if($1~/redis.password/) print}' ${CONFIG_TEMPLATE}`
-config_redis_port=`awk -F '=' '{if($1~/redis.port/) print}' ${CONFIG_TEMPLATE}`
-config_memcached_servers=`awk -F '=' '{if($1~/memcached.servers/) print}' ${CONFIG_TEMPLATE}`
-config_memcached_protocol=`awk -F '=' '{if($1~/memcached.protocol/) print}' ${CONFIG_TEMPLATE}`
-config_jdbc_url=${config_jdbc_url//\//\\/}
-config_jdbc_url=${config_jdbc_url//=/\\=}
-config_jdbc_url=${config_jdbc_url//&/\\&
-config_jdbc_username=${config_jdbc_username//\//\\/}
-config_jdbc_username=${config_jdbc_username//=/\\=}
-config_jdbc_username=${config_jdbc_username//&/\\&/}
-config_jdbc_password=${config_jdbc_password//\//\\/}
-config_jdbc_password=${config_jdbc_password//=/\\=}
-config_jdbc_password=${config_jdbc_password//&/\\&/}
-config_redis_host=${config_redis_host//\//\\/}
-config_redis_host=${config_redis_host//=/\\=}
-config_redis_host=${config_redis_host//&/\\&/}
-config_redis_password=${config_redis_password//\//\\/}
-config_redis_password=${config_redis_password//=/\\=}
-config_redis_password=${config_redis_password//&/\\&/}
-config_memcached_servers=${config_memcached_servers//\//\\/}
-config_memcached_servers=${config_memcached_servers//=/\\=}
-config_memcached_servers=${config_memcached_servers//&/\\&/}
-
+config_registry="`awk -F '=' '{if($1~/jobx.registry/) print}' ${CONFIG_TEMPLATE}`"
+config_jdbc_url="`awk -F '=' '{if($1~/jdbc.url/) print}' ${CONFIG_TEMPLATE}`"
+config_jdbc_username="`awk -F '=' '{if($1~/jdbc.username/) print}' ${CONFIG_TEMPLATE}`"
+config_jdbc_password="`awk -F '=' '{if($1~/jdbc.password/) print}' ${CONFIG_TEMPLATE}`"
+config_cluster="`awk -F '=' '{if($1~/jobx.cluster/) print}' ${CONFIG_TEMPLATE}`"
+config_cached="`awk -F '=' '{if($1~/jobx.cached/) print}' ${CONFIG_TEMPLATE}`"
+config_redis_host="`awk -F '=' '{if($1~/redis.host/) print}' ${CONFIG_TEMPLATE}`"
+config_redis_password="`awk -F '=' '{if($1~/redis.password/) print}' ${CONFIG_TEMPLATE}`"
+config_redis_port="`awk -F '=' '{if($1~/redis.port/) print}' ${CONFIG_TEMPLATE}`"
+config_memcached_servers="`awk -F '=' '{if($1~/memcached.servers/) print}' ${CONFIG_TEMPLATE}`"
+config_memcached_protocol="`awk -F '=' '{if($1~/memcached.protocol/) print}' ${CONFIG_TEMPLATE}`"
 if [ ${darwin} ] ; then
+    config_registry=$(echo ${config_registry}|sed 's/\//\\\//g'|sed 's/\=/\\=/g'|sed 's/&/\\&/g')
+    config_jdbc_url=$(echo ${config_jdbc_url}|sed 's/\//\\\//g'|sed 's/\=/\\=/g'|sed 's/&/\\&/g')
+    config_jdbc_password=$(echo ${config_jdbc_password}|sed 's/\//\\\//g'|sed 's/\=/\\=/g'|sed 's/&/\\&/g')
+    config_redis_password=$(echo ${config_redis_password}|sed 's/\//\\\//g'|sed 's/\=/\\=/g'|sed 's/&/\\&/g')
+    config_memcached_servers=$(echo ${config_memcached_servers}|sed 's/\//\\\//g'|sed 's/\=/\\=/g'|sed 's/&/\\&/g')
+    sed -i "" "s/^jobx\.registry.*$/${config_registry}/g" ${CONFIG_PATH}
     sed -i "" "s/^jdbc\.url.*$/${config_jdbc_url}/g" ${CONFIG_PATH}
     sed -i "" "s/^jdbc\.username.*$/${config_jdbc_username}/g" ${CONFIG_PATH}
     sed -i "" "s/^jdbc\.password.*$/${config_jdbc_password}/g" ${CONFIG_PATH}
@@ -202,6 +190,12 @@ if [ ${darwin} ] ; then
     sed -i "" "s/^memcached\.servers.*$/${config_memcached_servers}/g" ${CONFIG_PATH}
     sed -i "" "s/^memcached\.protocol.*$/${config_memcached_protocol}/g" ${CONFIG_PATH}
 else
+    config_registry=$(echo ${config_registry}|sed -r 's/\//\\\//g'|sed -r 's/\=/\\=/g'|sed -r 's/&/\\&/g')
+    config_jdbc_url=$(echo ${config_jdbc_url}|sed -r 's/\//\\\//g'|sed -r 's/\=/\\=/g'|sed -r 's/&/\\&/g')
+    config_jdbc_password=$(echo ${config_jdbc_password}|sed -r 's/\//\\\//g'|sed -r 's/\=/\\=/g'|sed -r 's/&/\\&/g')
+    config_redis_password=$(echo ${config_redis_password}|sed -r 's/\//\\\//g'|sed -r 's/\=/\\=/g'|sed -r 's/&/\\&/g')
+    config_memcached_servers=$(echo ${config_memcached_servers}|sed -r 's/\//\\\//g'|sed -r 's/\=/\\=/g'|sed -r 's/&/\\&/g')
+    sed -i "" "s/^jobx\.registry.*$/${config_registry}/g" ${CONFIG_PATH}
     sed -i "s/^jdbc\.url.*$/${config_jdbc_url}/g" ${CONFIG_PATH}
     sed -i "s/^jdbc\.username.*$/${config_jdbc_username}/g" ${CONFIG_PATH}
     sed -i "s/^jdbc\.password.*$/${config_jdbc_password}/g" ${CONFIG_PATH}
