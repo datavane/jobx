@@ -23,6 +23,7 @@ package com.jobxhub.agent.process;
 
 import com.jobxhub.agent.util.ProcessLogger;
 import com.jobxhub.common.Constants;
+import com.jobxhub.common.Constants.ExitCode ;
 import com.jobxhub.common.logging.LoggerFactory;
 import com.jobxhub.common.util.CommonUtils;
 import com.jobxhub.common.util.IOUtils;
@@ -57,10 +58,10 @@ public class JobXProcess {
     private final int timeout;
     private final CountDownLatch startupLatch;
     private final CountDownLatch completeLatch;
+    private ExitCode  kill;
     private File logFile;
     private Integer processId;
     private Process process;
-    private Boolean killed = false;
     private String execUser;
     private final String runAsUserBinary = Constants.JOBX_EXECUTE_AS_USER_LIB;
 
@@ -139,8 +140,8 @@ public class JobXProcess {
             //最后以特殊不了见的字符作为log和exitCode+结束时间的分隔符.
             this.processLogger.info(IOUtils.FIELD_TERMINATED_BY + exitCode + IOUtils.TAB + new Date().getTime());
             this.process.destroy();
-            if (this.killed) {
-                exitCode = Constants.StatusCode.KILL.getValue();
+            if (this.kill!=null) {
+                exitCode = this.kill.getValue();
             }
             return exitCode;
         }
@@ -153,7 +154,7 @@ public class JobXProcess {
                 @Override
                 public void run() {
                     //kill job...
-                    kill(Constants.StatusCode.TIME_OUT);
+                    kill(Constants.ExitCode.TIME_OUT);
                     timer.cancel();
                 }
             }, timeout * 60 * 1000);
@@ -199,11 +200,11 @@ public class JobXProcess {
         this.startupLatch.await();
     }
 
-    public void kill(Constants.StatusCode statusCode) {
+    public void kill(ExitCode  kill) {
         if (isStarted()) {
+            this.kill = kill;
             try {
                 if (CommonUtils.isWindows()) {
-                    killed = true;
                     hardKill();
                 }else {
                     boolean flag = softKill(1000*5,TimeUnit.SECONDS);
@@ -212,7 +213,6 @@ public class JobXProcess {
                     }
                 }
             }catch (Exception e) {
-                killed = false;
                 logger.info("[JobX]Kill attempt failed：{}",e.getMessage());
             }
         }

@@ -135,7 +135,7 @@ public class ExecuteService {
         for (String agentId : arrayIds) {
             Agent agent = agentService.getAgent(Long.parseLong(agentId));
             final Job job = new Job(userId, command, agent);
-            job.setSuccessExit(StatusCode.SUCCESS_EXIT.getValue().toString());
+            job.setSuccessExit(ExitCode.SUCCESS_EXIT.getValue().toString());
             exec.submit(new Runnable() {
                 @Override
                 public void run() {
@@ -200,11 +200,10 @@ public class ExecuteService {
             record.setSuccess(ResultStatus.FAILED.getStatus());
         }
         int exitCode = response.getExitCode();
-        if (exitCode == StatusCode.KILL.getValue()
-                ||exitCode == StatusCode.OTHER_KILL.getValue()) {
+        if (exitCode == ExitCode.KILL.getValue()) {
             record.setStatus(RunStatus.STOPED.getStatus());
             record.setSuccess(ResultStatus.KILLED.getStatus());
-        } else if (exitCode == StatusCode.TIME_OUT.getValue()) {
+        } else if (exitCode == ExitCode.TIME_OUT.getValue()) {
             record.setStatus(RunStatus.STOPED.getStatus());
             record.setSuccess(ResultStatus.TIMEOUT.getStatus());
         } else {
@@ -228,7 +227,7 @@ public class ExecuteService {
         if (!connStatus.equals(ConnStatus.CONNECTED)) {
             //已完成
             record.setStatus(RunStatus.DONE.getStatus());
-            record.setReturnCode(StatusCode.ERROR_PING.getValue());
+            record.setReturnCode(ExitCode.ERROR_PING.getValue());
             String format = "can't to communicate with agent:%s(%s:%d),execute job:%s failed";
             String content = String.format(format,
                     job.getAgent().getName(),
@@ -396,7 +395,7 @@ public class ExecuteService {
         request.setUploadFile(requestFile);
         Response response = caller.sentSync(request);
         if (!response.isSuccess()) {
-            response.setSuccess(response.getExitCode() == StatusCode.SUCCESS_EXIT.getValue());
+            response.setSuccess(response.getExitCode() == ExitCode.SUCCESS_EXIT.getValue());
         }
         return response;
     }

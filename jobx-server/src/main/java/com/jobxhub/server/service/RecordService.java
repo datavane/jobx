@@ -166,17 +166,16 @@ public class RecordService {
         if (recordBean!=null) {
             recordBean.setEndTime(new Date(entTime));
             recordBean.setReturnCode(exitCode);
-            if (exitCode == Constants.StatusCode.SUCCESS_EXIT.getValue()) {
+            if (exitCode == Constants.ExitCode.SUCCESS_EXIT.getValue()) {
                 recordBean.setSuccess(Constants.ResultStatus.SUCCESSFUL.getStatus());
             }else {
                 recordBean.setSuccess(Constants.ResultStatus.FAILED.getStatus());
 
             }
-            if (exitCode == Constants.StatusCode.KILL.getValue()
-                    ||exitCode == Constants.StatusCode.OTHER_KILL.getValue()) {
+            if (exitCode == Constants.ExitCode.KILL.getValue()) {
                 recordBean.setStatus(Constants.RunStatus.STOPED.getStatus());
                 recordBean.setSuccess(Constants.ResultStatus.KILLED.getStatus());
-            } else if (exitCode == Constants.StatusCode.TIME_OUT.getValue()) {
+            } else if (exitCode == Constants.ExitCode.TIME_OUT.getValue()) {
                 recordBean.setStatus(Constants.RunStatus.STOPED.getStatus());
                 recordBean.setSuccess(Constants.ResultStatus.TIMEOUT.getStatus());
             } else {

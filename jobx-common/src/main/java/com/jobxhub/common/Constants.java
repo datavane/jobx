@@ -226,12 +226,12 @@ public class Constants {
         }
     }
 
-    public enum StatusCode implements Serializable {
+    public enum ExitCode implements Serializable {
         SUCCESS_EXIT(0x0, "正常退出"),
         ERROR_EXIT(0x1, "异常退出"),
         ERROR_PING(-0x63, "连接失败,ping不通"),
         KILL(0x8f, "进程被kill"),
-        OTHER_KILL(0x89, "进程被外部kill"),
+        //OTHER_KILL(0x89, "进程被外部kill"),
         NOTFOUND(0x7f, "未找到命令或文件"),
         ERROR_EXEC(-0x64, "连接成功，执行任务失败!"),
         ERROR_PASSWORD(-0x1f4, "密码不正确!"),
@@ -240,7 +240,7 @@ public class Constants {
         private Integer value;
         private String description;
 
-        StatusCode(Integer value, String description) {
+        ExitCode(Integer value, String description) {
             this.value = value;
             this.description = description;
         }

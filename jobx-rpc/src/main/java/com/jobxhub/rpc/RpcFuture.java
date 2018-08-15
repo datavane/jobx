@@ -146,7 +146,7 @@ public class RpcFuture {
             this.response.setThrowable(throwable);
             this.response.setStartTime(this.startTime);
             this.response.setSuccess(false);
-            this.response.setExitCode(Constants.StatusCode.ERROR_EXEC.getValue());
+            this.response.setExitCode(Constants.ExitCode.ERROR_EXEC.getValue());
             invokeCallback();
         } finally {
             lock.unlock();

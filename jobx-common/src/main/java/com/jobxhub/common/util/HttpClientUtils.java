@@ -206,7 +206,7 @@ public class HttpClientUtils {
         CloseableHttpClient httpClient = getHttpClient();
         try {
             CloseableHttpResponse response = httpClient.execute(request);
-            // response.getStatusLine().getStatusCode();  
+            // response.getStatusLine().getStatusCode();
 
             HttpEntity entity = response.getEntity();
             if (entity != null) {
