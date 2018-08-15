@@ -269,8 +269,7 @@ public class JobXProcess {
                 }else if(CommonUtils.isWindows()) {
                     cmd = String.format("cmd.exe /c taskkill /PID %s /F /T ",this.processId) ;
                 }
-                Runtime runtime =Runtime.getRuntime();
-                Process process = runtime.exec(cmd);
+                Process process = Runtime.getRuntime().exec(cmd);
                 process.waitFor();
                 process.destroy();
                 this.processLogger.error("[JobX]Kill attempt successful.");
