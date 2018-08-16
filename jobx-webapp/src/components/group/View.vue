@@ -54,8 +54,7 @@
 </template>
 <script type="application/ecmascript">
   export default {
-    methods:{
-    }
+    methods: {}
   }
 </script>
 <style lang="scss" scoped>

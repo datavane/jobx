@@ -1,15 +1,13 @@
 <template>
   <main class="main">
     <section class="content">
-        this'is profile
+      this'is profile
     </section>
   </main>
 </template>
 
 <script>
-    export default {
-        
-    }
+  export default {}
 </script>
 
 <style scoped>

@@ -8,14 +8,14 @@ import store from '@/store'
 
 Vue.use(Router)
 const router = new Router({
-    routes,
-    mode: 'history'
+  routes,
+  mode: 'history'
 })
 
 router.beforeEach((to, from, next) => {
   if (to.name == 'login') {
     next()
-  }else {
+  } else {
     store.dispatch('toggleLoading', true)
     if (store.state.user || storage.get(constant.keys.user)) {
       next()

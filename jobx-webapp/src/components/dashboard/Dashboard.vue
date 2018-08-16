@@ -1,42 +1,42 @@
 <template>
-  <main class="main">
-    <section class="content">
-      <header class="content__title">
+  <main class='main'>
+    <section class='content'>
+      <header class='content__title'>
         <h1>Dashboard</h1>
         <small>Welcome to the unique SuperAdmin web app experience!</small>
       </header>
 
-      <div class="row quick-stats">
-        <div class="col-sm-6 col-md-3" v-for="item in quickstats">
-          <div class="quick-stats__item">
-            <div class="quick-stats__info">
+      <div class='row quick-stats'>
+        <div class='col-sm-6 col-md-3' v-for='item in quickstats'>
+          <div class='quick-stats__item'>
+            <div class='quick-stats__info'>
               <h2>{{item.number}}</h2>
               <small>{{item.desc}}</small>
             </div>
-            <div class="quick-stats__chart peity-bar">
-              <i class="zmdi" :class="item.icon"></i>
+            <div class='quick-stats__chart peity-bar'>
+              <i class='zmdi' :class='item.icon'></i>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="row">
-        <div class="col-lg-6">
-          <div class="card">
-            <div class="card-body">
-              <h4 class="card-title">Sales Statistics</h4>
-              <div class="flot-chart flot-curved-line" ref="flotCurved"></div>
-              <div class="flot-chart-legends flot-chart-legends--curved" ref="flotCurvedLegends"></div>
+      <div class='row'>
+        <div class='col-lg-6'>
+          <div class='card'>
+            <div class='card-body'>
+              <h4 class='card-title'>Sales Statistics</h4>
+              <div class='flot-chart flot-curved-line' ref='flotCurved'></div>
+              <div class='flot-chart-legends flot-chart-legends--curved' ref='flotCurvedLegends'></div>
             </div>
           </div>
         </div>
 
-        <div class="col-lg-6">
-          <div class="card">
-            <div class="card-body">
-              <h4 class="card-title">Growth Rate</h4>
-              <div class="flot-chart flot-line" ref="flotLine"></div>
-              <div class="flot-chart-legends flot-chart-legends--line" ref="flotLineLegends"></div>
+        <div class='col-lg-6'>
+          <div class='card'>
+            <div class='card-body'>
+              <h4 class='card-title'>Growth Rate</h4>
+              <div class='flot-chart flot-line' ref='flotLine'></div>
+              <div class='flot-chart-legends flot-chart-legends--line' ref='flotLineLegends'></div>
             </div>
           </div>
         </div>
@@ -48,11 +48,11 @@
   </main>
 </template>
 
-<script type="text/ecmascript-6">
+<script type='text/ecmascript-6'>
   import 'jquery.flot'
   import 'jquery-flot-resize'
   import 'flot.curvedlines'
-  import Footer from "@/components/common/Footer"
+  import Footer from '@/components/common/Footer'
 
   export default {
     components: {
@@ -86,21 +86,21 @@
       }
     },
     mounted() {
-      this.createCurvedChart();
-      this.createLineChart();
+      this.createCurvedChart()
+      this.createLineChart()
     },
     methods: {
       createCurvedChart() {
         let curvedLineChartData = [
           {
-            label: "2016",
-            color: "rgba(255,255,255,0.08)",
+            label: '2016',
+            color: 'rgba(255,255,255,0.08)',
             lines: {
               show: true,
               lineWidth: 0,
               fill: 1,
               fillColor: {
-                colors: ["rgba(255,255,255,0.0)", "rgba(255,255,255,0.1)"]
+                colors: ['rgba(255,255,255,0.0)', 'rgba(255,255,255,0.1)']
               }
             },
             data: [
@@ -114,14 +114,14 @@
             ]
           },
           {
-            label: "2017",
-            color: "rgba(255,255,255,0.8)",
+            label: '2017',
+            color: 'rgba(255,255,255,0.8)',
             lines: {
               show: true,
               lineWidth: 0.1,
               fill: 1,
               fillColor: {
-                colors: ["rgba(255,255,255,0.01)", "#fff"]
+                colors: ['rgba(255,255,255,0.01)', '#fff']
               }
             },
             data: [
@@ -134,7 +134,7 @@
               [70, 50]
             ]
           }
-        ];
+        ]
         // Chart Options
         // Main
         let curvedLineChartOptions = {
@@ -151,27 +151,27 @@
           },
           grid: {
             borderWidth: 1,
-            borderColor: "rgba(255,255,255,0.1)",
+            borderColor: 'rgba(255,255,255,0.1)',
             show: true,
             hoverable: true,
             clickable: true
           },
           xaxis: {
-            tickColor: "rgba(255,255,255,0.1)",
+            tickColor: 'rgba(255,255,255,0.1)',
             tickDecimals: 0,
             font: {
               lineHeight: 13,
-              style: "normal",
-              color: "rgba(255,255,255,0.75)",
+              style: 'normal',
+              color: 'rgba(255,255,255,0.75)',
               size: 11
             }
           },
           yaxis: {
-            tickColor: "rgba(255,255,255,0.1)",
+            tickColor: 'rgba(255,255,255,0.1)',
             font: {
               lineHeight: 13,
-              style: "normal",
-              color: "rgba(255,255,255,0.75)",
+              style: 'normal',
+              color: 'rgba(255,255,255,0.75)',
               size: 11
             },
             min: +5
@@ -181,7 +181,7 @@
             backgroundOpacity: 0.5,
             noColumns: 0,
             lineWidth: 0,
-            labelBoxBorderColor: "rgba(255,255,255,0)"
+            labelBoxBorderColor: 'rgba(255,255,255,0)'
           }
         }
 
@@ -195,7 +195,7 @@
       createLineChart() {
         let lineChartData = [
           {
-            label: "2015",
+            label: '2015',
             data: [
               [1, 60],
               [2, 30],
@@ -205,10 +205,10 @@
               [6, 90],
               [7, 85]
             ],
-            color: "#fff"
+            color: '#fff'
           },
           {
-            label: "2016",
+            label: '2016',
             data: [
               [1, 20],
               [2, 90],
@@ -218,12 +218,12 @@
               [6, 25],
               [7, 65]
             ],
-            color: "rgba(255,255,255,0.5)"
+            color: 'rgba(255,255,255,0.5)'
           },
           {
-            label: "2017",
+            label: '2017',
             data: [[1, 100], [2, 20], [3, 60], [4, 90], [5, 80], [6, 10], [7, 5]],
-            color: "rgba(255,255,255,0.15)"
+            color: 'rgba(255,255,255,0.15)'
           }
         ]
 
@@ -239,30 +239,30 @@
           shadowSize: 0.1,
           grid: {
             borderWidth: 1,
-            borderColor: "rgba(255,255,255,0.1)",
+            borderColor: 'rgba(255,255,255,0.1)',
             show: true,
             hoverable: true,
             clickable: true
           },
           yaxis: {
-            tickColor: "rgba(255,255,255,0.1)",
+            tickColor: 'rgba(255,255,255,0.1)',
             tickDecimals: 0,
             font: {
               lineHeight: 13,
-              style: "normal",
-              color: "rgba(255,255,255,0.75)",
+              style: 'normal',
+              color: 'rgba(255,255,255,0.75)',
               size: 11
             },
             shadowSize: 0
           },
 
           xaxis: {
-            tickColor: "rgba(255,255,255,0.1)",
+            tickColor: 'rgba(255,255,255,0.1)',
             tickDecimals: 0,
             font: {
               lineHeight: 13,
-              style: "normal",
-              color: "rgba(255,255,255,0.75)",
+              style: 'normal',
+              color: 'rgba(255,255,255,0.75)',
               size: 11
             },
             shadowSize: 0
@@ -272,7 +272,7 @@
             backgroundOpacity: 0.5,
             noColumns: 0,
             lineWidth: 0,
-            labelBoxBorderColor: "rgba(255,255,255,0)"
+            labelBoxBorderColor: 'rgba(255,255,255,0)'
           }
         }
         $.plot(this.$refs.flotLine, lineChartData, lineChartOptions)
@@ -281,19 +281,20 @@
   }
 </script>
 
-<style lang="scss" scoped>
+<style lang='scss' scoped>
   .quick-stats__item {
-    display:flex;
+    display: flex;
     .quick-stats__info {
-      flex:1;
+      flex: 1;
     }
   }
+
   .quick-stats__chart {
-    position:static;
-    float:right;
-    padding:0px 10px;
+    position: static;
+    float: right;
+    padding: 0px 10px;
     .zmdi {
-      font-size:50px;
+      font-size: 50px;
     }
   }
 </style>

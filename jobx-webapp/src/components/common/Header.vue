@@ -68,17 +68,17 @@
     </div>
 
     <div class="modal fade" id="modal-theme" v-if="!$route.path.endsWith('/login')" tabindex="-1">
-       <div class="modal-dialog modal-lg">
+      <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header">
-              <h6 class="modal-title" id="avatar-modal-label">Theme & Style</h6>
-              <button class="btn btn-light btn--icon" data-dismiss="modal"><i class="zmdi zmdi-close"></i></button>
+          <div class="modal-header">
+            <h6 class="modal-title" id="avatar-modal-label">Theme & Style</h6>
+            <button class="btn btn-light btn--icon" data-dismiss="modal"><i class="zmdi zmdi-close"></i></button>
+          </div>
+          <div class="modal-body">
+            <div class="row template-skins">
+              <img v-for="index in 15" @click="theme(index)" :src="'static/img/bg/'+index+'.jpg'">
             </div>
-            <div class="modal-body">
-              <div class="row template-skins">
-                <img v-for="index in 15" @click="theme(index)" :src="'static/img/bg/'+index+'.jpg'">
-              </div>
-            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -86,7 +86,8 @@
     <div class="modal fade" id="modal-upload" tabindex="-1">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
-          <form class="avatar-form" name="picform" action="http://jobx.17gwx.com/headpic/upload.do" enctype="multipart/form-data" method="post">
+          <form class="avatar-form" name="picform" action="http://jobx.17gwx.com/headpic/upload.do"
+                enctype="multipart/form-data" method="post">
             <input name="userId" value="1" type="hidden">
             <div class="modal-header">
               <h5 class="modal-title" id="avatar-modal-label">更改图像</h5>
@@ -110,25 +111,40 @@
                   </div>
 
                   <div class="col-md-4">
-                    <div class="avatar-preview preview-lg"><img src="http://jobx.17gwx.com/upload/1_140.jpg?1530977156713"></div>
+                    <div class="avatar-preview preview-lg"><img
+                      src="http://jobx.17gwx.com/upload/1_140.jpg?1530977156713"></div>
                   </div>
                 </div>
 
                 <div class="row avatar-btns">
                   <div class="col-md-8">
                     <div class="btn-group">
-                      <button class="btn btn-light btn--icon-text" data-method="rotate" data-option="-5" title="-5"><i class="zmdi zmdi-replay-5"></i>-5°</button>
-                      <button class="btn btn-light btn--icon-text" data-method="rotate" data-option="-10" title="-10"><i class="zmdi zmdi-replay-10"></i>-10°</button>
-                      <button class="btn btn-light btn--icon-text" data-method="rotate" data-option="-30" title="-30"><i class="zmdi zmdi-replay-30"></i>-30°</button>
+                      <button class="btn btn-light btn--icon-text" data-method="rotate" data-option="-5" title="-5"><i
+                        class="zmdi zmdi-replay-5"></i>-5°
+                      </button>
+                      <button class="btn btn-light btn--icon-text" data-method="rotate" data-option="-10" title="-10"><i
+                        class="zmdi zmdi-replay-10"></i>-10°
+                      </button>
+                      <button class="btn btn-light btn--icon-text" data-method="rotate" data-option="-30" title="-30"><i
+                        class="zmdi zmdi-replay-30"></i>-30°
+                      </button>
                     </div>
                     <div class="btn-group" style="float:right">
-                      <button class="btn btn-light btn--icon-text" data-method="rotate" data-option="5" title="5"><i class="zmdi zmdi-forward-5"></i>5°</button>
-                      <button class="btn btn-light btn--icon-text" data-method="rotate" data-option="10" title="10"><i class="zmdi zmdi-forward-10"></i>10°</button>
-                      <button class="btn btn-light btn--icon-text" data-method="rotate" data-option="30" title="30"><i class="zmdi zmdi-forward-30"></i>30°</button>
+                      <button class="btn btn-light btn--icon-text" data-method="rotate" data-option="5" title="5"><i
+                        class="zmdi zmdi-forward-5"></i>5°
+                      </button>
+                      <button class="btn btn-light btn--icon-text" data-method="rotate" data-option="10" title="10"><i
+                        class="zmdi zmdi-forward-10"></i>10°
+                      </button>
+                      <button class="btn btn-light btn--icon-text" data-method="rotate" data-option="30" title="30"><i
+                        class="zmdi zmdi-forward-30"></i>30°
+                      </button>
                     </div>
                   </div>
                   <div class="col-md-4">
-                    <button class="btn btn-light btn-block btn--icon-text" type="submit"><i class="zmdi zmdi-upload"></i>上传</button>
+                    <button class="btn btn-light btn-block btn--icon-text" type="submit"><i
+                      class="zmdi zmdi-upload"></i>上传
+                    </button>
                   </div>
                 </div>
               </div>
@@ -142,27 +158,28 @@
 </template>
 <script type="text/ecmascript-6">
   import {mapGetters} from 'vuex'
+
   export default {
-    computed:{
+    computed: {
       ...mapGetters([
         'loading'
       ])
     },
-    methods:{
+    methods: {
       theme(index) {
-        this.$storage.set(this.$const.keys.theme,index)
+        this.$storage.set(this.$const.keys.theme, index)
         $("body").attr("data-sa-theme", index)
       }
     },
-    watch:{
+    watch: {
       loading(val) {
-        if(!val) {
+        if (!val) {
           $('.page-loader').fadeOut()
-        }else {
-           $('.page-loader').fadeIn()
+        } else {
+          $('.page-loader').fadeIn()
         }
       }
-    } 
+    }
 
   }
 </script>
@@ -173,12 +190,14 @@
       height: 50px;
     }
   }
+
   .preview-lg {
     height: 195px;
     width: 195px;
     margin: 68px 12px 37px;
     opacity: 0.9;
   }
+
   .avatar-preview {
     border-radius: 50% !important;
     border: 2px solid rgba(200, 220, 220, 0.35);
@@ -188,7 +207,7 @@
 
   #modal-theme {
     .modal-dialog {
-      background-color: rgba(0,0,0,0.6)
+      background-color: rgba(0, 0, 0, 0.6)
     }
     .modal-header {
       padding: 20px 25px 5px 25px;
@@ -200,7 +219,7 @@
     }
     .template-skins {
       img {
-        padding-left:15px;
+        padding-left: 15px;
         padding-bottom: 15px;
         width: 155px;
         height: 100px;

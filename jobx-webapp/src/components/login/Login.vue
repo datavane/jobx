@@ -25,6 +25,7 @@
 <script type="text/ecmascript-6">
   import md5 from 'md5'
   import {mapActions} from 'vuex'
+
   export default {
     data() {
       return {
@@ -49,58 +50,62 @@
           return
         }
         this.status = true
-        this.$http.post('/login.do',{
-            userName:this.userName,
-            password:md5(this.password)
-        }).then(response=> {
-          switch(response.code) {
+        this.$http.post('/login.do', {
+          userName: this.userName,
+          password: md5(this.password)
+        }).then(response => {
+          switch (response.code) {
             case 500:
               this.info = "用户名密码错误"
-              this.status = false 
-            break
+              this.status = false
+              break
             case 201:
               let userId = response.body.userId
               this.info = "请修改默认密码"
               this.status = false
-            break
+              break
             case 200:
               this.info = "登录成功,正在进入主页..."
               this.status = true
-              this.login({user:response.body.user})
-              this.$storage.set(this.$const.keys.xsrf,response.body.xsrf)
-              setTimeout(()=>{
-                this.info=""
-                this.$router.push({path:'/dashboard'})
-              },1000)
-            break
+              this.login({user: response.body.user})
+              this.$storage.set(this.$const.keys.xsrf, response.body.xsrf)
+              setTimeout(() => {
+                this.info = ""
+                this.$router.push({path: '/dashboard'})
+              }, 1000)
+              break
           }
-        },error=> {
+        }, error => {
           console.log(error)
         })
       }
-       
+
     }
   }
 </script>
 
 <style lang="scss">
   .login_logo {
-    width:250px;
+    width: 250px;
     img {
-      width:200px;
+      width: 200px;
     }
   }
+
   .form-group {
-    padding-top:10px;
+    padding-top: 10px;
   }
+
   .error_msg {
-    margin-top:-15px;
-    margin-bottom:8px;
+    margin-top: -15px;
+    margin-bottom: 8px;
   }
-  .green{
+
+  .green {
     color: green;
   }
-  .red{
+
+  .red {
     color: red;
   }
 </style>
