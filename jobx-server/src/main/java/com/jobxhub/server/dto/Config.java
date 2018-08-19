@@ -27,13 +27,14 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 
 public class Config implements Serializable {
+    private String smtpHost;
+    private Integer smtpPort;
+    private Boolean isSSL;
     private String senderEmail;
     private String emailPassword;
     private String sendUrl;
     private Integer spaceTime;
     private String template;
-    private String smtpHost;
-    private Integer smtpPort;
     private String execUser;
     private String version;
 
@@ -57,7 +58,30 @@ public class Config implements Serializable {
         }
     }
 
-    public Config(){}
+
+    public String getSmtpHost() {
+        return smtpHost;
+    }
+
+    public void setSmtpHost(String smtpHost) {
+        this.smtpHost = smtpHost;
+    }
+
+    public Integer getSmtpPort() {
+        return smtpPort;
+    }
+
+    public void setSmtpPort(Integer smtpPort) {
+        this.smtpPort = smtpPort;
+    }
+
+    public Boolean getSSL() {
+        return isSSL;
+    }
+
+    public void setSSL(Boolean SSL) {
+        isSSL = SSL;
+    }
 
     public String getSenderEmail() {
         return senderEmail;
@@ -97,22 +121,6 @@ public class Config implements Serializable {
 
     public void setTemplate(String template) {
         this.template = template;
-    }
-
-    public String getSmtpHost() {
-        return smtpHost;
-    }
-
-    public void setSmtpHost(String smtpHost) {
-        this.smtpHost = smtpHost;
-    }
-
-    public Integer getSmtpPort() {
-        return smtpPort;
-    }
-
-    public void setSmtpPort(Integer smtpPort) {
-        this.smtpPort = smtpPort;
     }
 
     public String getExecUser() {

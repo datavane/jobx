@@ -36,11 +36,11 @@ export default [
   {
     name: 'profile',
     path: '/profile',
-    component: () => import('@/components/profile/Profile')
-  },
-  {
-    name: 'config',
-    path: '/config',
-    component: () => import('@/components/config/Config')
+    component: () => import('@/components/profile/View'),
+    children: [
+      {
+        path: '/profile/edit',
+        component: () => import('@/components/profile/Edit')
+      }]
   }
 ]

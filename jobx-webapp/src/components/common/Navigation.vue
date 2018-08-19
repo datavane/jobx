@@ -119,17 +119,10 @@
             item: []
           },
           {
-            name: '用户管理',
-            className: '',
-            icon: 'zmdi-account',
-            url: '/user',
-            item: []
-          },
-          {
             name: '系统设置',
             className: '',
             icon: 'zmdi-settings',
-            url: '/config',
+            url: '/profile',
             item: []
           }
         ]

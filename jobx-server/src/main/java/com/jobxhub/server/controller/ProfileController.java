@@ -24,6 +24,7 @@ package com.jobxhub.server.controller;
 import com.jobxhub.common.Constants;
 import com.jobxhub.server.annotation.RequestRepeat;
 import com.jobxhub.server.dto.Config;
+import com.jobxhub.server.dto.RestResult;
 import com.jobxhub.server.service.ConfigService;
 import com.jobxhub.server.service.RecordService;
 import com.jobxhub.server.dto.Status;
@@ -33,15 +34,16 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
 
 /**
  * Created by ChenHui on 2016/2/17.
  */
-@Controller
-@RequestMapping("config")
-public class ConfigController extends BaseController {
+@RestController
+@RequestMapping("profile")
+public class ProfileController extends BaseController {
 
     @Autowired
     private ConfigService configService;
@@ -49,10 +51,10 @@ public class ConfigController extends BaseController {
     @Autowired
     private RecordService recordService;
 
-    @RequestMapping("view.htm")
-    public String settings(Model model) {
-        model.addAttribute("config", configService.getSysConfig());
-        return "config/view";
+    @RequestMapping(value = "info.do", method = RequestMethod.POST)
+    public RestResult info() {
+        Config config = configService.getSysConfig();
+        return RestResult.rest(200,config);
     }
 
     @RequestMapping("edit.htm")

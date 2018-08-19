@@ -1509,8 +1509,8 @@ public final class ReflectUtils {
     public static List<Field> getAllFields(Class<?> objClass) {
         AssertUtils.notNull(objClass);
         List<Field> fields = new ArrayList<Field>(0);
-        while (!objClass.getSuperclass().equals(Object.class)) {
-            Collections.copy(fields, Arrays.asList(objClass.getDeclaredFields()));
+        while (!objClass.equals(Object.class)) {
+            Collections.addAll(fields,objClass.getDeclaredFields());
             objClass = objClass.getSuperclass();
         }
         return fields;
@@ -1622,4 +1622,11 @@ public final class ReflectUtils {
         return clazz.getClassLoader() == null;
     }
 
+    public static void main(String[] args) {
+
+        Map map = new HashMap();
+
+
+        System.out.println(map.getClass().getSuperclass().getSuperclass().getSuperclass().equals(Object.class));
+    }
 }
