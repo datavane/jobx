@@ -29,7 +29,6 @@ import com.jobxhub.server.service.ConfigService;
 import com.jobxhub.server.service.RecordService;
 import com.jobxhub.server.dto.Status;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

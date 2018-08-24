@@ -225,8 +225,7 @@ public class AgentService implements ServerHandler, AgentJob {
         processMap.put(pid,jobXProcess);
 
         try {
-            int exitCode = jobXProcess.start();
-            response.setExitCode(exitCode);
+            response.setExitCode(jobXProcess.start());
         }catch (Exception e) {
             response.setExitCode(-1);
         }finally {

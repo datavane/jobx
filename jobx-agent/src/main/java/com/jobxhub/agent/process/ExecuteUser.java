@@ -22,6 +22,8 @@
 package com.jobxhub.agent.process;
 
 import com.jobxhub.common.Constants;
+import com.jobxhub.common.util.AssertUtils;
+import com.jobxhub.common.util.CommonUtils;
 import com.jobxhub.common.util.IOUtils;
 import com.jobxhub.common.util.StringUtils;
 import org.slf4j.Logger;
@@ -48,8 +50,8 @@ public class ExecuteUser {
      * @param command the list containing the program and its arguments
      * @return The return value of the shell command
      */
-    public int execute(final String user, final List<String> command) throws IOException {
-        logger.info("[Jobx]execute Command {} ",StringUtils.joinString(command));
+    public int execute(final String user, final String command) throws IOException {
+        logger.info("[Jobx]execute Command {} ",command);
         final Process process = new ProcessBuilder()
                 .command(buildCommand(user, command))
                 .inheritIO()
@@ -64,11 +66,13 @@ public class ExecuteUser {
         return exitCode;
     }
 
-    public static List<String> buildCommand(final String user, final List<String> command) {
-        final List<String> commandList = new ArrayList<String>();
-        commandList.add(Constants.JOBX_EXECUTE_AS_USER_LIB);
-        commandList.add(user);
-        commandList.addAll(command);
-        return commandList;
+    public static String buildCommand(final String execUser, final String command) {
+        AssertUtils.notNull(command);
+        if (CommonUtils.isLinux() && CommonUtils.notEmpty(execUser)) {
+            return Constants.JOBX_EXECUTE_AS_USER_LIB
+                    .concat(IOUtils.BLANK_CHAR)
+                    .concat(command);
+        }
+        return command;
     }
 }

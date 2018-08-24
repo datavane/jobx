@@ -21,8 +21,6 @@
 
 package com.jobxhub.common.util;
 
-import com.jobxhub.common.Constants;
-import com.jobxhub.common.util.collection.CollectionUtils;
 import com.jobxhub.common.util.collection.HashMap;
 
 import java.io.File;

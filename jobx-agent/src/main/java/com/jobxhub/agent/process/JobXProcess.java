@@ -50,11 +50,9 @@ public class JobXProcess {
 
     private Logger processLogger;
 
-    private final String workingDir;
-
     public static String KILL_COMMAND = "kill";
 
-    private final List<String> command;
+    private final String command;
     private final int timeout;
     private final CountDownLatch startupLatch;
     private final CountDownLatch completeLatch;
@@ -66,7 +64,6 @@ public class JobXProcess {
     private final String runAsUserBinary = Constants.JOBX_EXECUTE_AS_USER_LIB;
 
     public JobXProcess(String command, Integer timeout, String pid, String execUser) {
-        this.workingDir = IOUtils.getTmpdir();
         this.timeout = timeout;
         this.logFile = new File(Constants.JOBX_LOG_PATH + "/." + pid + ".log");
         this.processId = -1;
@@ -74,12 +71,7 @@ public class JobXProcess {
         this.startupLatch = new CountDownLatch(1);
         this.completeLatch = new CountDownLatch(1);
         this.execUser = execUser;
-        List<String> commandLine = getCommandLine(command);
-        if (isExecAsUser()) {
-            this.command = ExecuteUser.buildCommand(execUser,commandLine);
-        }else {
-            this.command = commandLine;
-        }
+        this.command = ExecuteUser.buildCommand(execUser,command);
     }
 
     /**
@@ -92,13 +84,14 @@ public class JobXProcess {
 
         int exitCode = -1;
         try {
-            ProcessBuilder builder = new ProcessBuilder(this.command);
+
+           /* ProcessBuilder builder = new ProcessBuilder(this.command);
             builder.directory(new File(this.workingDir));
             builder.redirectErrorStream(true);
-
+*/
             this.watchTimeOut();
 
-            this.process = builder.start();
+            this.process = Runtime.getRuntime().exec(command);
             this.processId = getProcessId();
             if (processId == null) {
                 this.logger.debug("[JobX]Spawned thread with unknown process id");
@@ -137,6 +130,7 @@ public class JobXProcess {
             IOUtils.closeQuietly(this.process.getInputStream());
             IOUtils.closeQuietly(this.process.getOutputStream());
             IOUtils.closeQuietly(this.process.getErrorStream());
+
             //最后以特殊不了见的字符作为log和exitCode+结束时间的分隔符.
             this.processLogger.info(IOUtils.FIELD_TERMINATED_BY + exitCode + IOUtils.TAB + new Date().getTime());
             this.process.destroy();
@@ -357,54 +351,4 @@ public class JobXProcess {
         return logger;
     }
 
-    private List<String> getCommandLine(String command) {
-        ArrayList<String> commands = new ArrayList<String>();
-        int index = 0;
-
-        StringBuffer buffer = new StringBuffer(command.length());
-
-        boolean isApos = false;
-        boolean isQuote = false;
-        while (index < command.length()) {
-            char c = command.charAt(index);
-            switch (c) {
-                case ' ':
-                    if (!isQuote && !isApos) {
-                        String arg = buffer.toString();
-                        buffer = new StringBuffer(command.length() - index);
-                        if (arg.length() > 0) {
-                            commands.add(arg);
-                        }
-                    } else {
-                        buffer.append(c);
-                    }
-                    break;
-                case '\'':
-                    if (!isQuote) {
-                        isApos = !isApos;
-                    } else {
-                        buffer.append(c);
-                    }
-                    break;
-                case '"':
-                    if (!isApos) {
-                        isQuote = !isQuote;
-                    } else {
-                        buffer.append(c);
-                    }
-                    break;
-                default:
-                    buffer.append(c);
-            }
-
-            index++;
-        }
-
-        if (buffer.length() > 0) {
-            String arg = buffer.toString();
-            commands.add(arg);
-        }
-
-        return Arrays.asList(commands.toArray(new String[commands.size()]));
-    }
 }

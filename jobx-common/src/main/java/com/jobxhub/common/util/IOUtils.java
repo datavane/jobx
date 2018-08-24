@@ -65,6 +65,7 @@ public abstract class IOUtils implements Serializable {
 
     private static final int BUFFER_SIZE = 1024 * 8;
 
+    public static final String BLANK_CHAR = " ";
 
     public static String readText(File file, String charset) {
         InputStream inputStream = null;
