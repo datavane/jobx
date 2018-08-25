@@ -25,6 +25,7 @@ import com.jobxhub.agent.util.ProcessLogger;
 import com.jobxhub.common.Constants;
 import com.jobxhub.common.Constants.ExitCode ;
 import com.jobxhub.common.logging.LoggerFactory;
+import com.jobxhub.common.util.CommandUtils;
 import com.jobxhub.common.util.CommonUtils;
 import com.jobxhub.common.util.IOUtils;
 import com.jobxhub.common.util.ReflectUtils;
@@ -46,9 +47,11 @@ import java.util.concurrent.TimeUnit;
 
 public class JobXProcess {
 
+
     private org.slf4j.Logger logger = LoggerFactory.getLogger(JobXProcess.class);
 
     private Logger processLogger;
+
 
     public static String KILL_COMMAND = "kill";
 
@@ -56,14 +59,14 @@ public class JobXProcess {
     private final int timeout;
     private final CountDownLatch startupLatch;
     private final CountDownLatch completeLatch;
-    private ExitCode  kill;
-    private File logFile;
     private Integer processId;
+    private ExitCode kill;
+    private File logFile;
+    private File execShell;
     private Process process;
     private String execUser;
-    private final String runAsUserBinary = Constants.JOBX_EXECUTE_AS_USER_LIB;
 
-    public JobXProcess(String command, Integer timeout, String pid, String execUser) {
+    public JobXProcess(String command, int timeout, String pid, String execUser) {
         this.timeout = timeout;
         this.logFile = new File(Constants.JOBX_LOG_PATH + "/." + pid + ".log");
         this.processId = -1;
@@ -71,7 +74,12 @@ public class JobXProcess {
         this.startupLatch = new CountDownLatch(1);
         this.completeLatch = new CountDownLatch(1);
         this.execUser = execUser;
-        this.command = ExecuteUser.buildCommand(execUser,command);
+        if (CommonUtils.isUnix()) {
+            this.execShell = new File(Constants.JOBX_TMP_PATH + "/." + pid + ".sh");
+            this.command = ExecuteUser.buildCommand(execUser, execShell, command);
+        } else {
+            this.command = command;
+        }
     }
 
     /**
@@ -84,20 +92,15 @@ public class JobXProcess {
 
         int exitCode = -1;
         try {
-
-           /* ProcessBuilder builder = new ProcessBuilder(this.command);
-            builder.directory(new File(this.workingDir));
-            builder.redirectErrorStream(true);
-*/
             this.watchTimeOut();
-
-            this.process = Runtime.getRuntime().exec(command);
+            this.process = Runtime.getRuntime().exec(this.command);
             this.processId = getProcessId();
-            if (processId == null) {
+            if (this.processId == 0) {
                 this.logger.debug("[JobX]Spawned thread with unknown process id");
             } else {
-                this.logger.debug("[JobX]Spawned thread with process id " + processId);
+                this.logger.debug("[JobX]Spawned thread with process id " + this.processId);
             }
+
             this.startupLatch.countDown();
             ProcessLogger outputLogger = ProcessLogger.getLoger(this.process.getInputStream(), this.processLogger, Level.INFO);
             ProcessLogger errorLogger = ProcessLogger.getLoger(this.process.getErrorStream(), this.processLogger, Level.ERROR);
@@ -169,10 +172,17 @@ public class JobXProcess {
     }
 
     public void deleteLog() {
-        if (this.logFile.exists()) {
+        if (CommonUtils.notEmpty(this.logFile)) {
             this.logFile.delete();
         }
     }
+
+    public void deleteExecShell() {
+        if (CommonUtils.notEmpty(this.execShell)) {
+            this.execShell.delete();
+        }
+    }
+
 
     /**
      * Await the completion of this process
@@ -225,7 +235,7 @@ public class JobXProcess {
                 if (isExecAsUser()) {
                     String cmd = String.format(
                             "%s %s %s %d",
-                            runAsUserBinary,
+                            Constants.JOBX_EXECUTE_AS_USER_LIB,
                             this.execUser,
                             KILL_COMMAND,
                             this.processId
@@ -254,7 +264,7 @@ public class JobXProcess {
                 if (CommonUtils.isUnix()) {
                     if (isExecAsUser()) {
                         cmd = String.format("%s %s %s -9 %d",
-                                this.runAsUserBinary,
+                                Constants.JOBX_EXECUTE_AS_USER_LIB,
                                 this.execUser, KILL_COMMAND,
                                 this.processId);
                     } else {
@@ -283,8 +293,7 @@ public class JobXProcess {
         try {
             if (this.process == null) return null;
             if (CommonUtils.isUnix()) {
-                Field field = ReflectUtils.getField(this.process.getClass(), "pid");
-                return field.getInt(this.process);
+                this.processId = CommandUtils.getPPID(this.process);
             }else if(CommonUtils.isWindows()) {
                 Field field = ReflectUtils.getField(this.process.getClass(), "handle");
                 field.setAccessible(true);

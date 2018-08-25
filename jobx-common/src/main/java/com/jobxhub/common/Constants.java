@@ -169,6 +169,8 @@ public class Constants {
 
     public static final String JOBX_LOG_PATH = JOBX_HOME + "/logs";
 
+    public static final String JOBX_TMP_PATH = JOBX_HOME + "/temp";
+
     public static final String JOBX_USER_HOME = SystemPropertyUtils.get("user.home") + File.separator + ".jobx";
 
     public static final File JOBX_UID_FILE = new File(JOBX_USER_HOME,"id");

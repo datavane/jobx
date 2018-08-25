@@ -209,7 +209,7 @@ public abstract class CommonUtils implements Serializable {
             return defVal;
         }
         try {
-            return Integer.parseInt(val.toString());
+            return Integer.parseInt(val.toString().trim());
         } catch (NumberFormatException e) {
             return defVal;
         }

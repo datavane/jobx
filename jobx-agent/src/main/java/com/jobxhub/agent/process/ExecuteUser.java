@@ -25,17 +25,18 @@ import com.jobxhub.common.Constants;
 import com.jobxhub.common.util.AssertUtils;
 import com.jobxhub.common.util.CommonUtils;
 import com.jobxhub.common.util.IOUtils;
-import com.jobxhub.common.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+
+import static com.jobxhub.common.util.CommandUtils.*;
 
 public class ExecuteUser {
 
     private final static Logger logger = LoggerFactory.getLogger(ExecuteUser.class);
+
 
     public ExecuteUser() {
         if (!IOUtils.fileExists(Constants.JOBX_EXECUTE_AS_USER_LIB)) {
@@ -46,14 +47,14 @@ public class ExecuteUser {
     /**
      * API to execute a command on behalf of another user.
      *
-     * @param user The proxy user
+     * @param user    The proxy user
      * @param command the list containing the program and its arguments
      * @return The return value of the shell command
      */
-    public int execute(final String user, final String command) throws IOException {
-        logger.info("[Jobx]execute Command {} ",command);
+    public static int execute(final String user, final File file, final String command) throws IOException {
+        logger.info("[Jobx]execute Command {} ", command);
         final Process process = new ProcessBuilder()
-                .command(buildCommand(user, command))
+                .command(buildCommand(user, file, command))
                 .inheritIO()
                 .start();
         int exitCode;
@@ -66,12 +67,27 @@ public class ExecuteUser {
         return exitCode;
     }
 
-    public static String buildCommand(final String execUser, final String command) {
+    public static String buildCommand(final String proxyUser, final File execFile, final String command) {
         AssertUtils.notNull(command);
-        if (CommonUtils.isLinux() && CommonUtils.notEmpty(execUser)) {
-            return Constants.JOBX_EXECUTE_AS_USER_LIB
-                    .concat(IOUtils.BLANK_CHAR)
-                    .concat(command);
+        if (CommonUtils.isUnix()) {
+            //写入命令到文件
+            write(execFile, command);
+            String execCmd = String.format("/bin/bash +x %s", execFile.getAbsolutePath());
+            if (CommonUtils.notEmpty(proxyUser)) {
+                //授权文件...
+                try {
+                    chownFile(execFile, proxyUser);
+                } catch (Exception e) {
+                    throw new RuntimeException("[JobX] chown command file error,{}", e.getCause());
+                }
+                return Constants.JOBX_EXECUTE_AS_USER_LIB
+                        .concat(IOUtils.BLANK_CHAR)
+                        .concat(proxyUser)
+                        .concat(IOUtils.BLANK_CHAR)
+                        .concat(execCmd);
+
+            }
+            return execCmd;
         }
         return command;
     }
