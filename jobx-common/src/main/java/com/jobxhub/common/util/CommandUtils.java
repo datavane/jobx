@@ -66,7 +66,7 @@ public abstract class CommandUtils implements Serializable {
     public static Integer getPIDByPP(Process process) {
         try {
             String cmd = String.format("ps -ef|awk '{if($3~/%d/) print $2}'",getPID(process));
-            return CommonUtils.toInt(execute(cmd));
+            return CommonUtils.toInt(execute(cmd),0);
         } catch (Exception e) {
             e.printStackTrace();
         }
