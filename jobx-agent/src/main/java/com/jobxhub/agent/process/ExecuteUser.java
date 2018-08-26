@@ -76,7 +76,7 @@ public class ExecuteUser {
             if (CommonUtils.notEmpty(proxyUser)) {
                 //授权文件...
                 try {
-                    chownFile(execFile, proxyUser);
+                    chown(false,proxyUser, proxyUser,execFile);
                 } catch (Exception e) {
                     throw new RuntimeException("[JobX] chown command file error,{}", e.getCause());
                 }

@@ -315,8 +315,8 @@ public abstract class CommandUtils implements Serializable {
         }
     }
 
-    public static int chownFile(File file,String owner) throws IOException, InterruptedException {
-        return runAsExecUser(DEFAULT_USER,String.format("chown %s:%s %s",owner,owner,file.getAbsolutePath()));
+    public static int chown(boolean r,String user,String group,File file) throws IOException, InterruptedException {
+        return runAsExecUser(DEFAULT_USER,String.format("chown %s %s:%s %s",(r?"-R":""),user,group,file.getAbsolutePath()));
     }
 
     private static int runAsExecUser(final String execUser,final String command) throws IOException, InterruptedException {
