@@ -169,6 +169,8 @@ public class Constants {
 
     public static final String JOBX_LOG_PATH = JOBX_HOME + "/logs";
 
+    public static final String JOBX_TMP_PATH = JOBX_HOME + "/temp";
+
     public static final String JOBX_USER_HOME = SystemPropertyUtils.get("user.home") + File.separator + ".jobx";
 
     public static final File JOBX_UID_FILE = new File(JOBX_USER_HOME,"id");
@@ -226,7 +228,7 @@ public class Constants {
         }
     }
 
-    public enum StatusCode implements Serializable {
+    public enum ExitCode implements Serializable {
         SUCCESS_EXIT(0x0, "正常退出"),
         ERROR_EXIT(0x1, "异常退出"),
         ERROR_PING(-0x63, "连接失败,ping不通"),
@@ -240,7 +242,7 @@ public class Constants {
         private Integer value;
         private String description;
 
-        StatusCode(Integer value, String description) {
+        ExitCode(Integer value, String description) {
             this.value = value;
             this.description = description;
         }

@@ -89,7 +89,7 @@ public class Response implements Serializable {
 
     public Response setExitCode(int exitCode) {
         this.exitCode = exitCode;
-        setSuccess(Constants.StatusCode.SUCCESS_EXIT.getValue() == exitCode);
+        setSuccess(Constants.ExitCode.SUCCESS_EXIT.getValue() == exitCode);
         return this;
     }
 

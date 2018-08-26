@@ -23,7 +23,9 @@ package com.jobxhub.agent.process;
 
 import com.jobxhub.agent.util.ProcessLogger;
 import com.jobxhub.common.Constants;
+import com.jobxhub.common.Constants.ExitCode ;
 import com.jobxhub.common.logging.LoggerFactory;
+import com.jobxhub.common.util.CommandUtils;
 import com.jobxhub.common.util.CommonUtils;
 import com.jobxhub.common.util.IOUtils;
 import com.jobxhub.common.util.ReflectUtils;
@@ -45,39 +47,38 @@ import java.util.concurrent.TimeUnit;
 
 public class JobXProcess {
 
+
     private org.slf4j.Logger logger = LoggerFactory.getLogger(JobXProcess.class);
 
     private Logger processLogger;
 
-    private final String workingDir;
 
     public static String KILL_COMMAND = "kill";
 
-    private final List<String> command;
+    private final String command;
     private final int timeout;
     private final CountDownLatch startupLatch;
     private final CountDownLatch completeLatch;
-    private File logFile;
     private Integer processId;
+    private ExitCode kill;
+    private File logFile;
+    private File execShell;
     private Process process;
-    private boolean killed = false;
     private String execUser;
-    private final String runAsUserBinary = Constants.JOBX_EXECUTE_AS_USER_LIB;
 
     public JobXProcess(String command, int timeout, String pid, String execUser) {
-        this.workingDir = IOUtils.getTmpdir();
         this.timeout = timeout;
-        this.logFile = new File(Constants.JOBX_LOG_PATH + "/." + pid + ".log");
+        this.logFile = getLogFile(pid);
         this.processId = -1;
         this.processLogger = this.getLogger(pid);
         this.startupLatch = new CountDownLatch(1);
         this.completeLatch = new CountDownLatch(1);
         this.execUser = execUser;
-        List<String> commandLine = getCommandLine(command);
-        if (isExecAsUser()) {
-            this.command = ExecuteUser.buildCommand(execUser,commandLine);
-        }else {
-            this.command = commandLine;
+        if (CommonUtils.isUnix()) {
+            this.execShell = getExecShell(pid);
+            this.command = ExecuteUser.buildCommand(execUser, execShell, command);
+        } else {
+            this.command = command;
         }
     }
 
@@ -85,25 +86,21 @@ public class JobXProcess {
      * Execute this process, blocking until it has completed.
      */
     public int start() {
-
         if (this.isStarted() || this.isComplete()) {
             throw new IllegalStateException("[JobX]The process can only be used once.");
         }
 
-        ProcessBuilder builder = new ProcessBuilder(this.command);
-        builder.directory(new File(this.workingDir));
-        builder.redirectErrorStream(true);
-
         int exitCode = -1;
         try {
             this.watchTimeOut();
-            this.process = builder.start();
+            this.process = Runtime.getRuntime().exec(this.command);
             this.processId = getProcessId();
-            if (processId == null) {
-                this.logger.debug("[JobX]Spawned thread with unknown process id");
+            if (this.processId == 0) {
+                this.logger.info("[JobX]Spawned thread with unknown process id");
             } else {
-                this.logger.debug("[JobX]Spawned thread with process id " + processId);
+                this.logger.info("[JobX]Spawned thread with process id " + this.processId);
             }
+
             this.startupLatch.countDown();
             ProcessLogger outputLogger = ProcessLogger.getLoger(this.process.getInputStream(), this.processLogger, Level.INFO);
             ProcessLogger errorLogger = ProcessLogger.getLoger(this.process.getErrorStream(), this.processLogger, Level.ERROR);
@@ -136,11 +133,12 @@ public class JobXProcess {
             IOUtils.closeQuietly(this.process.getInputStream());
             IOUtils.closeQuietly(this.process.getOutputStream());
             IOUtils.closeQuietly(this.process.getErrorStream());
+
             //最后以特殊不了见的字符作为log和exitCode+结束时间的分隔符.
             this.processLogger.info(IOUtils.FIELD_TERMINATED_BY + exitCode + IOUtils.TAB + new Date().getTime());
             this.process.destroy();
-            if (this.killed) {
-                exitCode = Constants.StatusCode.KILL.getValue();
+            if (this.kill!=null) {
+                exitCode = this.kill.getValue();
             }
             return exitCode;
         }
@@ -153,10 +151,10 @@ public class JobXProcess {
                 @Override
                 public void run() {
                     //kill job...
-                    kill();
+                    kill(Constants.ExitCode.TIME_OUT);
                     timer.cancel();
                 }
-            },timeout * 60 * 1000);
+            }, timeout * 60 * 1000);
         }
     }
 
@@ -174,10 +172,17 @@ public class JobXProcess {
     }
 
     public void deleteLog() {
-        if (this.logFile.exists()) {
+        if (CommonUtils.notEmpty(this.logFile)) {
             this.logFile.delete();
         }
     }
+
+    public void deleteExecShell() {
+        if (CommonUtils.notEmpty(this.execShell)) {
+            this.execShell.delete();
+        }
+    }
+
 
     /**
      * Await the completion of this process
@@ -199,20 +204,19 @@ public class JobXProcess {
         this.startupLatch.await();
     }
 
-    public void kill() {
+    public void kill(ExitCode  kill) {
         if (isStarted()) {
+            this.kill = kill;
             try {
                 if (CommonUtils.isWindows()) {
-                    killed = true;
                     hardKill();
                 }else {
-                    boolean flag = softKill(1000*5,TimeUnit.SECONDS);
+                    boolean flag = softKill(1000,TimeUnit.SECONDS);
                     if (!flag) {
                         hardKill();
                     }
                 }
             }catch (Exception e) {
-                killed = false;
                 logger.info("[JobX]Kill attempt failed：{}",e.getMessage());
             }
         }
@@ -228,22 +232,25 @@ public class JobXProcess {
     private boolean softKill(long time, TimeUnit unit) throws InterruptedException {
         if (this.processId != 0 && isStarted()) {
             try {
+                String cmd;
                 if (isExecAsUser()) {
-                    String cmd = String.format(
+                    cmd = String.format(
                             "%s %s %s %d",
-                            runAsUserBinary,
+                            Constants.JOBX_EXECUTE_AS_USER_LIB,
                             this.execUser,
                             KILL_COMMAND,
                             this.processId
                     );
-                    Runtime.getRuntime().exec(cmd);
                 } else {
-                    String cmd = String.format("%s %d", KILL_COMMAND, this.processId);
-                    Runtime.getRuntime().exec(cmd);
+                    cmd = String.format("%s %d", KILL_COMMAND, this.processId);
                 }
+                Process process = Runtime.getRuntime().exec(cmd);
+                process.waitFor();
+                process.destroy();
+                this.processLogger.error("[JobX]hardKill attempt successful.");
                 return this.completeLatch.await(time, unit);
             } catch (IOException e) {
-                this.processLogger.error("[JobX]Kill attempt failed.", e);
+                this.processLogger.error("[JobX]softKill attempt failed.", e);
             }
             return false;
         }
@@ -260,7 +267,7 @@ public class JobXProcess {
                 if (CommonUtils.isUnix()) {
                     if (isExecAsUser()) {
                         cmd = String.format("%s %s %s -9 %d",
-                                this.runAsUserBinary,
+                                Constants.JOBX_EXECUTE_AS_USER_LIB,
                                 this.execUser, KILL_COMMAND,
                                 this.processId);
                     } else {
@@ -269,13 +276,12 @@ public class JobXProcess {
                 }else if(CommonUtils.isWindows()) {
                     cmd = String.format("cmd.exe /c taskkill /PID %s /F /T ",this.processId) ;
                 }
-                Runtime runtime =Runtime.getRuntime();
-                Process process = runtime.exec(cmd);
+                Process process = Runtime.getRuntime().exec(cmd);
                 process.waitFor();
                 process.destroy();
-                this.processLogger.error("[JobX]Kill attempt successful.");
+                this.processLogger.error("[JobX]hardKill attempt successful.");
             }catch (Exception e) {
-                this.processLogger.error("[JobX]Kill attempt failed.", e);
+                this.processLogger.error("[JobX]hardKill attempt failed.", e);
             }
             this.processId = null;
         }
@@ -291,7 +297,8 @@ public class JobXProcess {
             if (this.process == null) return null;
             if (CommonUtils.isUnix()) {
                 Field field = ReflectUtils.getField(this.process.getClass(), "pid");
-                return field.getInt(this.process);
+                Integer pid = field.getInt(this.process);
+                return CommandUtils.getPIDByPPID(pid);
             }else if(CommonUtils.isWindows()) {
                 Field field = ReflectUtils.getField(this.process.getClass(), "handle");
                 field.setAccessible(true);
@@ -358,54 +365,12 @@ public class JobXProcess {
         return logger;
     }
 
-    private List<String> getCommandLine(String command) {
-        ArrayList<String> commands = new ArrayList<String>();
-        int index = 0;
-
-        StringBuffer buffer = new StringBuffer(command.length());
-
-        boolean isApos = false;
-        boolean isQuote = false;
-        while (index < command.length()) {
-            char c = command.charAt(index);
-            switch (c) {
-                case ' ':
-                    if (!isQuote && !isApos) {
-                        String arg = buffer.toString();
-                        buffer = new StringBuffer(command.length() - index);
-                        if (arg.length() > 0) {
-                            commands.add(arg);
-                        }
-                    } else {
-                        buffer.append(c);
-                    }
-                    break;
-                case '\'':
-                    if (!isQuote) {
-                        isApos = !isApos;
-                    } else {
-                        buffer.append(c);
-                    }
-                    break;
-                case '"':
-                    if (!isApos) {
-                        isQuote = !isQuote;
-                    } else {
-                        buffer.append(c);
-                    }
-                    break;
-                default:
-                    buffer.append(c);
-            }
-
-            index++;
-        }
-
-        if (buffer.length() > 0) {
-            String arg = buffer.toString();
-            commands.add(arg);
-        }
-
-        return Arrays.asList(commands.toArray(new String[commands.size()]));
+    private File getExecShell(String pid) {
+        return new File(Constants.JOBX_TMP_PATH + "/." + pid + ".sh");
     }
+
+    private File getLogFile(String pid) {
+        return new File(Constants.JOBX_LOG_PATH + "/." + pid + ".log");
+    }
+
 }

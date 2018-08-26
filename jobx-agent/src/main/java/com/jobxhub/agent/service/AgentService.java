@@ -23,6 +23,7 @@ package com.jobxhub.agent.service;
 import com.alibaba.fastjson.JSON;
 import com.jobxhub.agent.process.JobXProcess;
 import com.jobxhub.common.Constants;
+import com.jobxhub.common.Constants.ExitCode ;
 import com.jobxhub.common.api.AgentJob;
 import com.jobxhub.common.ext.ExtensionLoader;
 import com.jobxhub.common.job.Action;
@@ -91,8 +92,8 @@ public class AgentService implements ServerHandler, AgentJob {
             return Response.response(request)
                     .setSuccess(false)
                     .setResult(result)
-                    .setExitCode(Constants.StatusCode.ERROR_PASSWORD.getValue())
-                    .setMessage(Constants.StatusCode.ERROR_PASSWORD.getDescription())
+                    .setExitCode(ExitCode.ERROR_PASSWORD.getValue())
+                    .setMessage(ExitCode.ERROR_PASSWORD.getDescription())
                     .end();
         }
 
@@ -143,7 +144,7 @@ public class AgentService implements ServerHandler, AgentJob {
         return Response.response(request)
                 .setResult(result)
                 .setSuccess(true)
-                .setExitCode(Constants.StatusCode.SUCCESS_EXIT.getValue())
+                .setExitCode(ExitCode.SUCCESS_EXIT.getValue())
                 .end();
     }
 
@@ -151,14 +152,14 @@ public class AgentService implements ServerHandler, AgentJob {
     public Response path(Request request) {
         //返回密码文件的路径...
         return Response.response(request).setSuccess(true)
-                .setExitCode(Constants.StatusCode.SUCCESS_EXIT.getValue())
+                .setExitCode(ExitCode.SUCCESS_EXIT.getValue())
                 .setMessage(Constants.JOBX_HOME)
                 .end();
     }
 
     @Override
     public Response listPath(Request request) {
-        Response response = Response.response(request).setExitCode(Constants.StatusCode.SUCCESS_EXIT.getValue());
+        Response response = Response.response(request).setExitCode(ExitCode.SUCCESS_EXIT.getValue());
         String path = request.getParams().getString(Constants.PARAM_LISTPATH_PATH_KEY);
         if (CommonUtils.isEmpty(path)) return response.setSuccess(false).end();
         File file = new File(path);
@@ -191,7 +192,7 @@ public class AgentService implements ServerHandler, AgentJob {
                     Map<String, String> map = monitor.toMap();
                     response.setResult(map)
                             .setSuccess(true)
-                            .setExitCode(Constants.StatusCode.SUCCESS_EXIT.getValue())
+                            .setExitCode(ExitCode.SUCCESS_EXIT.getValue())
                             .end();
                     return response;
                 } catch (SigarException e) {
@@ -224,14 +225,14 @@ public class AgentService implements ServerHandler, AgentJob {
         processMap.put(pid,jobXProcess);
 
         try {
-            int exitCode = jobXProcess.start();
-            response.setExitCode(exitCode);
+            response.setExitCode(jobXProcess.start());
         }catch (Exception e) {
             response.setExitCode(-1);
         }finally {
             String message = jobXProcess.getLogMessage();
             response.setMessage(message);
             response.end();
+            jobXProcess.deleteExecShell();
             //todo 得确保server和agent是连接的状态才可以清理log...
             jobXProcess.deleteLog();
             processMap.remove(pid);
@@ -244,7 +245,7 @@ public class AgentService implements ServerHandler, AgentJob {
         String newPassword = request.getParams().getString(Constants.PARAM_NEWPASSWORD_KEY);
         Response response = Response.response(request);
         if (isEmpty(newPassword)) {
-            return response.setSuccess(false).setExitCode(Constants.StatusCode.SUCCESS_EXIT.getValue()).setMessage("密码不能为空").end();
+            return response.setSuccess(false).setExitCode(ExitCode.SUCCESS_EXIT.getValue()).setMessage("密码不能为空").end();
         }
 
         //把老的注册删除
@@ -256,7 +257,7 @@ public class AgentService implements ServerHandler, AgentJob {
         //最新密码信息注册进来
         register(request.getHost(),request.getPort());
 
-        return response.setSuccess(true).setExitCode(Constants.StatusCode.SUCCESS_EXIT.getValue()).end();
+        return response.setSuccess(true).setExitCode(ExitCode.SUCCESS_EXIT.getValue()).end();
     }
 
     @Override
@@ -268,13 +269,13 @@ public class AgentService implements ServerHandler, AgentJob {
         Response response = Response.response(request);
         JobXProcess jobXProcess = processMap.get(pid);
         if (jobXProcess!=null) {
-            jobXProcess.kill();
-            response.setExitCode(Constants.StatusCode.SUCCESS_EXIT.getValue()).end();
+            jobXProcess.kill(ExitCode.KILL);
+            response.setExitCode(ExitCode.SUCCESS_EXIT.getValue()).end();
             if (logger.isInfoEnabled()) {
                 logger.info("[JobX]:kill successful");
             }
         }else {
-            response.setExitCode(Constants.StatusCode.ERROR_EXIT.getValue()).end();
+            response.setExitCode(ExitCode.ERROR_EXIT.getValue()).end();
             if (logger.isInfoEnabled()) {
                 logger.info("[JobX]:kill error,can not found process");
             }
@@ -305,7 +306,7 @@ public class AgentService implements ServerHandler, AgentJob {
         } catch (Exception e) {
             e.printStackTrace();
             response = Response.response(request);
-            response.setExitCode(Constants.StatusCode.ERROR_EXIT.getValue())
+            response.setExitCode(ExitCode.ERROR_EXIT.getValue())
                     .setMessage("[JobX]:proxy error:" + e.getLocalizedMessage())
                     .setSuccess(false)
                     .end();
@@ -318,9 +319,9 @@ public class AgentService implements ServerHandler, AgentJob {
         String guid = getMacId();
         Response response = Response.response(request).end();
         if (notEmpty(guid)) {
-            return response.setMessage(guid).setSuccess(true).setExitCode(Constants.StatusCode.SUCCESS_EXIT.getValue());
+            return response.setMessage(guid).setSuccess(true).setExitCode(ExitCode.SUCCESS_EXIT.getValue());
         }
-        return response.setSuccess(false).setExitCode(Constants.StatusCode.ERROR_EXIT.getValue());
+        return response.setSuccess(false).setExitCode(ExitCode.ERROR_EXIT.getValue());
     }
 
     /**

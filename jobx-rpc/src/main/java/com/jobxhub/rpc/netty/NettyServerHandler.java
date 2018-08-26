@@ -87,7 +87,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<Request> {
                     return;
                 }
 
-                Response response = Response.response(request).setExitCode(Constants.StatusCode.SUCCESS_EXIT.getValue()).setSuccess(true);
+                Response response = Response.response(request).setExitCode(Constants.ExitCode.SUCCESS_EXIT.getValue()).setSuccess(true);
 
                 final RequestFile requestFile = request.getUploadFile();
 
@@ -99,7 +99,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<Request> {
                     if (!savePath.exists()) {
                         ResponseFile responseFile = new ResponseFile(start, requestFile.getFileMD5());
                         responseFile.setEnd(true);
-                        response.setExitCode(Constants.StatusCode.NOTFOUND.getValue()).setSuccess(false).setUploadFile(responseFile).end();
+                        response.setExitCode(Constants.ExitCode.NOTFOUND.getValue()).setSuccess(false).setUploadFile(responseFile).end();
                         handlerContext.writeAndFlush(response).addListener(new ChannelFutureListener() {
                             @Override
                             public void operationComplete(ChannelFuture channelFuture) throws Exception {
