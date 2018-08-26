@@ -194,7 +194,7 @@ public abstract class CommonUtils implements Serializable {
             return defVal;
         }
         try {
-            return Long.parseLong(val.toString());
+            return Long.parseLong(val.toString().trim());
         } catch (NumberFormatException e) {
             return defVal;
         }
@@ -221,7 +221,7 @@ public abstract class CommonUtils implements Serializable {
             return defVal;
         }
         try {
-            return Float.parseFloat(val.toString());
+            return Float.parseFloat(val.toString().trim());
         } catch (NumberFormatException e) {
             return defVal;
         }
@@ -232,7 +232,7 @@ public abstract class CommonUtils implements Serializable {
             return false;
         }
         try {
-            return Boolean.parseBoolean(text);
+            return Boolean.parseBoolean(text.trim());
         } catch (NumberFormatException e) {
             return defVal;
         }
