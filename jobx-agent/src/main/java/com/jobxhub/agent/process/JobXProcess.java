@@ -96,9 +96,9 @@ public class JobXProcess {
             this.process = Runtime.getRuntime().exec(this.command);
             this.processId = getProcessId();
             if (this.processId == 0) {
-                this.logger.debug("[JobX]Spawned thread with unknown process id");
+                this.logger.info("[JobX]Spawned thread with unknown process id");
             } else {
-                this.logger.debug("[JobX]Spawned thread with process id " + this.processId);
+                this.logger.info("[JobX]Spawned thread with process id " + this.processId);
             }
 
             this.startupLatch.countDown();
@@ -296,7 +296,9 @@ public class JobXProcess {
         try {
             if (this.process == null) return null;
             if (CommonUtils.isUnix()) {
-                this.processId = CommandUtils.getPIDByPP(this.process);
+                Field field = ReflectUtils.getField(this.process.getClass(), "pid");
+                Integer pid = field.getInt(this.process);
+                return CommandUtils.getPIDByPPID(pid);
             }else if(CommonUtils.isWindows()) {
                 Field field = ReflectUtils.getField(this.process.getClass(), "handle");
                 field.setAccessible(true);
@@ -364,7 +366,7 @@ public class JobXProcess {
     }
 
     private File getExecShell(String pid) {
-        return new File(Constants.JOBX_LOG_PATH + "/." + pid + ".sh");
+        return new File(Constants.JOBX_TMP_PATH + "/." + pid + ".sh");
     }
 
     private File getLogFile(String pid) {

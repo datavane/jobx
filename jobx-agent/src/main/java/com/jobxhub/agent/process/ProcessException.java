@@ -33,7 +33,7 @@ public class ProcessException extends RuntimeException {
     this.logSnippet = logSnippet;
   }
 
-  public int getExitCode() {
+  public int getStatusCode() {
     return this.exitCode;
   }
 

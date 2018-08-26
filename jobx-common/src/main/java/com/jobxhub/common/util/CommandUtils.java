@@ -23,6 +23,9 @@ package com.jobxhub.common.util;
 
 
 import com.jobxhub.common.Constants;
+import org.apache.commons.exec.CommandLine;
+import org.apache.commons.exec.DefaultExecutor;
+import org.apache.commons.exec.PumpStreamHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,6 +33,7 @@ import java.io.*;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 
 /**
@@ -51,6 +55,117 @@ public abstract class CommandUtils implements Serializable {
 
     public static String BASH_SCHEAM = "#!/bin/bash";
 
+    public static File createShellFile(String command, String shellFileName) {
+        String dirPath = IOUtils.getTmpdir();
+        File dir = new File(dirPath);
+        if (!dir.exists()) dir.mkdirs();
+
+        String tempShellFilePath = dirPath + File.separator + shellFileName + (CommonUtils.isWindows() ? ".bat" : ".sh");
+        File shellFile = new File(tempShellFilePath);
+        try {
+            if (!shellFile.exists()) {
+                PrintWriter out = new PrintWriter(new OutputStreamWriter(new FileOutputStream(tempShellFilePath)));
+                if (CommonUtils.isWindows()) {
+                    out.write("@echo off\n\n" + command);
+                }else {
+                    //追加一个不可见字符
+                    out.write("#!/bin/bash\n\n" + command);
+                }
+                out.flush();
+                out.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            return shellFile;
+        }
+    }
+
+    public static String executeShell(File shellFile, String... args) {
+        String info = null;
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        try {
+
+            String params = " ";
+            if (CommonUtils.notEmpty(args)) {
+                for (String p : args) {
+                    params += p + " ";
+                }
+            }
+            String line = "/bin/bash +x " + shellFile.getAbsolutePath() + params;
+            CommandLine commandLine = CommandLine.parse(line);
+            DefaultExecutor exec = new DefaultExecutor();
+            exec.setExitValues(null);
+            PumpStreamHandler streamHandler = new PumpStreamHandler(outputStream, outputStream);
+            exec.setStreamHandler(streamHandler);
+            exec.execute(commandLine);
+            info = outputStream.toString().trim();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                outputStream.flush();
+                outputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return info;
+        }
+    }
+
+
+    public static int executeScript(String script) {
+        if (CommonUtils.isEmpty(script)) {
+            throw new IllegalStateException("[JobX] script == null.");
+        }
+        ProcessBuilder builder = new ProcessBuilder(getCommandLine(script));
+        builder.directory(new File(IOUtils.getTmpdir()));
+        builder.redirectErrorStream(true);
+
+        int exitCode = -1;
+        Process process = null;
+        CountDownLatch startupLatch = new CountDownLatch(1);
+        CountDownLatch completeLatch = new CountDownLatch(1);
+
+        try {
+            process = builder.start();
+            int processId = getPID(process);
+            if (processId == 0) {
+                logger.debug("[JobX]Spawned thread with unknown process id");
+            } else {
+                logger.debug("[JobX]Spawned thread with process id " + processId);
+            }
+            startupLatch.countDown();
+            try {
+                exitCode = process.waitFor();
+            } catch (InterruptedException e) {
+                logger.info("[JobX]Process interrupted. Exit code is " + exitCode, e);
+            }
+
+            completeLatch.countDown();
+
+            String output = new StringBuilder()
+                    .append("Stdout:\n")
+                    .append(StringUtils.join(IOUtils.readLines(process.getInputStream()),IOUtils.LINE_SEPARATOR_UNIX))
+                    .append("\n\n")
+                    .append("Stderr:\n")
+                    .append(StringUtils.join(IOUtils.readLines(process.getErrorStream()),IOUtils.LINE_SEPARATOR_UNIX))
+                    .append("\n")
+                    .toString();
+
+            logger.info("[JobX] executeScript,cmd:{},resulr:{}",script,output);
+
+        }catch (Exception e) {
+            logger.error("[JobX] executeScript,error:{}",e.getMessage());
+        }finally {
+            if (process!=null) {
+                IOUtils.closeQuietly(process.getInputStream());
+                IOUtils.closeQuietly(process.getOutputStream());
+                IOUtils.closeQuietly(process.getErrorStream());
+            }
+            return exitCode;
+        }
+    }
 
     public static int getPID(Process process) {
         int processId = 0;
@@ -63,9 +178,10 @@ public abstract class CommandUtils implements Serializable {
         return processId;
     }
 
-    public static Integer getPIDByPP(Process process) {
+    public static Integer getPIDByPPID(Integer ppid) {
+        if (ppid==null||ppid == 0) return -1;
         try {
-            String cmd = String.format("ps -ef|awk '{if($3~/%d/) print $2}'",getPID(process));
+            String cmd = String.format("ps -ef|awk '{if($3~/%d/) print $2}'",ppid);
             return CommonUtils.toInt(execute(cmd),0);
         } catch (Exception e) {
             e.printStackTrace();
@@ -73,7 +189,7 @@ public abstract class CommandUtils implements Serializable {
         return null;
     }
 
-    private static String execute(String command) {
+    public static String execute(String command) {
         Process process = null;
         StringBuffer buffer = new StringBuffer();
         try {
