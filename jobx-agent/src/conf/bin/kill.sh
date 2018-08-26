@@ -19,39 +19,57 @@
 # specific language governing permissions and limitations
 # under the License.
 
+#
+#kill_model
+#  0) soft kill
+#  1) force kill
+#
 kill_model=$1
 
-process_id=$2
+#this process id
+pid=$2
 
-if [ ${process_id}x == "x" ];then
-  echo "pid is null"
+if [ !"${kill_model}" == "0"x ] ||[ !"${kill_model}" == "1"x ];  then
+    echo "[JobX] the first args must be [0|1]"
+    exit 1;
+fi
+
+if [ "${pid}"x == ""x ];then
+  echo "[JobX] pid is null"
   exit 1;
 fi
 
+
+# if pstree exists
 if [ -n "`which pstree`" ];then
-     array=$(pstree -p ${process_id}| sed 's/[^0-9]/ /g');
-     for pid in ${array}
+     array=$(pstree -p ${pid}| sed 's/[^0-9]/ /g');
+     for id in ${array}
      do
-       if [ ${pid} > 300 ];then
-         if [ ${kill_model} == 0 ];then
-            kill {id} >/dev/null 2>&1;
+       if [ ${pid} -gt 300 ];then
+         if [ "${kill_model}" == "0"x ];then
+           echo kill ${id} >/dev/null 2>&1;
           else
-            kill -9 {id} >/dev/null 2>&1;
+           echo kill -9 ${id} >/dev/null 2>&1;
          fi
        fi
      done
 else
-    cmd="ps -ef|awk '{if($2~/${process_id}/) print $3}'|grep -v "grep""
-    ppid=$(eval ${cmd})
-    if [ ${ppid} > 300 ];then
-     if [ ${kill_model} == 0 ];then
-        kill {ppid} >/dev/null 2>&1;
+    while true
+    do
+      #find pid by ppid
+      cmd="ps -ef|awk '{if(\$3~/${pid}/) print \$2}'"
+      pid=$(eval ${cmd})
+      if [ "${pid}"x == ""x ] || [ ${pid} -lt 300 ] ; then
+        break;
+      fi
+      if [ "${kill_model}"x == "0"x ];then
+       kill ${pid} >/dev/null 2>&1;
       else
-        kill -9 {ppid} >/dev/null 2>&1;
-     fi
-    fi
+       kill -9 ${pid} >/dev/null 2>&1;
+      fi
+    done
 fi
 
-echo "kill done";
+echo "[JobX] kill done";
 
 exit 0;

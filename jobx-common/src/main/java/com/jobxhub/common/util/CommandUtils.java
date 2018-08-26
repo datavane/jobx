@@ -211,9 +211,9 @@ public abstract class CommandUtils implements Serializable {
         return processId;
     }
 
-    public static Integer getPPID(Process process) {
+    public static Integer getPIDByPP(Process process) {
         try {
-            String cmd = String.format("ps -ef|awk '{if($2~/%d/) print $3}'",getPID(process));
+            String cmd = String.format("ps -ef|awk '{if($3~/%d/) print $2}'",getPID(process));
             return CommonUtils.toInt(execute(cmd));
         } catch (Exception e) {
             e.printStackTrace();

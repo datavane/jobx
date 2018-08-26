@@ -211,7 +211,7 @@ public class JobXProcess {
                 if (CommonUtils.isWindows()) {
                     hardKill();
                 }else {
-                    boolean flag = softKill(1000*5,TimeUnit.SECONDS);
+                    boolean flag = softKill(1000,TimeUnit.SECONDS);
                     if (!flag) {
                         hardKill();
                     }
@@ -232,22 +232,25 @@ public class JobXProcess {
     private boolean softKill(long time, TimeUnit unit) throws InterruptedException {
         if (this.processId != 0 && isStarted()) {
             try {
+                String cmd;
                 if (isExecAsUser()) {
-                    String cmd = String.format(
+                    cmd = String.format(
                             "%s %s %s %d",
                             Constants.JOBX_EXECUTE_AS_USER_LIB,
                             this.execUser,
                             KILL_COMMAND,
                             this.processId
                     );
-                    Runtime.getRuntime().exec(cmd);
                 } else {
-                    String cmd = String.format("%s %d", KILL_COMMAND, this.processId);
-                    Runtime.getRuntime().exec(cmd);
+                    cmd = String.format("%s %d", KILL_COMMAND, this.processId);
                 }
+                Process process = Runtime.getRuntime().exec(cmd);
+                process.waitFor();
+                process.destroy();
+                this.processLogger.error("[JobX]hardKill attempt successful.");
                 return this.completeLatch.await(time, unit);
             } catch (IOException e) {
-                this.processLogger.error("[JobX]Kill attempt failed.", e);
+                this.processLogger.error("[JobX]softKill attempt failed.", e);
             }
             return false;
         }
@@ -276,9 +279,9 @@ public class JobXProcess {
                 Process process = Runtime.getRuntime().exec(cmd);
                 process.waitFor();
                 process.destroy();
-                this.processLogger.error("[JobX]Kill attempt successful.");
+                this.processLogger.error("[JobX]hardKill attempt successful.");
             }catch (Exception e) {
-                this.processLogger.error("[JobX]Kill attempt failed.", e);
+                this.processLogger.error("[JobX]hardKill attempt failed.", e);
             }
             this.processId = null;
         }
@@ -293,7 +296,7 @@ public class JobXProcess {
         try {
             if (this.process == null) return null;
             if (CommonUtils.isUnix()) {
-                this.processId = CommandUtils.getPPID(this.process);
+                this.processId = CommandUtils.getPIDByPP(this.process);
             }else if(CommonUtils.isWindows()) {
                 Field field = ReflectUtils.getField(this.process.getClass(), "handle");
                 field.setAccessible(true);
