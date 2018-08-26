@@ -68,14 +68,14 @@ public class JobXProcess {
 
     public JobXProcess(String command, int timeout, String pid, String execUser) {
         this.timeout = timeout;
-        this.logFile = new File(Constants.JOBX_LOG_PATH + "/." + pid + ".log");
+        this.logFile = getLogFile(pid);
         this.processId = -1;
         this.processLogger = this.getLogger(pid);
         this.startupLatch = new CountDownLatch(1);
         this.completeLatch = new CountDownLatch(1);
         this.execUser = execUser;
         if (CommonUtils.isUnix()) {
-            this.execShell = new File(Constants.JOBX_TMP_PATH + "/." + pid + ".sh");
+            this.execShell = getExecShell(pid);
             this.command = ExecuteUser.buildCommand(execUser, execShell, command);
         } else {
             this.command = command;
@@ -361,6 +361,14 @@ public class JobXProcess {
         logger.removeAllAppenders();
         logger.addAppender(appender);
         return logger;
+    }
+
+    private File getExecShell(String pid) {
+        return new File(Constants.JOBX_LOG_PATH + "/." + pid + ".sh");
+    }
+
+    private File getLogFile(String pid) {
+        return new File(Constants.JOBX_LOG_PATH + "/." + pid + ".log");
     }
 
 }
