@@ -11,7 +11,7 @@
     </dependencySets>
     <fileSets>
         <fileSet>
-            <directory>src/conf/bin</directory>
+            <directory>src/assembly/bin</directory>
             <outputDirectory>bin</outputDirectory>
         </fileSet>
         <fileSet>
@@ -19,24 +19,24 @@
             <outputDirectory>bin</outputDirectory>
         </fileSet>
         <fileSet>
-            <directory>src/conf/lib</directory>
+            <directory>src/assembly/lib</directory>
             <outputDirectory>lib</outputDirectory>
         </fileSet>
         <fileSet>
-            <directory>src/conf/native</directory>
+            <directory>src/assembly/native</directory>
             <outputDirectory>native</outputDirectory>
         </fileSet>
         <fileSet>
-            <directory>src/conf/conf</directory>
+            <directory>src/assembly/conf</directory>
             <outputDirectory>conf</outputDirectory>
         </fileSet>
         <fileSet>
-            <directory>src/conf/logs</directory>
+            <directory>src/assembly/logs</directory>
             <outputDirectory>logs</outputDirectory>
         </fileSet>
 
         <fileSet>
-            <directory>src/conf/temp</directory>
+            <directory>src/assembly/temp</directory>
             <outputDirectory>temp</outputDirectory>
         </fileSet>
     </fileSets>

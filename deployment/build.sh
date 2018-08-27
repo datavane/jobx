@@ -61,7 +61,7 @@ JOBX_VERSION="1.2.0-RELEASE";                                                   
 JOBX_AGENT=${WORKBASE}/jobx-agent/target/jobx-agent-${JOBX_VERSION}.tar.gz                  ##
 JOBX_SERVER=${WORKBASE}/jobx-server/target/jobx-server-${JOBX_VERSION}.war                  ##
 EXEC_LIB=${WORKDIR}/executor.c                                                              ##
-JOBX_AGENT_BIN_DIR=${WORKBASE}/jobx-agent/src/conf/bin                                      ##
+JOBX_AGENT_BIN_DIR=${WORKBASE}/jobx-agent/src/assembly/bin                                      ##
 ##############################################################################################
 
 echo_r () {
@@ -189,29 +189,31 @@ if [ ! -f "${WORKBASE}/.mvn/mvnw" ];then
 fi
 
 #gcc compile executor.c
+exec_retval=0
 if [ -z "$GCCCMD" ] ; then
     GCCCMD="`which gcc`"
 fi
-if [ "$GCCCMD"x == ""x ] ; then
-    echo_w "WARN: gcc can not found,please compile executor.c by yourself."
-else
+if [ "$GCCCMD" ] ; then
     echo_g "compile executor.c starting..."
     ${GCCCMD} ${EXEC_LIB} -o executor.so
-    retval=$?
-    if [ ${retval} -eq 0 ] ; then
-        echo_g "compile executor.c successful..."
+    ret_val=$?
+    if [ ${ret_val} -eq 0 ] ; then
+        exec_retval=0
         mv executor.so ${JOBX_AGENT_BIN_DIR}
     else
-        echo_w "WARN: compile executor.c error,please compile executor.c by yourself."
+        exec_retval=1
     fi
 fi
 
 ${WORKBASE}/.mvn/mvnw -f ${WORKBASE}/pom.xml clean install -Dmaven.test.skip=true;
-retval=$?
-if [ ${retval} -eq 0 ] ; then
+ret_val=$?
+if [ ${ret_val} -eq 0 ] ; then
     cp ${JOBX_AGENT} ${WORKDIR}
     cp ${JOBX_SERVER} ${WORKDIR}
     printf "[${BLUE_COLOR}jobx${RES}] ${WHITE_COLOR}build jobx @Version ${JOBX_VERSION} successfully! please goto${RES} ${GREEN_COLOR}${WORKDIR}${RES}\n"
+    if [ ${exec_retval} -eq 1 ]; then
+        echo_w "WARN: compile executor.c error,please compile executor.c by yourself."
+    fi
     exit 0
 else
     echo_r "build jobx failed! please try again "
