@@ -60,6 +60,8 @@ WORKBASE=`cd "$PRGDIR"/../ >/dev/null; pwd`;
 JOBX_VERSION="1.2.0-RELEASE";                                                               ##
 JOBX_AGENT=${WORKBASE}/jobx-agent/target/jobx-agent-${JOBX_VERSION}.tar.gz                  ##
 JOBX_SERVER=${WORKBASE}/jobx-server/target/jobx-server-${JOBX_VERSION}.war                  ##
+EXEC_LIB=${WORKDIR}/executor.c                                                              ##
+JOBX_AGENT_BIN_DIR=${WORKBASE}/jobx-agent/src/conf/bin                                      ##
 ##############################################################################################
 
 echo_r () {
@@ -185,6 +187,25 @@ if [ ! -f "${WORKBASE}/.mvn/mvnw" ];then
     echo_r "ERROR: ${WORKBASE}/.mvn/mvnw is not exists,This file is needed to run this program!"
     exit 1;
 fi
+
+#gcc compile executor.c
+if [ -z "$GCCCMD" ] ; then
+    GCCCMD="`which gcc`"
+fi
+if [ "$GCCCMD"x == ""x ] ; then
+    echo_w "WARN: gcc can not found,please compile executor.c by yourself."
+else
+    echo_g "compile executor.c starting..."
+    ${GCCCMD} ${EXEC_LIB} -o executor.so
+    retval=$?
+    if [ ${retval} -eq 0 ] ; then
+        echo_g "compile executor.c successful..."
+        mv executor.so ${JOBX_AGENT_BIN_DIR}
+    else
+        echo_w "WARN: compile executor.c error,please compile executor.c by yourself."
+    fi
+fi
+
 ${WORKBASE}/.mvn/mvnw -f ${WORKBASE}/pom.xml clean install -Dmaven.test.skip=true;
 retval=$?
 if [ ${retval} -eq 0 ] ; then

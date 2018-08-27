@@ -27,7 +27,6 @@ import com.jobxhub.common.Constants;
 import com.jobxhub.common.util.CommonUtils;
 import com.jobxhub.common.util.DigestUtils;
 import com.jobxhub.common.util.IOUtils;
-import com.jobxhub.common.util.StringUtils;
 import com.jobxhub.server.domain.UserBean;
 import com.jobxhub.server.dao.UserDao;
 import com.jobxhub.server.support.JobXTools;
