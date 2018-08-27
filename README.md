@@ -103,8 +103,9 @@ Browser IE10+
    
 ## 安装说明
 
- jobx分为两个jobx-server端和jobx-agent端,jobx-server端即为一个web可视化的中央管理调度平台,jobx-agent为要管理的任务的机器
- agent和server都依赖zookeeper,安装部署jobx之前必须先安装和启动zookeeper,server和agent必须连接同一个zookeeper,server端依赖redis
+ jobx分为两个jobx-server端和jobx-agent端,jobx-server端即为一个web可视化的中央管理调度平台,
+ jobx-agent为要管理的任务的机器,agent和server都依赖zookeeper,安装部署jobx之前必须先安装和启动zookeeper
+ server和agent必须连接同一个zookeeper,server端依赖redis
 
 ## 编译步骤:
 
@@ -115,7 +116,7 @@ Browser IE10+
 2):编译:
   进入deployment
   > cd deployment
-   修改配置信息
+    #修改配置信息
     jobx.password=jobx
     jobx.port=1577
     jobx.registry=zookeeper://${zookeeper_host}:2181?bakup=${zookeeper_host1}:2181,${zookeeper_host2}:2181
@@ -140,16 +141,15 @@ Browser IE10+
     window平台双击 build.bat
     
 3):启动
-    1）agent
+    1） agent
         *nix平台:  执行 sh agent.sh
-        window平台: 需要进入jobx-agent/target下,解包jobx-agent-${version}.tar.gz到指定的位置,进入bin,执行startup.bat
+        window平台: 需要进入jobx-agent/target下,解包jobx-agent-${version}.tar.gz 双击bin/startup.bat
    
-   2)  server
+    2)  server
         *nix平台:  执行 sh server.sh 8080
-        window平台 双击
-        ---conf/server.bat
+        window平台 双击 server.bat
 
-   3):进入到jobx的管理端,如果agent也启动了,应该可以直接在server的执行器页面看到agent,则添加任务即可...
+    3)  进入到jobx的管理端,如果agent也启动了,应该可以直接在server的执行器页面看到agent,则添加任务即可...
 
 ```  
 
@@ -209,8 +209,9 @@ server {
 ## 常见问题:
 ```
  1)创建作业运行身份无法选择？
-   由于考虑到权限的问题,当前登录的用户不能随便指定任务的执行身份,需要超级管理员权限的用户(jobx)登录,在设置页面统一设置运行身份,多个运行身份用","分割,然后超级管理员在编辑用户
-   为该用户指定可以执行的身份(可选择多个),这样用户在创建任务的时候就可以选择指定身份去执行了
+   由于考虑到权限的问题,当前登录的用户不能随便指定任务的执行身份,需要超级管理员权限的用户(jobx)登录,在设置页面统一设置运行身份,
+   多个运行身份用","分割,然后超级管理员在编辑用户,为该用户指定可以执行的身份(可选择多个)
+   这样用户在创建任务的时候就可以选择指定身份去执行了
 
 ```
 
