@@ -11,33 +11,34 @@
     </dependencySets>
     <fileSets>
         <fileSet>
-            <directory>src/conf/bin</directory>
+            <directory>src/assembly/bin</directory>
             <outputDirectory>bin</outputDirectory>
+            <fileMode>0755</fileMode>
         </fileSet>
         <fileSet>
-            <directory>${project.build.directory}/bin</directory>
-            <outputDirectory>bin</outputDirectory>
-        </fileSet>
-        <fileSet>
-            <directory>src/conf/lib</directory>
+            <directory>src/assembly/lib</directory>
             <outputDirectory>lib</outputDirectory>
+            <fileMode>0644</fileMode>
         </fileSet>
         <fileSet>
-            <directory>src/conf/native</directory>
+            <directory>src/assembly/native</directory>
             <outputDirectory>native</outputDirectory>
+            <fileMode>0644</fileMode>
         </fileSet>
         <fileSet>
-            <directory>src/conf/conf</directory>
+            <directory>src/assembly/conf</directory>
             <outputDirectory>conf</outputDirectory>
+            <fileMode>0644</fileMode>
         </fileSet>
         <fileSet>
-            <directory>src/conf/logs</directory>
+            <directory>src/assembly/logs</directory>
             <outputDirectory>logs</outputDirectory>
+            <fileMode>0644</fileMode>
         </fileSet>
-
         <fileSet>
-            <directory>src/conf/temp</directory>
+            <directory>src/assembly/temp</directory>
             <outputDirectory>temp</outputDirectory>
+            <fileMode>0755</fileMode>
         </fileSet>
     </fileSets>
 </assembly>

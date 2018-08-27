@@ -48,7 +48,7 @@
               {{profile.smtpPort}}
             </li>
 
-            <li>
+            <li class="li-ssl">
               <i class="zmdi zmdi-key"
                  title="是否开启SSL"
                  data-toggle="tooltip"
@@ -169,7 +169,7 @@
 
   .icon-list {
     li {
-      margin-top: 6px;
+      margin-top: 15px;
     }
 
     .execUser {
@@ -182,9 +182,17 @@
     color:rgba(225,225,225,.6)
   }
 
+  .li-ssl{
+    margin-top: -5px;
+  }
   .is-ssl {
     margin-bottom: 1rem;
     height:0;
   }
 
+  .contact-item {
+    .zmdi {
+      cursor: pointer;
+    }
+  }
 </style>

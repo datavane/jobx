@@ -39,8 +39,10 @@ export default [
     component: () => import('@/components/profile/View'),
     children: [
       {
+        name: 'profileEdit',
         path: '/profile/edit',
-        component: () => import('@/components/profile/Edit')
-      }]
+        component: () => import('@/components/dashboard/Dashboard')
+      }
+    ]
   }
 ]

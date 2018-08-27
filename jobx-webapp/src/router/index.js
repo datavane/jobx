@@ -7,7 +7,7 @@ import constant from '@/utils/constant.js'
 import store from '@/store'
 
 Vue.use(Router)
-const router = new Router({
+let router = new Router({
   routes,
   mode: 'history'
 })
