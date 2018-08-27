@@ -13,31 +13,32 @@
         <fileSet>
             <directory>src/assembly/bin</directory>
             <outputDirectory>bin</outputDirectory>
-        </fileSet>
-        <fileSet>
-            <directory>${project.build.directory}/bin</directory>
-            <outputDirectory>bin</outputDirectory>
+            <fileMode>0755</fileMode>
         </fileSet>
         <fileSet>
             <directory>src/assembly/lib</directory>
             <outputDirectory>lib</outputDirectory>
+            <fileMode>0644</fileMode>
         </fileSet>
         <fileSet>
             <directory>src/assembly/native</directory>
             <outputDirectory>native</outputDirectory>
+            <fileMode>0644</fileMode>
         </fileSet>
         <fileSet>
             <directory>src/assembly/conf</directory>
             <outputDirectory>conf</outputDirectory>
+            <fileMode>0644</fileMode>
         </fileSet>
         <fileSet>
             <directory>src/assembly/logs</directory>
             <outputDirectory>logs</outputDirectory>
+            <fileMode>0644</fileMode>
         </fileSet>
-
         <fileSet>
             <directory>src/assembly/temp</directory>
             <outputDirectory>temp</outputDirectory>
+            <fileMode>0755</fileMode>
         </fileSet>
     </fileSets>
 </assembly>
