@@ -105,13 +105,12 @@ public class NoticeService {
             } else {
                 message = String.format(message, "[" + msg + "]");
             }
-            String content = null;//getMessage(agent, message);
+            String content = getMessage(agent, message);
             if (logger.isInfoEnabled()) {
                 logger.info(content);
             }
             try {
-
-                //sendMessage(null, agent.getAgentId(),job.getEmail(), job.getMobile(),content);
+                sendMessage(null, agent.getAgentId(),job.getEmail(), job.getMobile(),content);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -124,10 +123,6 @@ public class NoticeService {
     }
 
     public void sendMessage(List<UserBean> users, Long workId, String email,String mobile, String content) {
-
-
-
-
         Log log = new Log();
         log.setIsread(false);
         log.setAgentId(workId);
@@ -143,6 +138,7 @@ public class NoticeService {
                 HtmlEmail htmlEmail = new HtmlEmail();
                 htmlEmail.setCharset("UTF-8");
                 htmlEmail.setHostName(config.getSmtpHost());
+                htmlEmail.setSSLOnConnect(true);
                 htmlEmail.setSslSmtpPort(config.getSmtpPort().toString());
                 htmlEmail.setAuthentication(config.getSenderEmail(), config.getEmailPassword());
                 htmlEmail.setFrom(config.getSenderEmail());
@@ -178,7 +174,6 @@ public class NoticeService {
             e.printStackTrace(System.err);
         }
 
-
         //发送站内信
         log.setType(Constants.MsgType.WEBSITE.getValue());
         for (UserBean user : users) {
@@ -187,7 +182,6 @@ public class NoticeService {
             log.setReceiver(user.getUserName());
             logService.save(log);
         }
-
 
     }
 
