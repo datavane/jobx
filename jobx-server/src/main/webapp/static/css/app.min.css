@@ -9547,11 +9547,6 @@ button, input, optgroup, select, textarea {
     right: -2px
 }
 
-.footer__nav .nav-link + .nav-link:before, .navigation__sub .navigation__active:before {
-    font-family: Material-Design-Iconic-Font;
-    content: "ï‰­"
-}
-
 .footer {
     text-align: center;
     padding: 4rem 1rem 1rem
@@ -9782,13 +9777,6 @@ button, input, optgroup, select, textarea {
 
 .navigation__sub:not(.navigation__sub--active) > ul {
     display: none
-}
-
-.navigation__sub .navigation__active:before {
-    font-size: 6px;
-    position: absolute;
-    left: 1.5rem;
-    top: 1.1rem
 }
 
 .navigation__sub .navigation__active > a {

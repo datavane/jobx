@@ -124,7 +124,7 @@
     },
     methods: {
       goEdit(){
-        this.$router.push({path: '/profile/edit'})
+        this.$router.push('/profile/edit')
       }
     },
     mounted() {
@@ -172,6 +172,9 @@
       margin-top: 15px;
     }
 
+    .li-ssl{
+      margin-top: 5px;
+    }
     .execUser {
       margin-right: 5px;
       padding: .20rem .45rem;
@@ -182,9 +185,6 @@
     color:rgba(225,225,225,.6)
   }
 
-  .li-ssl{
-    margin-top: -5px;
-  }
   .is-ssl {
     margin-bottom: 1rem;
     height:0;

@@ -1,7 +1,7 @@
 export default [
   {
     path: '/',
-    redirect: 'login'
+    redirect: '/login'
   },
   {
     name: 'login',
@@ -34,15 +34,17 @@ export default [
       }]
   },
   {
-    name: 'profile',
-    path: '/profile',
-    component: () => import('@/components/profile/View'),
-    children: [
-      {
-        name: 'profileEdit',
-        path: '/profile/edit',
-        component: () => import('@/components/dashboard/Dashboard')
-      }
-    ]
+    path:'/profile',
+    redirect:'/profile/view'
+  },
+  {
+    name:'profile',
+    path: '/profile/view',
+    component: () => import('@/components/profile/View')
+  },
+  {
+    name:'profile',
+    path: '/profile/edit',
+    component: () => import('@/components/profile/Edit')
   }
 ]
