@@ -22,12 +22,12 @@
 package com.jobxhub.server.job;
 
 import com.jobxhub.common.util.collection.HashMap;
+import com.jobxhub.registry.URL;
 import com.jobxhub.server.dto.Agent;
 import com.jobxhub.common.Constants;
 import com.jobxhub.common.ext.ExtensionLoader;
 import com.jobxhub.common.logging.LoggerFactory;
 import com.jobxhub.common.util.*;
-import com.jobxhub.registry.URL;
 import com.jobxhub.registry.api.Registry;
 import com.jobxhub.registry.zookeeper.ChildListener;
 import com.jobxhub.registry.zookeeper.ZookeeperClient;

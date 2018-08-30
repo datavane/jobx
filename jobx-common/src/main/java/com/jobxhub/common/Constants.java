@@ -187,6 +187,11 @@ public class Constants {
     public static final File JOBX_PID_FILE = new File(SystemPropertyUtils.get("jobx.pid", JOBX_HOME + "/jobx.pid"));
 
     /**
+     * kill
+     */
+    public static final File JOBX_KILL_FILE = new File(JOBX_HOME + "/bin/kill.sh");
+
+    /**
      * monitor file
      */
     public static final File JOBX_MONITOR_SHELL = new File(JOBX_HOME + "/bin/monitor.sh");

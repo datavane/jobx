@@ -36,7 +36,6 @@ public class RegistryTest {
     @Test
     public void lister() throws IOException {
 
-
         zookeeperClient.addChildListener("/jobx/agent",new ChildListener(){
             @Override
             public void childChanged(String path, List<String> children) {

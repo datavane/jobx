@@ -25,10 +25,9 @@ import com.jobxhub.agent.util.ProcessLogger;
 import com.jobxhub.common.Constants;
 import com.jobxhub.common.Constants.ExitCode ;
 import com.jobxhub.common.logging.LoggerFactory;
-import com.jobxhub.common.util.CommandUtils;
 import com.jobxhub.common.util.CommonUtils;
 import com.jobxhub.common.util.IOUtils;
-import com.sun.jna.Platform;
+import com.jobxhub.common.util.ReflectUtils;
 import com.sun.jna.Pointer;
 import com.sun.jna.platform.win32.Kernel32;
 import com.sun.jna.platform.win32.WinNT;
@@ -50,8 +49,6 @@ public class JobXProcess {
     private org.slf4j.Logger logger = LoggerFactory.getLogger(JobXProcess.class);
 
     private Logger processLogger;
-
-    public static String KILL_COMMAND = "kill";
 
     private final String command;
     private final int timeout;
@@ -201,16 +198,16 @@ public class JobXProcess {
         if (isStarted()) {
             this.kill = kill;
             try {
-                if (CommonUtils.isWindows()) {
-                    hardKill();
-                }else {
-                    boolean flag = softKill(1000,TimeUnit.SECONDS);
-                    if (!flag) {
-                        hardKill();
+                if (CommonUtils.isUnix()) {
+                    boolean killed = this.softKill(1000*5,TimeUnit.SECONDS);
+                    if (!killed) {
+                        this.hardKill();
                     }
+                }else {
+                    this.hardKill();
                 }
             }catch (Exception e) {
-                logger.info("[JobX]Kill failed：{}",e.getMessage());
+                e.printStackTrace();
             }
         }
     }
@@ -225,19 +222,16 @@ public class JobXProcess {
     private boolean softKill(long time, TimeUnit unit) throws InterruptedException {
         if (this.processId != 0 && isStarted()) {
             try {
-                String cmd;
+                String KillCMD = String.format("/bin/bash +x %s %d %d",Constants.JOBX_KILL_FILE.getAbsolutePath(),0,this.processId);
                 if (isExecAsUser()) {
-                    cmd = String.format(
-                            "%s %s %s %d",
+                    KillCMD = String.format(
+                            "%s %s %s",
                             Constants.JOBX_EXECUTE_AS_USER_LIB,
                             this.execUser,
-                            KILL_COMMAND,
-                            this.processId
+                            KillCMD
                     );
-                } else {
-                    cmd = String.format("%s %d", KILL_COMMAND, this.processId);
                 }
-                Process process = Runtime.getRuntime().exec(cmd);
+                Process process = Runtime.getRuntime().exec(KillCMD);
                 process.waitFor();
                 process.destroy();
                 this.processLogger.error("[JobX]hardKill successful,pid:" + this.processId);
@@ -256,20 +250,18 @@ public class JobXProcess {
     private void hardKill() {
         if ( isRunning() && this.processId != null ) {
             try {
-                String cmd = "";
+                String killCMD = String.format("/bin/bash +x %s %d %d",Constants.JOBX_KILL_FILE.getAbsolutePath(),1,this.processId);
                 if (CommonUtils.isUnix()) {
                     if (isExecAsUser()) {
-                        cmd = String.format("%s %s %s -9 %d",
+                        killCMD = String.format("%s %s %s",
                                 Constants.JOBX_EXECUTE_AS_USER_LIB,
-                                this.execUser, KILL_COMMAND,
-                                this.processId);
-                    } else {
-                        cmd = String.format("%s -9 %d", KILL_COMMAND, this.processId);
+                                this.execUser,
+                                killCMD);
                     }
                 }else if(CommonUtils.isWindows()) {
-                    cmd = String.format("cmd.exe /c taskkill /PID %s /F /T ",this.processId) ;
+                    killCMD = String.format("cmd.exe /c taskkill /PID %s /F /T ",this.processId) ;
                 }
-                Process process = Runtime.getRuntime().exec(cmd);
+                Process process = Runtime.getRuntime().exec(killCMD);
                 process.waitFor();
                 process.destroy();
                 this.processLogger.error("[JobX]hardKill successful.");
@@ -280,33 +272,23 @@ public class JobXProcess {
         }
     }
 
-    /**
-     * Attempt to get the process id for this process
-     *
-     * @return The id of the process
-     */
     private Integer getProcessId() {
         try {
-            Field field;
-            if (Platform.isWindows()) {
-                field = process.getClass().getDeclaredField("handle");
-                field.setAccessible(true);
-                int pid = Kernel32.INSTANCE.GetProcessId(new WinNT.HANDLE(new Pointer(field.getLong(process))));
-                if (pid == 0 && logger.isDebugEnabled()) {
-                    int lastError = Kernel32.INSTANCE.GetLastError();
-                    logger.debug("[JobX]KERNEL32.getProcessId() failed with error {}", lastError);
-                }
-                return pid;
+            if (this.process == null) return null;
+            if (CommonUtils.isUnix()) {
+                Field field = ReflectUtils.getField(this.process.getClass(), "pid");
+                return field.getInt(this.process);
+            }else if(CommonUtils.isWindows()) {
+                Field field = ReflectUtils.getField(this.process.getClass(), "handle");
+                WinNT.HANDLE handle = new WinNT.HANDLE();
+                long handl = field.getLong(this.process);
+                handle.setPointer(Pointer.createConstant(handl));
+                return Kernel32.INSTANCE.GetProcessId(handle);
             }
-            field = process.getClass().getDeclaredField("pid");
-            field.setAccessible(true);
-            Integer PPID = field.getInt(process);
-            return CommandUtils.getPIDByPPID(PPID);
-        } catch (Exception e) {
-            logger.warn("[JobX]Failed to get process id for process \"{}\": {}", process, e.getMessage());
-            logger.trace("", e);
-            return 0;
+        }catch (Exception e) {
+            e.printStackTrace();
         }
+        return null;
     }
 
     /**
@@ -361,8 +343,7 @@ public class JobXProcess {
     }
 
     private File getExecShell(String pid) {
-        String ext = CommonUtils.isUnix()?".sh":".bat";
-        return new File(Constants.JOBX_TMP_PATH + "/." + pid + ext);
+        return new File(String.format("%s/.%s.%s",Constants.JOBX_TMP_PATH,pid,CommonUtils.isUnix()?"sh":"bat"));
     }
 
     private File getLogFile(String pid) {
