@@ -52,16 +52,16 @@ done
 
 PRGDIR=`dirname "$PRG"`
 
-WORKDIR=`cd "$PRGDIR" >/dev/null; pwd`;
-WORKBASE=`cd "$PRGDIR"/../ >/dev/null; pwd`;
+WORK_DIR=`cd "$PRGDIR" >/dev/null; pwd`;
+WORK_BASE=`cd "$PRGDIR"/../ >/dev/null; pwd`;
 
 # Get standard environment variables
 ##############################################################################################
 JOBX_VERSION="1.2.0-RELEASE";                                                               ##
-JOBX_AGENT=${WORKBASE}/jobx-agent/target/jobx-agent-${JOBX_VERSION}.tar.gz                  ##
-JOBX_SERVER=${WORKBASE}/jobx-server/target/jobx-server-${JOBX_VERSION}.war                  ##
-EXEC_LIB=${WORKDIR}/executor.c                                                              ##
-JOBX_AGENT_BIN_DIR=${WORKBASE}/jobx-agent/src/assembly/bin                                      ##
+JOBX_AGENT=${WORK_BASE}/jobx-agent/target/jobx-agent-${JOBX_VERSION}.tar.gz                  ##
+JOBX_SERVER=${WORK_BASE}/jobx-server/target/jobx-server-${JOBX_VERSION}.war                  ##
+EXEC_LIB=${WORK_DIR}/executor.c                                                              ##
+JOBX_AGENT_BIN_DIR=${WORK_BASE}/jobx-agent/src/assembly/bin                                      ##
 ##############################################################################################
 
 echo_r () {
@@ -183,8 +183,8 @@ if [ "`$JAVACMD -version 2>&1 | head -1|grep "openjdk"|wc -l`"x == "1"x ]; then
   exit 1;
 fi
 echo_w "build jobx Starting...";
-if [ ! -f "${WORKBASE}/.mvn/mvnw" ];then
-    echo_r "ERROR: ${WORKBASE}/.mvn/mvnw is not exists,This file is needed to run this program!"
+if [ ! -f "${WORK_BASE}/.mvn/mvnw" ];then
+    echo_r "ERROR: ${WORK_BASE}/.mvn/mvnw is not exists,This file is needed to run this program!"
     exit 1;
 fi
 
@@ -205,12 +205,12 @@ if [ "$GCCCMD" ] ; then
     fi
 fi
 
-${WORKBASE}/.mvn/mvnw -f ${WORKBASE}/pom.xml clean install -Dmaven.test.skip=true;
+${WORK_BASE}/.mvn/mvnw -f ${WORK_BASE}/pom.xml clean install -Dmaven.test.skip=true;
 ret_val=$?
 if [ ${ret_val} -eq 0 ] ; then
-    cp ${JOBX_AGENT} ${WORKDIR}
-    cp ${JOBX_SERVER} ${WORKDIR}
-    printf "[${BLUE_COLOR}jobx${RES}] ${WHITE_COLOR}build jobx @Version ${JOBX_VERSION} successfully! please goto${RES} ${GREEN_COLOR}${WORKDIR}${RES}\n"
+    cp ${JOBX_AGENT} ${WORK_DIR}
+    cp ${JOBX_SERVER} ${WORK_DIR}
+    printf "[${BLUE_COLOR}jobx${RES}] ${WHITE_COLOR}build jobx @Version ${JOBX_VERSION} successfully! please goto${RES} ${GREEN_COLOR}${WORK_DIR}${RES}\n"
     if [ ${exec_retval} -eq 1 ]; then
         echo_w "WARN: compile executor.c error,please compile executor.c by yourself."
     else

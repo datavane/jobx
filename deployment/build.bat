@@ -29,13 +29,13 @@
 @REM In debug mode we need a real JDK (JAVA_HOME)
 
 echo\
-echo                                       _______ 
-echo     /\   _________       ______  _____   /  / 
-echo    (())  ______  / ________   /   ___  \/  /  
-echo     \/   ___ _  / _  __ \_   __ \  ___    /   
-echo          / /_/ /  / /_/ /   /_/ /  __   . \   
+echo                                       _______
+echo     /\   _________       ______  _____   /  /
+echo    (())  ______  / ________   /   ___  \/  /
+echo     \/   ___ _  / _  __ \_   __ \  ___    /
+echo          / /_/ /  / /_/ /   /_/ /  __   . \
 echo          \____/   \____/ /_.___/  __   / \_\__
-echo                                 _____ /       
+echo                                 _____ /
 echo\
 
 if ""%1"" == ""debug"" goto needJavaHome
@@ -123,7 +123,7 @@ echo This file is needed to run this program
 goto exit
 
 :okExec
-call "%EXECUTABLE%" "clean" "install" "-Dmaven.test.skip=true"
+call "%EXECUTABLE%" "-f" "%JOBX_HOME%\pom.xml" "clean" "install" "-Dmaven.test.skip=true"
 if %errorlevel%==0 goto toCopy
 goto exit
 
@@ -140,4 +140,3 @@ exit /b 1
 
 :end
 exit /b 0
-

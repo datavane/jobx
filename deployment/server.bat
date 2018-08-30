@@ -110,7 +110,7 @@ set APP_ARTIFACT=jobx-server
 set APP_VERSION=1.2.0-RELEASE
 set APP_WAR_NAME=%APP_ARTIFACT%-%APP_VERSION%.war
 set MAVEN_TARGET_WAR=%WORK_BASE%%APP_ARTIFACT%\target\%APP_WAR_NAME%
-set DEPLOY_PATH=%WORK_BASE%\%APP_ARTIFACT%
+set DEPLOY_PATH=%WORK_DIR%\%APP_ARTIFACT%
 set CONTAINER_PATH=%DEPLOY_PATH%\container
 @REM #################################################################################################
 
