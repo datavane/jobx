@@ -238,8 +238,7 @@
 
     <update id="updateStatus">
         update t_agent
-        set
-             status = #{status}
+        set status = #{status}
         where agent_id = #{agentId}
 	</update>
 
