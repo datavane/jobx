@@ -106,14 +106,14 @@ setlocal
 @REM Guess JOBX_HOME if not defined
 
 set "WORK_DIR=%~dp0"
-set "JOBX_HOME=%WORK_DIR%"
-set "JOBX_BASE=%JOBX_HOME%"
+set "JOBX_HOME=%WORK_DIR%\..\"
 
 @REM #################################################################################################
 set JOBX_VERSION=1.2.0-RELEASE
-set DIST_HOME=%JOBX_HOME%\dist
 set JOBX_AGENT=%JOBX_HOME%\jobx-agent\target\jobx-agent-%JOBX_VERSION%.tar.gz
 set JOBX_SERVER=%JOBX_HOME%\jobx-server\target\jobx-server-%JOBX_VERSION%.war
+set JOBX_AGENT_TAR=%WORK_DIR%\jobx-agent-%JOBX_VERSION%.tar.gz
+set JOBX_SERVER_WAR=%WORK_DIR%\jobx-server-%JOBX_VERSION%.war
 set "EXECUTABLE=%JOBX_HOME%\.mvn\mvnw.cmd"
 @REM #################################################################################################
 
@@ -124,15 +124,15 @@ goto exit
 
 :okExec
 call "%EXECUTABLE%" "clean" "install" "-Dmaven.test.skip=true"
-if %errorlevel%==0 goto toDist
+if %errorlevel%==0 goto toCopy
 goto exit
 
-:toDist
-if exist "%DIST_HOME%" rd /s /q %DIST_HOME%
-if not exist "%DIST_HOME%" mkdir %DIST_HOME%
-copy %JOBX_AGENT% %DIST_HOME%
-copy %JOBX_SERVER% %DIST_HOME%
-echo [JobX] build jobx @Version %JOBX_VERSION% successfully! please goto %DIST_HOME%
+:toCopy
+if exist "%JOBX_AGENT_TAR%" rd /s /q %JOBX_AGENT_TAR%
+if exist "%JOBX_SERVER_WAR%" rd /s /q %JOBX_SERVER_WAR%
+copy %JOBX_AGENT% %WORK_DIR%
+copy %JOBX_SERVER% %WORK_DIR%
+echo [JobX] build jobx @Version %JOBX_VERSION% successfully! please goto %WORK_DIR%
 pause
 
 :exit

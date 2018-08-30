@@ -107,42 +107,42 @@ done
 # Get standard environment variables
 PRGDIR=`dirname "$PRG"`
 
-WORKDIR=`cd "$PRGDIR" >/dev/null; pwd`;
-WORKBASE=`cd "$PRGDIR"/../ >/dev/null; pwd`;
+WORK_DIR=`cd "$PRGDIR" >/dev/null; pwd`;
+WORK_BASE=`cd "$PRGDIR"/../ >/dev/null; pwd`;
 
 # Get standard environment variables
 ###############################################################################################
 APP_ARTIFACT=jobx-server
 APP_VERSION="1.2.0-RELEASE";
 APP_WAR_NAME=${APP_ARTIFACT}-${APP_VERSION}.war
-MAVEN_TARGET_WAR=${WORKBASE}/${APP_ARTIFACT}/target/${APP_WAR_NAME}
-DEPLOY_PATH=${WORKDIR}/${APP_ARTIFACT}
+MAVEN_TARGET_WAR=${WORK_BASE}/${APP_ARTIFACT}/target/${APP_WAR_NAME}
+DEPLOY_PATH=${WORK_DIR}/${APP_ARTIFACT}
 LIB_PATH=${DEPLOY_PATH}/WEB-INF/lib
 CONTAINER_PATH=${DEPLOY_PATH}/container
 LOG_PATH=${CONTAINER_PATH}/logs
-CONFIG_TEMPLATE=${WORKDIR}/conf.properties
+CONFIG_TEMPLATE=${WORK_DIR}/conf.properties
 CONFIG_PATH=${DEPLOY_PATH}/WEB-INF/classes/config.properties
 ###############################################################################################
 
 #先检查dist下是否有war包
-if [ ! -f "${WORKDIR}/${APP_WAR_NAME}" ] ; then
+if [ ! -f "${WORK_DIR}/${APP_WAR_NAME}" ] ; then
     #dist下没有war包则检查server的target下是否有war包.
    if [ ! -f "${MAVEN_TARGET_WAR}" ] ; then
       echo_w "[JobX] please build project first!"
       exit 0;
    else
-      cp ${MAVEN_TARGET_WAR} ${WORKDIR};
+      cp ${MAVEN_TARGET_WAR} ${WORK_DIR};
    fi
 fi
 if [ ! -f "${DEPLOY_PATH}" ] ; then
     mkdir -p ${DEPLOY_PATH}
     # unpackage war to dist
-    cp ${WORKDIR}/${APP_WAR_NAME} ${DEPLOY_PATH} &&
+    cp ${WORK_DIR}/${APP_WAR_NAME} ${DEPLOY_PATH} &&
     cd ${DEPLOY_PATH} &&
     ${RUNJAR} xvf ${APP_WAR_NAME} >/dev/null 2>&1 &&
     rm -rf ${DEPLOY_PATH}/${APP_WAR_NAME}  &&
     #copy jars...
-    cp -r ${WORKBASE}/${APP_ARTIFACT}/container ${DEPLOY_PATH}
+    cp -r ${WORK_BASE}/${APP_ARTIFACT}/container ${DEPLOY_PATH}
 fi
 if [ ! -d "${LOG_PATH}" ] ; then
   mkdir -p ${LOG_PATH}

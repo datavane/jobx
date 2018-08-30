@@ -103,23 +103,21 @@ setlocal
 @REM Guess JOBX_HOME if not defined
 
 set "WORK_DIR=%~dp0"
-set "JOBX_HOME=%WORK_DIR%"
-set "JOBX_BASE=%JOBX_HOME%"
+set "WORK_BASE=%WORK_DIR%\..\"
 
 @REM #################################################################################################
 set APP_ARTIFACT=jobx-server
 set APP_VERSION=1.2.0-RELEASE
 set APP_WAR_NAME=%APP_ARTIFACT%-%APP_VERSION%.war
-set MAVEN_TARGET_WAR=%JOBX_HOME%%APP_ARTIFACT%\target\%APP_WAR_NAME%
-set DIST_PATH=%JOBX_HOME%dist
-set DEPLOY_PATH=%DIST_PATH%\%APP_ARTIFACT%
+set MAVEN_TARGET_WAR=%WORK_BASE%%APP_ARTIFACT%\target\%APP_WAR_NAME%
+set DEPLOY_PATH=%WORK_BASE%\%APP_ARTIFACT%
 set CONTAINER_PATH=%DEPLOY_PATH%\container
 @REM #################################################################################################
 
-if exist "%DIST_PATH%\%APP_WAR_NAME%" goto initEnv
-if not exist %DIST_PATH% mkdir %DIST_PATH%
+if exist "%WORK_BASE%\%APP_WAR_NAME%" goto initEnv
+if not exist %WORK_BASE% mkdir %WORK_BASE%
 if exist "%MAVEN_TARGET_WAR%" (
-    copy %MAVEN_TARGET_WAR% %DIST_PATH%
+    copy %MAVEN_TARGET_WAR% %WORK_BASE%
     goto initEnv
 ) else (
     echo [JobX] please build project first!
@@ -129,7 +127,7 @@ if exist "%MAVEN_TARGET_WAR%" (
 :initEnv
 if not exist "%DEPLOY_PATH%" (
     mkdir %DEPLOY_PATH%
-    copy %DIST_PATH%\%APP_WAR_NAME% %DEPLOY_PATH%
+    copy %WORK_BASE%\%APP_WAR_NAME% %DEPLOY_PATH%
     cd %DEPLOY_PATH%
     %_RUNJAR% xvf %APP_WAR_NAME% 1>nul
     del %DEPLOY_PATH%\%APP_WAR_NAME%
@@ -141,7 +139,7 @@ cd %DEPLOY_PATH%
 @REM copy container to deploy_path
 if not exist "%CONTAINER_PATH%" (
     mkdir %CONTAINER_PATH%
-    xcopy %JOBX_HOME%%APP_ARTIFACT%\container %CONTAINER_PATH% /E 1>nul
+    xcopy %WORK_BASE%%APP_ARTIFACT%\container %CONTAINER_PATH% /E 1>nul
 )
 @REM create log
 set LOG_PATH=%CONTAINER_PATH%\logs
