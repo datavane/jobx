@@ -1622,4 +1622,12 @@ public final class ReflectUtils {
         return clazz.getClassLoader() == null;
     }
 
+    public static Object getFieldValue(Object obj, String fieldName) throws NoSuchFieldException, IllegalAccessException {
+        Field field = getField(obj.getClass(),fieldName);
+        if (field!=null) {
+            return field.get(obj);
+        }
+        return null;
+    }
+
 }

@@ -69,26 +69,29 @@ public class ExecuteUser {
 
     public static String buildCommand(final String proxyUser, final File execFile, final String command) {
         AssertUtils.notNull(command);
-        if (CommonUtils.isUnix()) {
-            //写入命令到文件
-            write(execFile, command);
-            String execCmd = String.format("/bin/bash +x %s", execFile.getAbsolutePath());
-            if (CommonUtils.notEmpty(proxyUser)) {
-                //授权文件...
-                try {
-                    chown(false,proxyUser, proxyUser,execFile);
-                } catch (Exception e) {
-                    throw new RuntimeException("[JobX] chown command file error,{}", e.getCause());
-                }
-                return Constants.JOBX_EXECUTE_AS_USER_LIB
-                        .concat(IOUtils.BLANK_CHAR)
-                        .concat(proxyUser)
-                        .concat(IOUtils.BLANK_CHAR)
-                        .concat(execCmd);
+        //写入命令到文件
+        write(execFile, command);
 
-            }
-            return execCmd;
+        if (CommonUtils.isWindows()) {
+            return String.format("call %s",execFile.getAbsoluteFile());
         }
-        return command;
+
+        String execCmd = String.format("/bin/bash +x %s", execFile.getAbsolutePath());
+        if ( CommonUtils.notEmpty(proxyUser)) {
+            //授权文件...
+            try {
+                chown(false, proxyUser, proxyUser, execFile);
+            } catch (Exception e) {
+                throw new RuntimeException("[JobX] chown command file error,{}", e.getCause());
+            }
+            return Constants.JOBX_EXECUTE_AS_USER_LIB
+                    .concat(IOUtils.BLANK_CHAR)
+                    .concat(proxyUser)
+                    .concat(IOUtils.BLANK_CHAR)
+                    .concat(execCmd);
+
+        }
+
+        return execCmd;
     }
 }
