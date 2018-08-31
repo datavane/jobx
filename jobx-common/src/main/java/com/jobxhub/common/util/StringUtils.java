@@ -354,6 +354,17 @@ public abstract class StringUtils {
 
     }
 
+    public static String htmlDecode(String html) {
+        if (html!=null) {
+            return html.replaceAll("&lt;","<")
+                    .replaceAll("&gt;",">")
+                    .replaceAll("&amp;","&")
+                    .replaceAll("&quot;","\"");
+
+        }
+        return html;
+    }
+
     /**
      * 取字符串的前toCount个字符
      *
@@ -991,6 +1002,7 @@ public abstract class StringUtils {
     public static void main(String[] args) {
         System.out.println(camelToSplitName("getName","_"));
     }
+
 
 }
 

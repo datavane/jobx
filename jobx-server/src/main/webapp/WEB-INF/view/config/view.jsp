@@ -85,7 +85,7 @@
             </tr>
             <tr>
                 <td class="item"><i class="glyphicon glyphicon-font"></i>&nbsp;发信URL</td>
-                <td> ${cron:escapeHtml(config.sendUrl)}</td>
+                <td>${cron:escapeHtml(config.sendUrl)}</td>
             </tr>
             <tr>
                 <td class="item"><i class="glyphicon glyphicon-time"></i>&nbsp;发送间隔</td>
