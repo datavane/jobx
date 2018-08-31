@@ -343,7 +343,7 @@ public class JobXProcess {
     }
 
     private File getExecShell(String pid) {
-        return new File(String.format("%s/.%s.%s",Constants.JOBX_TMP_PATH,pid,CommonUtils.isUnix()?"sh":"bat"));
+        return new File(String.format("%s/.%s.%s",Constants.JOBX_TMP_PATH,pid,CommonUtils.isWindows()?"bat":"sh"));
     }
 
     private File getLogFile(String pid) {
