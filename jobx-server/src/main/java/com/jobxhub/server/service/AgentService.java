@@ -223,7 +223,7 @@ public class AgentService {
         if (CommonUtils.isEmpty(agent.getNotifyTime()) || new Date().getTime() - agent.getNotifyTime().getTime() >= configService.getSysConfig().getSpaceTime() * 60 * 1000) {
             noticeService.notice(agent);
             //记录本次任务失败的时间
-            agent.setNotifyTime(new Date());
+            agentDao.updateNotifyTime(agent.getAgentId(),new Date());
         }
         agentDao.updateStatus(agent.getAgentId(),Constants.ConnStatus.DISCONNECTED.getValue());
     }

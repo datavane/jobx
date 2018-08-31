@@ -24,6 +24,7 @@ import com.jobxhub.server.domain.AgentBean;
 import com.jobxhub.server.tag.PageBean;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -52,4 +53,6 @@ public interface AgentDao {
     List<AgentBean> getByGroup(Long groupId);
 
     void updateStatus(@Param("agentId") Long agentId,@Param("status") Integer status);
+
+    void updateNotifyTime(@Param("agentId") Long agentId,@Param("notifyTime")  Date date);
 }

@@ -51,7 +51,7 @@ public class LogBean {
 
     private Date sendTime;
 
-    private Boolean isread;
+    private Boolean isRead;
 
     private Long userId;
 
@@ -132,12 +132,12 @@ public class LogBean {
         this.sendTime = sendTime;
     }
 
-    public Boolean getIsread() {
-        return isread;
+    public Boolean getRead() {
+        return isRead;
     }
 
-    public void setIsread(Boolean isread) {
-        this.isread = isread;
+    public void setRead(Boolean read) {
+        isRead = read;
     }
 
     public Long getUserId() {
@@ -150,15 +150,17 @@ public class LogBean {
 
     @Override
     public String toString() {
-        return "Log{" +
+        return "LogBean{" +
                 "logId=" + logId +
                 ", agentId=" + agentId +
+                ", agentName='" + agentName + '\'' +
                 ", type=" + type +
                 ", receiver='" + receiver + '\'' +
                 ", message='" + message + '\'' +
                 ", result='" + result + '\'' +
                 ", sendTime=" + sendTime +
-                ", isread=" + isread +
+                ", isRead=" + isRead +
+                ", userId=" + userId +
                 '}';
     }
 }
