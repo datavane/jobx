@@ -56,17 +56,10 @@ public class ProfileController extends BaseController {
         return RestResult.rest(200,config);
     }
 
-    @RequestMapping("edit.htm")
-    public String editPage(Model model) {
-        model.addAttribute("config", configService.getSysConfig());
-        return "config/edit";
-    }
-
-    @RequestMapping(value = "edit.do", method = RequestMethod.POST)
-    @RequestRepeat(view = true)
-    public String edit(Config config) {
+    @RequestMapping(value = "save.do", method = RequestMethod.POST)
+    public RestResult edit(Config config) {
         configService.update(config);
-        return "redirect:/config/view.htm";
+        return RestResult.rest(200);
     }
 
     @RequestMapping(value = "clear.do", method = RequestMethod.POST)

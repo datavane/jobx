@@ -47,7 +47,14 @@ public class Config implements Serializable {
                     if (configBean.getConfigVal()!=null) {
                         if (field.getType().equals(Integer.class)) {
                             field.set(this,Integer.valueOf(configBean.getConfigVal()));
-                        }else {
+                        }else if(field.getType().equals(Boolean.class)) {
+                            String confVal = configBean.getConfigVal().trim();
+                            if( confVal.equals("1")||confVal.equalsIgnoreCase("true")||confVal.equalsIgnoreCase("yes") ){
+                                field.set(this,true);
+                            }else {
+                                field.set(this,false);
+                            }
+                        } else {
                             field.set(this,configBean.getConfigVal());
                         }
                     }

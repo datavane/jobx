@@ -38,6 +38,7 @@ create table `t_config1` (
 insert into `t_config1`(`config_key`,`config_val`,`comment`) select "sender_email",`senderEmail`,"发送邮箱的账号" from `t_config`;
 insert into `t_config1`(`config_key`,`config_val`,`comment`) select "email_password",`password`,"发送邮箱的密码" from `t_config`;
 insert into `t_config1`(`config_key`,`config_val`,`comment`) select "smtp_host",`smtpHost`,"发送邮箱的smtp" from `t_config`;
+insert into `t_config1`(`config_key`,`config_val`,`comment`) select "is_ssl",1,"发送邮箱使用使用SSL" from `t_config`;
 insert into `t_config1`(`config_key`,`config_val`,`comment`) select "smtp_port",`smtpPort`,"发送邮箱的port" from `t_config`;
 insert into `t_config1`(`config_key`,`config_val`,`comment`) select "send_url",`sendUrl`,"短信发送通道商url" from `t_config`;
 insert into `t_config1`(`config_key`,`config_val`,`comment`) select "space_time",`spaceTime`,"发送告警时间间隔" from `t_config`;

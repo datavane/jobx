@@ -183,11 +183,13 @@ values
 ("sender_email",null,"发送邮箱的账号"),
 ("email_password",null,"发送邮箱的密码"),
 ("smtp_host",null,"发送邮箱的smtp"),
+("is_ssl",null,"发送邮箱使用使用SSL"),
 ("smtp_port",null,"发送邮箱的port"),
 ("send_url",null,"短信发送通道商url"),
 ("space_time","30","发送告警时间间隔"),
 ("template",null,"发送短信的模板"),
 ("exec_user",null,"该平台执行任务的代理用户,多个用户用\",\"分隔"),
+
 ("version","V1.2.0","当前jobx版本号");
 
 --init role
