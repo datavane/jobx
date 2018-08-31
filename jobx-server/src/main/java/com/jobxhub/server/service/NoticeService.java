@@ -124,7 +124,7 @@ public class NoticeService {
 
     public void sendMessage(List<UserBean> users, Long workId, String email,String mobile, String content) {
         Log log = new Log();
-        log.setIsread(false);
+        log.setRead(false);
         log.setAgentId(workId);
         log.setMessage(content);
         log.setSendTime(new Date());

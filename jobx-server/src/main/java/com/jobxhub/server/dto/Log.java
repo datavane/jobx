@@ -52,7 +52,7 @@ public class Log implements Serializable {
 
     private String agentName;
 
-    private Boolean isread;
+    private Boolean isRead;
 
 
     public Log() {
@@ -143,11 +143,11 @@ public class Log implements Serializable {
         this.agentName = agentName;
     }
 
-    public Boolean getIsread() {
-        return isread;
+    public Boolean getRead() {
+        return isRead;
     }
 
-    public void setIsread(Boolean isread) {
-        this.isread = isread;
+    public void setRead(Boolean read) {
+        isRead = read;
     }
 }
