@@ -126,7 +126,7 @@
                 <div class="form-group">
                     <label for="sendUrl" class="col-lab control-label"><i class="glyphicon glyphicon-font"></i>&nbsp;&nbsp;发信URL</label>
                     <div class="col-md-10">
-                        <textarea class="form-control input-sm" id="sendUrl" name="sendUrl"> ${config.sendUrl}</textarea>
+                        <textarea class="form-control input-sm" id="sendUrl" name="sendUrl">${config.sendUrl}</textarea>
                         <span class="tips"><b>*&nbsp;</b>短信发送服务所需的URL</span>
                     </div>
                 </div><br>
