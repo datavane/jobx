@@ -61,6 +61,9 @@ public class AgentService {
     private UserAgentService userAgentService;
 
     @Autowired
+    private NoticeService noticeService;
+
+    @Autowired
     private JobXRegistry jobxRegistry;
 
     public List<Agent> getOwnerByConnType(HttpSession session) {
@@ -218,12 +221,11 @@ public class AgentService {
 
     public void doDisconnect(Agent agent) {
         if (CommonUtils.isEmpty(agent.getNotifyTime()) || new Date().getTime() - agent.getNotifyTime().getTime() >= configService.getSysConfig().getSpaceTime() * 60 * 1000) {
-            //noticeService.notice(agent);
+            noticeService.notice(agent);
             //记录本次任务失败的时间
             agent.setNotifyTime(new Date());
         }
-        agent.setStatus(Constants.ConnStatus.DISCONNECTED.getValue());
-        merge(agent);
+        agentDao.updateStatus(agent.getAgentId(),Constants.ConnStatus.DISCONNECTED.getValue());
     }
 
     public void doDisconnect(String info) {

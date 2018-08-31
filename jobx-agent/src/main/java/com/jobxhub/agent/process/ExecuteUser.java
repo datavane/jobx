@@ -73,7 +73,7 @@ public class ExecuteUser {
         write(execFile, command);
 
         if (CommonUtils.isWindows()) {
-            return String.format("call %s",execFile.getAbsoluteFile());
+            return String.format("call %s",execFile.getAbsolutePath());
         }
 
         String execCmd = String.format("/bin/bash +x %s", execFile.getAbsolutePath());

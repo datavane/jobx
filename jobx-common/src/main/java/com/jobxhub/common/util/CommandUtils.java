@@ -274,7 +274,7 @@ public abstract class CommandUtils implements Serializable {
             if (!shellFile.exists()) {
                 PrintWriter out = new PrintWriter(new OutputStreamWriter(new FileOutputStream(shellFile)));
                 out.write(CommonUtils.isWindows()?BAT_SCHEAM:BASH_SCHEAM);
-                out.write("\n\n");
+                out.write("\n\r\n\r");
                 out.write(command);
                 out.flush();
                 out.close();

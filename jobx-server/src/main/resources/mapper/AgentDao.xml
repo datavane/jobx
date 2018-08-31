@@ -231,7 +231,7 @@
              `name` = #{name},
              notify_time = #{notifyTime},  
              password = #{password},    
-             port = #{port},        
+             port = #{port},
              proxy_id = #{proxyId}
         where agent_id = #{agentId}
 	</update>
