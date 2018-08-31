@@ -277,13 +277,16 @@ public class JobXProcess {
             if (this.process == null) return null;
             if (CommonUtils.isUnix()) {
                 Field field = ReflectUtils.getField(this.process.getClass(), "pid");
-                return field.getInt(this.process);
+                if (field!=null) {
+                    return field.getInt(this.process);
+                }
             }else if(CommonUtils.isWindows()) {
                 Field field = ReflectUtils.getField(this.process.getClass(), "handle");
-                WinNT.HANDLE handle = new WinNT.HANDLE();
-                long handl = field.getLong(this.process);
-                handle.setPointer(Pointer.createConstant(handl));
-                return Kernel32.INSTANCE.GetProcessId(handle);
+                if (field!=null) {
+                    WinNT.HANDLE handle = new WinNT.HANDLE();
+                    handle.setPointer(Pointer.createConstant(field.getLong(this.process)));
+                    return Kernel32.INSTANCE.GetProcessId(handle);
+                }
             }
         }catch (Exception e) {
             e.printStackTrace();
@@ -343,7 +346,10 @@ public class JobXProcess {
     }
 
     private File getExecShell(String pid) {
-        return new File(String.format("%s/.%s.%s",Constants.JOBX_TMP_PATH,pid,CommonUtils.isWindows()?"bat":"sh"));
+        if (CommonUtils.isUnix()) {
+            return new File(String.format("%s/.%s.%s",Constants.JOBX_TMP_PATH,pid,"sh"));
+        }
+        return null;
     }
 
     private File getLogFile(String pid) {

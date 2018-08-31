@@ -55,8 +55,6 @@ public abstract class CommandUtils implements Serializable {
 
     public static String BASH_SCHEAM = "#!/bin/bash";
 
-    public static String BAT_SCHEAM = "@echo off";
-
     public static File createShellFile(String command, String shellFileName) {
         String dirPath = IOUtils.getTmpdir();
         File dir = new File(dirPath);
@@ -273,7 +271,7 @@ public abstract class CommandUtils implements Serializable {
         try {
             if (!shellFile.exists()) {
                 PrintWriter out = new PrintWriter(new OutputStreamWriter(new FileOutputStream(shellFile)));
-                out.write(CommonUtils.isWindows()?BAT_SCHEAM:BASH_SCHEAM);
+                out.write(BASH_SCHEAM);
                 out.write("\n\r\n\r");
                 out.write(command);
                 out.flush();

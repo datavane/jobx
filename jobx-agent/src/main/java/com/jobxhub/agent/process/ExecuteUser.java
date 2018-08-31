@@ -69,12 +69,13 @@ public class ExecuteUser {
 
     public static String buildCommand(final String proxyUser, final File execFile, final String command) {
         AssertUtils.notNull(command);
-        //写入命令到文件
-        write(execFile, command);
 
         if (CommonUtils.isWindows()) {
-            return String.format("call %s",execFile.getAbsolutePath());
+            return command;
         }
+
+        //写入命令到文件
+        write(execFile, command);
 
         String execCmd = String.format("/bin/bash +x %s", execFile.getAbsolutePath());
         if ( CommonUtils.notEmpty(proxyUser)) {

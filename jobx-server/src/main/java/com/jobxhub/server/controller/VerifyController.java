@@ -70,7 +70,7 @@ public class VerifyController extends BaseController {
     public Map<String,Integer> validatePing(Agent agent) {
         Map<String,Integer> result = new HashMap<String, Integer>(0);
         if (hasProxy(agent, result)) return result;
-        Constants.ConnStatus connStatus = executeService.ping(agent,false);
+        Constants.ConnStatus connStatus = executeService.ping(agent,true);
         result.put("status",connStatus.getValue());
         return result;
     }

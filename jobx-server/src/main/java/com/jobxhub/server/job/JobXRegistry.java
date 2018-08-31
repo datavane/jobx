@@ -103,9 +103,7 @@ public class JobXRegistry {
         List<Agent> agentList = this.agentService.getAll();
         if (CommonUtils.notEmpty(agentList)) {
             for (Agent agent : agentList) {
-                if(agent.getStatus() == Constants.ConnStatus.DISCONNECTED.getValue()) {
-                    executeService.ping(agent,true);
-                }
+                executeService.ping(agent,true);
             }
         }
 
