@@ -41,7 +41,7 @@ import static com.jobxhub.common.util.CommonUtils.notEmpty;
 
 @Controller
 @RequestMapping("record")
-public class RecordController extends BaseController {
+public class RecordController {
 
     @Autowired
     private RecordService recordService;

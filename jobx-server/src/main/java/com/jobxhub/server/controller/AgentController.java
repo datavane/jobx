@@ -45,7 +45,6 @@ import com.jobxhub.server.service.ExecuteService;
 import com.jobxhub.server.tag.PageBean;
 import org.apache.commons.codec.digest.DigestUtils;
 import com.jobxhub.server.dto.Status;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -55,7 +54,7 @@ import static com.jobxhub.common.util.WebUtils.*;
 
 @RestController
 @RequestMapping("agent")
-public class AgentController extends BaseController {
+public class AgentController {
 
     @Autowired
     private AgentService agentService;

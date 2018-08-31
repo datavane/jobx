@@ -41,7 +41,7 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("verify")
-public class VerifyController extends BaseController {
+public class VerifyController {
 
     @Autowired
     private ExecuteService executeService;

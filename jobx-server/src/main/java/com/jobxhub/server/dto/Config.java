@@ -29,7 +29,7 @@ import java.lang.reflect.Field;
 public class Config implements Serializable {
     private String smtpHost;
     private Integer smtpPort;
-    private Boolean isSSL;
+    private Boolean useSSL;
     private String senderEmail;
     private String emailPassword;
     private String sendUrl;
@@ -82,12 +82,12 @@ public class Config implements Serializable {
         this.smtpPort = smtpPort;
     }
 
-    public Boolean getSSL() {
-        return isSSL;
+    public Boolean getUseSSL() {
+        return useSSL;
     }
 
-    public void setSSL(Boolean SSL) {
-        isSSL = SSL;
+    public void setUseSSL(Boolean useSSL) {
+        this.useSSL = useSSL;
     }
 
     public String getSenderEmail() {

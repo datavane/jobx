@@ -46,7 +46,11 @@ public class ConfigBean {
             try {
                 field.setAccessible(true);
                 ConfigBean configBean = new ConfigBean();
-                configBean.setConfigKey(StringUtils.camelToSplitName(field.getName(),"_"));
+                if (field.getName().equals("useSSL")) {
+                    configBean.setConfigKey("use_ssl");
+                }else {
+                    configBean.setConfigKey(StringUtils.camelToSplitName(field.getName(),"_"));
+                }
                 Object val = field.get(config);
                 if (val!=null) {
                     configBean.setConfigVal(val.toString());

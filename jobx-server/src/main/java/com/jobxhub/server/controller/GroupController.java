@@ -46,7 +46,7 @@ import java.util.*;
  */
 @Controller
 @RequestMapping("group")
-public class GroupController extends BaseController {
+public class GroupController {
 
     @Autowired
     private GroupService groupService;

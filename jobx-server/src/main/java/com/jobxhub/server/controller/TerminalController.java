@@ -52,7 +52,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("terminal")
-public class TerminalController extends BaseController {
+public class TerminalController {
 
     @Autowired
     private TerminalService terminalService;

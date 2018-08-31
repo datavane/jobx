@@ -354,6 +354,17 @@ public abstract class StringUtils {
 
     }
 
+    public static String htmlDecode(String html) {
+        if (html!=null) {
+            return html.replaceAll("&lt;","<")
+                    .replaceAll("&gt;",">")
+                    .replaceAll("&amp;","&")
+                    .replaceAll("&quot;","\"");
+
+        }
+        return html;
+    }
+
     /**
      * 取字符串的前toCount个字符
      *
@@ -912,7 +923,7 @@ public abstract class StringUtils {
                 if (buf == null) {
                     buf = new StringBuilder();
                     if (i > 0) {
-                        buf.append(camelName.substring(0, i));
+                        buf.append(camelName, 0, i);
                     }
                 }
                 if (i > 0) {

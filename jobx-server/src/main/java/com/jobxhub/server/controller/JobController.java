@@ -55,7 +55,7 @@ import static com.jobxhub.common.util.WebUtils.*;
 
 @Controller
 @RequestMapping("job")
-public class JobController extends BaseController {
+public class JobController {
 
     @Autowired
     private ExecuteService executeService;

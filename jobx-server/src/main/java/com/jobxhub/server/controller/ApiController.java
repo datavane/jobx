@@ -36,7 +36,7 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("api")
-public class ApiController extends BaseController {
+public class ApiController {
 
     @Autowired
     private JobService jobService;

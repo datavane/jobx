@@ -42,7 +42,7 @@ import javax.servlet.http.HttpSession;
  */
 @RestController
 @RequestMapping("profile")
-public class ProfileController extends BaseController {
+public class ProfileController {
 
     @Autowired
     private ConfigService configService;

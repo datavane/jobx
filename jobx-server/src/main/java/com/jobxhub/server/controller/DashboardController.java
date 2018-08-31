@@ -58,7 +58,7 @@ import static com.jobxhub.common.util.WebUtils.*;
  * Created by ChenHui on 2016/2/17.
  */
 @Controller
-public class DashboardController extends BaseController {
+public class DashboardController {
 
     @Autowired
     private LogService logService;
