@@ -191,6 +191,12 @@ public class JobController extends BaseController {
             jobParam.setUserId(JobXTools.getUserId(session));
             jobParam.setCreateType(Constants.CreateType.NORMAL.getValue());
             jobParam.setToken(CommonUtils.uuid());
+            Agent agent = agentService.getAgent(jobParam.getAgentId());
+            if (agent!=null) {
+                if (agent.getPlatform() != 1 ) {
+                    jobParam.setExecUser(null);
+                }
+            }
             jobParam.setPause(false);
             jobService.merge(jobParam);
         } else { //流程任务

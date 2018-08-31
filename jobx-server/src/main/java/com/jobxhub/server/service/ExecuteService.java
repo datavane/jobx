@@ -503,7 +503,9 @@ public class ExecuteService {
 
         @Override
         public void done(Response response) {
+            record = recordService.getById(record.getRecordId());
             record.setStatus(RunStatus.STOPED.getStatus());
+            record.setSuccess(ResultStatus.KILLED.getStatus());
             record.setEndTime(new Date());
             recordService.merge(record);
             printLog("killed successful :jobName:{} at host:{},port:{},pid:{}", job, record.getPid());
@@ -511,9 +513,7 @@ public class ExecuteService {
 
         @Override
         public void caught(Throwable err) {
-            record.setStatus(RunStatus.STOPED.getStatus());
-            recordService.merge(record);
-            printLog("killed successful :jobName:{} at host:{},port:{},pid:{}", job, record.getPid());
+            printLog("killed error :jobName:{} at host:{},port:{},pid:{}", job, record.getPid());
         }
     }
 }

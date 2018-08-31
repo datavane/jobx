@@ -238,15 +238,10 @@ function Validata() {
             this.runCount();
             this.timeout();
             this.warning();
-            var jobType = $("#jobType").val();
-            if (jobType == 0) {
-                this.command();
-                this.platform();
-                this.agentId();
-                this.successExit();
-            } else {
-
-            }
+            this.command();
+            this.platform();
+            this.agentId();
+            this.successExit();
             return this.status;
         }
     };
