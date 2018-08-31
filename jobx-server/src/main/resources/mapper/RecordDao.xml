@@ -3,29 +3,29 @@
 
 <mapper namespace="com.jobxhub.server.dao.RecordDao">
 
-    <resultMap id="RecordBean" type="com.jobxhub.server.domain.RecordBean" >
-        <result column="record_id"          property="recordId"/>
-        <result column="agent_id"           property="agentId"/>
-        <result column="command"            property="command"/>
-        <result column="exec_user"          property="execUser"/>
-        <result column="start_time"         property="startTime"/>
-        <result column="end_time"           property="endTime"/>
-        <result column="exec_type"          property="execType"/>
-        <result column="group_id"           property="groupId"/>
-        <result column="user_id"            property="userId"/>
-        <result column="job_id"             property="jobId"/>
-        <result column="job_type"           property="jobType"/>
-        <result column="parent_id"          property="parentId"/>
-        <result column="pid"                property="pid"/>
-        <result column="redo_num"           property="redoNum"/>
-        <result column="return_code"        property="returnCode"/>
-        <result column="status"             property="status"/>
-        <result column="success"            property="success"/>
-        <result column="job_name"           property="jobName"/>
-        <result column="agent_name"         property="agentName"/>
-        <result column="host"               property="host"/>
-        <result column="cron_exp"           property="cronExp"/>
-        <result column="user_name"          property="operateUname"/>
+    <resultMap id="RecordBean" type="com.jobxhub.server.domain.RecordBean">
+        <result column="record_id" property="recordId"/>
+        <result column="agent_id" property="agentId"/>
+        <result column="command" property="command"/>
+        <result column="exec_user" property="execUser"/>
+        <result column="start_time" property="startTime"/>
+        <result column="end_time" property="endTime"/>
+        <result column="exec_type" property="execType"/>
+        <result column="group_id" property="groupId"/>
+        <result column="user_id" property="userId"/>
+        <result column="job_id" property="jobId"/>
+        <result column="job_type" property="jobType"/>
+        <result column="parent_id" property="parentId"/>
+        <result column="pid" property="pid"/>
+        <result column="redo_num" property="redoNum"/>
+        <result column="return_code" property="returnCode"/>
+        <result column="status" property="status"/>
+        <result column="success" property="success"/>
+        <result column="job_name" property="jobName"/>
+        <result column="agent_name" property="agentName"/>
+        <result column="host" property="host"/>
+        <result column="cron_exp" property="cronExp"/>
+        <result column="user_name" property="operateUname"/>
     </resultMap>
 
     <sql id="query_Record">
@@ -49,8 +49,9 @@
     </sql>
 
     <select id="getByPageBean" resultMap="RecordBean">
-        select <include refid="query_Record"/>,
-        case when r.status in (1,3,5,6) then r.end_time when r.status in (0,2,4) then #{pager.filter.currTime} end as end_time,
+        select<include refid="query_Record"/>,
+        case when r.status in (1,3,5,6) then r.end_time when r.status in (0,2,4) then #{pager.filter.currTime} end as
+        end_time,
         a.name as agent_name,
         a.host,
         t.cron_exp,
@@ -96,11 +97,12 @@
 
         </if>
 
-        <if test="pager.filter.record.queryDate !=null " >
-            and r.start_time between #{pager.filter.record.queryDate} and date_add(#{pager.filter.record.queryDate}, interval 1 day)
+        <if test="pager.filter.record.queryDate !=null ">
+            and r.start_time between #{pager.filter.record.queryDate} and date_add(#{pager.filter.record.queryDate},
+            interval 1 day)
         </if>
 
-        <if test="pager.filter.userId !=null " >
+        <if test="pager.filter.userId !=null ">
             and r.user_id = #{pager.filter.userId}
         </if>
         order by r.start_time desc
@@ -113,11 +115,11 @@
         left join t_job as t
         on r.job_id = t.job_id
         where r.parent_id is null
-        <if test="filter.running == true " >
+        <if test="filter.running == true ">
             and r.status in (1,3,4,5,6)
         </if>
 
-        <if test="filter.running == false " >
+        <if test="filter.running == false ">
             and r.status in (0,2,4)
         </if>
 
@@ -143,56 +145,57 @@
             </if>
         </if>
 
-        <if test="filter.record.queryDate !=null " >
+        <if test="filter.record.queryDate !=null ">
             and r.start_time between #{filter.record.queryDate} and date_add(#{filter.record.queryDate}, interval 1 day)
         </if>
 
-        <if test="filter.userId !=null " >
+        <if test="filter.userId !=null ">
             and r.user_id = #{filter.userId}
         </if>
     </select>
 
     <select id="getById" parameterType="java.lang.Long" resultMap="RecordBean">
-        select <include refid="query_Record"/>,
+        select<include refid="query_Record"/>,
         r.end_time,
         a.name as agent_name,
         a.host,
         t.cron_exp,
         u.user_name
-        from  t_record as r
+        from t_record as r
         inner join t_agent a
-        on  r.agent_id = a.agent_id
+        on r.agent_id = a.agent_id
         inner join t_user as u
-        on  r.user_id = u.user_id
+        on r.user_id = u.user_id
         left join t_job as t
-        on  r.job_id = t.job_id
+        on r.job_id = t.job_id
         where r.record_id = #{recordId}
     </select>
 
     <select id="getByPid" parameterType="java.lang.Long" resultMap="RecordBean">
-        select <include refid="query_Record"/>
-        from  t_record as r
+        select
+        <include refid="query_Record"/>
+        from t_record as r
         where r.pid = #{pid}
     </select>
 
     <select id="getReportChart" parameterType="java.util.Map" resultType="com.jobxhub.server.dto.Chart">
         select
-            date_format(r.start_time,'%Y-%m-%d') as `date`,
-            sum(case r.success when 0 then 1 else 0 end) failed,
-            sum(case r.success when 1 then 1 else 0 end) success,
-            sum(case r.success when 2 then 1 else 0 end) killed,
-            sum(case r.success when 3 then 1 else 0 end) timeout,
-            sum(case r.success when 4 then 1 else 0 end) lost,
-            sum(case r.job_type when 0 then 1 else 0 end) singleton,
-            sum(case r.job_type when 1 then 1 else 0 end) flow,
-            sum(case r.exec_type when 0 then 1 else 0 end) auto,
-            sum(case r.exec_type when 1 then 1 else 0 end) operator
-        from  t_record r
+        date_format(r.start_time,'%Y-%m-%d') as `date`,
+        sum(case r.success when 0 then 1 else 0 end) failed,
+        sum(case r.success when 1 then 1 else 0 end) success,
+        sum(case r.success when 2 then 1 else 0 end) killed,
+        sum(case r.success when 3 then 1 else 0 end) timeout,
+        sum(case r.success when 4 then 1 else 0 end) lost,
+        sum(case r.job_type when 0 then 1 else 0 end) singleton,
+        sum(case r.job_type when 1 then 1 else 0 end) flow,
+        sum(case r.exec_type when 0 then 1 else 0 end) auto,
+        sum(case r.exec_type when 1 then 1 else 0 end) operator
+        from t_record r
         left join t_job j
-        on  r.job_id=j.job_id
+        on r.job_id=j.job_id
         where r.start_time
         between #{filter.start} and #{filter.end}
-        <if test="filter.userId!=null" >
+        <if test="filter.userId!=null">
             and r.user_id = #{filter.userId}
         </if>
         group by date_format(r.start_time,'%Y-%m-%d')
@@ -201,19 +204,19 @@
 
     <select id="getTopChart" parameterType="java.util.Map" resultType="com.jobxhub.server.dto.Chart">
         select
-            sum(case r.success when 0 then 1 else 0 end) failed,
-            sum(case r.success when 1 then 1 else 0 end) success,
-            sum(case r.success when 2 then 1 else 0 end) killed,
-            sum(case r.success when 3 then 1 else 0 end) timeout,
-            sum(case r.success when 4 then 1 else 0 end) lost,
-            sum(case r.job_type when 0 then 1 else 0 end) singleton,
-            sum(case r.job_type when 1 then 1 else 0 end) flow,
-            sum(case r.exec_type when 0 then 1 else 0 end) auto,
-            sum(case r.exec_type when 1 then 1 else 0 end) operator
-        from  t_record r
+        sum(case r.success when 0 then 1 else 0 end) failed,
+        sum(case r.success when 1 then 1 else 0 end) success,
+        sum(case r.success when 2 then 1 else 0 end) killed,
+        sum(case r.success when 3 then 1 else 0 end) timeout,
+        sum(case r.success when 4 then 1 else 0 end) lost,
+        sum(case r.job_type when 0 then 1 else 0 end) singleton,
+        sum(case r.job_type when 1 then 1 else 0 end) flow,
+        sum(case r.exec_type when 0 then 1 else 0 end) auto,
+        sum(case r.exec_type when 1 then 1 else 0 end) operator
+        from t_record r
         left join t_job j
-        on  r.job_id=j.job_id
-        <if test="filter.userId!=null" >
+        on r.job_id=j.job_id
+        <if test="filter.userId!=null">
             where r.user_id = #{filter.userId}
         </if>
     </select>
@@ -225,19 +228,19 @@
     </select>
 
     <select id="getRedoList" parameterType="java.lang.Long" resultMap="RecordBean">
-        select <include refid="query_Record"/>,
+        select<include refid="query_Record"/>,
         r.end_time,
         a.name as agent_name,
         a.host,
         t.cron_exp,
         u.user_name
-        from  t_record as r
+        from t_record as r
         inner join t_agent a
-        on  r.agent_id = a.agent_id
+        on r.agent_id = a.agent_id
         inner join t_user as u
-        on  r.user_id = u.user_id
+        on r.user_id = u.user_id
         inner join t_job as t
-        on  r.job_id = t.job_id
+        on r.job_id = t.job_id
         where r.parent_id = #{recordId}
         order by r.redo_num asc
     </select>
@@ -247,7 +250,7 @@
         from t_record
         where success=#{filter.success}
         and exec_type=#{filter.execType}
-        <if test="filter.userId!=null" >
+        <if test="filter.userId!=null">
             and user_id = #{filter.userId}
         </if>
         <if test="filter.status!=null">
@@ -258,111 +261,112 @@
         </if>
     </select>
 
-    <insert id="save" parameterType="com.jobxhub.server.domain.RecordBean" useGeneratedKeys="true" keyProperty="recordId">
+    <insert id="save" parameterType="com.jobxhub.server.domain.RecordBean" useGeneratedKeys="true"
+            keyProperty="recordId">
         insert into t_record
-        <trim prefix="(" suffix=")" suffixOverrides="," >
-            <if test="agentId != null" >
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="agentId != null">
                 agent_id,
             </if>
-            <if test="command != null" >
+            <if test="command != null">
                 command,
             </if>
-            <if test="startTime != null" >
+            <if test="startTime != null">
                 start_time,
             </if>
-            <if test="endTime != null" >
+            <if test="endTime != null">
                 end_time,
             </if>
-            <if test="execType != null" >
+            <if test="execType != null">
                 exec_type,
             </if>
-            <if test="groupId != null" >
+            <if test="groupId != null">
                 group_id,
             </if>
-            <if test="userId != null" >
+            <if test="userId != null">
                 user_id,
             </if>
-            <if test="jobId != null" >
+            <if test="jobId != null">
                 job_id,
             </if>
-            <if test="jobType != null" >
+            <if test="jobType != null">
                 job_type,
             </if>
-            <if test="jobName != null" >
+            <if test="jobName != null">
                 job_name,
             </if>
-            <if test="execUser != null" >
+            <if test="execUser != null">
                 exec_user,
             </if>
-            <if test="parentId != null" >
+            <if test="parentId != null">
                 parent_id,
             </if>
-            <if test="pid != null" >
+            <if test="pid != null">
                 pid,
             </if>
-            <if test="redoNum != null" >
+            <if test="redoNum != null">
                 redo_num,
             </if>
-            <if test="returnCode != null" >
+            <if test="returnCode != null">
                 return_code,
             </if>
-            <if test="status != null" >
+            <if test="status != null">
                 status,
             </if>
-            <if test="success != null" >
+            <if test="success != null">
                 success
             </if>
         </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides="," >
-            <if test="agentId != null" >
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="agentId != null">
                 #{agentId},
             </if>
-            <if test="command != null" >
+            <if test="command != null">
                 #{command},
             </if>
-            <if test="startTime != null" >
+            <if test="startTime != null">
                 #{startTime},
             </if>
-            <if test="endTime != null" >
+            <if test="endTime != null">
                 #{endTime},
             </if>
-            <if test="execType != null" >
+            <if test="execType != null">
                 #{execType},
             </if>
-            <if test="groupId != null" >
+            <if test="groupId != null">
                 #{groupId},
             </if>
-            <if test="userId != null" >
+            <if test="userId != null">
                 #{userId},
             </if>
-            <if test="jobId != null" >
+            <if test="jobId != null">
                 #{jobId},
             </if>
-            <if test="jobType != null" >
+            <if test="jobType != null">
                 #{jobType},
             </if>
-            <if test="jobName != null" >
+            <if test="jobName != null">
                 #{jobName},
             </if>
-            <if test="execUser != null" >
+            <if test="execUser != null">
                 #{execUser},
             </if>
-            <if test="parentId != null" >
+            <if test="parentId != null">
                 #{parentId},
             </if>
-            <if test="pid != null" >
+            <if test="pid != null">
                 #{pid},
             </if>
-            <if test="redoNum != null" >
+            <if test="redoNum != null">
                 #{redoNum},
             </if>
-            <if test="returnCode != null" >
+            <if test="returnCode != null">
                 #{returnCode},
             </if>
-            <if test="status != null" >
+            <if test="status != null">
                 #{status},
             </if>
-            <if test="success != null" >
+            <if test="success != null">
                 #{success}
             </if>
         </trim>
