@@ -39,7 +39,6 @@ import java.io.*;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
 import java.lang.reflect.InvocationTargetException;
-import java.net.ConnectException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
@@ -397,7 +396,7 @@ public class JobXAgent implements Serializable {
      * @throws Exception
      */
 
-    private void shutdown() throws Exception {
+    private void shutdown() {
 
         String address = "localhost";
 
@@ -412,11 +411,6 @@ public class JobXAgent implements Serializable {
             }
             stream.flush();
             socket.close();
-        } catch (ConnectException ce) {
-            if (logger.isErrorEnabled()) {
-                logger.error("[JobX] Agent.stop error:{} ", ce);
-            }
-            System.exit(1);
         } catch (Exception e) {
             if (logger.isErrorEnabled()) {
                 logger.error("[JobX] Agent.stop error:{} ", e);
