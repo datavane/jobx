@@ -266,6 +266,12 @@
                     <stripVersion>false</stripVersion>
                     <artifactItems>
 
+                        <!--
+                        以下tomcat和jetty是为了jar包隔离,把tomcat和jetty的jar放到单独的地方,
+                        启动引导类com.jobxhub.server.bootstrap.Startup里通过加载classLoader的方式
+                        加载tomcat或者jetty容器各自需要的jar包
+                        -->
+
                         <dependency>
                             <groupId>javax.servlet</groupId>
                             <artifactId>javax.servlet-api</artifactId>

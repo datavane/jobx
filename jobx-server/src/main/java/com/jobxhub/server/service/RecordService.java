@@ -151,6 +151,8 @@ public class RecordService {
 
     public void deleteRecord(String startTime, String endTime) {
         if (notEmpty(startTime, endTime)) {
+            startTime = startTime.trim();
+            endTime = endTime.trim();
             recordDao.delete(startTime,endTime);
             recordDao.deleteMessage(startTime,endTime);
         }

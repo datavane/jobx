@@ -11,7 +11,9 @@
   },
   "dependencies": {
     "vue": "^2.5.2",
-    "vue-router": "^3.0.1"
+    "vue-flatpickr": "^2.3.0",
+    "vue-router": "^3.0.1",
+    "vue-sweetalert2": "^1.5.3"
   },
   "devDependencies": {
     "animate.css": "^3.6.1",

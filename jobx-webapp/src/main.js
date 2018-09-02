@@ -9,6 +9,10 @@ import constant from '@/utils/constant.js'
 import http from '@/utils/http.js'
 import plugin from '@/plugins/plugins.js'
 import store from '@/store'
+import VueSweetalert2 from 'vue-sweetalert2'
+
+import VueFlatpickr from 'vue-flatpickr'
+import 'vue-flatpickr/theme/airbnb.css'
 
 import 'bootstrap/dist/js/bootstrap.min.js'
 import 'material-design-iconic-font/dist/css/material-design-iconic-font.css'
@@ -23,7 +27,10 @@ Vue.config.productionTip = false
 Vue.prototype.$storage = storage
 Vue.prototype.$const = constant
 
+
 Vue.prototype.$http = http
+Vue.use(VueSweetalert2)
+Vue.use(VueFlatpickr)
 Vue.use(plugin)
 
 new Vue({

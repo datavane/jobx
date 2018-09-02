@@ -13274,7 +13274,7 @@ span.flatpickr-weekday {
 
 .flatpickr-day {
   font-size: .92rem;
-  border: 0;
+  border: 0 !important;
   color: rgba(255, 255, 255, .85)
 }
 

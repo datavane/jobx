@@ -5,7 +5,7 @@
       <div class="card">
         <div class="card-body">
           <div class="prefile_header">
-            <img src="static/logo.png" class="prefile" alt="JobX">
+            <img src="/static/logo.png" class="prefile" alt="JobX">
             <ul class="icon-list contact-item">
               <li>
                 <i class="zmdi zmdi-github"></i>
@@ -55,7 +55,7 @@
                  data-placement="top">
               </i>
               <div class="is-ssl form-group toggle-switch toggle-switch--green">
-                <input type="checkbox" class="toggle-switch__checkbox" checked disabled>
+                <input type="checkbox" class="toggle-switch__checkbox" :checked=profile.useSSL disabled>
                 <i class="toggle-switch__helper"></i>
               </div>
             </li>
@@ -106,6 +106,19 @@
               <button type="button" class="execUser btn btn-light btn-sm" v-for="execUser in profile.execUser">{{execUser}}</button>
             </li>
 
+            <li>
+              <label>清理记录</label>
+              <div class="row clean-record">
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <input type="text" class="form-control date-picker" v-model="cleanDate" placeholder="开始">
+                    <i class="form-group__bar"></i>
+                  </div>
+                </div>
+                <button class="btn btn-light btn-clean" @click="clean()">清理</button>
+              </div>
+            </li>
+
           </ul>
         </div>
       </div>
@@ -114,17 +127,14 @@
 
 </template>
 <script type="application/ecmascript">
-  import 'flatpickr/dist/flatpickr.min.css'
-  import 'flatpickr/dist/flatpickr.min'
+
+  import 'flatpickr'
+
   export default {
     data(){
       return {
-        profile: {}
-      }
-    },
-    methods: {
-      goEdit(){
-        this.$router.push('/profile/edit')
+        profile: {},
+        cleanDate:null
       }
     },
     mounted() {
@@ -136,42 +146,91 @@
       })
 
       $('.date-picker').flatpickr({
+        mode: "range",
+        dateFormat: "Y-m-d",
         enableTime: !1,
         nextArrow: '<i class=\'zmdi zmdi-long-arrow-right\' />',
         prevArrow: '<i class=\'zmdi zmdi-long-arrow-left\' />'
       })
+
+    },
+    methods: {
+      goEdit(){
+        this.$router.push('/profile/edit')
+      },
+      clean() {
+        if (this.cleanDate) {
+          let dateArr = this.cleanDate.split("to")
+          if (dateArr.length == 1) {
+            alert("")
+            return
+          }
+          let start = dateArr[0];
+          let end = dateArr[1];
+          this.$http.post('/profile/clear.do', {
+            start:start,
+            end:end
+          }).then(response => {
+            if(response.code === 200) {
+              this.$swal({
+                title: 'Successful',
+                text: 'clean record successful',
+                type: 'success',
+                background: 'rgba(0, 0, 0, 0.96)',
+                showConfirmButton: false,
+                timer:1500
+              })
+            }
+          }, error => {
+            console.log(error)
+          })
+
+        }
+      }
     }
   }
 </script>
+
+<!--覆盖组件里的默认样式-->
+<style>
+  .flatpickr-day {
+    width: 40px;
+    max-width: 40px;
+    height: 40px;
+    line-height: 40px;
+  }
+  span.flatpickr-day {
+    border-radius: 50% !important;
+  }
+  .flatpickr-day.inRange {
+    background-color: rgba(192,192,192,0.3);
+    box-shadow:none;
+  }
+</style>
+
 <style lang="scss" scoped>
   .prefile_header {
     text-align: center;
     padding: 10px 0;
     border-radius: 2px 2px 0 0;
   }
-
   .card-body {
     padding-top: 1rem;
   }
-
   .prefile {
     height: 100px;
   }
-
   .contact-item {
     .zmdi {
       padding: 5px;
       margin: 10px;
       font-size: 24px;
     }
-
   }
-
   .icon-list {
     li {
       margin-top: 15px;
     }
-
     .li-ssl{
       margin-top: 5px;
     }
@@ -179,20 +238,26 @@
       margin-right: 5px;
       padding: .20rem .45rem;
     }
+    .from-to{
+      margin-top: 15px
+    }
   }
-
   .tip{
     color:rgba(225,225,225,.6)
   }
-
   .is-ssl {
     margin-bottom: 1rem;
     height:0;
   }
-
   .contact-item {
     .zmdi {
       cursor: pointer;
     }
   }
+  .btn-clean{
+    height: 33px;
+    margin-top:5px;
+  }
 </style>
+
+

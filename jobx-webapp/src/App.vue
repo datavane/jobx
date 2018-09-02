@@ -2,9 +2,7 @@
   <main class="main">
     <Header></Header>
     <Navigation></Navigation>
-    <keep-alive>
-      <router-view></router-view>
-    </keep-alive>
+    <router-view></router-view>
   </main>
 </template>
 

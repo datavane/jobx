@@ -63,10 +63,9 @@ public class ProfileController {
     }
 
     @RequestMapping(value = "clear.do", method = RequestMethod.POST)
-    @ResponseBody
-    public Status clearRecord(String startTime, String endTime) {
-        recordService.deleteRecord(startTime, endTime);
-        return Status.TRUE;
+    public RestResult clearRecord(String start, String end) {
+        recordService.deleteRecord(start, end);
+        return RestResult.rest(200);
     }
 
     @RequestMapping(value = "skin.do", method = RequestMethod.POST)

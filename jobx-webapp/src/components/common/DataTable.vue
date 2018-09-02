@@ -35,8 +35,7 @@
           <a class="page-link">{{pager.pageNo}}</a>
         </li>
 
-        <li class="page-item"
-            v-for="index in nextNo">
+        <li class="page-item" v-for="index in nextNo">
           <a class="page-link"
              @click="gotoPage(index)">{{index}}
           </a>
