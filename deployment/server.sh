@@ -195,7 +195,7 @@ else
     config_jdbc_password=$(echo ${config_jdbc_password}|sed -r 's/\//\\\//g'|sed -r 's/\=/\\=/g'|sed -r 's/&/\\&/g')
     config_redis_password=$(echo ${config_redis_password}|sed -r 's/\//\\\//g'|sed -r 's/\=/\\=/g'|sed -r 's/&/\\&/g')
     config_memcached_servers=$(echo ${config_memcached_servers}|sed -r 's/\//\\\//g'|sed -r 's/\=/\\=/g'|sed -r 's/&/\\&/g')
-    sed -i "" "s/^jobx\.registry.*$/${config_registry}/g" ${CONFIG_PATH}
+    sed -i "s/^jobx\.registry.*$/${config_registry}/g" ${CONFIG_PATH}
     sed -i "s/^jdbc\.url.*$/${config_jdbc_url}/g" ${CONFIG_PATH}
     sed -i "s/^jdbc\.username.*$/${config_jdbc_username}/g" ${CONFIG_PATH}
     sed -i "s/^jdbc\.password.*$/${config_jdbc_password}/g" ${CONFIG_PATH}
