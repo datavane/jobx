@@ -190,12 +190,12 @@ fi
 
 #gcc compile executor.c
 exec_retval=0
-GCC_CMD="`which gcc`" >/dev/null 2>&1
+GCCCMD="`which gcc`" >/dev/null 2>&1
 if [ $? eq 1 ];then
     exec_retval=-1
 else
     echo_g "compile executor.c starting..."
-    ${GCC_CMD} ${EXEC_LIB} -o executor.so
+    ${GCCCMD} ${EXEC_LIB} -o executor.so
     ret_val=$?
     if [ ${ret_val} -eq 0 ] ; then
         exec_retval=0
