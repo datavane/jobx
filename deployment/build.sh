@@ -190,12 +190,12 @@ fi
 
 #gcc compile executor.c
 exec_retval=0
-if [ -z "$GCCCMD" ] ; then
-    GCCCMD="`which gcc`"
-fi
-if [ "$GCCCMD" ] ; then
+GCC_CMD="`which gcc`" >/dev/null 2>&1
+if [ $? eq 1 ];then
+    exec_retval=-1
+else
     echo_g "compile executor.c starting..."
-    ${GCCCMD} ${EXEC_LIB} -o executor.so
+    ${GCC_CMD} ${EXEC_LIB} -o executor.so
     ret_val=$?
     if [ ${ret_val} -eq 0 ] ; then
         exec_retval=0
@@ -205,6 +205,7 @@ if [ "$GCCCMD" ] ; then
     fi
 fi
 
+
 ${WORK_BASE}/.mvn/mvnw -f ${WORK_BASE}/pom.xml clean install -Dmaven.test.skip=true;
 ret_val=$?
 if [ ${ret_val} -eq 0 ] ; then
@@ -213,6 +214,8 @@ if [ ${ret_val} -eq 0 ] ; then
     printf "[${BLUE_COLOR}jobx${RES}] ${WHITE_COLOR}build jobx @Version ${JOBX_VERSION} successfully! please goto${RES} ${GREEN_COLOR}${WORK_DIR}${RES}\n"
     if [ ${exec_retval} -eq 1 ]; then
         echo_w "WARN: compile executor.c error,please compile executor.c by yourself."
+    elif [ ${exec_retval} -eq -1 ]; then
+        echo_w "WARN: compile executor.c error,not found gcc,please compile executor.c by yourself."
     else
         rm -rf ${JOBX_AGENT_BIN_DIR}/executor.so >/dev/null 2>&1
     fi
