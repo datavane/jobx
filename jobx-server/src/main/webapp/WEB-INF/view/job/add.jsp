@@ -199,7 +199,7 @@
                         <c:if test="${empty agent}">
                             <select id="agentId" name="agentId"  class="select input-sm">
                                 <c:forEach var="d" items="${agents}">
-                                    <option platform=${d.platform} value="${d.agentId}">${d.host}&nbsp;(${d.name})</option>
+                                    <option platform="${d.platform}" value="${d.agentId}">${d.host}&nbsp;(${d.name})</option>
                                 </c:forEach>
                             </select>
                         </c:if>
