@@ -85,6 +85,7 @@
 </script>
 
 <style lang="scss">
+
 .pagination{
   margin-top: 20px !important;
 }
