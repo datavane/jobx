@@ -29,22 +29,16 @@ import com.jobxhub.common.util.StringUtils;
 import com.jobxhub.common.util.collection.ParamsMap;
 import com.jobxhub.server.annotation.RequestRepeat;
 import com.jobxhub.server.domain.JobBean;
-import com.jobxhub.server.dto.User;
+import com.jobxhub.server.dto.*;
 import com.jobxhub.server.support.JobXTools;
 import com.jobxhub.server.service.*;
 import com.jobxhub.server.tag.PageBean;
 import com.jobxhub.common.util.CommonUtils;
-import com.jobxhub.server.dto.Agent;
-import com.jobxhub.server.dto.Job;
-import com.jobxhub.server.dto.Status;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -53,7 +47,7 @@ import javax.servlet.http.HttpSession;
 import static com.jobxhub.common.util.CommonUtils.notEmpty;
 import static com.jobxhub.common.util.WebUtils.*;
 
-@Controller
+@RestController
 @RequestMapping("job")
 public class JobController {
 
@@ -75,16 +69,10 @@ public class JobController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping("view.htm")
-    public String view(HttpSession session, HttpServletRequest request, PageBean pageBean, Job job, Model model) {
+    @PostMapping("view.do")
+    public RestResult view(HttpSession session, PageBean pageBean, Job job) {
         jobService.getPageBean(session, pageBean, job);
-        model.addAttribute("job", job);
-        model.addAttribute("agents", agentService.getOwnerAgents(session));
-        model.addAttribute("jobs", jobService.getAll());
-        if (request.getParameter("refresh") != null) {
-            return "/job/refresh";
-        }
-        return "/job/view";
+        return RestResult.rest(pageBean);
     }
 
     /**

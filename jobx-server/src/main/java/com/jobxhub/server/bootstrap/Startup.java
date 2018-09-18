@@ -57,9 +57,11 @@ public class Startup {
 
         String launcher = System.getProperty("server.launcher");
 
-        devMode = (launcher == null) ? true : false;
+        devMode = launcher == null;
 
-        LauncherType launcherType = (launcher == null || LauncherType.isTomcat(launcher)) ? LauncherType.TOMCAT : LauncherType.JETTY;
+        LauncherType launcherType = (launcher == null || LauncherType.isTomcat(launcher))
+                ? LauncherType.TOMCAT
+                : LauncherType.JETTY;
 
         URL bannerURL = Thread.currentThread().getContextClassLoader().getResource("app-banner.txt");
         if (bannerURL != null) {

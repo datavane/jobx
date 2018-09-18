@@ -62,7 +62,7 @@ public class AgentController {
     @Autowired
     private ExecuteService executeService;
 
-    @RequestMapping(value = "view.do",method = RequestMethod.POST)
+    @PostMapping("view.do")
     public RestResult queryAllAgent(HttpSession session, Agent agent,PageBean pageBean) {
         agentService.getPageBean(session, agent, pageBean);
         return RestResult.rest(pageBean);

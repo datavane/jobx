@@ -1,11 +1,8 @@
 package com.jobxhub.server.controller;
 
 import com.jobxhub.common.Constants;
-import com.jobxhub.common.job.Response;
 import com.jobxhub.common.util.DigestUtils;
 import com.jobxhub.common.util.IOUtils;
-import com.jobxhub.common.util.collection.ParamsMap;
-import com.jobxhub.server.annotation.RequestRepeat;
 import com.jobxhub.server.dto.RestResult;
 import com.jobxhub.server.dto.User;
 import com.jobxhub.server.service.UserService;
@@ -31,7 +28,7 @@ public class LoginController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "/login.do", method = RequestMethod.POST)
+    @PostMapping("/login.do")
     public RestResult login(HttpSession session, HttpServletRequest request, HttpServletResponse response, @RequestParam String userName, @RequestParam String password) throws Exception {
         //用户信息验证
         int status = userService.login(request, userName, password);
@@ -66,7 +63,7 @@ public class LoginController {
     }
 
 
-    @RequestMapping(value = "logout.do",method = RequestMethod.POST)
+    @PostMapping("logout.do")
     public RestResult logout(HttpServletRequest request) throws Exception {
         JobXTools.invalidSession(request);
         return RestResult.rest(200);
