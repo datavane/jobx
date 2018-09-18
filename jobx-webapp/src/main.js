@@ -11,8 +11,8 @@ import plugin from '@/plugins/plugins.js'
 import store from '@/store'
 import VueSweetalert2 from 'vue-sweetalert2'
 
-import VueFlatpickr from 'vue-flatpickr'
-import 'vue-flatpickr/theme/airbnb.css'
+import flatPickr from 'vue-flatpickr-component'
+import 'flatpickr/dist/flatpickr.css'
 
 import 'bootstrap/dist/js/bootstrap.min.js'
 import 'material-design-iconic-font/dist/css/material-design-iconic-font.css'
@@ -23,6 +23,14 @@ import 'fullcalendar'
 import 'popper.js'
 import 'autosize'
 
+
+import MuseUI from 'muse-ui'
+import 'muse-ui/dist/muse-ui.css'
+import theme from 'muse-ui/lib/theme';
+
+Vue.use(MuseUI)
+theme.use('dark');
+
 Vue.config.productionTip = false
 Vue.prototype.$storage = storage
 Vue.prototype.$const = constant
@@ -30,7 +38,7 @@ Vue.prototype.$const = constant
 
 Vue.prototype.$http = http
 Vue.use(VueSweetalert2)
-Vue.use(VueFlatpickr)
+Vue.use(flatPickr)
 Vue.use(plugin)
 
 new Vue({

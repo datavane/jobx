@@ -111,7 +111,7 @@
               <div class="row clean-record">
                 <div class="col-sm-6">
                   <div class="form-group">
-                    <input type="text" class="form-control date-picker" v-model="cleanDate" placeholder="开始">
+                    <flatPickr class="form-control" v-model="cleanDate" :config="config"></flatPickr>
                     <i class="form-group__bar"></i>
                   </div>
                 </div>
@@ -127,15 +127,21 @@
 
 </template>
 <script type="application/ecmascript">
-
-  import 'flatpickr'
-
+  import flatPickr from 'vue-flatpickr-component';
   export default {
     data(){
       return {
         profile: {},
-        cleanDate:null
+        cleanDate:null,
+        config:{
+            mode: "range",
+            nextArrow: '<i class="zmdi zmdi-long-arrow-right" />',
+            prevArrow: '<i class="zmdi zmdi-long-arrow-left" />'
+        }
       }
+    },
+    components: {
+      flatPickr
     },
     mounted() {
       this.$http.post('/profile/info.do', {}).then(response => {
@@ -143,14 +149,6 @@
         this.profile.execUser =  this.profile.execUser.split(",")
       }, error => {
         console.log(error)
-      })
-
-      $('.date-picker').flatpickr({
-        mode: "range",
-        dateFormat: "Y-m-d",
-        enableTime: !1,
-        nextArrow: '<i class=\'zmdi zmdi-long-arrow-right\' />',
-        prevArrow: '<i class=\'zmdi zmdi-long-arrow-left\' />'
       })
 
     },
@@ -190,7 +188,6 @@
     }
   }
 </script>
-
 <!--覆盖组件里的默认样式-->
 <style>
   .flatpickr-day {
@@ -202,10 +199,24 @@
   span.flatpickr-day {
     border-radius: 50% !important;
   }
-  .flatpickr-day.inRange {
-    background-color: rgba(192,192,192,0.3);
-    box-shadow:none;
+
+  .flatpickr-day.startRange,.flatpickr-day.startRange:hover,
+  .flatpickr-day.endRange,.flatpickr-day.endRange:hover {
+    background: #569ff7 !important;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    color:#fff;
+    border-color: #569ff7 !important;
   }
+  .flatpickr-day.inRange {
+    box-shadow:none;
+    color:black;
+  }
+  span.flatpickr-weekday {
+    margin: 11px;
+    display:inline-flex
+  }
+
 </style>
 
 <style lang="scss" scoped>

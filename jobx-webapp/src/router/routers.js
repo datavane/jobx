@@ -34,6 +34,20 @@ export default [
       }]
   },
   {
+    path:'/job',
+    redirect:'/job/view'
+  },
+  {
+    name:'job',
+    path: '/job/view',
+    component: () => import('@/components/job/View')
+  },
+  {
+    name:'job',
+    path: '/job/edit',
+    component: () => import('@/components/job/Edit')
+  },
+  {
     path:'/profile',
     redirect:'/profile/view'
   },

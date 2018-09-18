@@ -71,7 +71,7 @@
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h6 class="modal-title" id="avatar-modal-label">Theme & Style</h6>
+            <h6 class="modal-title" id="theme-modal-label">Theme & Style</h6>
             <button class="btn btn-light btn--icon" data-dismiss="modal"><i class="zmdi zmdi-close"></i></button>
           </div>
           <div class="modal-body">
