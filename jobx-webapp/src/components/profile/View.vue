@@ -199,7 +199,6 @@
   span.flatpickr-day {
     border-radius: 50% !important;
   }
-
   .flatpickr-day.startRange,.flatpickr-day.startRange:hover,
   .flatpickr-day.endRange,.flatpickr-day.endRange:hover {
     background: #569ff7 !important;

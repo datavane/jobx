@@ -2,8 +2,8 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import routes from './routers'
 
-import storage from '@/utils/storage.js'
-import constant from '@/utils/constant.js'
+import storage from '@/utils/storage'
+import constant from '@/utils/constant'
 import store from '@/store'
 
 Vue.use(Router)

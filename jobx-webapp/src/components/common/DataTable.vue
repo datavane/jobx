@@ -1,13 +1,13 @@
 <template>
   <div class="table-responsive">
     <table id="data-table" class="table">
-      <thead>
+      <thead  class="thead-default">
       <tr>
         <th v-for="h in column">{{h.header}}</th>
       </tr>
       </thead>
       <tbody>
-      <tr v-for="page in pager.data">
+      <tr v-for="page in pager.result">
         <td v-for="col in column">{{page[col.data]}}</td>
       </tr>
       </tbody>

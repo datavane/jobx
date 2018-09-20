@@ -64,8 +64,12 @@ public class AgentController {
 
     @PostMapping("view.do")
     public RestResult queryAllAgent(HttpSession session, Agent agent,PageBean pageBean) {
-        agentService.getPageBean(session, agent, pageBean);
-        return RestResult.rest(pageBean);
+        return agentService.getPageBean(session, agent, pageBean);
+    }
+
+    @PostMapping("all.do")
+    public RestResult getAll(){
+        return RestResult.rest(200,agentService.getAll());
     }
 
     @RequestMapping("refresh.htm")

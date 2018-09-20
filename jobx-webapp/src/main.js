@@ -14,6 +14,10 @@ import VueSweetalert2 from 'vue-sweetalert2'
 import flatPickr from 'vue-flatpickr-component'
 import 'flatpickr/dist/flatpickr.css'
 
+import 'select2/dist/css/select2.css'
+import 'select2/dist/js/select2.full.js'
+import '../static/css/select2.css'
+
 import 'bootstrap/dist/js/bootstrap.min.js'
 import 'material-design-iconic-font/dist/css/material-design-iconic-font.css'
 import 'jquery.scrollbar/jquery.scrollbar.css'

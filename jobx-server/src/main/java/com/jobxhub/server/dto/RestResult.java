@@ -1,20 +1,20 @@
 package com.jobxhub.server.dto;
 
 import com.jobxhub.common.util.CommonUtils;
+import com.jobxhub.common.util.collection.HashMap;
 import com.jobxhub.server.tag.PageBean;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class RestResult {
 
     private int code;
-    private Map<String,Object> body = new HashMap<String,Object>();
+    private Object body;
 
     public RestResult(){
     }
 
-    public RestResult(int code,Map<String,Object> body){
+    public RestResult(int code,Object body){
         this.code = code;
         this.body = body;
     }
@@ -22,7 +22,7 @@ public class RestResult {
     public static RestResult rest(PageBean<?> pageBean) {
         RestResult result = new RestResult();
         result.setCode(RestStatus.Ok.getStatus());
-        result.setBody(pageBean.toMap());
+        result.setBody(pageBean);
         return result;
     }
 
@@ -34,7 +34,7 @@ public class RestResult {
 
     public static RestResult rest(int code,Object object) {
         RestResult restResult = rest(code);
-        restResult.setBody(CommonUtils.toMap(object));
+        restResult.setBody(object);
         return restResult;
     }
 
@@ -47,17 +47,23 @@ public class RestResult {
         return this;
     }
 
-    public Map<String, Object> getBody() {
+    public Object getBody() {
         return body;
     }
 
-    public RestResult setBody(Map<String, Object> body) {
+    public RestResult setBody(Object body) {
         this.body = body;
         return this;
     }
 
     public RestResult put(String key,Object object){
-        this.body.put(key,object);
+        if (this.body instanceof Map) {
+            ((Map) this.body).put(key,object);
+        }else {
+            Map<String,Object> map = new HashMap<String,Object>();
+            map.put(key,object);
+            this.body = map;
+        }
         return this;
     }
 }

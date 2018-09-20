@@ -24,10 +24,12 @@ package com.jobxhub.server.service;
 
 import java.util.*;
 
+import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
 import com.jobxhub.common.Constants;
 import com.jobxhub.common.util.CommonUtils;
 import com.jobxhub.server.domain.AgentBean;
+import com.jobxhub.server.dto.RestResult;
 import com.jobxhub.server.job.JobXRegistry;
 import com.jobxhub.server.dao.AgentDao;
 import com.jobxhub.server.support.JobXTools;
@@ -103,7 +105,7 @@ public class AgentService {
      * @param session
      * @param pageBean
      */
-    public void getPageBean(HttpSession session, Agent agent, PageBean pageBean) {
+    public RestResult getPageBean(HttpSession session, Agent agent, PageBean pageBean) {
         if (!JobXTools.isPermission(session)) {
             User user = JobXTools.getUser(session);
             pageBean.put("userId", user.getUserId());
@@ -118,6 +120,7 @@ public class AgentService {
             pageBean.setResult(agents);
             pageBean.setTotalRecord(count);
         }
+        return RestResult.rest(pageBean);
     }
 
     public Agent getAgent(Long id) {

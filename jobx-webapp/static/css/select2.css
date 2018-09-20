@@ -1,0 +1,51 @@
+@charset "UTF-8";
+
+.select2{
+    width: 100%;
+}
+
+.select2-dropdown {
+    background-color: black;
+    border:none;
+    margin-top:0px;
+}
+
+.select2-container .select2-selection--single {
+    height: 35px;
+}
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    color:rgba(255, 255, 255, .85);
+    line-height: 20px;
+}
+
+.select2-container--default .select2-selection--single:before {
+  border-style: none !important;
+}
+
+.select2-container--default .select2-results__option[aria-selected=true] {
+    background-color:rgba(112, 112, 112, .55);
+}
+
+.card-body{
+    padding:1.2rem
+}
+.swal2-popup {
+    border-radius: 0px  !important;
+    background: rgba(0,0,0,.7)  !important; 
+}
+
+#swal2-content{
+    color: #fff  !important;
+}
+
+.swal2-success-circular-line-left{
+    background-color: none !important
+}
+
+.swal2-success-fix{
+    background-color: none !important
+}
+
+.swal2-success-circular-line-right{
+    background-color: none !important
+}

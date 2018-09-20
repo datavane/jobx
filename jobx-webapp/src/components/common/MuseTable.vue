@@ -1,7 +1,7 @@
 <template>
   <div class="table-responsive">
     <mu-paper :z-depth="1">
-      <mu-data-table stripe :loading="loading" :columns="columns" :sort.sync="sort" @sort-change="sortHandle" :data="pager.data">
+      <mu-data-table stripe :loading="loading" :columns="columns" :sort.sync="sort" @sort-change="sortHandle" :data="pager.result">
         <!--
         <template slot="expand" slot-scope="prop">
           <div style="padding: 24px;" >{{prop.row.command}}</div>
