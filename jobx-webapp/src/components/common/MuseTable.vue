@@ -1,38 +1,47 @@
 <template>
-  <div class="table-responsive">
-    <div id="data-table_wrapper" class="dataTables_wrapper no-footer">
-      <div class="dataTables_length" id="data-table_length">
-        <label>Show
-          <select name="data-table_length" aria-controls="data-table" class="">
-            <option value="15">15 Rows</option>
-            <option value="30">30 Rows</option>
-            <option value="45">45 Rows</option>
-            <option value="-1">Everything</option>
-          </select>
-          entries</label>
-      </div>
-      <div id="data-table_filter" class="dataTables_filter">
-        <label>Search:<input type="search" class=""  placeholder="Search for records..." aria-controls="data-table"></label>
-      </div>
+  <div id="app">
+    <h4 class="card-title">{{title}}</h4>
+    <div class="actions">
+      <i class="actions__item zmdi zmdi-print" data-table-action="print"></i>
+      <i class="actions__item zmdi zmdi-fullscreen" data-table-action="fullscreen"></i>
+      <i class="actions__item zmdi zmdi-download" data-table-toggle="dropdown"></i>
+      <i class="actions__item zmdi zmdi-plus" @click="goAdd()"></i>
     </div>
-    <mu-paper :z-depth="1">
-      <mu-data-table stripe :loading="loading" :columns="columns" :sort.sync="sort" @sort-change="sortHandle" :data="pager.result">
-        <!--
-        <template slot="expand" slot-scope="prop">
-          <div style="padding: 24px;" >{{prop.row.command}}</div>
-        </template>
-        -->
-      </mu-data-table>
-    </mu-paper>
-    <mu-flex justify-content="center" class="pagination">
-      <mu-pagination raised circle :total="pager.totalRecord" :current.sync="pager.pageNo" :size="pager.pageSize" :count="pager.pageTotal" @change="gotoPage"></mu-pagination>
-    </mu-flex>
+    <div class="table-responsive">
+      <div id="data-table_wrapper" class="dataTables_wrapper no-footer">
+        <div class="dataTables_length" id="data-table_length">
+          <label>Show
+            <select name="data-table_length" aria-controls="data-table" class="">
+              <option value="15">15 Rows</option>
+              <option value="30">30 Rows</option>
+              <option value="45">45 Rows</option>
+              <option value="-1">Everything</option>
+            </select>
+            entries</label>
+        </div>
+        <div id="data-table_filter" class="dataTables_filter">
+          <label>Search:<input type="search" class=""  placeholder="Search for records..." aria-controls="data-table"></label>
+        </div>
+      </div>
+      <mu-paper :z-depth="1">
+        <mu-data-table stripe :loading="loading" :columns="columns" :sort.sync="sort" @sort-change="sortHandle" :data="pager.result">
+          <!--
+          <template slot="expand" slot-scope="prop">
+            <div style="padding: 24px;" >{{prop.row.command}}</div>
+          </template>
+          -->
+        </mu-data-table>
+      </mu-paper>
+      <mu-flex justify-content="center" class="pagination">
+        <mu-pagination raised circle :total="pager.totalRecord" :current.sync="pager.pageNo" :size="pager.pageSize" :count="pager.pageTotal" @change="gotoPage"></mu-pagination>
+      </mu-flex>
+    </div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   export default {
-    props: ["url", "columns","expand"],
+    props: ['title','url','columns','expand'],
     data() {
       return {
         pager: {},
