@@ -30,6 +30,7 @@ import 'autosize'
 import MuseUI from 'muse-ui'
 Vue.use(MuseUI)
 import 'muse-ui/dist/muse-ui.css'
+import '../static/css/muse.css'
 
 Vue.config.productionTip = false
 Vue.prototype.$storage = storage

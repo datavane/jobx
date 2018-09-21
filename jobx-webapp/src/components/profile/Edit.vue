@@ -36,8 +36,8 @@
                 <mu-text-field multi-line :rows="2" :rows-max="6" v-model="profile.execUser"></mu-text-field>
               </mu-form-item>
               <mu-form-item>
-                <mu-button color="primary" @click="submit">提交</mu-button>
-                <mu-button @click="profile=profile1">重置</mu-button>
+                <mu-button class="btn btn-light" role="button" @click="submit">提交</mu-button>
+                <mu-button class="btn btn-light" role="button" @click="profile=profile1">重置</mu-button>
               </mu-form-item>
           </mu-form>
         </div>
@@ -69,7 +69,6 @@
       this.getInfo()
     },
     methods: {
-
       getInfo() {
         this.$http.post('/profile/info.do', {}).then(response => {
           this.profile = response.body
@@ -107,23 +106,3 @@
     }
   }
 </script>
-<style lang="scss">
-  .mu-form-item {
-    color:#fff;
-    .mu-form-item-help{
-      color:rgba(255,255,255,.4)
-    }
-    .mu-form-item-label{
-      font-size: 1.15rem;
-      color: #fff;
-      margin-bottom: 2px;
-      font-weight: 400;
-    }
-  }
-
-  .mu-text-field-input{
-    color:rgba(255,255,255,.85);
-    font-size: 14px;
-  }
-
-</style>

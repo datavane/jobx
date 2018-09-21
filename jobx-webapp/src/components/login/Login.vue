@@ -14,7 +14,7 @@
           <input type="text" class="form-control text-center" v-model="userName" placeholder="Address">
         </div>
         <div class="form-group">
-          <input type="password" class="form-control text-center" v-model="password" placeholder="Password">
+          <input type="text" onfocus="this.type='password'" class="form-control text-center" v-model="password" placeholder="Password">
         </div>
         <span @click="tologin" class="btn btn--icon login__block__btn"><i class="zmdi zmdi-long-arrow-right"></i></span>
       </div>
@@ -31,9 +31,9 @@
       return {
         slogan: "Let's scheduling easy",
         status: true,
-        info: "",
-        userName: "",
-        password: ""
+        info: '',
+        userName: '',
+        password: ''
       }
     },
     methods: {
@@ -79,7 +79,6 @@
           console.log(error)
         })
       }
-
     }
   }
 </script>
@@ -91,20 +90,16 @@
       width: 200px;
     }
   }
-
   .form-group {
     padding-top: 10px;
   }
-
   .error_msg {
     margin-top: -15px;
     margin-bottom: 8px;
   }
-
   .green {
     color: green;
   }
-
   .red {
     color: red;
   }
