@@ -107,3 +107,23 @@
     }
   }
 </script>
+<style lang="scss">
+  .mu-form-item {
+    color:#fff;
+    .mu-form-item-help{
+      color:rgba(255,255,255,.4)
+    }
+    .mu-form-item-label{
+      font-size: 1.15rem;
+      color: #fff;
+      margin-bottom: 2px;
+      font-weight: 400;
+    }
+  }
+
+  .mu-text-field-input{
+    color:rgba(255,255,255,.85);
+    font-size: 14px;
+  }
+
+</style>

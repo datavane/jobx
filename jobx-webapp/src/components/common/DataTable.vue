@@ -1,7 +1,23 @@
 <template>
   <div class="table-responsive">
+    <div id="data-table_wrapper" class="dataTables_wrapper no-footer">
+      <div class="dataTables_length" id="data-table_length">
+        <label>Show
+          <select name="data-table_length" aria-controls="data-table" class="">
+            <option value="15">15 Rows</option>
+            <option value="30">30 Rows</option>
+            <option value="45">45 Rows</option>
+            <option value="-1">Everything</option>
+          </select>
+        entries</label>
+      </div>
+      <div id="data-table_filter" class="dataTables_filter">
+        <label>Search:<input type="search" class=""  placeholder="Search for records..." aria-controls="data-table"></label>
+      </div>
+    </div>
+
     <table id="data-table" class="table">
-      <thead  class="thead-default">
+      <thead>
       <tr>
         <th v-for="h in column">{{h.header}}</th>
       </tr>
@@ -119,6 +135,9 @@
 </script>
 
 <style scoped>
+  .dataTables_wrapper{
+    margin-bottom: 20px;
+  }
 </style>
 
 

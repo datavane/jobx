@@ -3,6 +3,12 @@
     <div class="card">
       <div class="card-body">
         <h4 class="card-title">作业列表</h4>
+        <div class="actions">
+          <i class="actions__item zmdi zmdi-print" data-table-action="print"></i>
+          <i class="actions__item zmdi zmdi-fullscreen" data-table-action="fullscreen"></i>
+          <i class="actions__item zmdi zmdi-download" data-table-toggle="dropdown"></i>
+          <i class="actions__item zmdi zmdi-plus" @click="goAdd()"></i>
+        </div>
         <museTable :url="url" :columns="columns"></museTable>
       </div>
     </div>

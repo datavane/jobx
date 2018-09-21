@@ -4,30 +4,10 @@
       <div class="card-body">
         <h4 class="card-title">Basic example</h4>
         <div class="actions">
-          <i class="actions__item zmdi zmdi-search" @click="where=!where"></i>
+          <i class="actions__item zmdi zmdi-print" data-table-action="print"></i>
+          <i class="actions__item zmdi zmdi-fullscreen" data-table-action="fullscreen"></i>
+          <i class="actions__item zmdi zmdi-download" data-table-toggle="dropdown"></i>
           <i class="actions__item zmdi zmdi-plus" @click="goAdd()"></i>
-          <div class="dropdown actions__item">
-            <i data-toggle="dropdown" class="zmdi zmdi-more-vert"></i>
-            <div class="dropdown-menu dropdown-menu-right">
-              <a href="" class="dropdown-item">Refresh</a>
-              <a href="" class="dropdown-item">Manage Widgets</a>
-              <a href="" class="dropdown-item">Settings</a>
-            </div>
-          </div>
-        </div>
-        <div class="select-wrap" v-if="where">
-          <div class="select-box">
-            <label>执行器</label>
-            <div><select2 :options="agents" :selected="agentId" v-model="agentId"></select2></div>
-          </div>
-          <div class="select-box">
-            <label>作业类型</label>
-            <div><select2 :options="jobTypes" :selected="jobType" v-model="jobType"></select2></div>
-          </div>
-          <div class="select-box">
-            <label>是否重跑</label>
-            <div><select2 :options="reRuns" :selected="rerun" v-model="rerun"></select2></div>
-          </div>
         </div>
         <dataTable :url="url" :column="column"></dataTable>
       </div>
@@ -37,7 +17,6 @@
 <script type="text/ecmascript-6">
   import dataTable from "@/components/common/DataTable"
   import select2 from '@/components/common/Select2'
-
   export default {
     components: {
       dataTable,
@@ -76,12 +55,7 @@
       getAgent() {
         this.$http.post('/agent/all.do', {}).then(response => {
           if (response.body) {
-            response.body.forEach((agent)=>{
-              this.agents.push({
-                id:agent.agentId,
-                text:agent.name
-              })
-            })
+            this.agents = response.body
           }
         }, error => {
           console.log(error)

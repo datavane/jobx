@@ -27,13 +27,9 @@ import 'fullcalendar'
 import 'popper.js'
 import 'autosize'
 
-
 import MuseUI from 'muse-ui'
-import 'muse-ui/dist/muse-ui.css'
-import theme from 'muse-ui/lib/theme';
-
 Vue.use(MuseUI)
-theme.use('dark');
+import 'muse-ui/dist/muse-ui.css'
 
 Vue.config.productionTip = false
 Vue.prototype.$storage = storage
