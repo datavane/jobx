@@ -8,26 +8,26 @@
       <i class="actions__item zmdi zmdi-plus" @click="goAdd()"></i>
     </div>
     <div class="table-responsive">
-      <div id="data-table_wrapper" class="dataTables_wrapper no-footer">
-        <div class="dataTables_length" id="data-table_length">
-          <label>Show
-            <select name="data-table_length" aria-controls="data-table" class="">
-              <option value="15">15 Rows</option>
-              <option value="30">30 Rows</option>
-              <option value="45">45 Rows</option>
-              <option value="-1">Everything</option>
-            </select>
-          entries</label>
-        </div>
-        <div id="data-table_filter" class="dataTables_filter">
-          <label>Search:<input type="search" class=""  placeholder="Search for records..." aria-controls="data-table"></label>
-        </div>
-      </div>
-
       <table id="data-table" class="table">
-        <thead>
+        <thead class="thead-default">
         <tr>
-          <th v-for="h in column">{{h.header}}</th>
+          <th v-for="h in column">{{h.header}}
+            <span class="dropdown" v-if="h.filter">
+                <i class="zmdi zmdi-cocktail zmdi-hc-fw" data-toggle="dropdown" v-if="h.filter.type=='input'"></i>
+                <span class="dropdown-menu select-filter-opt" x-placement="bottom-start" v-if="h.filter.type=='input'">
+                 <div class="form-group select-filter-input">
+                      <input type="text" class="form-control form-control-sm" :placeholder="h.header">
+                      <i class="form-group__bar"></i>
+                  </div>
+                  <button class="btn btn-light btn-sm select-filter-btn">确定</button>
+                  <button class="btn btn-light btn-sm select-filter-btn">清空</button>
+                </span>
+               <i class="zmdi zmdi-cocktail zmdi-hc-fw" data-toggle="dropdown" v-if="h.filter.type=='select'"></i>
+                <span class="dropdown-menu select-filter-opt" x-placement="bottom-start" v-if="h.filter.type=='select'">
+                    <a v-for="opt in h.filter.values" class="dropdown-item">{{opt.text}}</a>
+                </span>
+            </span>
+          </th>
         </tr>
         </thead>
         <tbody>
@@ -142,9 +142,27 @@
   }
 </script>
 
-<style scoped>
+<style  lang='scss' scoped>
   .dataTables_wrapper{
     margin-bottom: 20px;
+  }
+  .select-filter-opt{
+    position: absolute;
+    transform: translate3d(5px, 20px, 0px)!important;
+    top: 0px;
+    left: 0px;
+    will-change: transform;
+  }
+  .select-filter-input{
+    padding-left: 10px;
+    padding-right:10px;
+    .form-group__bar {
+      padding-left: 10px;
+      padding-right:10px;
+    }
+  }
+  .select-filter-btn{
+    margin-left: 15px;
   }
 </style>
 

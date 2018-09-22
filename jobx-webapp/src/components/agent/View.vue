@@ -19,11 +19,28 @@
       return {
         url: "/agent/view.do",
         column: [
-          {header: 'Host', data: 'host'},
-          {header: 'Name', data: 'name'},
-          {header: 'Port', data: 'port'},
-          {header: 'Status', data: 'status'},
-          {header: 'Warning', data: 'warning'},
+          {header: 'Host', data: 'host',filter:{type:'input'}},
+          {header: 'Name', data: 'name',filter:{type:'input'}},
+          {header: 'Port', data: 'port',filter:{type:'input'}},
+          {header: 'Status', data: 'status',
+            filter:{
+              type:'select',
+              values:[
+                {id:0,text:'正常'},
+                {id:1,text:'失联'},
+                {id:2,text:'密码错误'}
+              ]
+            }
+          },
+          {header: 'Warning', data: 'warning',
+            filter:{
+              type:'select',
+              values:[
+                {id:0,text:'告警'},
+                {id:1,text:'不告警'}
+              ]
+            }
+          },
           {header: 'Proxy', data: 'proxy'}
         ],
         agentId:undefined,
