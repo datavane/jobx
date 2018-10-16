@@ -549,6 +549,14 @@ public class AgentProcessor implements Opencron.Iface {
                                 while (!autoReg||tryIndex<3) {
                                     autoReg = register();
                                     ++tryIndex;
+									
+									try {
+										//sleep 1 second
+										Thread.sleep(1*1000);
+									} catch (Exception e1) {
+										logger.error("KeepAliveWatchDog.run()->Sleep Error!", e1);
+									}
+									
                                 }
                                 AgentHeartBeat.this.stop();
                             } catch (Exception e1) {
