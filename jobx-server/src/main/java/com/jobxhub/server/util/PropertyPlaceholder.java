@@ -19,8 +19,9 @@
  * under the License.
  */
 
-package com.jobxhub.common.util;
+package com.jobxhub.server.util;
 
+import com.jobxhub.common.util.CommonUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;

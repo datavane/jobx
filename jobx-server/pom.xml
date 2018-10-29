@@ -10,6 +10,7 @@
     <packaging>war</packaging>
     <name>jobx-server</name>
 
+
     <dependencies>
 
         <dependency>
@@ -29,63 +30,67 @@
 
         <!-- Spring -->
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-core</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>ch.qos.logback</groupId>
+                    <artifactId>logback-classic</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-beans</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-expression</artifactId>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+            <version>3.4.4</version>
         </dependency>
 
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-orm</artifactId>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis-spring</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-webmvc</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-websocket</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.session</groupId>
-            <artifactId>spring-session-data-redis</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjweaver</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>cglib</groupId>
-            <artifactId>cglib-nodep</artifactId>
+            <scope>test</scope>
         </dependency>
 
         <dependency>
@@ -124,20 +129,6 @@
             <artifactId>persistence-api</artifactId>
         </dependency>
 
-        <!--mybatis-->
-        <dependency>
-            <groupId>org.mybatis</groupId>
-            <artifactId>mybatis-spring</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.mybatis</groupId>
-            <artifactId>mybatis</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-        </dependency>
 
         <dependency>
             <groupId>com.alibaba</groupId>
@@ -184,24 +175,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>apache-jsp</artifactId>
-            <scope>provided</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.ow2.asm</groupId>
-                    <artifactId>asm</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.tomcat.embed</groupId>
-            <artifactId>tomcat-embed-core</artifactId>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
             <groupId>org.fusesource.jansi</groupId>
             <artifactId>jansi</artifactId>
         </dependency>
@@ -229,216 +202,6 @@
                     <target>7</target>
                 </configuration>
             </plugin>
-
-            <!--默认配置文件-->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>2.4</version>
-                <configuration>
-                    <warSourceDirectory>webapp</warSourceDirectory>
-                    <webResources>
-                        <resource>
-                            <directory>src/main/webapp</directory>
-                        </resource>
-                        <resource>
-                            <directory>src/main/resources</directory>
-                            <targetPath>WEB-INF/classes</targetPath>
-                        </resource>
-                    </webResources>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <version>3.0.2</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>copy</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <excludeTransitive>false</excludeTransitive>
-                    <stripVersion>false</stripVersion>
-                    <artifactItems>
-
-                        <!--
-                        以下tomcat和jetty是为了jar包隔离,把tomcat和jetty的jar放到单独的地方,
-                        启动引导类com.jobxhub.server.bootstrap.Startup里通过加载classLoader的方式
-                        加载tomcat或者jetty容器各自需要的jar包
-                        -->
-
-                        <dependency>
-                            <groupId>javax.servlet</groupId>
-                            <artifactId>javax.servlet-api</artifactId>
-                            <outputDirectory>${basedir}/container/jetty</outputDirectory>
-                        </dependency>
-
-                        <dependency>
-                            <groupId>javax.servlet.jsp</groupId>
-                            <artifactId>jsp-api</artifactId>
-                            <outputDirectory>${basedir}/container/jetty</outputDirectory>
-                        </dependency>
-
-                        <dependency>
-                            <groupId>org.eclipse.jetty</groupId>
-                            <artifactId>jetty-util</artifactId>
-                            <outputDirectory>${basedir}/container/jetty</outputDirectory>
-                        </dependency>
-
-                        <dependency>
-                            <groupId>org.eclipse.jetty</groupId>
-                            <artifactId>jetty-webapp</artifactId>
-                            <outputDirectory>${basedir}/container/jetty</outputDirectory>
-                        </dependency>
-
-                        <dependency>
-                            <groupId>org.eclipse.jetty</groupId>
-                            <artifactId>jetty-server</artifactId>
-                            <outputDirectory>${basedir}/container/jetty</outputDirectory>
-                        </dependency>
-
-                        <dependency>
-                            <groupId>org.eclipse.jetty.websocket</groupId>
-                            <artifactId>websocket-server</artifactId>
-                            <outputDirectory>${basedir}/container/jetty</outputDirectory>
-                        </dependency>
-
-                        <dependency>
-                            <groupId>org.eclipse.jetty.websocket</groupId>
-                            <artifactId>websocket-servlet</artifactId>
-                            <outputDirectory>${basedir}/container/jetty</outputDirectory>
-                        </dependency>
-
-                        <dependency>
-                            <groupId>org.eclipse.jetty.websocket</groupId>
-                            <artifactId>websocket-common</artifactId>
-                            <outputDirectory>${basedir}/container/jetty</outputDirectory>
-                        </dependency>
-
-                        <dependency>
-                            <groupId>org.eclipse.jetty.websocket</groupId>
-                            <artifactId>websocket-api</artifactId>
-                            <outputDirectory>${basedir}/container/jetty</outputDirectory>
-                        </dependency>
-
-                        <dependency>
-                            <groupId>org.eclipse.jetty</groupId>
-                            <artifactId>jetty-servlet</artifactId>
-                            <outputDirectory>${basedir}/container/jetty</outputDirectory>
-                        </dependency>
-
-                        <dependency>
-                            <groupId>org.eclipse.jetty</groupId>
-                            <artifactId>apache-jsp</artifactId>
-                            <outputDirectory>${basedir}/container/jetty</outputDirectory>
-                        </dependency>
-
-                        <dependency>
-                            <groupId>org.mortbay.jasper</groupId>
-                            <artifactId>apache-jsp</artifactId>
-                            <outputDirectory>${basedir}/container/jetty</outputDirectory>
-                        </dependency>
-
-                        <dependency>
-                            <groupId>org.mortbay.jasper</groupId>
-                            <artifactId>apache-el</artifactId>
-                            <outputDirectory>${basedir}/container/jetty</outputDirectory>
-                        </dependency>
-
-                        <dependency>
-                            <groupId>org.eclipse.jetty</groupId>
-                            <artifactId>jetty-http</artifactId>
-                            <outputDirectory>${basedir}/container/jetty</outputDirectory>
-                        </dependency>
-
-                        <dependency>
-                            <groupId>org.eclipse.jetty</groupId>
-                            <artifactId>jetty-io</artifactId>
-                            <outputDirectory>${basedir}/container/jetty</outputDirectory>
-                        </dependency>
-
-                        <dependency>
-                            <groupId>org.eclipse.jetty</groupId>
-                            <artifactId>jetty-xml</artifactId>
-                            <outputDirectory>${basedir}/container/jetty</outputDirectory>
-                        </dependency>
-
-                        <dependency>
-                            <groupId>org.eclipse.jetty</groupId>
-                            <artifactId>jetty-security</artifactId>
-                            <outputDirectory>${basedir}/container/jetty</outputDirectory>
-                        </dependency>
-
-                        <dependency>
-                            <groupId>org.eclipse.jdt.core.compiler</groupId>
-                            <artifactId>ecj</artifactId>
-                            <outputDirectory>${basedir}/container/jetty</outputDirectory>
-                        </dependency>
-
-                        <dependency>
-                            <groupId>javax.servlet</groupId>
-                            <artifactId>javax.servlet-api</artifactId>
-                            <outputDirectory>${basedir}/container/tomcat</outputDirectory>
-                        </dependency>
-
-                        <dependency>
-                            <groupId>javax.servlet.jsp</groupId>
-                            <artifactId>jsp-api</artifactId>
-                            <outputDirectory>${basedir}/container/tomcat</outputDirectory>
-                        </dependency>
-
-                        <dependency>
-                            <groupId>org.apache.tomcat.embed</groupId>
-                            <artifactId>tomcat-embed-core</artifactId>
-                            <outputDirectory>${basedir}/container/tomcat</outputDirectory>
-                        </dependency>
-
-                        <dependency>
-                            <groupId>org.apache.tomcat.embed</groupId>
-                            <artifactId>tomcat-embed-el</artifactId>
-                            <outputDirectory>${basedir}/container/tomcat</outputDirectory>
-                        </dependency>
-
-                        <dependency>
-                            <groupId>org.apache.tomcat.embed</groupId>
-                            <artifactId>tomcat-embed-jasper</artifactId>
-                            <outputDirectory>${basedir}/container/tomcat</outputDirectory>
-                        </dependency>
-
-                        <dependency>
-                            <groupId>org.eclipse.jdt.core.compiler</groupId>
-                            <artifactId>ecj</artifactId>
-                            <outputDirectory>${basedir}/container/tomcat</outputDirectory>
-                        </dependency>
-
-                        <dependency>
-                            <groupId>org.apache.tomcat.embed</groupId>
-                            <artifactId>tomcat-embed-websocket</artifactId>
-                            <outputDirectory>${basedir}/container/tomcat</outputDirectory>
-                        </dependency>
-
-                        <dependency>
-                            <groupId>org.apache.tomcat.embed</groupId>
-                            <artifactId>tomcat-embed-logging-juli</artifactId>
-                            <outputDirectory>${basedir}/container/tomcat</outputDirectory>
-                        </dependency>
-
-                        <dependency>
-                            <groupId>org.apache.tomcat.embed</groupId>
-                            <artifactId>tomcat-embed-logging-log4j</artifactId>
-                            <outputDirectory>${basedir}/container/tomcat</outputDirectory>
-                        </dependency>
-
-                    </artifactItems>
-
-                </configuration>
-            </plugin>
-
         </plugins>
     </build>
 

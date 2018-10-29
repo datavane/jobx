@@ -36,6 +36,7 @@ import com.jobxhub.registry.zookeeper.ZookeeperTransporter;
 import com.jobxhub.server.service.*;
 import com.jobxhub.server.support.JobXTools;
 import com.jobxhub.server.dto.Job;
+import com.jobxhub.server.util.PropertyPlaceholder;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

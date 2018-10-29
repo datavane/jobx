@@ -22,7 +22,6 @@ package com.jobxhub.common;
 
 import com.jobxhub.common.util.CommonUtils;
 import com.jobxhub.common.util.EnumUtil;
-import com.jobxhub.common.util.PropertyPlaceholder;
 import com.jobxhub.common.util.SystemPropertyUtils;
 
 import java.io.File;
@@ -159,9 +158,9 @@ public class Constants {
      * Name of the system property containing
      */
 
-    public static final Boolean JOBX_CLUSTER = PropertyPlaceholder.getBoolean(Constants.PARAM_JOBX_CLUSTER_KEY);
+    public static final Boolean JOBX_CLUSTER = false;// PropertyPlaceholder.getBoolean(Constants.PARAM_JOBX_CLUSTER_KEY);
 
-    public static final String JOBX_CACHED = PropertyPlaceholder.get(Constants.PARAM_CACHED_NAME_KEY);
+    public static final String JOBX_CACHED = null;//PropertyPlaceholder.get(Constants.PARAM_CACHED_NAME_KEY);
 
     public static final String JOBX_HOME = SystemPropertyUtils.get(PARAM_JOBX_HOME_KEY,"");
 

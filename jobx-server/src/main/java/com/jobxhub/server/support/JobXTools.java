@@ -26,6 +26,7 @@ import com.jobxhub.common.Constants;
 import com.jobxhub.common.util.*;
 import com.jobxhub.server.session.cached.CachedManager;
 import com.jobxhub.server.dto.User;
+import com.jobxhub.server.util.PropertyPlaceholder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;

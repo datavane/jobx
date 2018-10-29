@@ -32,6 +32,7 @@ import com.jobxhub.server.support.JobXTools;
 import com.jobxhub.server.service.*;
 import com.jobxhub.server.tag.PageBean;
 import com.jobxhub.server.dto.*;
+import com.jobxhub.server.util.PropertyPlaceholder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
