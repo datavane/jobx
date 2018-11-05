@@ -180,7 +180,7 @@ fi
 #start server....
 printf "[${BLUE_COLOR}jobx${RES}] ${WHITE_COLOR} server Starting @ [${GREEN_COLOR}${JOBX_PORT}${RES}].... ${RES}\n"
 
-MAIN="com.jobxhub.server.bootstrap.Startup"
+MAIN="com.jobxhub.server.JobXServer"
 cd ${DEPLOY_PATH}
 eval "$RUNJAVA" \
         -classpath "$CLASSPATH" \

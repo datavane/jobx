@@ -5,11 +5,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 @Component
-@ConfigurationProperties(prefix = "jobx")
+@ConfigurationProperties(prefix = "jobx", ignoreUnknownFields = true)
 public class PropertyPlaceholder {
     private String registry;
     private String monitorPort;
-
 
     public String getRegistry() {
         return registry;

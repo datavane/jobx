@@ -12,7 +12,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @SpringBootApplication( exclude = DataSourceAutoConfiguration.class )
 @MapperScan("com.jobxhub.server.dao")
 public class JobXServer {
+
     public static void main(String[] args) {
         SpringApplication.run(JobXServer.class, args);
     }
+
 }
