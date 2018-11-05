@@ -7,7 +7,7 @@ server:
 
 spring:
   datasource:
-    name: mysql_test
+    name: jobx
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
       driver-class-name: com.mysql.jdbc.Driver
@@ -36,9 +36,10 @@ spring:
       max-file-size: 10Mb
       max-request-size: 100Mb
 
-
 mybatis:
+  # 映射文件所在路径
   mapper-locations: classpath:mapper/*.xml
+  # pojo类所在包路径
   type-aliases-package: com.jobxhub.server.domain
   configuration:
     map-underscore-to-camel-case: true
@@ -53,6 +54,21 @@ pagehelper:
   params: count=countSql
   returnPageInfo: check
 
+
+jobx:
+  #zookepper注册中心
+  registry: zookeeper://127.0.0.1:2181
+  #agent监控服务端口
+  monitorPort: 17502
+  ##################################################################################################
+  # server端是否集群(多个server)
+  # 如果 jobx.cluster为true,则两种缓存实现(redis|memcached)任选其一进行配合(必须选一个)
+  # 并且 jobx.cached 要写上对应的缓存实现(redis|memcached)
+  # 如果为false,则 redis,memcached,和 jobx.cached 都不用管.
+  ##################################################################################################
+  cluster: false
+  #（可选值: (redis|memcached）
+  cached: memcached
 
 
 

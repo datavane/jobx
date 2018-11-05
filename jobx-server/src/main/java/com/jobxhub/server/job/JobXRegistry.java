@@ -41,6 +41,7 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.util.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -70,15 +71,16 @@ public class JobXRegistry {
     @Autowired
     private ExecuteService executeService;
 
-    private final URL registryURL = URL.valueOf(PropertyPlaceholder.get(Constants.PARAM_JOBX_REGISTRY_KEY));
+    @Autowired
+    private PropertyPlaceholder placeholder;
 
     private final String registryPath = Constants.ZK_REGISTRY_SERVER_PATH + "/" + JobXTools.SERVER_ID;
 
-    private ZookeeperTransporter transporter = ExtensionLoader.load(ZookeeperTransporter.class);
+    private final ZookeeperTransporter transporter = ExtensionLoader.load(ZookeeperTransporter.class);
 
-    private final Registry registryService = new ZookeeperRegistry(registryURL, transporter);
+    private Registry registryService;
 
-    private final ZookeeperClient zookeeperClient = registryService.getClient();
+    private ZookeeperClient zookeeperClient;
 
     private final Map<String, String> agents = new HashMap<String, String>(0);
 
@@ -95,8 +97,11 @@ public class JobXRegistry {
 
     private Lock lock = new ReentrantLock();
 
-    public JobXRegistry() {
-
+    @PostConstruct
+    public void JobXRegistry() {
+        URL registryURL = URL.valueOf(placeholder.getRegistry());
+        registryService = new ZookeeperRegistry(registryURL, transporter);
+        zookeeperClient = registryService.getClient();
     }
 
     public void initialize() {

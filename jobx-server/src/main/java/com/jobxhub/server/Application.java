@@ -9,8 +9,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @EnableTransactionManagement
 @ServletComponentScan
-@MapperScan("com.jobxhub.server.dao")
 @SpringBootApplication( exclude = DataSourceAutoConfiguration.class )
+@MapperScan("com.jobxhub.server.dao")
 public class Application {
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);

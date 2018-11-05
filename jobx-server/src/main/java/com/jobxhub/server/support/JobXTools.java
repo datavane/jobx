@@ -26,7 +26,6 @@ import com.jobxhub.common.Constants;
 import com.jobxhub.common.util.*;
 import com.jobxhub.server.session.cached.CachedManager;
 import com.jobxhub.server.dto.User;
-import com.jobxhub.server.util.PropertyPlaceholder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -43,6 +42,7 @@ import java.util.Map;
 import com.jobxhub.common.util.collection.HashMap;
 
 import static com.jobxhub.common.util.CommonUtils.uuid;
+
 
 public final class JobXTools {
 
@@ -219,12 +219,6 @@ public final class JobXTools {
         public static String getKeyPath() {
             if (KEY_PATH == null) {
                 KEY_PATH = Constants.JOBX_USER_HOME;
-                // 从config.properties配置都读取用户手动设置的keypath的位置,配置文件里默认没有,不建议用户指定
-                // 如果指定了位置可能会导致之前所有已可ssh登录的机器无法登陆,需要再次输入用户名密码
-                String path = PropertyPlaceholder.get(Constants.PARAM_JOBX_KEYPATH_KEY);
-                if (path != null) {
-                    KEY_PATH = path;
-                }
             }
             return KEY_PATH;
         }

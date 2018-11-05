@@ -23,7 +23,6 @@
 package com.jobxhub.server.service;
 
 import com.jobxhub.common.Constants;
-import com.jobxhub.common.job.Alarm;
 import com.jobxhub.common.util.EnumUtil;
 import com.jobxhub.server.alarm.AlarmMessage;
 import com.jobxhub.server.dto.*;
@@ -42,7 +41,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import javax.servlet.ServletContext;
 import java.io.*;
 import java.util.*;
 import static com.jobxhub.common.job.Alarm.auth;
@@ -62,9 +60,6 @@ public class NoticeService {
     private LogService logService;
 
     @Autowired
-    private ServletContext servletContext;
-
-    @Autowired
     private ApplicationContext applicationContext;
 
     private Template template;
@@ -74,7 +69,8 @@ public class NoticeService {
     @PostConstruct
     public void initConfig() throws Exception {
         Configuration configuration = new Configuration();
-        File file = new File(servletContext.getRealPath("/WEB-INF/layouts"));
+        ClassLoader classLoader= getClass().getClassLoader();
+        File file = new File(classLoader.getResource("").getPath());
         configuration.setDirectoryForTemplateLoading(file);
         configuration.setDefaultEncoding("UTF-8");
         this.template = configuration.getTemplate("email.html");

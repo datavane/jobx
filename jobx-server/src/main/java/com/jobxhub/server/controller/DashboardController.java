@@ -43,10 +43,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.awt.Image;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.Serializable;
 import java.util.*;
@@ -81,6 +79,9 @@ public class DashboardController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private PropertyPlaceholder propertyPlaceholder;
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -181,7 +182,7 @@ public class DashboardController {
          * 直联
          */
         if (agent.getProxyId()==null) {
-            final String url = String.format("http://%s:%s", agent.getHost(), PropertyPlaceholder.get(Constants.PARAM_MONITORPORT_KEY));
+            final String url = String.format("http://%s:%s", agent.getHost(), propertyPlaceholder.getMonitorPort());
             return new HashMap<String, Serializable>() {{
                 put("connType", Constants.ConnType.CONN.getType());
                 put("data", url);

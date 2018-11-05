@@ -36,7 +36,6 @@ import com.jobxhub.registry.zookeeper.ZookeeperTransporter;
 import com.jobxhub.server.job.JobXRegistry;
 import com.jobxhub.server.service.TerminalService;
 import com.jobxhub.server.dto.Status;
-import com.jobxhub.server.util.PropertyPlaceholder;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -89,7 +88,7 @@ public class TerminalClusterProcessor {
     static {
         if (Constants.JOBX_CLUSTER) {
             logger.info("[JobX] Terminal init zookeeper....");
-            registryURL = URL.valueOf(PropertyPlaceholder.get(Constants.PARAM_JOBX_REGISTRY_KEY));
+           //registryURL = URL.valueOf(PropertyPlaceholder.get(Constants.PARAM_JOBX_REGISTRY_KEY));
             registryPath = Constants.ZK_REGISTRY_TERM_PATH;
             ZookeeperTransporter transporter = ExtensionLoader.load(ZookeeperTransporter.class);
             registry = new ZookeeperRegistry(registryURL,transporter);
