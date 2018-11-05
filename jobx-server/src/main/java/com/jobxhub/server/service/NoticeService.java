@@ -42,6 +42,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.io.*;
+import java.net.URL;
 import java.util.*;
 import static com.jobxhub.common.job.Alarm.auth;
 import static com.jobxhub.common.job.Alarm.AlarmCode.*;
@@ -69,8 +70,8 @@ public class NoticeService {
     @PostConstruct
     public void initConfig() throws Exception {
         Configuration configuration = new Configuration();
-        ClassLoader classLoader= getClass().getClassLoader();
-        File file = new File(classLoader.getResource("").getPath());
+        URL url = Thread.currentThread().getContextClassLoader().getResource("");
+        File file = new File(url.getPath());
         configuration.setDirectoryForTemplateLoading(file);
         configuration.setDefaultEncoding("UTF-8");
         this.template = configuration.getTemplate("email.html");
