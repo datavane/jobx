@@ -11,8 +11,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @ServletComponentScan
 @SpringBootApplication( exclude = DataSourceAutoConfiguration.class )
 @MapperScan("com.jobxhub.server.dao")
-public class Application {
+public class JobXServer {
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+        SpringApplication.run(JobXServer.class, args);
     }
 }
