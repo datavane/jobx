@@ -1,11 +1,8 @@
 package com.jobxhub.agent.test;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class TestDemo {
 

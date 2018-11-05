@@ -33,8 +33,8 @@ spring:
     proxy-target-class: true
   servlet:
     multipart:
-      max-file-size: 10Mb
-      max-request-size: 100Mb
+      max-file-size: 10
+      max-request-size: 100
 
 mybatis:
   # 映射文件所在路径
