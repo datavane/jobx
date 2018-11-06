@@ -32,7 +32,6 @@ dubbo:
   application:
     id: jobx-provider
     name: jobx-provider
-  server: true
   scan:
     basePackages: com.jobxhub.core.api
   registry:
@@ -41,7 +40,6 @@ dubbo:
     id: dubbo
     name: dubbo
     port: 12345
-    status: server
 # Enables Dubbo All Endpoints
 management:
   endpoint:
@@ -84,6 +82,8 @@ jobx:
   cluster: false
   #（可选值: (redis|memcached）
   cached: memcached
+  service:
+    version: 1.0.0
 
 
 

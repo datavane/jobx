@@ -1,0 +1,48 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: jobX
+  aop:
+    auto: true
+    proxy-target-class: true
+#dubbo--------------------------------
+dubbo:
+  application:
+    id: jobx-server
+    name: jobx-server
+  server: true
+  registry:
+    address: zookeeper://127.0.0.1:2181
+  protocol:
+    id: dubbo
+    name: dubbo
+    port: 12345
+    status: server
+
+  qos:
+    port: 22223
+
+# Enables Dubbo All Endpoints
+management:
+  server:
+    port: 8081
+
+  endpoint:
+    dubbo:
+      enabled: true
+    dubbo-shutdown.enabled: true
+    dubbo-configs.enabled: true
+    dubbo-services.enabled: true
+
+jobx:
+  service:
+    version: 1.0.0
+
+#dubbo end --------------------------------
+
+
+
+
+

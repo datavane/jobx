@@ -22,6 +22,7 @@
 
 package com.jobxhub.core.service;
 
+import com.alibaba.dubbo.config.annotation.Service;
 import com.google.common.collect.Lists;
 import com.jobxhub.common.Constants;
 import com.jobxhub.common.util.CommonUtils;
@@ -34,7 +35,6 @@ import com.jobxhub.core.support.JobXTools;
 import com.jobxhub.core.model.User;
 import com.jobxhub.core.vo.PageBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -46,6 +46,7 @@ import java.util.*;
  *
  * Created by ChenHui on 2016/2/18.
  */
+
 @Service
 public class UserServiceImpl implements UserService {
 
