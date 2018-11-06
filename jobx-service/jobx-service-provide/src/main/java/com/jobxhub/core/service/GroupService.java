@@ -25,11 +25,11 @@ package com.jobxhub.core.service;
 import com.google.common.collect.Lists;
 import com.jobxhub.common.util.CommonUtils;
 import com.jobxhub.common.util.collection.HashMap;
-import com.jobxhub.core.model.AgentGroupModel;
-import com.jobxhub.core.model.GroupModel;
+import com.jobxhub.core.entity.AgentGroupEntity;
+import com.jobxhub.core.entity.GroupEntity;
 import com.jobxhub.core.dao.GroupDao;
-import com.jobxhub.core.dto.Agent;
-import com.jobxhub.core.dto.Group;
+import com.jobxhub.core.model.Agent;
+import com.jobxhub.core.model.Group;
 import com.jobxhub.core.tag.PageBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,12 +49,12 @@ public class GroupService {
     private AgentService agentService;
 
     public void getByPageBean(PageBean pageBean) {
-        List<GroupModel> groupModels = groupDao.getByPageBean(pageBean);
-        if (CommonUtils.notEmpty(groupModels)) {
+        List<GroupEntity> groupEntitys = groupDao.getByPageBean(pageBean);
+        if (CommonUtils.notEmpty(groupEntitys)) {
             int count = groupDao.getCount(pageBean.getFilter());
             List<Group> groups = new ArrayList<Group>(0);
-            for (GroupModel groupModel:groupModels) {
-                Group group = Group.transferDto.apply(groupModel);
+            for (GroupEntity groupEntity:groupEntitys) {
+                Group group = Group.transferModel.apply(groupEntity);
                 int agentCount = groupDao.getAgentCount(group.getGroupId());
                 group.setAgentCount(agentCount);
                 groups.add(group);
@@ -65,18 +65,18 @@ public class GroupService {
     }
 
     public List<Group> getAll() {
-        return Lists.transform(groupDao.getAll(),Group.transferDto);
+        return Lists.transform(groupDao.getAll(),Group.transferModel);
     }
 
     public List<Group> getForAgent() {
-        List<AgentGroupModel> agentGroups = groupDao.getForAgent();
+        List<AgentGroupEntity> agentGroups = groupDao.getForAgent();
         Group noGroup = new Group();
         noGroup.setGroupName("未分组");
         noGroup.setGroupId(0L);
 
         Map<Long, Group> groupMap = new HashMap<Long, Group>(0);
         if (CommonUtils.notEmpty(agentGroups)) {
-            for (AgentGroupModel agentGroup : agentGroups) {
+            for (AgentGroupEntity agentGroup : agentGroups) {
                 Agent agent = new Agent();
                 agent.setAgentId(agentGroup.getAgentId());
                 agent.setName(agentGroup.getAgentName());
@@ -106,18 +106,18 @@ public class GroupService {
     }
 
     public void merge(Group group) {
-        GroupModel groupModel = Group.transferModel.apply(group);
-        if (groupModel.getGroupId() == null) {
-            groupDao.save(groupModel);
-            group.setGroupId(groupModel.getGroupId());
+        GroupEntity groupEntity = Group.transferEntity.apply(group);
+        if (groupEntity.getGroupId() == null) {
+            groupDao.save(groupEntity);
+            group.setGroupId(groupEntity.getGroupId());
             //新增关联关系
             groupDao.saveGroup(group.getGroupId(),group.getAgentIds());
         }else {
-            groupDao.update(groupModel);
+            groupDao.update(groupEntity);
             //删除原因的管理关系
-            groupDao.deleteGroup(groupModel.getGroupId());
+            groupDao.deleteGroup(groupEntity.getGroupId());
             //保存现在的关联关系
-            groupDao.saveGroup(groupModel.getGroupId(),group.getAgentIds());
+            groupDao.saveGroup(groupEntity.getGroupId(),group.getAgentIds());
         }
     }
 
@@ -129,9 +129,9 @@ public class GroupService {
     }
 
     public Group getById(Long groupId) {
-        GroupModel groupModel = groupDao.getById(groupId);
-        if (groupModel!=null) {
-            Group group = Group.transferDto.apply(groupModel);
+        GroupEntity groupEntity = groupDao.getById(groupId);
+        if (groupEntity!=null) {
+            Group group = Group.transferModel.apply(groupEntity);
             List<Agent> agentList = agentService.getByGroup(group.getGroupId());
             group.setAgentList(agentList);
             return group;

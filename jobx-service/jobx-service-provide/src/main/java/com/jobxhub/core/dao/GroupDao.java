@@ -20,8 +20,8 @@
  */
 package com.jobxhub.core.dao;
 
-import com.jobxhub.core.model.AgentGroupModel;
-import com.jobxhub.core.model.GroupModel;
+import com.jobxhub.core.entity.AgentGroupEntity;
+import com.jobxhub.core.entity.GroupEntity;
 import com.jobxhub.core.tag.PageBean;
 import org.apache.ibatis.annotations.Param;
 
@@ -30,23 +30,23 @@ import java.util.Map;
 
 public interface GroupDao {
 
-    List<GroupModel> getByPageBean(@Param("pager") PageBean pageBean);
+    List<GroupEntity> getByPageBean(@Param("pager") PageBean pageBean);
 
     int getCount(@Param("filter") Map filter);
 
     int getAgentCount(@Param("groupId") Long groupId);
 
-    List<GroupModel> getAll();
+    List<GroupEntity> getAll();
 
-    List<AgentGroupModel> getForAgent();
+    List<AgentGroupEntity> getForAgent();
 
-    void save(GroupModel group);
+    void save(GroupEntity group);
 
-    void update(GroupModel group);
+    void update(GroupEntity group);
 
     int existsCount(@Param("filter") Map<String, Object> filter);
 
-    GroupModel getById(@Param("groupId") Long groupId);
+    GroupEntity getById(@Param("groupId") Long groupId);
 
     void saveGroup(@Param("groupId") Long groupId,@Param("agentIds")String[] agentIds);
 

@@ -3,7 +3,7 @@
 
 <mapper namespace="com.jobxhub.core.dao.AgentDao">
 
-    <resultMap id="agentModel" type="com.jobxhub.core.model.AgentModel" >
+    <resultMap id="agentEntity" type="com.jobxhub.core.entity.AgentEntity" >
         <result column="agent_id"      property="agentId" />
         <result column="comment"       property="comment" />
         <result column="email"         property="email" />
@@ -39,27 +39,27 @@
         a.warning
     </sql>
 
-    <select id="getAll" resultMap="agentModel">
+    <select id="getAll" resultMap="agentEntity">
         select
         <include refid="query_Agent"/>
         from t_agent as a
     </select>
 
-    <select id="getById" parameterType="java.lang.Long" resultMap="agentModel">
+    <select id="getById" parameterType="java.lang.Long" resultMap="agentEntity">
         select
         <include refid="query_Agent"/>
         from  t_agent as a
         where a.agent_id=#{agentId}
     </select>
 
-    <select id="getByMacId" parameterType="java.lang.String" resultMap="agentModel">
+    <select id="getByMacId" parameterType="java.lang.String" resultMap="agentEntity">
         select
         <include refid="query_Agent"/>
         from  t_agent as a
         where a.machine_id=#{macId}
     </select>
 
-    <select id="getByConnType" resultMap="agentModel">
+    <select id="getByConnType" resultMap="agentEntity">
         select
         <include refid="query_Agent"/>
         from  t_agent as a
@@ -72,7 +72,7 @@
         and a.status = #{status}
     </select>
 
-    <select id="getByPageBean" resultMap="agentModel">
+    <select id="getByPageBean" resultMap="agentEntity">
         select
         <include refid="query_Agent"/>
         from t_agent as a
@@ -118,7 +118,7 @@
         and #{key} = #{val}
     </select>
 
-    <select id="getByGroup" parameterType="java.lang.Long" resultMap="agentModel">
+    <select id="getByGroup" parameterType="java.lang.Long" resultMap="agentEntity">
         select
         <include refid="query_Agent"/>
         from  t_agent as a
@@ -127,7 +127,7 @@
         where g.group_id=#{groupId}
     </select>
 
-    <insert id="save" parameterType="com.jobxhub.core.model.AgentModel" useGeneratedKeys="true" keyProperty="agentId">
+    <insert id="save" parameterType="com.jobxhub.core.entity.AgentEntity" useGeneratedKeys="true" keyProperty="agentId">
         insert into t_agent
         <trim prefix="(" suffix=")" suffixOverrides="," >
             <if test="comment != null" >
@@ -220,7 +220,7 @@
         </trim>
     </insert>
 
-    <update id="update" parameterType="com.jobxhub.core.model.AgentModel">
+    <update id="update" parameterType="com.jobxhub.core.entity.AgentEntity">
         update t_agent
         set
              comment = #{comment},     

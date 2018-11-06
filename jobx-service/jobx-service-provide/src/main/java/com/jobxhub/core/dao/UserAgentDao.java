@@ -20,7 +20,7 @@
  */
 package com.jobxhub.core.dao;
 
-import com.jobxhub.core.model.UserAgentModel;
+import com.jobxhub.core.entity.UserAgentEntity;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -34,6 +34,6 @@ public interface UserAgentDao {
 
     void save(@Param("userId") Long userId, @Param("agentId") Long agentId);
 
-    List<UserAgentModel> getUserAgent(Long userId);
+    List<UserAgentEntity> getUserAgent(Long userId);
 
 }

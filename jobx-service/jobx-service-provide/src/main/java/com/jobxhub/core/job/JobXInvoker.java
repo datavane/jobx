@@ -32,7 +32,7 @@ import com.jobxhub.rpc.Client;
 import com.jobxhub.rpc.InvokeCallback;
 import com.jobxhub.rpc.Invoker;
 import com.jobxhub.core.service.AgentService;
-import com.jobxhub.core.dto.Agent;
+import com.jobxhub.core.model.Agent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

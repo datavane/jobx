@@ -3,7 +3,7 @@
 
 <mapper namespace="com.jobxhub.core.dao.TerminalDao">
 
-    <resultMap id="terminalModel" type="com.jobxhub.core.model.TerminalModel" >
+    <resultMap id="terminalEntity" type="com.jobxhub.core.entity.TerminalEntity" >
         <result column="id"                 property="id" />
         <result column="name"               property="name" />
         <result column="host"               property="host" />
@@ -35,21 +35,21 @@
         t.user_name
     </sql>
 
-    <select id="getById" parameterType="java.lang.Long" resultMap="terminalModel">
+    <select id="getById" parameterType="java.lang.Long" resultMap="terminalEntity">
         select
         <include refid="query_Terminal"/>
         from  t_terminal as t
         where t.id=#{id}
     </select>
 
-    <select id="getByUser" parameterType="java.lang.Long" resultMap="terminalModel">
+    <select id="getByUser" parameterType="java.lang.Long" resultMap="terminalEntity">
         select
         <include refid="query_Terminal"/>
         from  t_terminal as t
         where user_id = #{userId}
     </select>
 
-    <select id="getByPageBean" parameterType="com.jobxhub.core.tag.PageBean" resultMap="terminalModel">
+    <select id="getByPageBean" parameterType="com.jobxhub.core.tag.PageBean" resultMap="terminalEntity">
         select
         <include refid="query_Terminal"/>
         from  t_terminal as t
@@ -76,7 +76,7 @@
         </if>
     </select>
 
-    <insert id="save" parameterType="com.jobxhub.core.model.TerminalModel" useGeneratedKeys="true" keyProperty="id">
+    <insert id="save" parameterType="com.jobxhub.core.entity.TerminalEntity" useGeneratedKeys="true" keyProperty="id">
         insert into t_terminal (
             `name`,
             host,
@@ -104,7 +104,7 @@
         )
     </insert>
 
-    <update id="update" parameterType="com.jobxhub.core.model.TerminalModel">
+    <update id="update" parameterType="com.jobxhub.core.entity.TerminalEntity">
         update t_terminal
         set
             `name`           =      #{name},

@@ -3,14 +3,14 @@
 
 <mapper namespace="com.jobxhub.core.dao.ConfigDao">
 
-    <resultMap id="configModel" type="com.jobxhub.core.model.ConfigModel" >
+    <resultMap id="configEntity" type="com.jobxhub.core.entity.ConfigEntity" >
         <result column="config_id"        property="configId"/>
         <result column="config_key"       property="configKey"/>
         <result column="config_val"       property="configVal"/>
         <result column="comment"          property="comment"/>
     </resultMap>
 
-    <select id="getConfig" resultMap="configModel">
+    <select id="getConfig" resultMap="configEntity">
         select
             config_key,
             config_val,
@@ -18,7 +18,7 @@
         from  t_config
     </select>
 
-    <update id="update" parameterType="com.jobxhub.core.model.ConfigModel">
+    <update id="update" parameterType="com.jobxhub.core.entity.ConfigEntity">
         update t_config
         set
             config_val  =  #{configVal},

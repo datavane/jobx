@@ -23,8 +23,8 @@
 package com.jobxhub.core.service;
 
 import com.jobxhub.common.Constants;
-import com.jobxhub.core.dto.*;
-import com.jobxhub.core.model.UserModel;
+import com.jobxhub.core.model.*;
+import com.jobxhub.core.entity.UserEntity;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import org.apache.commons.mail.HtmlEmail;
@@ -115,7 +115,7 @@ public class NoticeService {
         return String.format(msgFormat, agent.getName(), agent.getHost(), agent.getPort(), message, DateUtils.formatFullDate(new Date()));
     }
 
-    public void sendMessage(List<UserModel> users, Long workId, String email,String mobile, String content) {
+    public void sendMessage(List<UserEntity> users, Long workId, String email,String mobile, String content) {
 
         Log log = new Log();
         log.setIsread(false);
@@ -170,7 +170,7 @@ public class NoticeService {
 
         //发送站内信
         log.setType(Constants.MsgType.WEBSITE.getValue());
-        for (UserModel user : users) {
+        for (UserEntity user : users) {
             //一一发送站内信
             log.setUserId(user.getUserId());
             log.setReceiver(user.getUserName());

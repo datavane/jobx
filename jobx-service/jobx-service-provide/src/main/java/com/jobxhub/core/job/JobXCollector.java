@@ -24,7 +24,7 @@ package com.jobxhub.core.job;
 import it.sauronsoftware.cron4j.*;
 import com.jobxhub.common.Constants;
 import com.jobxhub.core.service.ExecuteService;
-import com.jobxhub.core.dto.Job;
+import com.jobxhub.core.model.Job;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

@@ -25,7 +25,7 @@ package com.jobxhub.core.support;
 import com.jobxhub.common.Constants;
 import com.jobxhub.common.ext.MethodMark;
 import com.jobxhub.core.service.TerminalService;
-import com.jobxhub.core.dto.Status;
+import com.jobxhub.core.model.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

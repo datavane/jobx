@@ -25,7 +25,7 @@ package com.jobxhub.core.support;
 import com.jobxhub.common.Constants;
 import com.jobxhub.common.util.*;
 import com.jobxhub.core.session.cached.CachedManager;
-import com.jobxhub.core.dto.User;
+import com.jobxhub.core.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;

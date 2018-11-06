@@ -3,7 +3,7 @@
 
 <mapper namespace="com.jobxhub.core.dao.LogDao">
 
-    <resultMap id="logModel" type="com.jobxhub.core.model.LogModel" >
+    <resultMap id="logEntity" type="com.jobxhub.core.entity.LogEntity" >
         <result column="log_id"         property="logId"/>
         <result column="agent_id"       property="agentId"/>
         <result column="agent_name"     property="agentName"/>
@@ -28,14 +28,14 @@
         l.type
     </sql>
 
-    <select id="getById" parameterType="java.lang.Long" resultMap="logModel">
+    <select id="getById" parameterType="java.lang.Long" resultMap="logEntity">
         select
         <include refid="query_Log"/>
         from  t_log as l
         where log_id=#{logId}
     </select>
 
-    <select id="getByPageBean" resultMap="logModel">
+    <select id="getByPageBean" resultMap="logEntity">
         select
         <include refid="query_Log"/>,
         a.`name` as agent_name
@@ -85,7 +85,7 @@
         and `type`= 2
     </select>
 
-    <insert id="save" parameterType="com.jobxhub.core.model.LogModel" useGeneratedKeys="true" keyProperty="logId">
+    <insert id="save" parameterType="com.jobxhub.core.entity.LogEntity" useGeneratedKeys="true" keyProperty="logId">
         insert into t_log (
             agent_id,
             user_id,

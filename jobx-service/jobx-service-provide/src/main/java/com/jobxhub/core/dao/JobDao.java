@@ -20,7 +20,7 @@
  */
 package com.jobxhub.core.dao;
 
-import com.jobxhub.core.model.JobModel;
+import com.jobxhub.core.entity.JobEntity;
 import com.jobxhub.core.tag.PageBean;
 import org.apache.ibatis.annotations.Param;
 
@@ -29,23 +29,23 @@ import java.util.Map;
 
 public interface JobDao {
 
-    List<JobModel> getAll();
+    List<JobEntity> getAll();
 
-    List<JobModel> getByPageBean(@Param("pager") PageBean pageBean);
+    List<JobEntity> getByPageBean(@Param("pager") PageBean pageBean);
 
     int getCount(@Param("filter") Map<String, Object> filter);
 
-    JobModel getById(Long id);
+    JobEntity getById(Long id);
 
-    List<JobModel> getByAgent(Long agentId);
+    List<JobEntity> getByAgent(Long agentId);
 
     int existsCount(@Param("jobId") Long jobId, @Param("agentId") Long agentId, @Param("name") String name);
 
-    List<JobModel> getScheduleJob();
+    List<JobEntity> getScheduleJob();
 
-    void save(JobModel job);
+    void save(JobEntity job);
 
-    void update(JobModel job);
+    void update(JobEntity job);
 
     void delete(Long id);
 

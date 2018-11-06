@@ -20,7 +20,7 @@
  */
 package com.jobxhub.core.dao;
 
-import com.jobxhub.core.model.TerminalModel;
+import com.jobxhub.core.entity.TerminalEntity;
 import com.jobxhub.core.tag.PageBean;
 import org.apache.ibatis.annotations.Param;
 
@@ -30,17 +30,17 @@ import java.util.Map;
 
 public interface TerminalDao {
 
-    List<TerminalModel> getByPageBean(@Param("pager") PageBean page);
+    List<TerminalEntity> getByPageBean(@Param("pager") PageBean page);
 
-    List<TerminalModel> getByUser(Long userId);
+    List<TerminalEntity> getByUser(Long userId);
 
-    TerminalModel getById(Long id);
+    TerminalEntity getById(Long id);
 
     int getCount(@Param("filter") Map<String, Object> filter);
 
-    void save(TerminalModel terminal);
+    void save(TerminalEntity terminal);
 
-    void update(TerminalModel terminal);
+    void update(TerminalEntity terminal);
 
     void updateLoginTime(@Param("id")Long id,@Param("loginTime")Date date);
 

@@ -27,15 +27,15 @@ import java.util.*;
 import com.google.common.collect.Lists;
 import com.jobxhub.common.Constants;
 import com.jobxhub.common.util.CommonUtils;
-import com.jobxhub.core.model.AgentModel;
-import com.jobxhub.core.dto.RestResult;
+import com.jobxhub.core.entity.AgentEntity;
+import com.jobxhub.core.model.RestResult;
 import com.jobxhub.core.job.JobXRegistry;
 import com.jobxhub.core.dao.AgentDao;
 import com.jobxhub.core.support.JobXTools;
 import com.jobxhub.core.tag.PageBean;
-import com.jobxhub.core.dto.Agent;
-import com.jobxhub.core.dto.Job;
-import com.jobxhub.core.dto.User;
+import com.jobxhub.core.model.Agent;
+import com.jobxhub.core.model.Job;
+import com.jobxhub.core.model.User;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -65,14 +65,14 @@ public class AgentService {
     private JobXRegistry jobxRegistry;
 
     public List<Agent> getOwnerByConnType(HttpSession session) {
-        List<AgentModel> list;
+        List<AgentEntity> list;
         if (!JobXTools.isPermission(session)) {
             User user = JobXTools.getUser(session);
             list = agentDao.getByConnType(user.getUserId(),Constants.ConnStatus.CONNECTED.getValue());
         }else {
             list = agentDao.getByConnType(null,Constants.ConnStatus.CONNECTED.getValue());
         }
-        return Lists.transform(list,Agent.transferDto);
+        return Lists.transform(list,Agent.transferModel);
     }
 
     public List<Agent> getAll() {
@@ -86,7 +86,7 @@ public class AgentService {
     private synchronized void flushLocalAgent() {
         JobXTools.CACHE.put(
                 Constants.PARAM_CACHED_AGENT_KEY,
-                Lists.transform(agentDao.getAll(),Agent.transferDto)
+                Lists.transform(agentDao.getAll(),Agent.transferModel)
         );
     }
 
@@ -112,10 +112,10 @@ public class AgentService {
         pageBean.put("agentName", agent.getName());
         pageBean.put("status",agent.getStatus());
         pageBean.verifyOrderBy("name", "name", "host", "port");
-        List<AgentModel> agentList = agentDao.getByPageBean(pageBean);
+        List<AgentEntity> agentList = agentDao.getByPageBean(pageBean);
         if (CommonUtils.notEmpty(agentList)) {
             int count = agentDao.getCount(pageBean.getFilter());
-            List<Agent> agents = Lists.transform(agentList,Agent.transferDto);
+            List<Agent> agents = Lists.transform(agentList,Agent.transferModel);
             pageBean.setResult(agents);
             pageBean.setTotalRecord(count);
         }
@@ -123,20 +123,20 @@ public class AgentService {
     }
 
     public Agent getAgent(Long id) {
-        AgentModel agent = agentDao.getById(id);
+        AgentEntity agent = agentDao.getById(id);
         if (agent != null) {
-            return Agent.transferDto.apply(agent);
+            return Agent.transferModel.apply(agent);
         }
         return null;
     }
 
     public void merge(Agent agent) {
-        AgentModel agentModel = Agent.transferModel.apply(agent);
-        if (agentModel.getAgentId() == null) {
-            agentDao.save(agentModel);
-            agent.setAgentId(agentModel.getAgentId());
+        AgentEntity agentEntity = Agent.transferEntity.apply(agent);
+        if (agentEntity.getAgentId() == null) {
+            agentDao.save(agentEntity);
+            agent.setAgentId(agentEntity.getAgentId());
         }else {
-            agentDao.update(agentModel);
+            agentDao.update(agentEntity);
         }
         flushLocalAgent();
     }
@@ -206,14 +206,14 @@ public class AgentService {
             User userDto = JobXTools.getUser(session);
             pageBean.put("user_id",userDto.getUserId());
         }
-        List<AgentModel> agentList = agentDao.getByPageBean(pageBean);
-        return Lists.transform(agentList,Agent.transferDto);
+        List<AgentEntity> agentList = agentDao.getByPageBean(pageBean);
+        return Lists.transform(agentList,Agent.transferModel);
     }
 
     public Agent getByMacId(String machineId) {
-        AgentModel agent = agentDao.getByMacId(machineId);
+        AgentEntity agent = agentDao.getByMacId(machineId);
         if (agent!=null) {
-            return Agent.transferDto.apply(agent);
+            return Agent.transferModel.apply(agent);
         }
         return null;
     }
@@ -303,8 +303,8 @@ public class AgentService {
     }
 
     public List<Agent> getByGroup(Long groupId) {
-        List<AgentModel> list = agentDao.getByGroup(groupId);
-        return Lists.transform(list,Agent.transferDto);
+        List<AgentEntity> list = agentDao.getByGroup(groupId);
+        return Lists.transform(list,Agent.transferModel);
     }
 
     public void updateStatus(Agent agent) {

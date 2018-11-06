@@ -23,8 +23,8 @@ package com.jobxhub.core.service;
 
 import com.google.common.collect.Lists;
 import com.jobxhub.core.dao.UserAgentDao;
-import com.jobxhub.core.dto.UserAgent;
-import com.jobxhub.core.model.UserAgentModel;
+import com.jobxhub.core.model.UserAgent;
+import com.jobxhub.core.entity.UserAgentEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,7 +44,7 @@ public class UserAgentService {
     }
 
     public List<UserAgent> getUserAgent(Long userId) {
-        List<UserAgentModel> userAgent = userAgentDao.getUserAgent(userId);
+        List<UserAgentEntity> userAgent = userAgentDao.getUserAgent(userId);
         return Lists.transform(userAgent,UserAgent.transfer);
     }
 

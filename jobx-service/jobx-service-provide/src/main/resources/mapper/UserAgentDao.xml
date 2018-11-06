@@ -17,7 +17,7 @@
         )
     </insert>
 
-    <select id="getUserAgent" parameterType="java.lang.Long" resultType="com.jobxhub.core.model.UserAgentModel">
+    <select id="getUserAgent" parameterType="java.lang.Long" resultType="com.jobxhub.core.entity.UserAgentEntity">
         select
         t.id,
         t.user_id as userId,

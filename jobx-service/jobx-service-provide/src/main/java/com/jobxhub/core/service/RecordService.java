@@ -25,14 +25,14 @@ package com.jobxhub.core.service;
 import com.google.common.collect.Lists;
 import com.jobxhub.common.Constants;
 import com.jobxhub.common.util.CommonUtils;
-import com.jobxhub.core.model.RecordModel;
+import com.jobxhub.core.entity.RecordEntity;
 import com.jobxhub.core.dao.RecordDao;
-import com.jobxhub.core.model.RecordMessageModel;
+import com.jobxhub.core.entity.RecordMessageEntity;
 import com.jobxhub.core.support.JobXTools;
 import com.jobxhub.core.tag.PageBean;
-import com.jobxhub.core.dto.Chart;
-import com.jobxhub.core.dto.Record;
-import com.jobxhub.core.dto.User;
+import com.jobxhub.core.model.Chart;
+import com.jobxhub.core.model.Record;
+import com.jobxhub.core.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -55,12 +55,12 @@ public class RecordService {
             User user = JobXTools.getUser(session);
             pageBean.put("userId",user.getUserId());
         }
-        List<RecordModel> records = recordDao.getByPageBean(pageBean);
+        List<RecordEntity> records = recordDao.getByPageBean(pageBean);
         if (CommonUtils.notEmpty(records)) {
             int count = recordDao.getCount(pageBean.getFilter());
             List<Record> recordList = new ArrayList<Record>(0);
-            for (RecordModel bean:records) {
-                Record item = Record.transferDto.apply(bean);
+            for (RecordEntity bean:records) {
+                Record item = Record.transferModel.apply(bean);
                 List<Record> redoList = getRedoList(bean.getRecordId());
                 if (CommonUtils.notEmpty(recordList)) {
                     item.setRedoList(redoList);
@@ -74,35 +74,35 @@ public class RecordService {
     }
 
     private List<Record> getRedoList(Long recordId) {
-        List<RecordModel> recordModels = recordDao.getRedoList(recordId);
-        return Lists.transform(recordModels,Record.transferDto);
+        List<RecordEntity> recordEntitys = recordDao.getRedoList(recordId);
+        return Lists.transform(recordEntitys,Record.transferModel);
     }
 
     public Record getById(Long id) {
-        RecordModel recordModel = recordDao.getById(id);
-        Record record = Record.transferDto.apply(recordModel);
-        RecordMessageModel messageModel = recordDao.getMessage(id);
-        if (messageModel!=null) {
-            record.setMessage(messageModel.getMessage());
+        RecordEntity recordEntity = recordDao.getById(id);
+        Record record = Record.transferModel.apply(recordEntity);
+        RecordMessageEntity messageEntity = recordDao.getMessage(id);
+        if (messageEntity!=null) {
+            record.setMessage(messageEntity.getMessage());
         }
         return record;
     }
 
     public void merge(Record record) {
-        RecordModel recordModel = Record.transferModel.apply(record);
+        RecordEntity recordEntity = Record.transferEntity.apply(record);
         if (record.getRecordId() == null) {
-            recordDao.save(recordModel);
-            record.setRecordId(recordModel.getRecordId());
+            recordDao.save(recordEntity);
+            record.setRecordId(recordEntity.getRecordId());
         } else {
-            recordDao.update(recordModel);
+            recordDao.update(recordEntity);
         }
 
         //save message
         if (CommonUtils.notEmpty(record.getMessage())) {
-            //TODO  new RecordMessageModel
-            RecordMessageModel messageModel =  null;//new RecordMessageModel(null);
-            messageModel.setRecordId(recordModel.getRecordId());
-            recordDao.saveMessage(messageModel);
+            //TODO  new RecordMessageEntity
+            RecordMessageEntity messageEntity =  null;//new RecordMessageEntity(null);
+            messageEntity.setRecordId(recordEntity.getRecordId());
+            recordDao.saveMessage(messageEntity);
         }
     }
 
@@ -164,31 +164,31 @@ public class RecordService {
     }
 
     public void doLostLog(String pid, String message, Integer exitCode, Long entTime) {
-        RecordModel recordModel =  recordDao.getByPid(pid);
-        if (recordModel!=null) {
-            recordModel.setEndTime(new Date(entTime));
-            recordModel.setReturnCode(exitCode);
+        RecordEntity recordEntity =  recordDao.getByPid(pid);
+        if (recordEntity!=null) {
+            recordEntity.setEndTime(new Date(entTime));
+            recordEntity.setReturnCode(exitCode);
             if (exitCode == Constants.ExitCode.SUCCESS_EXIT.getValue()) {
-                recordModel.setSuccess(Constants.ResultStatus.SUCCESSFUL.getStatus());
+                recordEntity.setSuccess(Constants.ResultStatus.SUCCESSFUL.getStatus());
             }else {
-                recordModel.setSuccess(Constants.ResultStatus.FAILED.getStatus());
+                recordEntity.setSuccess(Constants.ResultStatus.FAILED.getStatus());
 
             }
             if (exitCode == Constants.ExitCode.KILL.getValue()) {
-                recordModel.setStatus(Constants.RunStatus.STOPED.getStatus());
-                recordModel.setSuccess(Constants.ResultStatus.KILLED.getStatus());
+                recordEntity.setStatus(Constants.RunStatus.STOPED.getStatus());
+                recordEntity.setSuccess(Constants.ResultStatus.KILLED.getStatus());
             } else if (exitCode == Constants.ExitCode.TIME_OUT.getValue()) {
-                recordModel.setStatus(Constants.RunStatus.STOPED.getStatus());
-                recordModel.setSuccess(Constants.ResultStatus.TIMEOUT.getStatus());
+                recordEntity.setStatus(Constants.RunStatus.STOPED.getStatus());
+                recordEntity.setSuccess(Constants.ResultStatus.TIMEOUT.getStatus());
             } else {
-                recordModel.setStatus(Constants.RunStatus.DONE.getStatus());
+                recordEntity.setStatus(Constants.RunStatus.DONE.getStatus());
             }
-            recordDao.update(recordModel);
-            RecordMessageModel messageModel = new RecordMessageModel();
-            messageModel.setRecordId(recordModel.getRecordId());
-            messageModel.setMessage(message);
-            messageModel.setStartTime(recordModel.getStartTime());
-            recordDao.saveMessage(messageModel);
+            recordDao.update(recordEntity);
+            RecordMessageEntity messageEntity = new RecordMessageEntity();
+            messageEntity.setRecordId(recordEntity.getRecordId());
+            messageEntity.setMessage(message);
+            messageEntity.setStartTime(recordEntity.getStartTime());
+            recordDao.saveMessage(messageEntity);
         }
 
     }

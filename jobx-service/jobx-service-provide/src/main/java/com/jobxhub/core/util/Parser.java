@@ -30,7 +30,7 @@ package com.jobxhub.core.util;
 
 import com.jobxhub.common.util.DateUtils;
 import com.jobxhub.common.util.StringUtils;
-import com.jobxhub.core.dto.Job;
+import com.jobxhub.core.model.Job;
 
 import java.util.Date;
 

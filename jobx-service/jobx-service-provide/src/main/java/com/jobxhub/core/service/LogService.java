@@ -22,11 +22,11 @@ package com.jobxhub.core.service;
 
 import com.google.common.collect.Lists;
 import com.jobxhub.common.util.CommonUtils;
-import com.jobxhub.core.model.LogModel;
+import com.jobxhub.core.entity.LogEntity;
 import com.jobxhub.core.dao.LogDao;
 import com.jobxhub.core.support.JobXTools;
 import com.jobxhub.core.tag.PageBean;
-import com.jobxhub.core.dto.Log;
+import com.jobxhub.core.model.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,26 +41,26 @@ public class LogService {
     private LogDao logDao;
 
     public void save(Log log) {
-        LogModel logModel = Log.transferModel.apply(log);
-        logDao.save(logModel);
-        log.setLogId(logModel.getLogId());
+        LogEntity logEntity = Log.transferEntity.apply(log);
+        logDao.save(logEntity);
+        log.setLogId(logEntity.getLogId());
     }
 
     public void getByPageBean(HttpSession session, PageBean pageBean, Long agentId, String sendTime) {
         pageBean.put("agentId",agentId);
         pageBean.put("sendTime",sendTime);
         pageBean.put("userId",JobXTools.getUserId(session));
-        List<LogModel> logModels = logDao.getByPageBean(pageBean);
-        if (CommonUtils.notEmpty(logModels)) {
+        List<LogEntity> logEntitys = logDao.getByPageBean(pageBean);
+        if (CommonUtils.notEmpty(logEntitys)) {
             int count = logDao.getCount(pageBean.getFilter());
-            pageBean.setResult(Lists.transform(logModels,Log.transferDto));
+            pageBean.setResult(Lists.transform(logEntitys,Log.transferModel));
             pageBean.setTotalRecord(count);
         }
     }
 
     public List<Log> getUnReadMessage(Long userId) {
-        List<LogModel> beans = logDao.getUnRead(userId);
-        return Lists.transform(beans,Log.transferDto);
+        List<LogEntity> beans = logDao.getUnRead(userId);
+        return Lists.transform(beans,Log.transferModel);
     }
 
     public Integer getUnReadCount(Long userId) {
@@ -68,9 +68,9 @@ public class LogService {
     }
 
     public Log getById(Long logId) {
-        LogModel logModel = logDao.getById(logId);
-        if (logModel!=null) {
-            return Log.transferDto.apply(logModel);
+        LogEntity logEntity = logDao.getById(logId);
+        if (logEntity!=null) {
+            return Log.transferModel.apply(logEntity);
         }
         return null;
     }

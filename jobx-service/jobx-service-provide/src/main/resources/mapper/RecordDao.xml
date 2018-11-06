@@ -3,7 +3,7 @@
 
 <mapper namespace="com.jobxhub.core.dao.RecordDao">
 
-    <resultMap id="recordModel" type="com.jobxhub.core.model.RecordModel" >
+    <resultMap id="recordEntity" type="com.jobxhub.core.entity.RecordEntity" >
         <result column="record_id"          property="recordId"/>
         <result column="agent_id"           property="agentId"/>
         <result column="command"            property="command"/>
@@ -48,7 +48,7 @@
         r.success
     </sql>
 
-    <select id="getByPageBean" resultMap="recordModel">
+    <select id="getByPageBean" resultMap="recordEntity">
         select <include refid="query_Record"/>,
         case when r.status in (1,3,5,6) then r.end_time when r.status in (0,2,4) then #{pager.filter.currTime} end as end_time,
         a.name as agent_name,
@@ -152,7 +152,7 @@
         </if>
     </select>
 
-    <select id="getById" parameterType="java.lang.Long" resultMap="recordModel">
+    <select id="getById" parameterType="java.lang.Long" resultMap="recordEntity">
         select <include refid="query_Record"/>,
         r.end_time,
         a.name as agent_name,
@@ -169,13 +169,13 @@
         where r.record_id = #{recordId}
     </select>
 
-    <select id="getByPid" parameterType="java.lang.Long" resultMap="recordModel">
+    <select id="getByPid" parameterType="java.lang.Long" resultMap="recordEntity">
         select <include refid="query_Record"/>
         from  t_record as r
         where r.pid = #{pid}
     </select>
 
-    <select id="getReportChart" parameterType="java.util.Map" resultType="com.jobxhub.core.dto.Chart">
+    <select id="getReportChart" parameterType="java.util.Map" resultType="com.jobxhub.core.model.Chart">
         select
             date_format(r.start_time,'%Y-%m-%d') as `date`,
             sum(case r.success when 0 then 1 else 0 end) failed,
@@ -199,7 +199,7 @@
         order by date_format(r.start_time,'%Y-%m-%d') asc
     </select>
 
-    <select id="getTopChart" parameterType="java.util.Map" resultType="com.jobxhub.core.dto.Chart">
+    <select id="getTopChart" parameterType="java.util.Map" resultType="com.jobxhub.core.model.Chart">
         select
             sum(case r.success when 0 then 1 else 0 end) failed,
             sum(case r.success when 1 then 1 else 0 end) success,
@@ -224,7 +224,7 @@
         and r.status in (0,2,4)
     </select>
 
-    <select id="getRedoList" parameterType="java.lang.Long" resultMap="recordModel">
+    <select id="getRedoList" parameterType="java.lang.Long" resultMap="recordEntity">
         select <include refid="query_Record"/>,
         r.end_time,
         a.name as agent_name,
@@ -258,7 +258,7 @@
         </if>
     </select>
 
-    <insert id="save" parameterType="com.jobxhub.core.model.RecordModel" useGeneratedKeys="true" keyProperty="recordId">
+    <insert id="save" parameterType="com.jobxhub.core.entity.RecordEntity" useGeneratedKeys="true" keyProperty="recordId">
         insert into t_record
         <trim prefix="(" suffix=")" suffixOverrides="," >
             <if test="agentId != null" >
@@ -368,7 +368,7 @@
         </trim>
     </insert>
 
-    <update id="update" parameterType="com.jobxhub.core.model.RecordModel">
+    <update id="update" parameterType="com.jobxhub.core.entity.RecordEntity">
         update t_record
         set
             end_time        =       #{endTime},
@@ -382,13 +382,13 @@
        delete from t_record where start_time between #{start} and #{end}
     </delete>
 
-    <select id="getMessage" resultType="com.jobxhub.core.model.RecordMessageModel">
+    <select id="getMessage" resultType="com.jobxhub.core.entity.RecordMessageEntity">
         select record_id,message
         from t_record_message
         where record_id = #{recordId}
     </select>
 
-    <insert id="saveMessage" parameterType="com.jobxhub.core.model.RecordMessageModel">
+    <insert id="saveMessage" parameterType="com.jobxhub.core.entity.RecordMessageEntity">
         INSERT INTO t_record_message (
             record_id,
             message,

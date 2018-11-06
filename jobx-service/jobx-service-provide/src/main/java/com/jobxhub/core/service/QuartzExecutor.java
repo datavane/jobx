@@ -1,7 +1,7 @@
 package com.jobxhub.core.service;
 
 import com.jobxhub.common.Constants;
-import com.jobxhub.core.dto.Job;
+import com.jobxhub.core.model.Job;
 import org.quartz.JobExecutionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

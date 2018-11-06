@@ -20,7 +20,7 @@
  */
 package com.jobxhub.core.dao;
 
-import com.jobxhub.core.model.AgentModel;
+import com.jobxhub.core.entity.AgentEntity;
 import com.jobxhub.core.tag.PageBean;
 import org.apache.ibatis.annotations.Param;
 
@@ -29,27 +29,27 @@ import java.util.Map;
 
 public interface AgentDao {
 
-    List<AgentModel> getAll();
+    List<AgentEntity> getAll();
 
-    AgentModel getById(@Param("agentId") Long agentId);
+    AgentEntity getById(@Param("agentId") Long agentId);
 
-    void save(AgentModel agent);
+    void save(AgentEntity agent);
 
-    void update(AgentModel agent);
+    void update(AgentEntity agent);
 
     void delete(Long id);
 
-    AgentModel getByMacId(@Param("macId") String macId);
+    AgentEntity getByMacId(@Param("macId") String macId);
 
-    List<AgentModel> getByConnType(@Param("userId") Long userId, @Param("status") Integer status);
+    List<AgentEntity> getByConnType(@Param("userId") Long userId, @Param("status") Integer status);
 
-    List<AgentModel> getByPageBean(@Param("pager") PageBean page);
+    List<AgentEntity> getByPageBean(@Param("pager") PageBean page);
 
     int getCount(@Param("filter") Map filter);
 
     int existsCount(@Param("id") Long id, @Param("key") String key, @Param("val") Object val);
 
-    List<AgentModel> getByGroup(Long groupId);
+    List<AgentEntity> getByGroup(Long groupId);
 
     void updateStatus(@Param("agentId") Long agentId,@Param("status") Integer status);
 }

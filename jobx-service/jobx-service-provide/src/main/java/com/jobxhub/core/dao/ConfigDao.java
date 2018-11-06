@@ -21,15 +21,15 @@
 package com.jobxhub.core.dao;
 
 
-import com.jobxhub.core.model.ConfigModel;
+import com.jobxhub.core.entity.ConfigEntity;
 
 import java.util.List;
 
 public interface ConfigDao {
 
-    List<ConfigModel> getConfig();
+    List<ConfigEntity> getConfig();
 
-    void update(ConfigModel config);
+    void update(ConfigEntity config);
 
     String getExecUser();
 }

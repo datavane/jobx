@@ -22,7 +22,7 @@
 package com.jobxhub.core.job;
 
 import com.jobxhub.common.util.collection.HashMap;
-import com.jobxhub.core.dto.Agent;
+import com.jobxhub.core.model.Agent;
 import com.jobxhub.common.Constants;
 import com.jobxhub.common.ext.ExtensionLoader;
 import com.jobxhub.common.logging.LoggerFactory;
@@ -35,7 +35,7 @@ import com.jobxhub.registry.zookeeper.ZookeeperRegistry;
 import com.jobxhub.registry.zookeeper.ZookeeperTransporter;
 import com.jobxhub.core.service.*;
 import com.jobxhub.core.support.JobXTools;
-import com.jobxhub.core.dto.Job;
+import com.jobxhub.core.model.Job;
 import com.jobxhub.core.util.PropertyPlaceholder;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

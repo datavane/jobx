@@ -23,7 +23,7 @@
 package com.jobxhub.core.service;
 
 import com.jobxhub.core.job.JobXRegistry;
-import com.jobxhub.core.dto.Job;
+import com.jobxhub.core.model.Job;
 import org.quartz.*;
 import org.quartz.Scheduler;
 import org.quartz.impl.StdSchedulerFactory;

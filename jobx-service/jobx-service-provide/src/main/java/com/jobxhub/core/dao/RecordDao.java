@@ -20,10 +20,10 @@
  */
 package com.jobxhub.core.dao;
 
-import com.jobxhub.core.dto.Record;
-import com.jobxhub.core.model.RecordMessageModel;
-import com.jobxhub.core.dto.Chart;
-import com.jobxhub.core.model.RecordModel;
+import com.jobxhub.core.model.Record;
+import com.jobxhub.core.entity.RecordMessageEntity;
+import com.jobxhub.core.model.Chart;
+import com.jobxhub.core.entity.RecordEntity;
 import com.jobxhub.core.tag.PageBean;
 import org.apache.ibatis.annotations.Param;
 
@@ -32,17 +32,17 @@ import java.util.Map;
 
 public interface RecordDao {
 
-    List<RecordModel> getByPageBean(@Param("pager") PageBean<Record> pageBean);
+    List<RecordEntity> getByPageBean(@Param("pager") PageBean<Record> pageBean);
 
     int getCount(@Param("filter") Map<String, Object> filter);
 
-    RecordModel getById(Long id);
+    RecordEntity getById(Long id);
 
-    RecordModel getByPid(String pid);
+    RecordEntity getByPid(String pid);
 
-    void save(RecordModel record);
+    void save(RecordEntity record);
 
-    void update(RecordModel record);
+    void update(RecordEntity record);
 
     Chart getTopChart(@Param("filter") Map<String, Object> filter);
 
@@ -54,12 +54,12 @@ public interface RecordDao {
 
     void delete(@Param("start")String startTime,@Param("end") String endTime);
 
-    List<RecordModel> getRedoList(Long recordId);
+    List<RecordEntity> getRedoList(Long recordId);
 
-    RecordMessageModel getMessage(@Param("recordId") Long id);
+    RecordMessageEntity getMessage(@Param("recordId") Long id);
 
     void deleteMessage(@Param("start")String startTime,@Param("end") String endTime);
 
-    void saveMessage(RecordMessageModel message);
+    void saveMessage(RecordMessageEntity message);
 
 }

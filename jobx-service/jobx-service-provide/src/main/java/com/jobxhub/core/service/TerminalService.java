@@ -26,14 +26,14 @@ import com.jcraft.jsch.*;
 import com.jobxhub.common.Constants;
 import com.jobxhub.common.util.CommonUtils;
 import com.jobxhub.common.util.IOUtils;
-import com.jobxhub.core.model.TerminalModel;
+import com.jobxhub.core.entity.TerminalEntity;
 import com.jobxhub.core.dao.TerminalDao;
 import com.jobxhub.core.support.JobXTools;
 import com.jobxhub.core.support.SshUserInfo;
 import com.jobxhub.core.support.TerminalClient;
 import com.jobxhub.core.tag.PageBean;
-import com.jobxhub.core.dto.Terminal;
-import com.jobxhub.core.dto.User;
+import com.jobxhub.core.model.Terminal;
+import com.jobxhub.core.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,12 +94,12 @@ public class TerminalService {
 
     public boolean merge(Terminal terminal) throws Exception {
         try {
-            TerminalModel terminalModel = Terminal.transferModel.apply(terminal);
-            if (terminalModel.getId() == null) {
-                terminalDao.save(terminalModel);
-                terminal.setId(terminalModel.getId());
+            TerminalEntity terminalEntity = Terminal.transferEntity.apply(terminal);
+            if (terminalEntity.getId() == null) {
+                terminalDao.save(terminalEntity);
+                terminal.setId(terminalEntity.getId());
             } else {
-                terminalDao.update(terminalModel);
+                terminalDao.update(terminalEntity);
             }
             return true;
         } catch (Exception e) {
@@ -173,7 +173,7 @@ public class TerminalService {
         pageBean.verifyOrderBy("name", "name", "host", "port", "ssh_type", "login_time");
         pageBean.put("user_id", userId);
 
-        List<TerminalModel> beanList = terminalDao.getByPageBean(pageBean);
+        List<TerminalEntity> beanList = terminalDao.getByPageBean(pageBean);
         if (CommonUtils.notEmpty(beanList)) {
             int count = terminalDao.getCount(pageBean.getFilter());
             pageBean.setResult(beanList);
@@ -182,8 +182,8 @@ public class TerminalService {
     }
 
     public Terminal getById(Long id) {
-        TerminalModel terminalModel = terminalDao.getById(id);
-        return Terminal.transferDto.apply(terminalModel);
+        TerminalEntity terminalEntity = terminalDao.getById(id);
+        return Terminal.transferModel.apply(terminalEntity);
     }
 
     public String delete(HttpSession session, Long id) {
@@ -206,8 +206,8 @@ public class TerminalService {
     }
 
     public List<Terminal> getByUser(Long userId) {
-        List<TerminalModel> list = terminalDao.getByUser(userId);
-        return Lists.transform(list, Terminal.transferDto);
+        List<TerminalEntity> list = terminalDao.getByUser(userId);
+        return Lists.transform(list, Terminal.transferModel);
     }
 
     public void theme(Terminal terminal, String theme) throws Exception {

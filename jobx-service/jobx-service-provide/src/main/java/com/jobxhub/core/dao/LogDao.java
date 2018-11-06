@@ -21,7 +21,7 @@
 package com.jobxhub.core.dao;
 
 
-import com.jobxhub.core.model.LogModel;
+import com.jobxhub.core.entity.LogEntity;
 import com.jobxhub.core.tag.PageBean;
 import org.apache.ibatis.annotations.Param;
 
@@ -30,18 +30,18 @@ import java.util.Map;
 
 public interface LogDao {
 
-    LogModel getById(@Param("logId") Long logId);
+    LogEntity getById(@Param("logId") Long logId);
 
-    List<LogModel> getByPageBean(@Param("pager") PageBean page);
+    List<LogEntity> getByPageBean(@Param("pager") PageBean page);
 
     int getCount(@Param("filter") Map filter);
 
-    List<LogModel> getUnRead(Long userId);
+    List<LogEntity> getUnRead(Long userId);
 
     Integer getUnReadCount(Long userId);
 
     void updateRead(Long logId);
 
-    void save(LogModel log);
+    void save(LogEntity log);
 
 }

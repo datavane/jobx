@@ -3,7 +3,7 @@
 
 <mapper namespace="com.jobxhub.core.dao.UserDao">
 
-    <resultMap id="userModel" type="com.jobxhub.core.model.UserModel" >
+    <resultMap id="userEntity" type="com.jobxhub.core.entity.UserEntity" >
         <result column="user_id"        property="userId"      jdbcType="BIGINT"   javaType="long"/>
         <result column="user_name"      property="userName"    jdbcType="VARCHAR"  javaType="string"/>
         <result column="contact"        property="contact"     jdbcType="VARCHAR"  javaType="string"/>
@@ -39,7 +39,7 @@
         r.role_name
     </sql>
 
-    <select id="getById" parameterType="java.lang.Long" resultMap="userModel">
+    <select id="getById" parameterType="java.lang.Long" resultMap="userEntity">
         select
         <include refid="query_User"/>
         from  t_user as u
@@ -48,7 +48,7 @@
         where u.user_id=#{userId}
     </select>
 
-    <select id="getByName" parameterType="string" resultMap="userModel">
+    <select id="getByName" parameterType="string" resultMap="userEntity">
         select
         <include refid="query_User"/>
         from  t_user as u
@@ -61,7 +61,7 @@
         select exec_user from t_user where user_id=#{userId}
     </select>
 
-    <select id="getByPageBean" resultMap="userModel">
+    <select id="getByPageBean" resultMap="userEntity">
         select
         <include refid="query_User"/>
         from  t_user as u
@@ -86,7 +86,7 @@
        where user_id = #{userId}
     </update>
 
-    <insert id="save" parameterType="com.jobxhub.core.model.UserModel" useGeneratedKeys="true" keyProperty="userId">
+    <insert id="save" parameterType="com.jobxhub.core.entity.UserEntity" useGeneratedKeys="true" keyProperty="userId">
         insert into t_user (
             contact,
             create_time,
@@ -114,7 +114,7 @@
         )
     </insert>
 
-    <update id="update" parameterType="com.jobxhub.core.model.UserModel">
+    <update id="update" parameterType="com.jobxhub.core.entity.UserEntity">
         update t_user
         set
             contact = #{contact},

@@ -25,9 +25,9 @@ import com.jobxhub.common.Constants;
 import com.jobxhub.common.util.*;
 import com.jobxhub.common.util.collection.HashMap;
 import com.jobxhub.core.dao.ConfigDao;
-import com.jobxhub.core.dto.Config;
-import com.jobxhub.core.dto.UserAgent;
-import com.jobxhub.core.model.ConfigModel;
+import com.jobxhub.core.model.Config;
+import com.jobxhub.core.model.UserAgent;
+import com.jobxhub.core.entity.ConfigEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,11 +62,11 @@ public class ConfigService {
     private String updateSQLFormat = "sql/%s-%s.sql";
 
     public Config getSysConfig() {
-        List<ConfigModel> configList = configDao.getConfig();
+        List<ConfigEntity> configList = configDao.getConfig();
         if (CommonUtils.notEmpty(configList)) {
             Config config = new Config();
-            for (ConfigModel configModel:configList) {
-                config.fromModel(configModel);
+            for (ConfigEntity configEntity:configList) {
+                config.fromEntity(configEntity);
             }
             return config;
         }
@@ -74,8 +74,8 @@ public class ConfigService {
     }
 
     public void update(Config config) {
-        List<ConfigModel> configModel = Config.toModel(config);
-        for (ConfigModel bean:configModel) {
+        List<ConfigEntity> configEntity = Config.toEntity(config);
+        for (ConfigEntity bean:configEntity) {
             configDao.update(bean);
         }
     }

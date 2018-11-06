@@ -3,7 +3,7 @@
 
 <mapper namespace="com.jobxhub.core.dao.JobDao">
 
-    <resultMap id="jobModel" type="com.jobxhub.core.model.JobModel" >
+    <resultMap id="jobEntity" type="com.jobxhub.core.entity.JobEntity" >
         <result column="job_id"         property="jobId"/>
         <result column="agent_id"       property="agentId"/>
         <result column="agent_name"     property="agentName"/>
@@ -51,13 +51,13 @@
         j.create_type
     </sql>
 
-    <select id="getAll" resultMap="jobModel">
+    <select id="getAll" resultMap="jobEntity">
         select
         <include refid="query_Job"/>
         from  t_job as j
     </select>
 
-    <select id="getById" parameterType="java.lang.Long" resultMap="jobModel">
+    <select id="getById" parameterType="java.lang.Long" resultMap="jobEntity">
         select
         <include refid="query_Job"/>,
         a.`name` as agent_name,
@@ -68,21 +68,21 @@
         where j.job_id=#{jobId}
     </select>
 
-    <select id="getByAgent" parameterType="java.lang.Long" resultMap="jobModel">
+    <select id="getByAgent" parameterType="java.lang.Long" resultMap="jobEntity">
         select
         <include refid="query_Job"/>
         from  t_job as j
         where j.agent_id = #{agentId}
     </select>
 
-    <select id="getScheduleJob" resultMap="jobModel">
+    <select id="getScheduleJob" resultMap="jobEntity">
         select
         <include refid="query_Job"/>
         from  t_job as j
         where j.pause = 0
     </select>
 
-    <select id="getByPageBean" resultMap="jobModel">
+    <select id="getByPageBean" resultMap="jobEntity">
         select
         <include refid="query_Job"/>,
         a.`name` as agent_name,
@@ -144,7 +144,7 @@
         </if>
     </select>
 
-    <insert id="save" parameterType="com.jobxhub.core.model.JobModel" useGeneratedKeys="true" keyProperty="jobId">
+    <insert id="save" parameterType="com.jobxhub.core.entity.JobEntity" useGeneratedKeys="true" keyProperty="jobId">
         insert into t_job (
             agent_id,
             user_id,
@@ -188,7 +188,7 @@
         )
     </insert>
 
-    <update id="update" parameterType="com.jobxhub.core.model.JobModel">
+    <update id="update" parameterType="com.jobxhub.core.entity.JobEntity">
         update t_job
         set
             agent_id      =     #{agentId},

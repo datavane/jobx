@@ -22,7 +22,7 @@
 package com.jobxhub.core.support;
 
 import com.jobxhub.common.Constants;
-import com.jobxhub.core.dto.Terminal;
+import com.jobxhub.core.model.Terminal;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;

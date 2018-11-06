@@ -28,7 +28,7 @@ import static com.jobxhub.common.Constants.*;
 
 import com.google.common.collect.Lists;
 import com.jobxhub.common.Constants;
-import com.jobxhub.core.model.JobModel;
+import com.jobxhub.core.entity.JobEntity;
 import com.jobxhub.core.job.JobXRegistry;
 import com.jobxhub.core.dao.JobDao;
 import com.jobxhub.core.support.JobXTools;
@@ -36,8 +36,8 @@ import com.jobxhub.core.tag.PageBean;
 
 
 import com.jobxhub.common.util.CommonUtils;
-import com.jobxhub.core.dto.Job;
-import com.jobxhub.core.dto.User;
+import com.jobxhub.core.model.Job;
+import com.jobxhub.core.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -69,8 +69,8 @@ public class JobService {
         return jobDao.getCount(map);
     }
 
-    public List<JobModel> getAll() {
-        List<JobModel> jobs = JobXTools.CACHE.get(Constants.PARAM_CACHED_JOB_KEY, List.class);
+    public List<JobEntity> getAll() {
+        List<JobEntity> jobs = JobXTools.CACHE.get(Constants.PARAM_CACHED_JOB_KEY, List.class);
         if (CommonUtils.isEmpty(jobs)) {
             flushLocalJob();
         }
@@ -79,8 +79,8 @@ public class JobService {
 
     //本地缓存中的job列表
     private synchronized void flushLocalJob() {
-        List<JobModel> jobModels = jobDao.getAll();
-        JobXTools.CACHE.put(Constants.PARAM_CACHED_JOB_KEY, Lists.transform(jobModels, Job.transferDto));
+        List<JobEntity> jobEntitys = jobDao.getAll();
+        JobXTools.CACHE.put(Constants.PARAM_CACHED_JOB_KEY, Lists.transform(jobEntitys, Job.transferModel));
     }
 
     public void getPageBean(HttpSession session, PageBean pageBean, Job job) {
@@ -92,34 +92,34 @@ public class JobService {
             job.setUserId(user.getUserId());
         }
         pageBean.put("job", job);
-        List<JobModel> jobs = jobDao.getByPageBean(pageBean);
+        List<JobEntity> jobs = jobDao.getByPageBean(pageBean);
         if (CommonUtils.notEmpty(jobs)) {
             int count = jobDao.getCount(pageBean.getFilter());
             pageBean.setTotalRecord(count);
-            pageBean.setResult(Lists.transform(jobs, Job.transferDto));
+            pageBean.setResult(Lists.transform(jobs, Job.transferModel));
         }
     }
 
     public void merge(Job job) {
-        JobModel jobModel = Job.transferModel.apply(job);
+        JobEntity jobEntity = Job.transferEntity.apply(job);
         if (job.getJobId() == null) {
-            jobModel.setUpdateTime(new Date());
-            jobDao.save(jobModel);
-            job.setJobId(jobModel.getJobId());
+            jobEntity.setUpdateTime(new Date());
+            jobDao.save(jobEntity);
+            job.setJobId(jobEntity.getJobId());
         } else {
-            jobDao.update(jobModel);
+            jobDao.update(jobEntity);
         }
     }
 
     public Job getById(Long id) {
-        JobModel job = jobDao.getById(id);
-        return Job.transferDto.apply(job);
+        JobEntity job = jobDao.getById(id);
+        return Job.transferModel.apply(job);
     }
 
     public List<Job> getByAgent(Long agentId) {
-        List<JobModel> jobs = jobDao.getByAgent(agentId);
+        List<JobEntity> jobs = jobDao.getByAgent(agentId);
         if (CommonUtils.notEmpty(jobs)) {
-            return Lists.transform(jobs, Job.transferDto);
+            return Lists.transform(jobs, Job.transferModel);
         }
         return Collections.EMPTY_LIST;
     }
@@ -195,9 +195,9 @@ public class JobService {
     }
 
     public List<Job> getScheduleJob() {
-        List<JobModel> jobs = jobDao.getScheduleJob();
+        List<JobEntity> jobs = jobDao.getScheduleJob();
         if (CommonUtils.notEmpty(jobs)) {
-            return Lists.transform(jobs, Job.transferDto);
+            return Lists.transform(jobs, Job.transferModel);
         }
         return Collections.EMPTY_LIST;
     }
@@ -211,10 +211,10 @@ public class JobService {
         job.setJobName(jobName);
         pageBean.put("job", job);
 
-        List<JobModel> jobs = jobDao.getByPageBean(pageBean);
+        List<JobEntity> jobs = jobDao.getByPageBean(pageBean);
         int count = jobDao.getCount(pageBean.getFilter());
 
-        pageBean.setResult(Lists.transform(jobs, Job.transferDto));
+        pageBean.setResult(Lists.transform(jobs, Job.transferModel));
         pageBean.setTotalRecord(count);
         return pageBean;
     }

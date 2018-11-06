@@ -20,7 +20,7 @@
  */
 package com.jobxhub.core.dao;
 
-import com.jobxhub.core.model.UserModel;
+import com.jobxhub.core.entity.UserEntity;
 import com.jobxhub.core.tag.PageBean;
 import org.apache.ibatis.annotations.Param;
 
@@ -29,17 +29,17 @@ import java.util.Map;
 
 public interface UserDao {
 
-    List<UserModel> getByPageBean(@Param("pager") PageBean pageBean);
+    List<UserEntity> getByPageBean(@Param("pager") PageBean pageBean);
 
     int getCount(@Param("filter") Map<String, Object> filter);
 
-    void save(UserModel user);
+    void save(UserEntity user);
 
-    UserModel getById(Long id);
+    UserEntity getById(Long id);
 
-    void update(UserModel user);
+    void update(UserEntity user);
 
-    UserModel getByName(String userName);
+    UserEntity getByName(String userName);
 
     void updatePassword(@Param("userId") Long userId, @Param("password") String password);
 

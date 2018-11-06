@@ -3,15 +3,15 @@
 
 <mapper namespace="com.jobxhub.core.dao.RoleDao">
 
-    <select id="getAll" resultType="com.jobxhub.core.model.RoleModel">
+    <select id="getAll" resultType="com.jobxhub.core.entity.RoleEntity">
         select role_id as roleId,role_name as roleName,description from t_role
     </select>
 
-    <select id="getById" parameterType="java.lang.Long" resultType="com.jobxhub.core.model.RoleModel">
+    <select id="getById" parameterType="java.lang.Long" resultType="com.jobxhub.core.entity.RoleEntity">
         select role_id as roleId,role_name as roleName,description from t_role where role_id = #{roleId}
     </select>
 
-    <insert id="save" parameterType="com.jobxhub.core.model.RoleModel" useGeneratedKeys="true" keyProperty="roleId">
+    <insert id="save" parameterType="com.jobxhub.core.entity.RoleEntity" useGeneratedKeys="true" keyProperty="roleId">
         insert into t_user (
           role_name,
           description

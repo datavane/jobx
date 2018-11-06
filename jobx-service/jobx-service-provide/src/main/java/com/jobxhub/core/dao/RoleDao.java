@@ -20,14 +20,14 @@
  */
 package com.jobxhub.core.dao;
 
-import com.jobxhub.core.model.RoleModel;
+import com.jobxhub.core.entity.RoleEntity;
 
 import java.util.List;
 
 public interface RoleDao {
-    List<RoleModel> getAll();
+    List<RoleEntity> getAll();
 
-    RoleModel getById(Long roleId);
+    RoleEntity getById(Long roleId);
 
-    void save(RoleModel role);
+    void save(RoleEntity role);
 }

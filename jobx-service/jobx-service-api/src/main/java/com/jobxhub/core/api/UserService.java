@@ -1,11 +1,11 @@
 package com.jobxhub.core.api;
 
 
-import com.jobxhub.core.model.UserModel;
+import com.jobxhub.core.entity.UserEntity;
 
 public interface UserService {
 
-    UserModel login(String userName, String password);
+    UserEntity login(String userName, String password);
 
-    void addUser(UserModel model);
+    void addUser(UserEntity model);
 }

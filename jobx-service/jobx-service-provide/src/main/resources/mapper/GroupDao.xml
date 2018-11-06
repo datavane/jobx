@@ -3,7 +3,7 @@
 
 <mapper namespace="com.jobxhub.core.dao.GroupDao">
 
-    <resultMap id="groupModel" type="com.jobxhub.core.model.GroupModel" >
+    <resultMap id="groupEntity" type="com.jobxhub.core.entity.GroupEntity" >
         <result column="group_id"      property="groupId"/>
         <result column="comment"       property="comment"/>
         <result column="create_time"   property="createTime"/>
@@ -11,7 +11,7 @@
         <result column="user_id"       property="userId"/>
     </resultMap>
 
-    <resultMap id="agentGroupModel" type="com.jobxhub.core.model.AgentGroupModel">
+    <resultMap id="agentGroupEntity" type="com.jobxhub.core.entity.AgentGroupEntity">
         <result column="group_id"      property="groupId"/>
         <result column="group_name"    property="groupName"/>
         <result column="agent_id"      property="agentId"/>
@@ -27,13 +27,13 @@
         g.user_id
     </sql>
 
-    <select id="getById" resultMap="groupModel">
+    <select id="getById" resultMap="groupEntity">
         select <include refid="query_Group"/>
         from  t_group as g
         where group_id=${groupId}
     </select>
 
-    <select id="getByPageBean" resultMap="groupModel">
+    <select id="getByPageBean" resultMap="groupEntity">
         select <include refid="query_Group"/>
         from  t_group as g
         limit #{pager.offset}, #{pager.pageSize}
@@ -58,12 +58,12 @@
         </if>
     </select>
 
-    <select id="getAll" resultMap="groupModel">
+    <select id="getAll" resultMap="groupEntity">
         select <include refid="query_Group"/>
         from  t_group as g
     </select>
 
-    <select id="getForAgent" resultMap="agentGroupModel">
+    <select id="getForAgent" resultMap="agentGroupEntity">
         select
             t.group_id,
             g.group_name,
@@ -78,7 +78,7 @@
         order by g.create_time
     </select>
 
-    <insert id="save" parameterType="com.jobxhub.core.model.GroupModel" useGeneratedKeys="true" keyProperty="groupId">
+    <insert id="save" parameterType="com.jobxhub.core.entity.GroupEntity" useGeneratedKeys="true" keyProperty="groupId">
         insert into t_group (
             group_name,
             comment,
@@ -92,7 +92,7 @@
         )
     </insert>
 
-    <update id="update" parameterType="com.jobxhub.core.model.ConfigModel">
+    <update id="update" parameterType="com.jobxhub.core.entity.ConfigEntity">
         update t_group
         set
             group_name  = #{groupName},

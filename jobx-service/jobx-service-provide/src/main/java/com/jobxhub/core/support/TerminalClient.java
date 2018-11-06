@@ -27,7 +27,7 @@ import com.jobxhub.common.util.CommonUtils;
 import com.jobxhub.common.util.DigestUtils;
 import com.jobxhub.common.util.IOUtils;
 import com.jobxhub.common.util.StringUtils;
-import com.jobxhub.core.dto.Terminal;
+import com.jobxhub.core.model.Terminal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;

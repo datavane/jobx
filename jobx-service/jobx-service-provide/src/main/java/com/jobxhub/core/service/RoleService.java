@@ -21,9 +21,9 @@
 package com.jobxhub.core.service;
 
 import com.google.common.collect.Lists;
-import com.jobxhub.core.model.RoleModel;
+import com.jobxhub.core.entity.RoleEntity;
 import com.jobxhub.core.dao.RoleDao;
-import com.jobxhub.core.dto.Role;
+import com.jobxhub.core.model.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,19 +38,19 @@ public class RoleService {
     private RoleDao roleDao;
 
     public List<Role> getAll() {
-        List<RoleModel> roles = roleDao.getAll();
-        return Lists.transform(roles,Role.transferDto);
+        List<RoleEntity> roles = roleDao.getAll();
+        return Lists.transform(roles,Role.transferModel);
     }
 
     public Role getById(Long roleId) {
-        RoleModel role = roleDao.getById(roleId);
+        RoleEntity role = roleDao.getById(roleId);
         if (role == null) return null;
-        return Role.transferDto.apply(role);
+        return Role.transferModel.apply(role);
     }
 
     public void addRole(Role role) {
-        RoleModel roleModel = Role.transferModel.apply(role);
-        roleDao.save(roleModel);
+        RoleEntity roleEntity = Role.transferEntity.apply(role);
+        roleDao.save(roleEntity);
         role.setRoleId(role.getRoleId());
     }
 }

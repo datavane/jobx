@@ -22,7 +22,7 @@
 package com.jobxhub.core.support;
 
 import com.jobxhub.common.util.DigestUtils;
-import com.jobxhub.core.dto.Terminal;
+import com.jobxhub.core.model.Terminal;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;

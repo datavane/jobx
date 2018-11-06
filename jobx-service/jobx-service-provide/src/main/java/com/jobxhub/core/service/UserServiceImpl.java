@@ -28,11 +28,11 @@ import com.jobxhub.common.util.CommonUtils;
 import com.jobxhub.common.util.DigestUtils;
 import com.jobxhub.common.util.IOUtils;
 import com.jobxhub.core.api.UserService;
-import com.jobxhub.core.model.UserModel;
+import com.jobxhub.core.entity.UserEntity;
 import com.jobxhub.core.dao.UserDao;
 import com.jobxhub.core.support.JobXTools;
 import com.jobxhub.core.tag.PageBean;
-import com.jobxhub.core.dto.User;
+import com.jobxhub.core.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -63,9 +63,9 @@ public class UserServiceImpl implements UserService {
         HttpSession httpSession = request.getSession();
 
         User user = null;
-        UserModel userModel = userDao.getByName(userName);
-        if (userModel != null) {
-            user = User.transferDto.apply(userModel);
+        UserEntity userEntity = userDao.getByName(userName);
+        if (userEntity != null) {
+            user = User.transferModel.apply(userEntity);
         }
         if (user == null) return 500;
 
@@ -89,40 +89,40 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserModel login(String userName, String password) {
+    public UserEntity login(String userName, String password) {
         System.out.println("userName:" + userName + "--->>>" + password);
         return null;
     }
 
     @Override
-    public void addUser(UserModel model) {
+    public void addUser(UserEntity model) {
 
     }
 
     public PageBean getPageBean(PageBean pageBean) {
-        List<UserModel> userList = userDao.getByPageBean(pageBean);
+        List<UserEntity> userList = userDao.getByPageBean(pageBean);
         int count = userDao.getCount(pageBean.getFilter());
-        pageBean.setResult(Lists.transform(userList, User.transferDto));
+        pageBean.setResult(Lists.transform(userList, User.transferModel));
         pageBean.setTotalRecord(count);
         return pageBean;
     }
 
     public void addUser(User user) {
-        UserModel userModel = User.transferModel.apply(user);
+        UserEntity userEntity = User.transferEntity.apply(user);
         String salter = CommonUtils.uuid(16);
-        userModel.setSalt(salter);
+        userEntity.setSalt(salter);
         byte[] salt = DigestUtils.decodeHex(salter);
-        String saltPassword = DigestUtils.encodeHex(DigestUtils.sha1(userModel.getPassword().getBytes(), salt, 1024));
-        userModel.setPassword(saltPassword);
-        userModel.setCreateTime(new Date());
-        userDao.save(userModel);
-        user.setUserId(userModel.getUserId());
+        String saltPassword = DigestUtils.encodeHex(DigestUtils.sha1(userEntity.getPassword().getBytes(), salt, 1024));
+        userEntity.setPassword(saltPassword);
+        userEntity.setCreateTime(new Date());
+        userDao.save(userEntity);
+        user.setUserId(userEntity.getUserId());
     }
 
     public User getUserById(Long id) {
-        UserModel userModel = userDao.getById(id);
-        if (userModel != null) {
-            return User.transferDto.apply(userModel);
+        UserEntity userEntity = userDao.getById(id);
+        if (userEntity != null) {
+            return User.transferModel.apply(userEntity);
         }
         return null;
     }
@@ -131,7 +131,7 @@ public class UserServiceImpl implements UserService {
         if (!JobXTools.isPermission(session)) {
             userAgentService.update(user.getUserId(), user.getAgentIds());
         }
-        userDao.update(User.transferModel.apply(user));
+        userDao.update(User.transferEntity.apply(user));
     }
 
     public void uploadImg(Long userId, File file) throws IOException {
@@ -165,7 +165,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public List<String> getExecUser(Long userId) {
-        UserModel user = userDao.getById(userId);
+        UserEntity user = userDao.getById(userId);
         if (user.getRoleId() == 999L) {
             return configService.getExecUser();
         }else {

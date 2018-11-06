@@ -82,7 +82,7 @@ update `t_job` set `create_type`=1 where `job_type`=0 or `flowNum`=0;
 alter table `t_job` drop column `flowId`;
 alter table `t_job` drop column `flowNum`;
 alter table `t_job` drop column `lastChild`;
-alter table `t_job` drop column `runModel`;
+alter table `t_job` drop column `runEntity`;
 alter table `t_job` drop column `cronType`;
 
 --log
