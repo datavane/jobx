@@ -16,7 +16,7 @@
         <module>jobx-examples</module>
         <module>jobx-api</module>
         <module>jobx-agent</module>
-        <module>jobx-service</module>
+        <module>jobx-core</module>
     </modules>
 
 
@@ -155,7 +155,7 @@
 
             <dependency>
                 <groupId>com.jobxhub</groupId>
-                <artifactId>jobx-service</artifactId>
+                <artifactId>jobx-core</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
