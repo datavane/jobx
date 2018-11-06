@@ -94,11 +94,6 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
-    @Override
-    public void addUser(UserEntity model) {
-
-    }
-
     public PageBean getPageBean(PageBean pageBean) {
         List<UserEntity> userList = userDao.getByPageBean(pageBean);
         int count = userDao.getCount(pageBean.getFilter());
