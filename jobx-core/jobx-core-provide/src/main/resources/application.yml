@@ -56,7 +56,7 @@ mybatis:
   # 映射文件所在路径
   mapper-locations: classpath:mapper/*.xml
   # pojo类所在包路径
-  type-aliases-package: com.jobxhub.core.model
+  type-aliases-package: com.jobxhub.core.entity
   configuration:
     map-underscore-to-camel-case: true
     default-fetch-size: 500

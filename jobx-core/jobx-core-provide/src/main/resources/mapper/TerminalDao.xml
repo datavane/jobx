@@ -49,7 +49,7 @@
         where user_id = #{userId}
     </select>
 
-    <select id="getByPageBean" parameterType="com.jobxhub.core.tag.PageBean" resultMap="terminalEntity">
+    <select id="getByPageBean" parameterType="com.jobxhub.core.vo.PageBean" resultMap="terminalEntity">
         select
         <include refid="query_Terminal"/>
         from  t_terminal as t
