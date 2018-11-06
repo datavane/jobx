@@ -1,4 +1,0 @@
-jetty=com.jobxhub.server.bootstrap.JettyLauncher
-tomcat=com.jobxhub.server.bootstrap.TomcatLauncher
-
-com.jobxhub.server.bootstrap.TomcatLauncher

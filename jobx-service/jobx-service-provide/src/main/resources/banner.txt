@@ -6,6 +6,8 @@
          |    / /_/ /  / /_/ /   /_/ /  __   . \
          |    \____/   \____/ /_.___/  __   / \_\__
          |________ 1.2.0-RELEASE ___._____ /
-                              Let's scheduling easy!
+
+                          ---- Let's scheduling easy!
+
 
 
