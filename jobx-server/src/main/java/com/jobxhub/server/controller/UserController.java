@@ -12,9 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("user")
 public class UserController  {
 
-    @Reference(version = "${jobx.version}",
-            application = "${dubbo.application.id}",
-            url = "dubbo://localhost:12345")
+    @Reference
     private UserService userService;
 
     @PostMapping("login")
