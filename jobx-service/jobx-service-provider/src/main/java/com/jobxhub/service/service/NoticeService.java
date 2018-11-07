@@ -27,10 +27,12 @@ import com.jobxhub.service.model.*;
 import com.jobxhub.service.entity.UserEntity;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
+import freemarker.template.Version;
 import org.apache.commons.mail.HtmlEmail;
 import com.jobxhub.common.util.CommonUtils;
 import com.jobxhub.common.util.DateUtils;
 import com.jobxhub.common.util.HttpUtils;
+import org.junit.runners.model.InitializationError;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,14 +64,34 @@ public class NoticeService {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
+
     @PostConstruct
     public void initConfig() throws Exception {
-        Configuration configuration = new Configuration();
-        URL url = Thread.currentThread().getContextClassLoader().getResource("");
-        File file = new File(url.getPath());
-        configuration.setDirectoryForTemplateLoading(file);
-        configuration.setDefaultEncoding("UTF-8");
-        this.template = configuration.getTemplate("email.html");
+        Configuration configuration = new Configuration(Configuration.VERSION_2_3_28);
+        String template = "email.html";
+        Enumeration<URL> urls = ClassLoader.getSystemResources(template);
+        if (urls != null) {
+            if (!urls.hasMoreElements()) {
+                urls = Thread.currentThread().getContextClassLoader().getResources(template);
+            }
+        }
+        if (urls != null) {
+            while (urls.hasMoreElements()) {
+                URL url = urls.nextElement();
+                if (url.getPath().contains(".jar")) {
+                    configuration.setClassLoaderForTemplateLoading(Thread.currentThread().getContextClassLoader(), "");
+                } else {
+                    File file = new File(url.getPath());
+                    configuration.setDirectoryForTemplateLoading(file.getParentFile());
+                }
+                configuration.setDefaultEncoding("UTF-8");
+                this.template = configuration.getTemplate(template);
+                break;
+            }
+        } else {
+            logger.error("[JobX] email.html not found!");
+            throw new InitializationError("email.html not found!");
+        }
     }
 
     public void notice(Agent agent) {
@@ -79,7 +101,7 @@ public class NoticeService {
             logger.info(content);
         }
         try {
-          //  sendMessage(agent.getUsers(), agent.getAgentId(), agent.getEmail(), agent.getMobile(), content);
+            //  sendMessage(agent.getUsers(), agent.getAgentId(), agent.getEmail(), agent.getMobile(), content);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -115,7 +137,7 @@ public class NoticeService {
         return String.format(msgFormat, agent.getName(), agent.getHost(), agent.getPort(), message, DateUtils.formatFullDate(new Date()));
     }
 
-    public void sendMessage(List<UserEntity> users, Long workId, String email,String mobile, String content) {
+    public void sendMessage(List<UserEntity> users, Long workId, String email, String mobile, String content) {
 
         Log log = new Log();
         log.setIsread(false);

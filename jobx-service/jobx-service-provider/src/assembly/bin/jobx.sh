@@ -30,10 +30,6 @@
 #                   of a jobx installation.  If not present, resolves to
 #                   the same directory that JOBX_HOME points to.
 #
-#   JOBX_OUT    (Optional) Full path to a file where stdout and stderr
-#                   will be redirected.
-#                   Default is $JOBX_BASE/logs/jobx.out
-#
 #   JOBX_CONF    (Optional) config path
 #
 #   JOBX_PID    (Optional) Path of the file which should contains the pid
@@ -276,7 +272,7 @@ if [ $have_tty -eq 1 ]; then
   fi
 fi
 
-MAIN=com.jobxhub.service.JobXServiceApplication
+MAIN="com.jobxhub.service.JobXServiceApplication"
 
 eval $_NOHUP "\"$RUNJAVA\"" \
     -classpath "\"$CLASSPATH\"" \
