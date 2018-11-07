@@ -277,14 +277,13 @@ if [ $have_tty -eq 1 ]; then
   fi
 fi
 
-MAIN=com.jobxhub.service.JobXApplication
-MAIN_JAR="$JOBX_BASE"/lib/jobx-service-${JOBX_VERSION}.jar
+MAIN=com.jobxhub.service.JobXServiceApplication
 
-eval $_NOHUP "\"$RUNJAVA\"" "-jar" "${MAIN_JAR}" \
+eval $_NOHUP "\"$RUNJAVA\"" \
     -classpath "\"$CLASSPATH\"" \
     -Djobx.home="$JOBX_HOME" \
     -Dspring.config.location="${JOBX_CONF}/application.properties" \
-    >> /dev/null 2>&1 "&";
+    ${MAIN} >> /dev/null 2>&1 "&";
 
 exit 0;
 
