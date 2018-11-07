@@ -222,7 +222,7 @@
                             <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                             <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
                             <addClasspath>true</addClasspath>
-                            <mainClass>com.jobxhub.service.JobXApplication</mainClass>
+                            <mainClass>com.jobxhub.service.JobXServiceApplication</mainClass>
                         </manifest>
                     </archive>
                     <excludes>
