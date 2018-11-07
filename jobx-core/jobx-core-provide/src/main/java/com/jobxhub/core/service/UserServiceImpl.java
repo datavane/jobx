@@ -47,10 +47,11 @@ import java.util.*;
  * Created by ChenHui on 2016/2/18.
  */
 
-@Service(version = "${jobx.provide.version}",
-                application = "${dubbo.application.id}",
-                protocol = "${dubbo.protocol.id}",
-                registry = "${dubbo.registry.id}"
+@Service(
+        version = "${jobx.version}",
+        application = "${dubbo.application.id}",
+        protocol = "${dubbo.protocol.id}",
+        registry = "${dubbo.registry.id}"
 )
 public class UserServiceImpl implements UserService {
 
