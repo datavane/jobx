@@ -28,7 +28,7 @@
 
         <dependency>
             <groupId>com.jobxhub</groupId>
-            <artifactId>jobx-core-api</artifactId>
+            <artifactId>jobx-service-api</artifactId>
         </dependency>
 
         <!-- Spring Boot dependencies -->

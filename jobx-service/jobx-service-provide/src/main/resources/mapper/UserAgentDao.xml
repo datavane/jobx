@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jobxhub.service.dao.UserAgentDao">
+
+    <delete id="delete" parameterType="java.lang.Long">
+        delete from t_user_agent where user_id=#{userId}
+    </delete>
+
+    <insert id="save" useGeneratedKeys="true" keyProperty="id">
+        insert into t_user_agent (
+            user_id,
+            agent_id
+        ) values (
+            #{userId},
+            #{agentId}
+        )
+    </insert>
+
+    <select id="getUserAgent" parameterType="java.lang.Long" resultType="com.jobxhub.service.entity.UserAgentEntity">
+        select
+        t.id,
+        t.user_id as userId,
+        u.user_name as userName,
+        t.agent_id as agentId,
+        a.name as agentName,
+        a.host as agentHost
+        from  t_user_agent t
+        inner join t_user u
+        on  t.user_id = u.user_id
+        inner join  t_agent a
+        on  t.agent_id = a.agent_id
+        where u.user_id=#{userId}
+    </select>
+
+
+</mapper>

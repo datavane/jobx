@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jobxhub.service.dao.LogDao">
+
+    <resultMap id="logEntity" type="com.jobxhub.service.entity.LogEntity" >
+        <result column="log_id"         property="logId"/>
+        <result column="agent_id"       property="agentId"/>
+        <result column="agent_name"     property="agentName"/>
+        <result column="user_id"        property="userId"/>
+        <result column="is_read"        property="isRead"/>
+        <result column="message"        property="message"/>
+        <result column="receiver"       property="receiver"/>
+        <result column="result"         property="result"/>
+        <result column="send_time"      property="sendTime"/>
+        <result column="type"           property="type"/>
+    </resultMap>
+
+    <sql id="query_Log">
+        l.log_id,
+        l.agent_id,
+        l.user_id,
+        l.is_read,
+        l.message,
+        l.receiver,
+        l.result,
+        l.send_time,
+        l.type
+    </sql>
+
+    <select id="getById" parameterType="java.lang.Long" resultMap="logEntity">
+        select
+        <include refid="query_Log"/>
+        from  t_log as l
+        where log_id=#{logId}
+    </select>
+
+    <select id="getByPageBean" resultMap="logEntity">
+        select
+        <include refid="query_Log"/>,
+        a.`name` as agent_name
+        from  t_log as l
+        inner join t_agent as a
+        on  l.agent_id = a.agent_id
+        where l.user_id = #{pager.filter.userId}
+        <if test="pager.filter.agentId != null">
+            and l.agent_id = #{pager.filter.agentId}
+        </if>
+        <if test="pager.filter.sendTime != null">
+            and date_format(l.send_time,'%Y-%m-%d')=#{pager.filter.sendTime }
+        </if>
+        limit #{pager.offset}, #{pager.pageSize}
+    </select>
+
+    <select id="getCount" resultType="java.lang.Integer">
+        select count(1)
+        from t_log as l
+        where l.user_id = #{filter.userId}
+        <if test="filter.agentId != null">
+            and l.agent_id = #{filter.agentId}
+        </if>
+        <if test="filter.sendTime != null">
+            and date_format(l.send_time,'%Y-%m-%d')=#{filter.sendTime }
+        </if>
+    </select>
+
+    <select id="getUnRead" resultType="java.lang.Integer">
+        select   <include refid="query_Log"/>,
+        a.`name` as agent_name
+        from  t_log as l
+        inner join t_agent a
+        on l.agent_id = a.agent_id
+        where l.is_read = 0
+        and `type`= 2
+        order by send_time desc
+        limit 5
+    </select>
+
+    <select id="getUnReadCount" resultType="java.lang.Integer">
+        select count(1)
+        from  t_log as l
+        inner join t_agent a
+        on l.agent_id = a.agent_id
+        where l.is_read = 0
+        and `type`= 2
+    </select>
+
+    <insert id="save" parameterType="com.jobxhub.service.entity.LogEntity" useGeneratedKeys="true" keyProperty="logId">
+        insert into t_log (
+            agent_id,
+            user_id,
+            is_read,
+            message,
+            receiver,
+            result,
+            send_time,
+            `type`
+        ) values (
+            #{agentId},
+            #{userId},
+            #{isRead},
+            #{message},
+            #{receiver},
+            #{result},
+            #{sendTime},
+            #{type}
+        )
+    </insert>
+
+    <update id="updateRead">
+        update t_log
+        set is_read = 1
+        where log_id = #{logId}
+    </update>
+
+</mapper>
