@@ -35,6 +35,7 @@ import com.jobxhub.core.support.JobXTools;
 import com.jobxhub.core.model.User;
 import com.jobxhub.core.vo.PageBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -53,6 +54,7 @@ import java.util.*;
         protocol = "${dubbo.protocol.id}",
         registry = "${dubbo.registry.id}"
 )
+@Component
 public class UserServiceImpl implements UserService {
 
     @Autowired
