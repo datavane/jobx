@@ -197,4 +197,13 @@ public class SystemPropertyUtils {
     public static Object setProperty(String key, String value) {
         return System.getProperties().setProperty(key, value);
     }
+
+    public static String getOrElseUpdate(String key, String def) {
+        if (get(key) == null) {
+            setProperty(key,def);
+            return def;
+        }
+        return get(key);
+    }
+
 }

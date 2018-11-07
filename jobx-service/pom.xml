@@ -12,7 +12,7 @@
 
     <modules>
         <module>jobx-service-api</module>
-        <module>jobx-service-provide</module>
+        <module>jobx-service-provider</module>
     </modules>
 
     <properties>
@@ -29,7 +29,7 @@
 
             <dependency>
                 <groupId>com.jobxhub</groupId>
-                <artifactId>jobx-service-provide</artifactId>
+                <artifactId>jobx-service-provider</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>

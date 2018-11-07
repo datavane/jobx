@@ -218,7 +218,7 @@ JOBX_VERSION="1.2.0-RELEASE"
 if [ ! -z "$CLASSPATH" ] ; then
   CLASSPATH="$CLASSPATH":
 fi
-CLASSPATH="$CLASSPATH""$JOBX_BASE"/lib:"$JOBX_BASE"/lib/jobx-service-provide-${JOBX_VERSION}.jar
+CLASSPATH="$CLASSPATH""$JOBX_BASE"/lib:"$JOBX_BASE"/lib/jobx-service-${JOBX_VERSION}.jar
 
 # Bugzilla 37848: When no TTY is available, don't output to console
 have_tty=0
@@ -277,7 +277,7 @@ if [ $have_tty -eq 1 ]; then
   fi
 fi
 
-MAIN=com.jobxhub.service.bootstrap.JobXApplication
+MAIN=com.jobxhub.service.JobXApplication
 
 eval $_NOHUP "\"$RUNJAVA\"" \
     -classpath "\"$CLASSPATH\"" \

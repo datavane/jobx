@@ -6,8 +6,8 @@
         <version>1.2.0-RELEASE</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>jobx-service-provide</artifactId>
-    <name>jobx-service-provide</name>
+    <artifactId>jobx-service-provider</artifactId>
+    <name>jobx-service-provider</name>
 
     <dependencies>
 
@@ -190,7 +190,7 @@
 
     <build>
 
-        <finalName>${project.artifactId}</finalName>
+        <finalName>${project.parent.artifactId}</finalName>
 
         <plugins>
             <plugin>
@@ -212,7 +212,6 @@
                 </configuration>
             </plugin>
 
-            <!-- jar plugin
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
@@ -223,7 +222,7 @@
                             <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                             <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
                             <addClasspath>true</addClasspath>
-                            <mainClass>com.jobxhub.service.bootstrap.JobXApplication</mainClass>
+                            <mainClass>com.jobxhub.service.JobXApplication</mainClass>
                         </manifest>
                     </archive>
                     <excludes>
@@ -247,20 +246,6 @@
                         <phase>install</phase>
                         <goals>
                             <goal>single</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            -->
-
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>${spring-boot.version}</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>repackage</goal>
                         </goals>
                     </execution>
                 </executions>
