@@ -4,25 +4,22 @@ server:
 spring:
   application:
     name: jobX
-  aop:
-    auto: true
-    proxy-target-class: true
 #dubbo--------------------------------
 dubbo:
   application:
     id: jobx-server
     name: jobx-server
   server: true
-  registry:
-    address: zookeeper://127.0.0.1:2181
-  protocol:
-    id: dubbo
-    name: dubbo
-    port: 12345
-    status: server
-
   qos:
     port: 22223
+  registry:
+    id: my-register
+    address: 127.0.0.1:2181
+    protocol: zookeeper
+    client: curator
+    timeout: 30000
+    consumer:
+      client: netty4
 
 # Enables Dubbo All Endpoints
 management:
@@ -37,8 +34,8 @@ management:
     dubbo-services.enabled: true
 
 jobx:
-  service:
-    version: 1.0.0
+  provide:
+    version: 2.0.0
 
 #dubbo end --------------------------------
 

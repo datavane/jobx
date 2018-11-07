@@ -30,16 +30,24 @@ spring:
 #dubbo--------------------------------
 dubbo:
   application:
-    id: jobx-provider
     name: jobx-provider
-  scan:
-    basePackages: com.jobxhub.core.api
+    id: jobx-provider
+    qos-enable: false
+    owner: benjobs,jobxhub
+    organization: jobxhub.com
   registry:
-    address: zookeeper://127.0.0.1:2181
+    id: my-register
+    protocol: zookeeper
+    address: 127.0.0.1:2181:2181
+    client: curator
+    timeout: 30000
   protocol:
     id: dubbo
     name: dubbo
-    port: 12345
+    port: -1
+    status: server
+    threads: 10
+    server: netty4
 # Enables Dubbo All Endpoints
 management:
   endpoint:
@@ -82,8 +90,8 @@ jobx:
   cluster: false
   #（可选值: (redis|memcached）
   cached: memcached
-  service:
-    version: 1.0.0
+  provide:
+    version: 2.0.0
 
 
 
