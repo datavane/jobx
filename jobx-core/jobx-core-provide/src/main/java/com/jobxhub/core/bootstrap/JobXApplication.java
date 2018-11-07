@@ -15,6 +15,10 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 public class JobXApplication {
 
     public static void main(String[] args) {
-        new SpringApplicationBuilder(JobXApplication.class).web(WebApplicationType.NONE).run(args);
+
+        new SpringApplicationBuilder(JobXApplication.class)
+                .web(WebApplicationType.NONE)
+                .run(args);
+
     }
 }
