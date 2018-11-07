@@ -218,7 +218,7 @@ JOBX_VERSION="1.2.0-RELEASE"
 if [ ! -z "$CLASSPATH" ] ; then
   CLASSPATH="$CLASSPATH":
 fi
-CLASSPATH="$CLASSPATH""$JOBX_BASE"/lib:"$JOBX_BASE"/lib/jobx-service-${JOBX_VERSION}.jar
+CLASSPATH="$CLASSPATH""$JOBX_BASE"/lib:"$JOBX_BASE"/lib/jobx-service-provider-${JOBX_VERSION}.jar
 
 # Bugzilla 37848: When no TTY is available, don't output to console
 have_tty=0
@@ -267,11 +267,11 @@ if [ $have_tty -eq 1 ]; then
   echo_w "Using JOBX_BASE:   $JOBX_BASE"
   echo_w "Using JOBX_HOME:   $JOBX_HOME"
   if [ "$1" = "debug" ] ; then
-    echo_w "Using JAVA_HOME:       $JAVA_HOME"
+    echo_w "Using JAVA_HOME:      $JAVA_HOME"
   else
-    echo_w "Using JRE_HOME:        $JRE_HOME"
+    echo_w "Using JRE_HOME:       $JRE_HOME"
   fi
-  echo_w "Using CLASSPATH:       $CLASSPATH"
+  echo_w "Using CLASSPATH:        $CLASSPATH"
   if [ ! -z "$JOBX_PID" ]; then
     echo_w "Using JOBX_PID:    $JOBX_PID"
   fi

@@ -190,7 +190,7 @@
 
     <build>
 
-        <finalName>${project.parent.artifactId}</finalName>
+        <finalName>${project.artifactId}</finalName>
 
         <plugins>
             <plugin>
