@@ -27,7 +27,7 @@ import org.apache.mina.transport.socket.DefaultSocketSessionConfig;
 import org.apache.mina.transport.socket.nio.NioSocketConnector;
 import com.jobxhub.common.job.Request;
 import com.jobxhub.common.job.Response;
-import com.jobxhub.common.logging.LoggerFactory;
+import org.slf4j.LoggerFactory;
 import com.jobxhub.rpc.InvokeCallback;
 import com.jobxhub.rpc.RpcFuture;
 import com.jobxhub.rpc.support.AbstractClient;

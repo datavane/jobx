@@ -24,7 +24,7 @@ package com.jobxhub.agent.process;
 import com.jobxhub.agent.util.ProcessLogger;
 import com.jobxhub.common.Constants;
 import com.jobxhub.common.Constants.ExitCode ;
-import com.jobxhub.common.logging.LoggerFactory;
+import org.slf4j.LoggerFactory;
 import com.jobxhub.common.util.CommandUtils;
 import com.jobxhub.common.util.CommonUtils;
 import com.jobxhub.common.util.IOUtils;

@@ -4,7 +4,7 @@ import com.jobxhub.agent.service.AgentService;
 import com.jobxhub.common.Constants;
 import org.apache.commons.codec.digest.DigestUtils;
 import com.jobxhub.common.ext.ExtensionLoader;
-import com.jobxhub.common.logging.LoggerFactory;
+import org.slf4j.LoggerFactory;
 import com.jobxhub.common.util.SystemPropertyUtils;
 import com.jobxhub.rpc.Server;
 import org.slf4j.Logger;

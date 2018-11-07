@@ -23,7 +23,7 @@ package com.jobxhub.agent.service;
 
 import org.hyperic.sigar.*;
 import com.jobxhub.common.job.Monitor;
-import com.jobxhub.common.logging.LoggerFactory;
+import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
 import java.util.*;

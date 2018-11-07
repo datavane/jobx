@@ -16,7 +16,7 @@
 
 package com.jobxhub.common.util.internal;
 
-import com.jobxhub.common.logging.LoggerFactory;
+import org.slf4j.LoggerFactory;
 import com.jobxhub.common.util.SystemPropertyUtils;
 import org.slf4j.Logger;
 

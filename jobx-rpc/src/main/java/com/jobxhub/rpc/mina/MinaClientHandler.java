@@ -23,7 +23,7 @@ package com.jobxhub.rpc.mina;
 import org.apache.mina.core.service.IoHandlerAdapter;
 import org.apache.mina.core.session.IoSession;
 import com.jobxhub.common.job.Response;
-import com.jobxhub.common.logging.LoggerFactory;
+import org.slf4j.LoggerFactory;
 import com.jobxhub.rpc.RpcFuture;
 import org.slf4j.Logger;
 

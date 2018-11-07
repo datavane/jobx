@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("user")
-public class UserController  {
+public class UserController {
 
     @Reference
     private UserService userService;
 
     @PostMapping("login")
-    public void login(String userName,String password){
-        User user = userService.login(userName,password);
+    public void login(String userName, String password) {
+        User user = userService.login(userName, password);
     }
 
 }

@@ -20,7 +20,7 @@
  */
 package com.jobxhub.registry.zookeeper.support;
 
-import com.jobxhub.common.logging.LoggerFactory;
+import org.slf4j.LoggerFactory;
 import com.jobxhub.registry.zookeeper.ChildListener;
 import com.jobxhub.registry.zookeeper.StateListener;
 import com.jobxhub.registry.URL;

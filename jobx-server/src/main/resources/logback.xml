@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- For assistance related to logback-translator or configuration  -->
+<!-- files in general, please contact the logback user mailing list -->
+<!-- at http://www.qos.ch/mailman/listinfo/logback-user             -->
+<!--                                                                -->
+<!-- For professional support please see                            -->
+<!--    http://www.qos.ch/shop/products/professionalSupport         -->
+<!--                                                                -->
+<configuration>
+    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+        <Target>System.out</Target>
+        <File>jobx.out</File>
+        <encoder>
+            <pattern>%d{ISO8601} %l %c%n%p: %m%n</pattern>
+        </encoder>
+    </appender>
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <Target>System.out</Target>
+        <encoder>
+            <pattern>%-d{yyyy-MM-dd HH:mm:ss} [%p]-[%c] %m%n</pattern>
+        </encoder>
+    </appender>
+    <appender name="debug" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--See http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
+        <!--and http://logback.qos.ch/manual/appenders.html#TimeBasedRollingPolicy-->
+        <!--for further documentation-->
+        <File>jobx.out</File>
+        <Append>true</Append>
+        <encoder>
+            <pattern>%-d{yyyy-MM-dd HH:mm:ss} [%p]-[%c] %m%n</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+    </appender>
+    <appender name="error" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--See http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
+        <!--and http://logback.qos.ch/manual/appenders.html#TimeBasedRollingPolicy-->
+        <!--for further documentation-->
+        <File>jobx.err</File>
+        <Append>true</Append>
+        <encoder>
+            <pattern>%-d{yyyy-MM-dd HH:mm:ss} [%p]-[%c] %m%n</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>error</level>
+        </filter>
+    </appender>
+    <logger name="druid.sql.Statement" level="warn">
+        <appender-ref ref="stdout"/>
+    </logger>
+    <logger name="com.jobxhub.server.dao" level="debug"/>
+    <logger name="druid.sql.DataSource" level="warn">
+        <appender-ref ref="stdout"/>
+    </logger>
+    <logger name="druid.sql.ResultSet" level="warn">
+        <appender-ref ref="stdout"/>
+    </logger>
+    <logger name="druid.sql.Connection" level="warn">
+        <appender-ref ref="stdout"/>
+    </logger>
+    <logger name="druid.sql" level="warn">
+        <appender-ref ref="stdout"/>
+    </logger>
+    <root level="info">
+        <appender-ref ref="console"/>
+        <appender-ref ref="debug"/>
+        <appender-ref ref="error"/>
+    </root>
+</configuration>

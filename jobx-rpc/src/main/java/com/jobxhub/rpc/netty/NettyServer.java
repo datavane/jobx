@@ -33,7 +33,7 @@ import io.netty.util.concurrent.DefaultThreadFactory;
 import com.jobxhub.common.Constants;
 import com.jobxhub.common.job.Request;
 import com.jobxhub.common.job.Response;
-import com.jobxhub.common.logging.LoggerFactory;
+import org.slf4j.LoggerFactory;
 import com.jobxhub.rpc.ServerHandler;
 import com.jobxhub.rpc.Server;
 import org.slf4j.Logger;

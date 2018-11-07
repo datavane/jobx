@@ -29,7 +29,7 @@ import com.jobxhub.agent.service.AgentService;
 import com.jobxhub.agent.util.PropertiesLoader;
 import com.jobxhub.common.Constants;
 import com.jobxhub.common.ext.ExtensionLoader;
-import com.jobxhub.common.logging.LoggerFactory;
+import org.slf4j.LoggerFactory;
 import com.jobxhub.common.util.*;
 import com.jobxhub.rpc.Server;
 import com.jobxhub.rpc.ServerHandler;

@@ -24,7 +24,7 @@ import com.jobxhub.common.exception.RpcException;
 import io.netty.channel.*;
 import com.jobxhub.common.Constants;
 import com.jobxhub.common.job.*;
-import com.jobxhub.common.logging.LoggerFactory;
+import org.slf4j.LoggerFactory;
 import com.jobxhub.common.util.IOUtils;
 import com.jobxhub.rpc.ServerHandler;
 import org.slf4j.Logger;

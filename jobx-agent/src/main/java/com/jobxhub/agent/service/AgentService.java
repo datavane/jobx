@@ -30,7 +30,7 @@ import com.jobxhub.common.job.Action;
 import com.jobxhub.common.job.Monitor;
 import com.jobxhub.common.job.Request;
 import com.jobxhub.common.job.Response;
-import com.jobxhub.common.logging.LoggerFactory;
+import org.slf4j.LoggerFactory;
 import com.jobxhub.common.util.*;
 import com.jobxhub.common.util.collection.HashMap;
 import com.jobxhub.registry.URL;

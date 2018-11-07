@@ -22,7 +22,7 @@
 package com.jobxhub.registry.zookeeper;
 
 import com.jobxhub.common.exception.RpcException;
-import com.jobxhub.common.logging.LoggerFactory;
+import org.slf4j.LoggerFactory;
 import com.jobxhub.common.util.collection.ConcurrentHashSet;
 import com.jobxhub.registry.URL;
 import com.jobxhub.registry.api.Registry;

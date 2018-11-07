@@ -22,7 +22,7 @@
 package com.jobxhub.common.util;
 
 
-import com.jobxhub.common.logging.LoggerFactory;
+import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
 import java.security.AccessController;

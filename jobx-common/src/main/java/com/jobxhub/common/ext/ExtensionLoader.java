@@ -22,7 +22,7 @@
 package com.jobxhub.common.ext;
 
 import com.jobxhub.common.Constants;
-import com.jobxhub.common.logging.LoggerFactory;
+import org.slf4j.LoggerFactory;
 import com.jobxhub.common.util.CommonUtils;
 import org.slf4j.Logger;
 

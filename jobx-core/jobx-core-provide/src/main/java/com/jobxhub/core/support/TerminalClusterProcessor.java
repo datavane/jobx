@@ -25,7 +25,7 @@ package com.jobxhub.core.support;
 import com.jobxhub.common.Constants;
 import com.jobxhub.common.ext.ExtensionLoader;
 import com.jobxhub.common.ext.MethodMark;
-import com.jobxhub.common.logging.LoggerFactory;
+import org.slf4j.LoggerFactory;
 import com.jobxhub.common.util.*;
 import com.jobxhub.registry.URL;
 import com.jobxhub.registry.api.Registry;
