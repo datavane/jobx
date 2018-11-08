@@ -21,9 +21,13 @@
 
 package com.jobxhub.agent.process;
 
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.Logger;
+import ch.qos.logback.core.FileAppender;
+import ch.qos.logback.core.rolling.RollingFileAppender;
 import com.jobxhub.agent.util.ProcessLogger;
 import com.jobxhub.common.Constants;
-import com.jobxhub.common.Constants.ExitCode ;
+import com.jobxhub.common.Constants.ExitCode;
 import org.slf4j.LoggerFactory;
 import com.jobxhub.common.util.CommandUtils;
 import com.jobxhub.common.util.CommonUtils;
@@ -32,7 +36,6 @@ import com.jobxhub.common.util.ReflectUtils;
 import com.sun.jna.Pointer;
 import com.sun.jna.platform.win32.Kernel32;
 import com.sun.jna.platform.win32.WinNT;
-import org.apache.log4j.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -137,7 +140,7 @@ public class JobXProcess {
             //最后以特殊不了见的字符作为log和exitCode+结束时间的分隔符.
             this.processLogger.info(IOUtils.FIELD_TERMINATED_BY + exitCode + IOUtils.TAB + new Date().getTime());
             this.process.destroy();
-            if (this.kill!=null) {
+            if (this.kill != null) {
                 exitCode = this.kill.getValue();
             }
             return exitCode;
@@ -164,7 +167,7 @@ public class JobXProcess {
      * @return String
      */
     public String getLogMessage() {
-        String log = IOUtils.readText(this.logFile, CommonUtils.isWindows()?Constants.CHARSET_GBK:Constants.CHARSET_UTF8);
+        String log = IOUtils.readText(this.logFile, CommonUtils.isWindows() ? Constants.CHARSET_GBK : Constants.CHARSET_UTF8);
         if (CommonUtils.notEmpty(log)) {
             return log.split(IOUtils.FIELD_TERMINATED_BY)[0];
         }
@@ -204,20 +207,20 @@ public class JobXProcess {
         this.startupLatch.await();
     }
 
-    public void kill(ExitCode  kill) {
+    public void kill(ExitCode kill) {
         if (isStarted()) {
             this.kill = kill;
             try {
                 if (CommonUtils.isWindows()) {
                     hardKill();
-                }else {
-                    boolean flag = softKill(1000,TimeUnit.SECONDS);
+                } else {
+                    boolean flag = softKill(1000, TimeUnit.SECONDS);
                     if (!flag) {
                         hardKill();
                     }
                 }
-            }catch (Exception e) {
-                logger.info("[JobX]Kill attempt failed：{}",e.getMessage());
+            } catch (Exception e) {
+                logger.info("[JobX]Kill attempt failed：{}", e.getMessage());
             }
         }
     }
@@ -261,7 +264,7 @@ public class JobXProcess {
      * Force kill this process
      */
     private void hardKill() {
-        if ( isRunning() && this.processId != null ) {
+        if (isRunning() && this.processId != null) {
             try {
                 String cmd = "";
                 if (CommonUtils.isUnix()) {
@@ -273,14 +276,14 @@ public class JobXProcess {
                     } else {
                         cmd = String.format("%s -9 %d", KILL_COMMAND, this.processId);
                     }
-                }else if(CommonUtils.isWindows()) {
-                    cmd = String.format("cmd.exe /c taskkill /PID %s /F /T ",this.processId) ;
+                } else if (CommonUtils.isWindows()) {
+                    cmd = String.format("cmd.exe /c taskkill /PID %s /F /T ", this.processId);
                 }
                 Process process = Runtime.getRuntime().exec(cmd);
                 process.waitFor();
                 process.destroy();
                 this.processLogger.error("[JobX]hardKill attempt successful.");
-            }catch (Exception e) {
+            } catch (Exception e) {
                 this.processLogger.error("[JobX]hardKill attempt failed.", e);
             }
             this.processId = null;
@@ -299,7 +302,7 @@ public class JobXProcess {
                 Field field = ReflectUtils.getField(this.process.getClass(), "pid");
                 Integer pid = field.getInt(this.process);
                 return CommandUtils.getPIDByPPID(pid);
-            }else if(CommonUtils.isWindows()) {
+            } else if (CommonUtils.isWindows()) {
                 Field field = ReflectUtils.getField(this.process.getClass(), "handle");
                 field.setAccessible(true);
                 Kernel32 kernel = Kernel32.INSTANCE;
@@ -308,7 +311,7 @@ public class JobXProcess {
                 handle.setPointer(Pointer.createConstant(handl));
                 return kernel.GetProcessId(handle);
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
@@ -343,6 +346,7 @@ public class JobXProcess {
 
     /**
      * runUser only support linux...
+     *
      * @return
      */
     public boolean isExecAsUser() {
@@ -351,16 +355,11 @@ public class JobXProcess {
 
     private Logger getLogger(String name) {
         FileAppender appender = new RollingFileAppender();
-        appender.setEncoding(CommonUtils.isWindows()?Constants.CHARSET_GBK:Constants.CHARSET_UTF8);
         appender.setFile(this.logFile.getAbsolutePath());
         appender.setAppend(false);
-        PatternLayout layout = new PatternLayout();
-        appender.setLayout(layout);
-        appender.activateOptions();
-        Logger logger = Logger.getLogger(name);
+        Logger logger = (Logger) LoggerFactory.getLogger(name);
         logger.setLevel(Level.INFO);
-        logger.setAdditivity(false);
-        logger.removeAllAppenders();
+        logger.setAdditive(false);
         logger.addAppender(appender);
         return logger;
     }
