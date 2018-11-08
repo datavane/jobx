@@ -33,7 +33,7 @@ public interface UserDao {
 
     int getCount(@Param("filter") Map<String, Object> filter);
 
-    void save(UserEntity user);
+    int save(UserEntity user);
 
     UserEntity getById(Long id);
 

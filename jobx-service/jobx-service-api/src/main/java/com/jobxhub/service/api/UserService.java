@@ -7,5 +7,7 @@ public interface UserService {
 
     User login(String userName, String password);
 
-    void addUser(User model);
+    boolean addUser(User model);
+
+    boolean editPassword(Long id,String currPassword,String newPassword);
 }
