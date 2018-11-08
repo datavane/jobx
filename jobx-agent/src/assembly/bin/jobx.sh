@@ -53,7 +53,7 @@ RES="\E[0m";
 
 
 printf "${GREEN_COLOR}                                        _____       ${RES}\n"
-printf "${GREEN_COLOR}         _________       ______  _____   /  /       ${RES}\n"
+printf "${GREEN_COLOR}         _________       ______  ______  /  /       ${RES}\n"
 printf "${GREEN_COLOR}         ______  / ________   /   ___  \/  /        ${RES}\n"
 printf "${GREEN_COLOR}         ___ _  / _  __ \_   __ \  ___    /         ${RES}\n"
 printf "${GREEN_COLOR}         / /_/ /  / /_/ /   /_/ /  __   . \         ${RES}\n"
