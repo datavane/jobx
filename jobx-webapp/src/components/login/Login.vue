@@ -29,7 +29,7 @@
   export default {
     data() {
       return {
-        slogan: "Let's scheduling easy",
+        slogan: "Let's schedule easy",
         status: true,
         info: '',
         userName: '',

@@ -51,13 +51,18 @@ GREEN_COLOR="\E[1;32m";
 YELLOW_COLOR="\E[1;33m";
 RES="\E[0m";
 
-printf "${GREEN_COLOR}                                       _______     ${RES}\n"
-printf "${GREEN_COLOR}     /\   _________       ______  _____   /  /     ${RES}\n"
-printf "${GREEN_COLOR}    (())  ______  / ________   /   ___  \/  /      ${RES}\n"
-printf "${GREEN_COLOR}     \/   ___ _  / _  __ \_   __ \  ___    /       ${RES}\n"
-printf "${GREEN_COLOR}          / /_/ /  / /_/ /   /_/ /  __   . \       ${RES}\n"
-printf "${GREEN_COLOR}          \____/   \____/ /_.___/  __   / \_\__    ${RES}\n"
-printf "${GREEN_COLOR}                                 _____ /           ${RES}\n\n"
+
+printf "${GREEN_COLOR}                                        _____       ${RES}\n"
+printf "${GREEN_COLOR}         _________       ______  _____   /  /       ${RES}\n"
+printf "${GREEN_COLOR}         ______  / ________   /   ___  \/  /        ${RES}\n"
+printf "${GREEN_COLOR}         ___ _  / _  __ \_   __ \  ___    /         ${RES}\n"
+printf "${GREEN_COLOR}         / /_/ /  / /_/ /   /_/ /  __   . \         ${RES}\n"
+printf "${GREEN_COLOR}         \____/   \____/ /_.___/  __   / \_\__      ${RES}\n"
+printf "${GREEN_COLOR}                                      /             ${RES}\n"
+printf "${GREEN_COLOR}        _____ V1.2.0-RELEASE ___.____/              ${RES}\n"
+printf "${GREEN_COLOR}                                                    ${RES}\n"
+printf "${GREEN_COLOR}                  ----- Let's schedule easy ^_^     ${RES}\n"
+printf "${GREEN_COLOR}                                                    ${RES}\n\n"
 
 
 echo_r () {
