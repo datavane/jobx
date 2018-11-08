@@ -11,16 +11,16 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @EnableTransactionManagement
-@SpringBootApplication( exclude = DataSourceAutoConfiguration.class )
+@SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
 @MapperScan("com.jobxhub.service.dao")
 @EnableDubbo
 public class JobXServiceApplication {
 
     public static void main(String[] args) {
-        SystemPropertyUtils.getOrElseUpdate(Constants.PARAM_JOBX_HOME_KEY,".");
+        SystemPropertyUtils.getOrElseUpdate(Constants.PARAM_JOBX_HOME_KEY, ".");
         new SpringApplicationBuilder(JobXServiceApplication.class)
                 .web(WebApplicationType.NONE)
                 .run(args);
-
     }
+
 }
