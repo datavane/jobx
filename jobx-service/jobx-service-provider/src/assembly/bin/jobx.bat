@@ -30,9 +30,7 @@
 @REM                   of a jobx installation.  If not present, resolves to
 @REM                   the same directory that JOBX_HOME points to.
 @REM
-@REM   JOBX_OUT    (Optional) Full path to a file where stdout and stderr
-@REM                   will be redirected.
-@REM                   Default is $JOBX_BASE/logs/jobx.out
+@REM   JOBX_CONF    (Optional) config path
 @REM
 @REM   JOBX_TMPDIR (Optional) Directory path location of temporary directory
 @REM                   the JVM should use (java.io.tmpdir).  Defaults to
@@ -75,6 +73,7 @@ set JOBX_HOME=%cd%
 if not "%JOBX_BASE%" == "" goto gotBase
 set "JOBX_BASE=%JOBX_HOME%"
 set "JOBX_TMPDIR=%JOBX_BASE%\temp"
+set "JOBX_CONF=%JOBX_BASE%\conf"
 @REM -----------------------------------------------------------------------------
 
 :gotBase
@@ -125,36 +124,23 @@ if "%CLASSPATH%" == "" goto emptyClasspath
 set "CLASSPATH=%CLASSPATH%;"
 
 :emptyClasspath
-set "CLASSPATH=%CLASSPATH%%JOBX_HOME%\lib\jobx-agent-%JOBX_VERSION%.jar"
-
+set "CLASSPATH=%CLASSPATH%%JOBX_HOME%\lib;%JOBX_HOME%\lib\jobx-service-provider-%JOBX_VERSION%.jar"
 
 @REM ----- Execute The Requested Command ---------------------------------------
 echo Using JOBX_BASE:   "%JOBX_BASE%"
 echo Using JOBX_HOME:   "%JOBX_HOME%"
 echo Using JOBX_TMPDIR: "%JOBX_TMPDIR%"
 
-if "%TITLE%" == "" set TITLE=JobX-Agent
+if "%TITLE%" == "" set TITLE=JobX-Service
 set _EXECJAVA=start "%TITLE%" %_RUNJAVA%
-set MAINCLASS=com.jobxhub.agent.bootstrap.JobXAgent
+set MAINCLASS="com.jobxhub.service.JobXServiceApplication"
 
-set Action=%1
-if "%Action%" == "start" goto doAction
-if "%Action%" == "stop" goto doAction
-if "%Action%" == "version" goto doVersion
 
-echo Usage:  jobx ( commands ... )
-echo commands:
-echo  start             Start jobx-Agent
-echo  stop              Stop jobx-Agent
-echo  version           print jobx Version
-goto  end
-
-:doAction
 %_EXECJAVA% ^
     -classpath "%CLASSPATH%" ^
     -Djobx.home="%JOBX_HOME%" ^
-    -Djava.io.tmpdir="%JOBX_TMPDIR%" ^
-    %MAINCLASS% %Action%
+    -Dspring.config.location="%JOBX_CONF%\application.properties" ^
+    %MAINCLASS%
 goto end
 
 :doVersion

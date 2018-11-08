@@ -272,13 +272,13 @@ if [ $have_tty -eq 1 ]; then
   fi
 fi
 
-MAIN="com.jobxhub.service.JobXServiceApplication"
+MAINCLASS="com.jobxhub.service.JobXServiceApplication"
 
 eval $_NOHUP "\"$RUNJAVA\"" \
     -classpath "\"$CLASSPATH\"" \
     -Djobx.home="$JOBX_HOME" \
     -Dspring.config.location="${JOBX_CONF}/application.properties" \
-    ${MAIN} >> /dev/null 2>&1 "&";
+    ${MAINCLASS} >> /dev/null 2>&1 "&";
 
 exit 0;
 
