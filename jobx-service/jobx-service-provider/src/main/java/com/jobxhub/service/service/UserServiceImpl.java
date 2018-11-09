@@ -27,6 +27,7 @@ import com.google.common.collect.Lists;
 import com.jobxhub.common.util.CommonUtils;
 import com.jobxhub.common.util.DigestUtils;
 import com.jobxhub.common.util.IOUtils;
+import com.jobxhub.service.api.ConfigService;
 import com.jobxhub.service.api.UserAgentService;
 import com.jobxhub.service.api.UserService;
 import com.jobxhub.service.entity.UserEntity;

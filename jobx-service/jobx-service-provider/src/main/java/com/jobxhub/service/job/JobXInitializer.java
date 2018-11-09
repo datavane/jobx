@@ -20,7 +20,7 @@
  */
 package com.jobxhub.service.job;
 
-import com.jobxhub.service.service.ConfigService;
+import com.jobxhub.service.api.ConfigService;
 import com.jobxhub.service.service.SchedulerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

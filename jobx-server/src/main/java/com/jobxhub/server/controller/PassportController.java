@@ -53,8 +53,7 @@ public class PassportController {
 
         user.setPassword(null);
         user.setSalt(null);
-
-        return RestResult.rest(200,user);
+        return RestResult.ok(user);
 
     }
 

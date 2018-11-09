@@ -25,6 +25,7 @@ package com.jobxhub.service.service;
 import com.google.common.collect.Lists;
 import com.jobxhub.common.util.CommonUtils;
 import com.jobxhub.common.util.collection.HashMap;
+import com.jobxhub.service.api.AgentService;
 import com.jobxhub.service.entity.AgentGroupEntity;
 import com.jobxhub.service.entity.GroupEntity;
 import com.jobxhub.service.dao.GroupDao;

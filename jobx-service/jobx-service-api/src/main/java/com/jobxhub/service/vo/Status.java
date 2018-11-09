@@ -19,7 +19,7 @@
  * under the License.
  */
 
-package com.jobxhub.service.model;
+package com.jobxhub.service.vo;
 
 
 import java.io.Serializable;

@@ -23,11 +23,11 @@
 package com.jobxhub.service.service;
 
 import com.jobxhub.common.Constants;
+import com.jobxhub.service.api.ConfigService;
 import com.jobxhub.service.model.*;
 import com.jobxhub.service.entity.UserEntity;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
-import freemarker.template.Version;
 import org.apache.commons.mail.HtmlEmail;
 import com.jobxhub.common.util.CommonUtils;
 import com.jobxhub.common.util.DateUtils;

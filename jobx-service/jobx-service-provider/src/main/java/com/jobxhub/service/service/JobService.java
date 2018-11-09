@@ -28,6 +28,7 @@ import static com.jobxhub.common.Constants.*;
 
 import com.google.common.collect.Lists;
 import com.jobxhub.common.Constants;
+import com.jobxhub.service.api.RecordService;
 import com.jobxhub.service.entity.JobEntity;
 import com.jobxhub.service.job.JobXRegistry;
 import com.jobxhub.service.dao.JobDao;

@@ -20,10 +20,8 @@
 
     <update id="update" parameterType="com.jobxhub.service.entity.ConfigEntity">
         update t_config
-        set
-            config_val  =  #{configVal},
-            comment     =  #{comment}
-        where  config_key  = #{configKey}
+        set config_val  =   `#{configVal}`
+        where  config_key  = `#{configKey}`
         <if test="configKey == 'version'">
             and 1=2
         </if>

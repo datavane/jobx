@@ -44,7 +44,7 @@ public class Config implements Serializable {
     private String version;
 
     public static List<ConfigEntity> toEntity(Config config) {
-        Field[] fields = ConfigEntity.class.getDeclaredFields();
+        Field[] fields = Config.class.getDeclaredFields();
         List<ConfigEntity> configBeans = new ArrayList<ConfigEntity>(0);
         for (Field field:fields) {
             try {

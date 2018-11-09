@@ -22,6 +22,7 @@
 package com.jobxhub.service.job;
 
 import com.jobxhub.common.util.collection.HashMap;
+import com.jobxhub.service.api.AgentService;
 import com.jobxhub.service.model.Agent;
 import com.jobxhub.common.Constants;
 import com.jobxhub.common.ext.ExtensionLoader;

@@ -70,7 +70,7 @@
     },
     methods: {
       getInfo() {
-        this.$http.post('/profile/info.do', {}).then(response => {
+        this.$http.post('/profile/info', {}).then(response => {
           this.profile = response.body
           this.profile1 = this.profile
         }, error => {
@@ -80,7 +80,7 @@
       submit () {
         this.$refs.form.validate().then((result) => {
           if(result){
-              this.$http.post('/profile/save.do',this.profile).then(response => {
+              this.$http.post('/profile/save',this.profile).then(response => {
                 if(response.code == 200) {
                   this.$swal({
                     title: 'Successful',

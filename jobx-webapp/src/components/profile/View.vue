@@ -144,7 +144,7 @@
       flatPickr
     },
     mounted() {
-      this.$http.post('/profile/info.do', {}).then(response => {
+      this.$http.post('/profile/info', {}).then(response => {
         this.profile = response.body
         this.profile.execUser =  this.profile.execUser.split(",")
       }, error => {
@@ -165,7 +165,7 @@
           }
           let start = dateArr[0];
           let end = dateArr[1];
-          this.$http.post('/profile/clear.do', {
+          this.$http.post('/profile/clean', {
             start:start,
             end:end
           }).then(response => {

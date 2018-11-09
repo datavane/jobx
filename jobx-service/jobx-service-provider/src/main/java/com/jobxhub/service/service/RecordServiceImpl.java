@@ -25,36 +25,31 @@ package com.jobxhub.service.service;
 import com.google.common.collect.Lists;
 import com.jobxhub.common.Constants;
 import com.jobxhub.common.util.CommonUtils;
+import com.jobxhub.service.api.RecordService;
 import com.jobxhub.service.entity.RecordEntity;
 import com.jobxhub.service.dao.RecordDao;
 import com.jobxhub.service.entity.RecordMessageEntity;
-import com.jobxhub.service.support.JobXTools;
 import com.jobxhub.service.model.Chart;
 import com.jobxhub.service.model.Record;
-import com.jobxhub.service.model.User;
 import com.jobxhub.service.vo.PageBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import javax.servlet.http.HttpSession;
+import com.alibaba.dubbo.config.annotation.Service;
 import java.util.*;
 
 import static com.jobxhub.common.util.CommonUtils.notEmpty;
 
 @Service
-public class RecordService {
+public class RecordServiceImpl implements RecordService {
 
     @Autowired
     private RecordDao recordDao;
 
-    public void getPageBean(HttpSession session, PageBean<Record> pageBean, Record record, boolean status) {
+    @Override
+    public void getPageBean(Long userId,PageBean<Record> pageBean, Record record, boolean status) {
         pageBean.put("record",record);
         pageBean.put("running",status);
         pageBean.put("currTime",new Date());
-        if (!JobXTools.isPermission(session)) {
-            User user = JobXTools.getUser(session);
-            pageBean.put("userId",user.getUserId());
-        }
+        pageBean.put("userId",userId);
         List<RecordEntity> records = recordDao.getByPageBean(pageBean);
         if (CommonUtils.notEmpty(records)) {
             int count = recordDao.getCount(pageBean.getFilter());
@@ -73,11 +68,13 @@ public class RecordService {
         }
     }
 
-    private List<Record> getRedoList(Long recordId) {
+    @Override
+    public List<Record> getRedoList(Long recordId) {
         List<RecordEntity> recordEntitys = recordDao.getRedoList(recordId);
         return Lists.transform(recordEntitys,Record.transferModel);
     }
 
+    @Override
     public Record getById(Long id) {
         RecordEntity recordEntity = recordDao.getById(id);
         Record record = Record.transferModel.apply(recordEntity);
@@ -88,7 +85,8 @@ public class RecordService {
         return record;
     }
 
-    public void merge(Record record) {
+    @Override
+    public void save(Record record) {
         RecordEntity recordEntity = Record.transferEntity.apply(record);
         if (record.getRecordId() == null) {
             recordDao.save(recordEntity);
@@ -110,27 +108,26 @@ public class RecordService {
      * @param jobId
      * @return true:running false:noRun
      */
+    @Override
     public Boolean isRunning(Long jobId) {
         //找到当前任务所有执行过的流程任务
         int count = recordDao.getRunningCount(jobId);
         return count > 0;
     }
 
-    public List<Chart> getReportChart(HttpSession session, String startTime, String endTime) {
+    @Override
+    public List<Chart> getReportChart(Long userId, String startTime, String endTime) {
         Map<String,Object> map = new HashMap<String, Object>(0);
         map.put("start",startTime);
         map.put("end",endTime);
-        if (!JobXTools.isPermission(session)) {
-            map.put("userId",JobXTools.getUserId(session));
-        }
+        map.put("userId",userId);
         return recordDao.getReportChart(map);
     }
 
-    public Chart getTopChart(HttpSession session) {
+    @Override
+    public Chart getTopChart(Long userId) {
         Map<String,Object> map = new HashMap<String, Object>(0);
-        if (!JobXTools.isPermission(session)) {
-            map.put("userId",JobXTools.getUserId(session));
-        }
+        map.put("userId",userId);
         return recordDao.getTopChart(map);
     }
 
@@ -138,17 +135,17 @@ public class RecordService {
         return null;
     }
 
-    public Integer getRecordCount(HttpSession session, Constants.ResultStatus status, Constants.ExecType execType) {
+    @Override
+    public Integer getRecordCount(Long userId, Constants.ResultStatus status, Constants.ExecType execType) {
         Map<String, Object> filter = new HashMap<String, Object>(0);
         filter.put("success", status.getStatus());
         filter.put("execType", execType.getStatus());
-        if (!JobXTools.isPermission(session)) {
-            filter.put("userId",JobXTools.getUserId(session));
-        }
+        filter.put("userId",userId);
         filter.put("status", Arrays.asList(Constants.RunStatus.STOPED.getStatus(), Constants.RunStatus.DONE.getStatus(), Constants.RunStatus.RERUNDONE.getStatus()));
         return recordDao.getRecordCount(filter);
     }
 
+    @Override
     public void deleteRecord(String startTime, String endTime) {
         if (notEmpty(startTime, endTime)) {
             startTime = startTime.trim();

@@ -24,6 +24,7 @@ package com.jobxhub.service.service;
 import com.jobxhub.common.Constants;
 import com.jobxhub.common.util.*;
 import com.jobxhub.common.util.collection.HashMap;
+import com.jobxhub.service.api.ConfigService;
 import com.jobxhub.service.api.UserAgentService;
 import com.jobxhub.service.dao.ConfigDao;
 import com.jobxhub.service.model.Config;
@@ -33,8 +34,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import org.springframework.stereotype.Service;
-
+import com.alibaba.dubbo.config.annotation.Service;
 import javax.sql.DataSource;
 import java.io.File;
 import java.net.URL;
@@ -45,9 +45,9 @@ import java.util.*;
  * Created by ChenHui on 2016/2/17.
  */
 @Service
-public class ConfigService {
+public class ConfigServiceImpl implements ConfigService {
 
-    private final Logger logger = LoggerFactory.getLogger(ConfigService.class);
+    private final Logger logger = LoggerFactory.getLogger(ConfigServiceImpl.class);
 
     @Autowired
     private ConfigDao configDao;
@@ -62,6 +62,7 @@ public class ConfigService {
 
     private String updateSQLFormat = "sql/%s-%s.sql";
 
+    @Override
     public Config getSysConfig() {
         List<ConfigEntity> configList = configDao.getConfig();
         if (CommonUtils.notEmpty(configList)) {
@@ -74,11 +75,13 @@ public class ConfigService {
         return null;
     }
 
-    public void update(Config config) {
+    @Override
+    public boolean update(Config config) {
         List<ConfigEntity> configEntity = Config.toEntity(config);
         for (ConfigEntity bean:configEntity) {
             configDao.update(bean);
         }
+        return true;
     }
 
     public void initDB() throws SQLException {

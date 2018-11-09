@@ -35,7 +35,7 @@ import com.jobxhub.registry.zookeeper.ZookeeperRegistry;
 import com.jobxhub.registry.zookeeper.ZookeeperTransporter;
 import com.jobxhub.service.job.JobXRegistry;
 import com.jobxhub.service.service.TerminalService;
-import com.jobxhub.service.model.Status;
+import com.jobxhub.service.vo.Status;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

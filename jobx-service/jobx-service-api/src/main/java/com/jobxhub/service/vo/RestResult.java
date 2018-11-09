@@ -36,6 +36,17 @@ public class RestResult {
         return restResult;
     }
 
+    public static RestResult ok() {
+        RestResult restResult = rest(200);
+        return restResult;
+    }
+
+    public static RestResult ok(Object body) {
+        RestResult restResult = rest(200);
+        restResult.setBody(body);
+        return restResult;
+    }
+
     public int getCode() {
         return code;
     }

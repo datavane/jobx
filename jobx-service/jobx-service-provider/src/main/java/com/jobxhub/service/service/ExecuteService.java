@@ -29,6 +29,8 @@ import com.jobxhub.common.job.Request;
 import com.jobxhub.common.job.RequestFile;
 import com.jobxhub.common.job.Response;
 import com.jobxhub.rpc.InvokeCallback;
+import com.jobxhub.service.api.AgentService;
+import com.jobxhub.service.api.RecordService;
 import com.jobxhub.service.util.Parser;
 import com.jobxhub.service.job.JobXInvoker;
 import com.jobxhub.service.model.Agent;
@@ -216,7 +218,7 @@ public class ExecuteService {
         record.setStatus(RunStatus.STOPED.getStatus());
         record.setSuccess(ResultStatus.LOST.getStatus());
         record.setEndTime(new Date());
-        recordService.merge(record);
+        recordService.save(record);
     }
 
     /**
@@ -237,7 +239,7 @@ public class ExecuteService {
             record.setMessage(content);
             record.setSuccess(ResultStatus.LOST.getStatus());
             record.setEndTime(new Date());
-            recordService.merge(record);
+            recordService.save(record);
             throw new PingException(content);
         }
     }
@@ -454,7 +456,7 @@ public class ExecuteService {
             this.record = record;
             this.execType = execType;
             //执行前先保存
-            recordService.merge(record);
+            recordService.save(record);
         }
         @Override
         public void done(Response response) {
@@ -464,7 +466,7 @@ public class ExecuteService {
                 //api方式调度,回调结果数据给调用方
                 job.callBack(response,execType);
                 //防止返回的信息太大,往数据库存，有保存失败的情况发生
-                recordService.merge(record);
+                recordService.save(record);
                 if (!response.isSuccess()) {
                     noticeService.notice(job, null);
                     printLog("execute failed:jobName:{} at host:{},port:{},info:{}", job, record.getMessage());
@@ -476,7 +478,7 @@ public class ExecuteService {
                 //信息丢失,继续保存记录
                 printLostJobInfo(job, record.getMessage());
                 record.setMessage(null);
-                recordService.merge(record);
+                recordService.save(record);
                 //发送警告信息
                 noticeService.notice(job, e.getLocalizedMessage());
                 loggerError("execute failed:jobName:%s at host:%s,port:%d,info:%s", job, e.getLocalizedMessage(), e);
@@ -497,21 +499,21 @@ public class ExecuteService {
             this.job = job;
             this.record = record;
             record.setStatus(RunStatus.STOPPING.getStatus());
-            recordService.merge(record);
+            recordService.save(record);
         }
 
         @Override
         public void done(Response response) {
             record.setStatus(RunStatus.STOPED.getStatus());
             record.setEndTime(new Date());
-            recordService.merge(record);
+            recordService.save(record);
             printLog("killed successful :jobName:{} at host:{},port:{},pid:{}", job, record.getPid());
         }
 
         @Override
         public void caught(Throwable err) {
             record.setStatus(RunStatus.STOPED.getStatus());
-            recordService.merge(record);
+            recordService.save(record);
             printLog("killed successful :jobName:{} at host:{},port:{},pid:{}", job, record.getPid());
         }
     }

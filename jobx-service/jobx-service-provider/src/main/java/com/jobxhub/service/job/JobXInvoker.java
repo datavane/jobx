@@ -31,7 +31,7 @@ import com.jobxhub.common.util.CommonUtils;
 import com.jobxhub.rpc.Client;
 import com.jobxhub.rpc.InvokeCallback;
 import com.jobxhub.rpc.Invoker;
-import com.jobxhub.service.service.AgentService;
+import com.jobxhub.service.api.AgentService;
 import com.jobxhub.service.model.Agent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
