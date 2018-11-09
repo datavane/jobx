@@ -21,7 +21,7 @@
                 <mu-text-field v-model="profile.smtpPort" prop="profile.smtpPort"></mu-text-field>
               </mu-form-item>
               <mu-form-item label="SSL验证" help-text="发送邮箱是否需要开启SSL验证">
-                <mu-switch v-model="profile.useSSL"></mu-switch>
+                <mu-switch v-model="profile.useSsl"></mu-switch>
               </mu-form-item>
               <mu-form-item label="告警间隔" help-text="告警间隔,两次发送告警的时间间隔,避免告警太频繁轰炸" prop="spaceTime" :rules="rules.spaceTime">
                 <mu-text-field v-model.number="profile.spaceTime" prop="spaceTime" type="number"></mu-text-field>

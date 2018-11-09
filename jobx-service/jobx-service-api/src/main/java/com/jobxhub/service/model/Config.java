@@ -34,7 +34,7 @@ public class Config implements Serializable {
 
     private String smtpHost;
     private Integer smtpPort;
-    private Boolean useSSL;
+    private Boolean useSsl;
     private String senderEmail;
     private String emailPassword;
     private String sendUrl;
@@ -107,12 +107,12 @@ public class Config implements Serializable {
         this.smtpPort = smtpPort;
     }
 
-    public Boolean getUseSSL() {
-        return useSSL;
+    public Boolean getUseSsl() {
+        return useSsl;
     }
 
-    public void setUseSSL(Boolean useSSL) {
-        this.useSSL = useSSL;
+    public void setUseSsl(Boolean useSsl) {
+        this.useSsl = useSsl;
     }
 
     public String getSenderEmail() {

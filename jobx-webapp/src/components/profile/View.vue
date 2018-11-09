@@ -55,7 +55,7 @@
                  data-placement="top">
               </i>
               <div class="is-ssl form-group toggle-switch toggle-switch--green">
-                <input type="checkbox" class="toggle-switch__checkbox" :checked=profile.useSSL disabled>
+                <input type="checkbox" class="toggle-switch__checkbox" :checked=profile.useSsl disabled>
                 <i class="toggle-switch__helper"></i>
               </div>
             </li>
