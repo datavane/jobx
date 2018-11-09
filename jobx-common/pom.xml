@@ -86,11 +86,6 @@
             <artifactId>log4j-over-slf4j</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>druid</artifactId>
-        </dependency>
-
         <!-- J2EE servlet -->
         <dependency>
             <groupId>javax.servlet</groupId>

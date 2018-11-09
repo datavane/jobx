@@ -22,6 +22,7 @@ package com.jobxhub.service.service;
 
 
 import com.google.common.collect.Lists;
+import com.jobxhub.service.api.UserAgentService;
 import com.jobxhub.service.dao.UserAgentDao;
 import com.jobxhub.service.model.UserAgent;
 import com.jobxhub.service.entity.UserAgentEntity;
@@ -31,11 +32,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class UserAgentService {
+public class UserAgentServiceImpl implements UserAgentService {
 
     @Autowired
     private UserAgentDao userAgentDao;
 
+    @Override
     public void update(Long userId, List<Long> agentIds) {
         userAgentDao.delete(userId);
         for (Long id:agentIds) {
@@ -43,13 +45,16 @@ public class UserAgentService {
         }
     }
 
+    @Override
     public List<UserAgent> getUserAgent(Long userId) {
         List<UserAgentEntity> userAgent = userAgentDao.getUserAgent(userId);
         return Lists.transform(userAgent,UserAgent.transfer);
     }
 
-    public void save(UserAgent userAgent) {
-        userAgentDao.save(userAgent.getUserId(),userAgent.getAgentId());
+
+    @Override
+    public boolean save(UserAgent userAgent) {
+        return userAgentDao.save(userAgent.getUserId(),userAgent.getAgentId()) == 1;
     }
 
 }

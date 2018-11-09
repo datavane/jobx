@@ -24,21 +24,17 @@ package com.jobxhub.service.service;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.google.common.collect.Lists;
-import com.jobxhub.common.Constants;
 import com.jobxhub.common.util.CommonUtils;
 import com.jobxhub.common.util.DigestUtils;
 import com.jobxhub.common.util.IOUtils;
+import com.jobxhub.service.api.UserAgentService;
 import com.jobxhub.service.api.UserService;
 import com.jobxhub.service.entity.UserEntity;
 import com.jobxhub.service.dao.UserDao;
-import com.jobxhub.service.support.JobXTools;
 import com.jobxhub.service.model.User;
 import com.jobxhub.service.vo.PageBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
@@ -49,7 +45,6 @@ import java.util.*;
  */
 
 @Service
-@Component
 public class UserServiceImpl implements UserService {
 
     @Autowired
@@ -76,14 +71,6 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
-    private User getById(Long id) {
-        UserEntity userEntity = userDao.getById(id);
-        if (userEntity != null) {
-            return User.transferModel.apply(userEntity);
-        }
-        return null;
-    }
-
     @Override
     public boolean addUser(User user) {
         UserEntity userEntity = User.transferEntity.apply(user);
@@ -101,6 +88,7 @@ public class UserServiceImpl implements UserService {
         return false;
     }
 
+    @Override
     public PageBean getPageBean(PageBean pageBean) {
         List<UserEntity> userList = userDao.getByPageBean(pageBean);
         int count = userDao.getCount(pageBean.getFilter());
@@ -109,19 +97,24 @@ public class UserServiceImpl implements UserService {
         return pageBean;
     }
 
-    public void updateUser(HttpSession session, User user) {
-        if (!JobXTools.isPermission(session)) {
-            userAgentService.update(user.getUserId(), user.getAgentIds());
+    @Override
+    public boolean updateUser(User user) {
+        userAgentService.update(user.getUserId(), user.getAgentIds());
+        return userDao.update(User.transferEntity.apply(user)) == 1;
+    }
+
+    @Override
+    public boolean uploadImg(Long userId, File file) {
+        try {
+            byte[] bytes = IOUtils.toByteArray(file);
+            return userDao.uploadImg(userId, bytes) == 1;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
         }
-        userDao.update(User.transferEntity.apply(user));
     }
 
-    public void uploadImg(Long userId, File file) throws IOException {
-        byte[] bytes = IOUtils.toByteArray(file);
-        userDao.uploadImg(userId, bytes);
-    }
-
-    @Autowired
+    @Override
     public boolean editPassword(Long id,String currPassword,String newPassword) {
         User user = getById(id);
         byte[] salt = DigestUtils.decodeHex(user.getSalt());
@@ -137,12 +130,14 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
     public boolean existsName(String name) {
         Map<String,Object> map = new HashMap<String, Object>(0);
         map.put("user_name",name);
         return userDao.getCount(map) > 0;
     }
 
+    @Override
     public List<String> getExecUser(Long userId) {
         UserEntity user = userDao.getById(userId);
         if (user.getRoleId() == 999L) {
@@ -154,6 +149,14 @@ public class UserServiceImpl implements UserService {
             }
         }
         return Collections.EMPTY_LIST;
+    }
+
+    private User getById(Long id) {
+        UserEntity userEntity = userDao.getById(id);
+        if (userEntity != null) {
+            return User.transferModel.apply(userEntity);
+        }
+        return null;
     }
 }
 

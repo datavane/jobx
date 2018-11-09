@@ -37,13 +37,13 @@ public interface UserDao {
 
     UserEntity getById(Long id);
 
-    void update(UserEntity user);
+    int update(UserEntity user);
 
     UserEntity getByName(String userName);
 
-    void updatePassword(@Param("userId") Long userId, @Param("password") String password);
+    int updatePassword(@Param("userId") Long userId, @Param("password") String password);
 
-    void uploadImg(@Param("userId") Long userId, @Param("headerPic") byte[] headerPic);
+    int uploadImg(@Param("userId") Long userId, @Param("headerPic") byte[] headerPic);
 
     String getExecUser(@Param("userId") Long userId);
 }

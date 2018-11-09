@@ -27,6 +27,7 @@ import java.util.*;
 import com.google.common.collect.Lists;
 import com.jobxhub.common.Constants;
 import com.jobxhub.common.util.CommonUtils;
+import com.jobxhub.service.api.UserAgentService;
 import com.jobxhub.service.entity.AgentEntity;
 import com.jobxhub.service.vo.PageBean;
 import com.jobxhub.service.vo.RestResult;

@@ -32,7 +32,7 @@ public interface UserAgentDao {
 
     void delete(Long userId);
 
-    void save(@Param("userId") Long userId, @Param("agentId") Long agentId);
+    int save(@Param("userId") Long userId, @Param("agentId") Long agentId);
 
     List<UserAgentEntity> getUserAgent(Long userId);
 

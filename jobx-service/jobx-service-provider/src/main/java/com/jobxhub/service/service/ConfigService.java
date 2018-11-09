@@ -24,6 +24,7 @@ package com.jobxhub.service.service;
 import com.jobxhub.common.Constants;
 import com.jobxhub.common.util.*;
 import com.jobxhub.common.util.collection.HashMap;
+import com.jobxhub.service.api.UserAgentService;
 import com.jobxhub.service.dao.ConfigDao;
 import com.jobxhub.service.model.Config;
 import com.jobxhub.service.model.UserAgent;
