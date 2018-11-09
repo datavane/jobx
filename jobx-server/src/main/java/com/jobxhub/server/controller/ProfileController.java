@@ -1,5 +1,3 @@
-package com.jobxhub.server.controller;
-
 /**
  * Copyright (c) 2015 The JobX Project
  * <p>
@@ -20,6 +18,7 @@ package com.jobxhub.server.controller;
  * specific language governing permissions and limitations
  * under the License.
  */
+package com.jobxhub.server.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.jobxhub.common.Constants;
