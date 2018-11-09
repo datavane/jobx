@@ -40,7 +40,6 @@ import java.io.IOException;
 import java.util.*;
 
 /**
- *
  * Created by ChenHui on 2016/2/18.
  */
 
@@ -115,7 +114,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean editPassword(Long id,String currPassword,String newPassword) {
+    public boolean editPassword(Long id, String currPassword, String newPassword) {
         User user = getById(id);
         byte[] salt = DigestUtils.decodeHex(user.getSalt());
         byte[] hashPassword = DigestUtils.sha1(currPassword.getBytes(), salt, 1024);
@@ -132,8 +131,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean existsName(String name) {
-        Map<String,Object> map = new HashMap<String, Object>(0);
-        map.put("user_name",name);
+        Map<String, Object> map = new HashMap<String, Object>(0);
+        map.put("user_name", name);
         return userDao.getCount(map) > 0;
     }
 
@@ -142,7 +141,7 @@ public class UserServiceImpl implements UserService {
         UserEntity user = userDao.getById(userId);
         if (user.getRoleId() == 999L) {
             return configService.getExecUser();
-        }else {
+        } else {
             String execUser = userDao.getExecUser(userId);
             if (CommonUtils.notEmpty(execUser)) {
                 return Arrays.asList(execUser.split(","));

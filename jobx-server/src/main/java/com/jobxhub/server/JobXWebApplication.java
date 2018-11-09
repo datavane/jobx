@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import com.alibaba.dubbo.config.spring.context.annotation.EnableDubbo;
 
 @CrossOrigin//允许跨越访问
-@SpringBootApplication(scanBasePackages = "com.jobxhub.server.controller")
+@SpringBootApplication(scanBasePackages = "com.jobxhub.server")
 @EnableDubbo
 public class JobXWebApplication {
 

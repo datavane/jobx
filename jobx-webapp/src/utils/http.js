@@ -10,7 +10,8 @@ axios.defaults.withCredentials = true;
 axios.interceptors.request.use(config => {
   config.headers = {
     'X-Requested-With': 'XMLHttpRequest',
-    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+    'Access-Control-Allow-Origin': '*'
   }
   config.baseURL = constant.baseURL
   return config

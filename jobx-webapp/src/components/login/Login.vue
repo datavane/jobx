@@ -50,7 +50,7 @@
           return
         }
         this.status = true
-        this.$http.post('/login.do', {
+        this.$http.post('/passport/login', {
           userName: this.userName,
           password: md5(this.password)
         }).then(response => {
@@ -67,8 +67,8 @@
             case 200:
               this.info = "登录成功,正在进入主页..."
               this.status = true
-              this.login({user: response.body.user})
-              this.$storage.set(this.$const.keys.xsrf, response.body.xsrf)
+              this.login({user: response.body})
+              //this.$storage.set(this.$const.keys.xsrf, response.body.xsrf)
               setTimeout(() => {
                 this.info = ""
                 this.$router.push({path: '/dashboard'})

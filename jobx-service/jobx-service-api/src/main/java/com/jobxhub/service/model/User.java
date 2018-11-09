@@ -50,27 +50,28 @@ public class User implements Serializable {
     private List<Long> agentIds;
     private List<String> execUser;
 
-    public User(){}
+    public User() {
+    }
 
-    public static Function<UserEntity,User> transferModel = new Function<UserEntity, User>() {
+    public static Function<UserEntity, User> transferModel = new Function<UserEntity, User>() {
         @Override
         public User apply(UserEntity input) {
             User user = new User();
-            BeanUtils.copyProperties(user,user);
-            if (user!=null&&user.getExecUser()!=null) {
+            BeanUtils.copyProperties(input, user);
+            if (user != null && user.getExecUser() != null) {
                 user.setExecUser(Arrays.asList(input.getExecUser().split(",")));
             }
             return user;
         }
     };
 
-    public static Function<User,UserEntity> transferEntity = new Function<User,UserEntity>() {
+    public static Function<User, UserEntity> transferEntity = new Function<User, UserEntity>() {
         @Override
         public UserEntity apply(User input) {
             UserEntity userEntity = new UserEntity();
-            BeanUtils.copyProperties(input,userEntity);
-            if (input!=null&&input.getExecUser()!=null) {
-                userEntity.setExecUser(StringUtils.join(input.getExecUser(),","));
+            BeanUtils.copyProperties(input, userEntity);
+            if (input != null && input.getExecUser() != null) {
+                userEntity.setExecUser(StringUtils.join(input.getExecUser(), ","));
             }
             return userEntity;
         }
