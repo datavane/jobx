@@ -33,3 +33,43 @@
 .mu-ripple-wrapper {
   background-color:rgba(255, 255, 255, .125)
 }
+
+
+
+/**
+table style
+**/
+.dataTables_wrapper {
+  margin-top: 20px;
+  margin-bottom: 30px;
+}
+
+.mu-elevation-1 {
+  -webkit-box-shadow:none;
+  box-shadow:none;
+}
+
+.mu-paper{
+  background-color:rgba(0, 0, 0, 0) !important;
+  .mu-table{
+      background-color:rgba(0, 0, 0, 0)  !important;
+      th {
+        color:rgba(255,255,255,.95)!important;
+        padding: 1rem 1.5rem;
+        vertical-align: top;
+        font-weight:600;
+      }
+      td {
+        border-bottom: 1px solid rgba(255,255,255,.125);
+        padding: 1rem 1.5rem;
+        vertical-align: top;
+      }
+      tr {
+          color:rgba(255,255,255,.87)!important;
+      }
+      .is-hover{
+        background: none !important;
+      }
+  }
+}
+

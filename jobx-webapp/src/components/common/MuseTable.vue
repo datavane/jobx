@@ -24,17 +24,18 @@
         </div>
       </div>
       <mu-paper :z-depth="1">
-        <mu-data-table stripe :loading="loading" :columns="columns" :sort.sync="sort" @sort-change="sortHandle" :data="pager.result">
-          <!--
-          <template slot="expand" slot-scope="prop">
-            <div style="padding: 24px;" >{{prop.row.command}}</div>
-          </template>
-          -->
+        <mu-data-table
+          :loading="loading"
+          :columns="columns"
+          :sort.sync="sort"
+          @sort-change="sortHandle"
+          :data="pager.result">
         </mu-data-table>
       </mu-paper>
       <mu-flex justify-content="center" class="pagination">
         <mu-pagination raised circle :total="pager.totalRecord" :current.sync="pager.pageNo" :size="pager.pageSize" :count="pager.pageTotal" @change="gotoPage"></mu-pagination>
       </mu-flex>
+
     </div>
   </div>
 </template>
@@ -107,35 +108,6 @@
     }
   }
 </script>
-
-<style lang="scss">
-
-.pagination{
-  margin-top: 20px !important;
-}
-.mu-paper{
-  background-color:rgba(0, 0, 0, 0) !important;
-  .mu-table{
-      background-color:rgba(0, 0, 0, 0)  !important;
-      th {
-        color:rgba(255,255,255,.54)!important;
-        padding: 1rem 1.5rem;
-        vertical-align: top;
-        font-weight:600;
-      }
-      td{
-        border-top: 1px solid rgba(255, 255, 255, .125);
-        padding: 1rem 1.5rem;
-        vertical-align: top;
-      }
-      tr{
-          color:rgba(255,255,255,.87)!important;
-      }
-  }
-}
-</style>
-
-
 
 
 

@@ -22,6 +22,7 @@
 
 package com.jobxhub.service.service;
 
+import com.jobxhub.service.api.JobService;
 import com.jobxhub.service.job.JobXRegistry;
 import com.jobxhub.service.model.Job;
 import org.quartz.*;

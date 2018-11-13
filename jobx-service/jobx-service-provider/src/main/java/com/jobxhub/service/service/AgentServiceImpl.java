@@ -29,6 +29,7 @@ import com.jobxhub.common.Constants;
 import com.jobxhub.common.util.CommonUtils;
 import com.jobxhub.service.api.AgentService;
 import com.jobxhub.service.api.ConfigService;
+import com.jobxhub.service.api.JobService;
 import com.jobxhub.service.api.UserAgentService;
 import com.jobxhub.service.entity.AgentEntity;
 import com.jobxhub.service.vo.PageBean;

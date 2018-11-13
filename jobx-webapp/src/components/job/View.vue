@@ -15,15 +15,15 @@
     },
     data() {
       return {
-        url: "/job/view.do",
+        url: "/job/view",
         columns: [
-          {title: '执行器', name: 'agentName',align: 'center',sortable: true },
-          {title: '作业名称', name: 'jobName',align: 'center',sortable: true },
-          {title: '作业人	', name: 'operateUname',align: 'center',sortable: true },
-          {title: '暂停', name: 'pause',align: 'center',sortable: true,filter:"boolean"},
-          {title: '失败重跑', name: 'redo',align: 'center',sortable: true,filter:"boolean"},
-          {title: '作业类型', name: 'jobType',align: 'center',sortable: true,filter:{0:'单体作业',1:'流程作业'}},
-          {title: '执行规则', name: 'cronExp',align: 'center',sortable: true}
+          {title: '执行器', name: 'agentName',sortable: true },
+          {title: '作业名称', name: 'jobName',sortable: true },
+          {title: '作业人	', name: 'operateUname',sortable: true },
+          {title: '暂停', name: 'pause',sortable: true,filter:"boolean"},
+          {title: '失败重跑', name: 'redo',sortable: true,filter:"boolean"},
+          {title: '作业类型', name: 'jobType',sortable: true,filter:{0:'单体作业',1:'流程作业'}},
+          {title: '执行规则', name: 'cronExp',sortable: true}
         ]
       }
     }

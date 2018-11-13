@@ -30,6 +30,7 @@ import com.jobxhub.common.job.RequestFile;
 import com.jobxhub.common.job.Response;
 import com.jobxhub.rpc.InvokeCallback;
 import com.jobxhub.service.api.AgentService;
+import com.jobxhub.service.api.JobService;
 import com.jobxhub.service.api.RecordService;
 import com.jobxhub.service.util.Parser;
 import com.jobxhub.service.job.JobXInvoker;
