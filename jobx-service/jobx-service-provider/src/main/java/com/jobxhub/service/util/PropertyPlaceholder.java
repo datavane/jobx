@@ -1,16 +1,15 @@
 package com.jobxhub.service.util;
 
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 @Component
+@ConfigurationProperties(prefix = "jobx",ignoreInvalidFields = true)
 public class PropertyPlaceholder {
 
-    @Value("${jobx.registry}")
     private String registry;
 
-    @Value("${jobx.monitor-port}")
     private String monitorPort;
 
     public String getRegistry() {
