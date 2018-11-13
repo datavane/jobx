@@ -23,8 +23,10 @@
 
     <include resource="org/springframework/boot/logging/logback/defaults.xml" />
     <include resource="org/springframework/boot/logging/logback/console-appender.xml" />
+    <include resource="org/springframework/boot/logging/logback/file-appender.xml" />
 
     <property name="LOG_HOME" value="${jobx.home}/logs"/>
+
     <!-- 控制台输出 -->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
@@ -57,8 +59,11 @@
     <logger name="java.sql.PreparedStatement" level="DEBUG"/>
     <!-- 日志输出级别 -->
     <root level="INFO">
+        <appender-ref ref="CONSOLE" />
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="FILE"/>
     </root>
 
 </configuration>
+
+
