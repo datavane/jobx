@@ -30,8 +30,7 @@ import com.jobxhub.service.dao.ConfigDao;
 import com.jobxhub.service.model.Config;
 import com.jobxhub.service.model.UserAgent;
 import com.jobxhub.service.entity.ConfigEntity;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.alibaba.dubbo.config.annotation.Service;
@@ -45,9 +44,8 @@ import java.util.*;
  * Created by ChenHui on 2016/2/17.
  */
 @Service
+@Slf4j
 public class ConfigServiceImpl implements ConfigService {
-
-    private final Logger logger = LoggerFactory.getLogger(ConfigServiceImpl.class);
 
     @Autowired
     private ConfigDao configDao;
@@ -138,7 +136,7 @@ public class ConfigServiceImpl implements ConfigService {
         String sqlFile = String.format(updateSQLFormat, oldVersion, Constants.JOBX_VERSION);
         URL url = Thread.currentThread().getContextClassLoader().getResource(sqlFile);
         if (url == null) {
-            logger.warn("[JobX] version {} up to {} update'sql not found...", oldVersion, Constants.JOBX_VERSION);
+            log.warn("[JobX] version {} up to {} update'sql not found...", oldVersion, Constants.JOBX_VERSION);
             return;
         }
 
@@ -150,10 +148,10 @@ public class ConfigServiceImpl implements ConfigService {
             if (CommonUtils.notEmpty(map) && map.size() == 1) {
                 Map.Entry<String, String> entry = map.entrySet().iterator().next();
                 try {
-                    logger.info("[JobX] update sql[{}] Starting...", entry.getValue());
+                    log.info("[JobX] update sql[{}] Starting...", entry.getValue());
                     statement.executeUpdate(entry.getKey());
                 } catch (Exception e) {
-                    logger.error("[JobX] update sql[{}] error:{}", entry.getValue(), e.getMessage());
+                    log.error("[JobX] update sql[{}] error:{}", entry.getValue(), e.getMessage());
                 }
             }
         }
@@ -167,7 +165,7 @@ public class ConfigServiceImpl implements ConfigService {
     private void updateVersionV110ToV120(String oldVersion,Statement statement ) throws SQLException {
         if ( oldVersion.equalsIgnoreCase("V1.1.0") &&
                 Constants.JOBX_VERSION.equalsIgnoreCase("V1.2.0")) {
-            logger.info("[JobX] V1.1.0 upto V1.2.0  processing the agentIds field in the t_user table...");
+            log.info("[JobX] V1.1.0 upto V1.2.0  processing the agentIds field in the t_user table...");
             String sql = "select user_id,agentIds from t_user";
             ResultSet rs = statement.executeQuery(sql);
             while (rs.next()) {
@@ -182,7 +180,7 @@ public class ConfigServiceImpl implements ConfigService {
                     }
                 }
             }
-            logger.info("[JobX] V1.1.0 upto V1.2.0  drop column agentIds from t_user...");
+            log.info("[JobX] V1.1.0 upto V1.2.0  drop column agentIds from t_user...");
             sql = "alter table t_user drop column agentIds";
             statement.executeUpdate(sql);
         }
@@ -202,10 +200,10 @@ public class ConfigServiceImpl implements ConfigService {
             if (CommonUtils.notEmpty(map) && map.size() == 1) {
                 Map.Entry<String, String> entry = map.entrySet().iterator().next();
                 try {
-                    logger.info("[JobX] create table Starting...{}\n{}", entry.getValue(), separator);
+                    log.info("[JobX] create table Starting...{}\n{}", entry.getValue(), separator);
                     statement.executeUpdate(entry.getKey());
                 } catch (Exception e) {
-                    logger.error("[JobX] create table Error:sql:{},info:{}", entry.getValue(), e.getMessage());
+                    log.error("[JobX] create table Error:sql:{},info:{}", entry.getValue(), e.getMessage());
                 }
             }
         }

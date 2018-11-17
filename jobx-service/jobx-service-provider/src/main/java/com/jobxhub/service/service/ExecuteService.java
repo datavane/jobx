@@ -37,8 +37,7 @@ import com.jobxhub.service.job.JobXInvoker;
 import com.jobxhub.service.model.Agent;
 import com.jobxhub.service.model.Job;
 import com.jobxhub.service.model.Record;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -47,10 +46,9 @@ import java.util.concurrent.*;
 
 import static com.jobxhub.common.Constants.*;
 
+@Slf4j
 @Component
 public class ExecuteService {
-
-    private Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private RecordService recordService;
@@ -155,9 +153,7 @@ public class ExecuteService {
         exec.shutdown();
         while (true) {
             if (exec.isTerminated()) {
-                if (logger.isInfoEnabled()) {
-                    logger.info("[JobX]executeBatchJob done!");
-                }
+                log.info("[JobX]executeBatchJob done!");
                 break;
             }
         }
@@ -256,7 +252,7 @@ public class ExecuteService {
                     Constants.RPC_TIMEOUT,
                     agent.getProxyId()));
         } catch (Exception e) {
-            logger.error("[JobX]ping failed,host:{},port:{}", agent.getHost(), agent.getPort());
+            log.error("[JobX]ping failed,host:{},port:{}", agent.getHost(), agent.getPort());
         }
 
         ConnStatus status = ConnStatus.DISCONNECTED;
@@ -314,7 +310,7 @@ public class ExecuteService {
             );
             return response.getMessage();
         } catch (Exception e) {
-            logger.error("[JobX]getguid failed,host:{},port:{}", agent.getHost(), agent.getPort());
+            log.error("[JobX]getguid failed,host:{},port:{}", agent.getHost(), agent.getPort());
             return null;
         }
     }
@@ -331,7 +327,7 @@ public class ExecuteService {
                     agent.getProxyId())
            ).getMessage();
         } catch (Exception e) {
-            logger.error("[JobX]ping failed,host:{},port:{}", agent.getHost(), agent.getPort());
+            log.error("[JobX]ping failed,host:{},port:{}", agent.getHost(), agent.getPort());
             return null;
         }
     }
@@ -424,21 +420,15 @@ public class ExecuteService {
 
     private void printLog(String str, Job job, String message) {
         if (message != null) {
-            if (logger.isInfoEnabled()) {
-                logger.info(str, job.getJobName(), job.getAgent().getHost(), job.getAgent().getPort(), message);
-            }
+            log.info(str, job.getJobName(), job.getAgent().getHost(), job.getAgent().getPort(), message);
         } else {
-            if (logger.isInfoEnabled()) {
-                logger.info(str, job.getJobName(), job.getAgent().getHost(), job.getAgent().getPort());
-            }
+            log.info(str, job.getJobName(), job.getAgent().getHost(), job.getAgent().getPort());
         }
     }
 
-    private String loggerError(String str, Job job, String message, Exception e) {
+    private String logError(String str, Job job, String message, Exception e) {
         String errorInfo = String.format(str, job.getJobName(), job.getAgent().getHost(), job.getAgent().getPort(), message);
-        if (logger.isErrorEnabled()) {
-            logger.error(errorInfo, e);
-        }
+        log.error(errorInfo, e);
         return errorInfo;
     }
 
@@ -461,7 +451,7 @@ public class ExecuteService {
         }
         @Override
         public void done(Response response) {
-            logger.info("[JobX]:execute response:{}", response.toString());
+            log.info("[JobX]:execute response:{}", response.toString());
             try {
                 responseToRecord(response,record);
                 //api方式调度,回调结果数据给调用方
@@ -482,7 +472,7 @@ public class ExecuteService {
                 recordService.save(record);
                 //发送警告信息
                 noticeService.notice(job, e.getLocalizedMessage());
-                loggerError("execute failed:jobName:%s at host:%s,port:%d,info:%s", job, e.getLocalizedMessage(), e);
+                log.error("execute failed:jobName:%s at host:%s,port:%d,info:%s", job, e.getLocalizedMessage(), e);
             }
         }
         @Override

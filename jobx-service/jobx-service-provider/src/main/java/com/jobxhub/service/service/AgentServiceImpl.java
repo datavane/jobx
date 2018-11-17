@@ -40,6 +40,7 @@ import com.jobxhub.service.support.JobXTools;
 import com.jobxhub.service.model.Agent;
 import com.jobxhub.service.model.Job;
 import com.jobxhub.service.model.User;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -48,6 +49,7 @@ import com.alibaba.dubbo.config.annotation.Service;
 import javax.servlet.http.HttpSession;
 
 @Service
+@Slf4j
 public class AgentServiceImpl implements AgentService {
 
     @Autowired

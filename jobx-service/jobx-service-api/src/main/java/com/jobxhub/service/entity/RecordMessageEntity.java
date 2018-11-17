@@ -22,9 +22,12 @@
 package com.jobxhub.service.entity;
 
 
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.Date;
 
+@Data
 public class RecordMessageEntity implements Serializable {
 
     private Long recordId;
@@ -33,27 +36,4 @@ public class RecordMessageEntity implements Serializable {
 
     private Date startTime;
 
-    public Long getRecordId() {
-        return recordId;
-    }
-
-    public void setRecordId(Long recordId) {
-        this.recordId = recordId;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public Date getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(Date startTime) {
-        this.startTime = startTime;
-    }
 }

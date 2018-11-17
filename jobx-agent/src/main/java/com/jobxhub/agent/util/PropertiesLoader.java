@@ -22,8 +22,7 @@
 package com.jobxhub.agent.util;
 
 import com.jobxhub.common.Constants;
-import org.slf4j.LoggerFactory;
-import org.slf4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -37,9 +36,8 @@ import java.util.Properties;
  *
  * @author benjobs.
  */
+@Slf4j
 public class PropertiesLoader {
-
-    private static final Logger logger = LoggerFactory.getLogger(PropertiesLoader.class);
 
     private static Properties properties = null;
 
@@ -86,25 +84,19 @@ public class PropertiesLoader {
                 properties.load(is);
             } catch (Throwable t) {
                 handleThrowable(t);
-                if (logger.isWarnEnabled()) {
-                    logger.warn("[JobX] init properties error:{}", t.getMessage());
-                }
+                log.warn("[JobX] init properties error:{}", t.getMessage());
             } finally {
                 try {
                     is.close();
                 } catch (IOException ioe) {
-                    if (logger.isWarnEnabled()) {
-                        logger.warn("[JobX]Could not close jobx properties file", ioe);
-                    }
+                    log.warn("[JobX]Could not close jobx properties file", ioe);
                 }
             }
         }
 
         if (is == null) {
             // Do something
-            if (logger.isWarnEnabled()) {
-                logger.warn("[JobX]Failed to load jobx properties file");
-            }
+            log.warn("[JobX]Failed to load jobx properties file");
             // That's fine - we have reasonable defaults.
             properties = new Properties();
         }

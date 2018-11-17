@@ -21,11 +21,14 @@
 
 package com.jobxhub.service.entity;
 
+import lombok.Data;
+
 import javax.persistence.Transient;
 
 /**
  * Created by th on 2017/5/18.
  */
+@Data
 public class AgentGroupEntity {
 
     private Long groupId;
@@ -41,43 +44,5 @@ public class AgentGroupEntity {
     @Transient
     private String agentHost;
 
-    public Long getGroupId() {
-        return groupId;
-    }
 
-    public void setGroupId(Long groupId) {
-        this.groupId = groupId;
-    }
-
-    public Long getAgentId() {
-        return agentId;
-    }
-
-    public void setAgentId(Long agentId) {
-        this.agentId = agentId;
-    }
-
-    public String getGroupName() {
-        return groupName;
-    }
-
-    public void setGroupName(String groupName) {
-        this.groupName = groupName;
-    }
-
-    public String getAgentName() {
-        return agentName;
-    }
-
-    public void setAgentName(String agentName) {
-        this.agentName = agentName;
-    }
-
-    public String getAgentHost() {
-        return agentHost;
-    }
-
-    public void setAgentHost(String agentHost) {
-        this.agentHost = agentHost;
-    }
 }

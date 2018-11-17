@@ -33,10 +33,9 @@ import io.netty.util.concurrent.DefaultThreadFactory;
 import com.jobxhub.common.Constants;
 import com.jobxhub.common.job.Request;
 import com.jobxhub.common.job.Response;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import com.jobxhub.rpc.ServerHandler;
 import com.jobxhub.rpc.Server;
-import org.slf4j.Logger;
 
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -46,9 +45,8 @@ import static com.jobxhub.common.util.ExceptionUtils.stackTrace;
 /**
  * @author benjobs
  */
+@Slf4j
 public class NettyServer implements Server {
-
-    private static Logger logger = LoggerFactory.getLogger(NettyServer.class);
 
     private ServerBootstrap bootstrap;
     private EventLoopGroup bossGroup;
@@ -118,14 +116,10 @@ public class NettyServer implements Server {
                 threadPoolExecutor.shutdown();
                 bossGroup.shutdownGracefully();
                 workerGroup.shutdownGracefully();
-                if (logger.isInfoEnabled()) {
-                    logger.error("[JobX] NettyServer stop done");
-                }
+                log.error("[JobX] NettyServer stop done");
             }
         } catch (Throwable e) {
-            if (logger.isErrorEnabled()) {
-                logger.error("[JobX] NettyServer stop error:{}", stackTrace(e));
-            }
+            log.error("[JobX] NettyServer stop error:{}", stackTrace(e));
         }finally {
             serverDaemon.interrupt();
         }

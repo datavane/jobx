@@ -53,7 +53,7 @@ public class PageBean<T> implements Serializable {
     protected List<T> result = Collections.emptyList();
     protected long totalRecord = 0;
 
-    private Map<String,Object> filter = new HashMap<String, Object>();
+    private Map<String, Object> filter = new HashMap<String, Object>();
 
     // -- 构造函数 --//
     public PageBean() {
@@ -97,7 +97,7 @@ public class PageBean<T> implements Serializable {
     }
 
     public Integer getOffset() {
-        return (this.pageNo-1) * this.pageSize;
+        return (this.pageNo - 1) * this.pageSize;
     }
 
     public void setOffset(Integer offset) {
@@ -207,9 +207,17 @@ public class PageBean<T> implements Serializable {
      */
     public void setTotalRecord(final Integer totalRecord) {
         this.totalRecord = totalRecord;
-        this.pageTotal = totalRecord/pageSize+(totalRecord%pageSize>0?1:0);
+        this.pageTotal = totalRecord / pageSize + (totalRecord % pageSize > 0 ? 1 : 0);
     }
 
+
+    public Integer getPageTotal() {
+        return pageTotal;
+    }
+
+    public void setPageTotal(Integer pageTotal) {
+        this.pageTotal = pageTotal;
+    }
 
     /**
      * 是否还有下一页.
@@ -268,22 +276,22 @@ public class PageBean<T> implements Serializable {
         this.filter = filter;
     }
 
-    public void put(String key,Object val){
-        if ( key!=null && val!=null ) {
+    public void put(String key, Object val) {
+        if (key != null && val != null) {
             this.filter.put(key, val);
         }
     }
 
     public Map<String, Object> toMap() {
         return ParamsMap.map()
-                .set("pageNo",pageNo)
-                .set("pageSize",pageSize)
-                .set("pageTotal",pageTotal)
-                .set("totalRecord",totalRecord)
-                .set("order",order)
-                .set("orderBy",orderBy)
-                .set("filter",filter)
-                .set("data",result);
+                .set("pageNo", pageNo)
+                .set("pageSize", pageSize)
+                .set("pageTotal", pageTotal)
+                .set("totalRecord", totalRecord)
+                .set("order", order)
+                .set("orderBy", orderBy)
+                .set("filter", filter)
+                .set("data", result);
 
     }
 }

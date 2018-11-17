@@ -34,8 +34,7 @@ import com.jobxhub.service.support.TerminalClient;
 import com.jobxhub.service.model.Terminal;
 import com.jobxhub.service.model.User;
 import com.jobxhub.service.vo.PageBean;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -75,11 +74,9 @@ import static com.jobxhub.common.util.CommonUtils.notEmpty;
  * <p>
  * <hr style="color:RED"/>
  */
-
+@Slf4j
 @Service
 public class TerminalService {
-
-    private static Logger logger = LoggerFactory.getLogger(TerminalService.class);
 
     @Autowired
     private TerminalDao terminalDao;
@@ -153,9 +150,7 @@ public class TerminalService {
             } else if (e.getMessage().toLowerCase().contains("auth fail") || e.getMessage().toLowerCase().contains("auth cancel")) {
                 return Terminal.AuthStatus.AUTH_FAIL;
             } else if (e.getMessage().toLowerCase().contains("unknownhostexception")) {
-                if (logger.isInfoEnabled()) {
-                    logger.info("[JobX]:error: DNS Lookup Failed ");
-                }
+                log.info("[JobX]:error: DNS Lookup Failed ");
                 return Terminal.AuthStatus.HOST_FAIL;
             } else if (e instanceof BadPaddingException) {//RSA解码错误..密码错误...
                 return Terminal.AuthStatus.AUTH_FAIL;

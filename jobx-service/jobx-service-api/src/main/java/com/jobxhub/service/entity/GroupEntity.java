@@ -21,12 +21,15 @@
 
 package com.jobxhub.service.entity;
 
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by th on 2017/5/8.
  */
+@Data
 public class GroupEntity implements Serializable {
 
     private Long groupId;
@@ -40,43 +43,4 @@ public class GroupEntity implements Serializable {
     private Date createTime;
 
 
-    public Long getGroupId() {
-        return groupId;
-    }
-
-    public void setGroupId(Long groupId) {
-        this.groupId = groupId;
-    }
-
-    public String getGroupName() {
-        return groupName;
-    }
-
-    public void setGroupName(String groupName) {
-        this.groupName = groupName;
-    }
-
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
 }

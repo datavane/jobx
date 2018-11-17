@@ -2,23 +2,20 @@ package com.jobxhub.agent.test;
 
 import com.jobxhub.agent.service.AgentService;
 import com.jobxhub.common.Constants;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
 import com.jobxhub.common.ext.ExtensionLoader;
-import org.slf4j.LoggerFactory;
-import com.jobxhub.common.util.SystemPropertyUtils;
 import com.jobxhub.rpc.Server;
-import org.slf4j.Logger;
 
 import java.io.*;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
 import java.lang.reflect.InvocationTargetException;
 
+@Slf4j
 public class BootstrapTest implements Serializable {
 
     private static final long serialVersionUID = 20150614L;
-
-    private static final Logger logger = LoggerFactory.getLogger(SystemPropertyUtils.class);
 
     /**
      * thrift server
@@ -69,7 +66,7 @@ public class BootstrapTest implements Serializable {
                 }
             }).start();
 
-            logger.info("[JobX]agent started @ port:{},pid:{}", port, getPid());
+            log.info("[JobX]agent started @ port:{},pid:{}", port, getPid());
             Thread.sleep(5000);
             AgentService.register(System.getProperty(Constants.PARAM_JOBX_HOST_KEY),port);
 

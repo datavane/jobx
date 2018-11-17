@@ -23,11 +23,10 @@ package com.jobxhub.common.util;
 
 
 import com.jobxhub.common.Constants;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.PumpStreamHandler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.lang.reflect.Field;
@@ -45,11 +44,10 @@ import java.util.concurrent.CountDownLatch;
  * @date: 2012-10-9 pa 18:03<br/><br/>
  **/
 @SuppressWarnings({"rawtypes", "unchecked"})
+@Slf4j
 public abstract class CommandUtils implements Serializable {
 
     private static final long serialVersionUID = 6458428317155311192L;
-
-    private static Logger logger = LoggerFactory.getLogger(CommandUtils.class);
 
     public static String DEFAULT_USER = "root";
 
@@ -131,15 +129,15 @@ public abstract class CommandUtils implements Serializable {
             process = builder.start();
             int processId = getPID(process);
             if (processId == 0) {
-                logger.debug("[JobX]Spawned thread with unknown process id");
+                log.debug("[JobX]Spawned thread with unknown process id");
             } else {
-                logger.debug("[JobX]Spawned thread with process id " + processId);
+                log.debug("[JobX]Spawned thread with process id " + processId);
             }
             startupLatch.countDown();
             try {
                 exitCode = process.waitFor();
             } catch (InterruptedException e) {
-                logger.info("[JobX]Process interrupted. Exit code is " + exitCode, e);
+                log.info("[JobX]Process interrupted. Exit code is " + exitCode, e);
             }
 
             completeLatch.countDown();
@@ -153,10 +151,10 @@ public abstract class CommandUtils implements Serializable {
                     .append("\n")
                     .toString();
 
-            logger.info("[JobX] executeScript,cmd:{},resulr:{}",script,output);
+            log.info("[JobX] executeScript,cmd:{},resulr:{}",script,output);
 
         }catch (Exception e) {
-            logger.error("[JobX] executeScript,error:{}",e.getMessage());
+            log.error("[JobX] executeScript,error:{}",e.getMessage());
         }finally {
             if (process!=null) {
                 IOUtils.closeQuietly(process.getInputStream());

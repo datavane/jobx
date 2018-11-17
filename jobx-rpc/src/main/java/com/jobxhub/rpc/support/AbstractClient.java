@@ -26,6 +26,7 @@ import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.mina.core.future.ConnectFuture;
 import org.apache.mina.core.future.IoFuture;
 import org.apache.mina.core.future.IoFutureListener;
@@ -35,8 +36,6 @@ import com.jobxhub.common.job.Request;
 import com.jobxhub.common.util.HttpUtils;
 import com.jobxhub.rpc.Client;
 import com.jobxhub.rpc.RpcFuture;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -48,9 +47,8 @@ import com.jobxhub.common.util.collection.HashMap;
 /**
  * @author benjobs
  */
+@Slf4j
 public abstract class AbstractClient implements Client {
-
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     protected NioSocketConnector connector;
 
@@ -74,20 +72,14 @@ public abstract class AbstractClient implements Client {
             minaConnectWrapper = new MinaConnectWrapper(connectFuture);
             if (connectFuture.awaitUninterruptibly(Constants.RPC_TIMEOUT)) {
                 if (minaConnectWrapper.isActive()) {
-                    if (logger.isInfoEnabled()) {
-                        logger.info("[JobX] MinaRPC getConnect: connect remote host[{}] success, {}", request.getAddress(), connectFuture.toString());
-                    }
+                    log.info("[JobX] MinaRPC getConnect: connect remote host[{}] success, {}", request.getAddress(), connectFuture.toString());
                     this.channelTable.put(request.getAddress(), minaConnectWrapper);
                     return connectFuture;
                 } else {
-                    if (logger.isWarnEnabled()) {
-                        logger.warn("[JobX] MinaRPC getConnect: connect remote host[" + request.getAddress() + "] failed, " + connectFuture.toString(), connectFuture.getException());
-                    }
+                    log.warn("[JobX] MinaRPC getConnect: connect remote host[" + request.getAddress() + "] failed, " + connectFuture.toString(), connectFuture.getException());
                 }
             } else {
-                if (logger.isWarnEnabled()) {
-                    logger.warn("[JobX] MinaRPC getConnect: connect remote host[{}] timeout {}ms, {}", request.getAddress(), Constants.RPC_TIMEOUT, connectFuture);
-                }
+                log.warn("[JobX] MinaRPC getConnect: connect remote host[{}] timeout {}ms, {}", request.getAddress(), Constants.RPC_TIMEOUT, connectFuture);
             }
         }finally {
             connectLock.unlock();
@@ -108,20 +100,14 @@ public abstract class AbstractClient implements Client {
             nettyChannelWrapper = new NettyChannelWrapper(channelFuture);
             if (channelFuture.awaitUninterruptibly(Constants.RPC_TIMEOUT)) {
                 if (nettyChannelWrapper.isActive()) {
-                    if (logger.isInfoEnabled()) {
-                        logger.info("[JobX] NettyRPC getChannel: connect remote host[{}] success, {}", request.getAddress(), channelFuture.toString());
-                    }
+                    log.info("[JobX] NettyRPC getChannel: connect remote host[{}] success, {}", request.getAddress(), channelFuture.toString());
                     this.channelTable.put(request.getAddress(), nettyChannelWrapper);
                     return nettyChannelWrapper.getChannel();
                 } else {
-                    if (logger.isWarnEnabled()) {
-                        logger.warn("[JobX] NettyRPC getChannel: connect remote host[" + request.getAddress() + "] failed, " + channelFuture.toString(), channelFuture.cause());
-                    }
+                    log.warn("[JobX] NettyRPC getChannel: connect remote host[" + request.getAddress() + "] failed, " + channelFuture.toString(), channelFuture.cause());
                 }
             } else {
-                if (logger.isWarnEnabled()) {
-                    logger.warn("[JobX] NettyRPC getChannel: connect remote host[{}] timeout {}ms, {}", request.getAddress(), Constants.RPC_TIMEOUT, channelFuture);
-                }
+                log.warn("[JobX] NettyRPC getChannel: connect remote host[{}] timeout {}ms, {}", request.getAddress(), Constants.RPC_TIMEOUT, channelFuture);
             }
         }finally {
             connectLock.unlock();
@@ -171,14 +157,10 @@ public abstract class AbstractClient implements Client {
         @Override
         public void operationComplete(ChannelFuture future) throws Exception {
             if (future.isSuccess()) {
-                if (logger.isInfoEnabled()) {
-                    logger.info("[JobX] NettyRPC sent success, request id:{}", rpcFuture.getRequest().getId());
-                }
+                log.info("[JobX] NettyRPC sent success, request id:{}", rpcFuture.getRequest().getId());
                 return;
             } else {
-                if (logger.isInfoEnabled()) {
-                    logger.info("[JobX] NettyRPC sent failure, request id:{}", rpcFuture.getRequest().getId());
-                }
+                log.info("[JobX] NettyRPC sent failure, request id:{}", rpcFuture.getRequest().getId());
                 if (this.rpcFuture != null) {
                     rpcFuture.caught(future.cause());
                 }
@@ -189,14 +171,10 @@ public abstract class AbstractClient implements Client {
         @Override
         public void operationComplete(IoFuture future) {
             if (future.isDone()) {
-                if (logger.isInfoEnabled()) {
-                    logger.info("[JobX] MinaRPC sent success, request id:{}", rpcFuture.getRequest().getId());
-                }
+                log.info("[JobX] MinaRPC sent success, request id:{}", rpcFuture.getRequest().getId());
                 return;
             } else {
-                if (logger.isInfoEnabled()) {
-                    logger.info("[JobX] MinaRPC sent failure, request id:{}", rpcFuture.getRequest().getId());
-                }
+                log.info("[JobX] MinaRPC sent failure, request id:{}", rpcFuture.getRequest().getId());
                 if (rpcFuture != null) {
                     rpcFuture.caught(getConnect(rpcFuture.getRequest()).getException());
                 }

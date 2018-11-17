@@ -22,36 +22,16 @@
 package com.jobxhub.service.entity;
 
 
+import lombok.Data;
+
 /**
  * Created by ChenHui on 2016/2/17.
  */
+@Data
 public class ConfigEntity {
 
     private String configKey;
     private String configVal;
     private String comment;
 
-    public String getConfigKey() {
-        return configKey;
-    }
-
-    public void setConfigKey(String configKey) {
-        this.configKey = configKey;
-    }
-
-    public String getConfigVal() {
-        return configVal;
-    }
-
-    public void setConfigVal(String configVal) {
-        this.configVal = configVal;
-    }
-
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
 }

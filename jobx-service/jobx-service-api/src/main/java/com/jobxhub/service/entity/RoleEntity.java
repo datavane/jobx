@@ -22,11 +22,14 @@
 
 package com.jobxhub.service.entity;
 
+import lombok.Data;
+
 import java.io.Serializable;
 
 /**
  * Created by ChenHui on 2016/2/17.
  */
+@Data
 public class  RoleEntity implements Serializable {
 
     private Long roleId;
@@ -35,38 +38,4 @@ public class  RoleEntity implements Serializable {
 
     private String description;
 
-    public RoleEntity() {}
-
-    public Long getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(Long roleId) {
-        this.roleId = roleId;
-    }
-
-    public String getRoleName() {
-        return roleName;
-    }
-
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    @Override
-    public String toString() {
-        return "Role{" +
-                "roleId=" + roleId +
-                ", roleName='" + roleName + '\'' +
-                ", description='" + description + '\'' +
-                '}';
-    }
 }

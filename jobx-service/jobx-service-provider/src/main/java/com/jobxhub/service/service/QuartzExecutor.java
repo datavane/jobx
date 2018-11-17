@@ -2,16 +2,14 @@ package com.jobxhub.service.service;
 
 import com.jobxhub.common.Constants;
 import com.jobxhub.service.model.Job;
+import lombok.extern.slf4j.Slf4j;
 import org.quartz.JobExecutionContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 
+@Slf4j
 @Component
 public class QuartzExecutor implements org.quartz.Job {
-
-    private Logger logger = LoggerFactory.getLogger(getClass());
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) {
@@ -20,11 +18,9 @@ public class QuartzExecutor implements org.quartz.Job {
         try {
             ExecuteService executeService = (ExecuteService) jobExecutionContext.getJobDetail().getJobDataMap().get("executor");
             executeService.executeJob(job, Constants.ExecType.AUTO);
-            logger.info("[JobX] job:{} at {}:{}", job, null);
+            log.info("[JobX] job:{} at {}:{}", job, null);
         } catch (Exception e) {
-            if (logger.isErrorEnabled()) {
-                logger.error(e.getLocalizedMessage(), e);
-            }
+            log.error(e.getLocalizedMessage(), e);
         }
     }
 

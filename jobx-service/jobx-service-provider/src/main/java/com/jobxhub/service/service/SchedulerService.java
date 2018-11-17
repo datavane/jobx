@@ -25,11 +25,10 @@ package com.jobxhub.service.service;
 import com.jobxhub.service.api.JobService;
 import com.jobxhub.service.job.JobXRegistry;
 import com.jobxhub.service.model.Job;
+import lombok.extern.slf4j.Slf4j;
 import org.quartz.*;
 import org.quartz.Scheduler;
 import org.quartz.impl.StdSchedulerFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,10 +39,9 @@ import static org.quartz.CronScheduleBuilder.cronSchedule;
 import static org.quartz.TriggerBuilder.newTrigger;
 
 
+@Slf4j
 @Service
 public final class SchedulerService {
-
-    private final Logger logger = LoggerFactory.getLogger(SchedulerService.class);
 
     @Autowired
     private JobService jobService;
@@ -81,9 +79,7 @@ public final class SchedulerService {
         jobDetail.getJobDataMap().put(job.getJobId().toString(), job);
         jobDetail.getJobDataMap().put("executor",executeService);
         Date date = quartzScheduler.scheduleJob(jobDetail, cronTrigger);
-        if (logger.isInfoEnabled()) {
-            logger.info("jobx: add success,cronTrigger:{}", cronTrigger, date);
-        }
+        log.info("jobx: add success,cronTrigger:{}", cronTrigger, date);
     }
 
     public void remove(Serializable jobId) throws SchedulerException {
@@ -92,9 +88,7 @@ public final class SchedulerService {
             quartzScheduler.pauseTrigger(triggerKey);// 停止触发器
             quartzScheduler.unscheduleJob(triggerKey);// 移除触发器
             quartzScheduler.deleteJob(JobKey.jobKey(jobId.toString()));// 删除任务
-            if (logger.isInfoEnabled()) {
-                logger.info("jobx: removed, triggerKey:{},", triggerKey);
-            }
+            log.info("jobx: removed, triggerKey:{},", triggerKey);
         }
     }
 

@@ -24,6 +24,7 @@ package com.jobxhub.service.model;
 
 import com.google.common.base.Function;
 import com.jobxhub.service.entity.LogEntity;
+import lombok.Data;
 import org.springframework.beans.BeanUtils;
 
 import java.io.Serializable;
@@ -32,6 +33,7 @@ import java.util.Date;
 /**
  * Created by ChenHui on 2016/3/31.
  */
+@Data
 public class Log implements Serializable {
 
     private Long logId;
@@ -77,83 +79,4 @@ public class Log implements Serializable {
         }
     };
 
-    public Long getLogId() {
-        return logId;
-    }
-
-    public void setLogId(Long logId) {
-        this.logId = logId;
-    }
-
-    public Long getAgentId() {
-        return agentId;
-    }
-
-    public void setAgentId(Long agentId) {
-        this.agentId = agentId;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public Integer getType() {
-        return type;
-    }
-
-    public void setType(Integer type) {
-        this.type = type;
-    }
-
-    public String getReceiver() {
-        return receiver;
-    }
-
-    public void setReceiver(String receiver) {
-        this.receiver = receiver;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public String getResult() {
-        return result;
-    }
-
-    public void setResult(String result) {
-        this.result = result;
-    }
-
-    public Date getSendTime() {
-        return sendTime;
-    }
-
-    public void setSendTime(Date sendTime) {
-        this.sendTime = sendTime;
-    }
-
-    public String getAgentName() {
-        return agentName;
-    }
-
-    public void setAgentName(String agentName) {
-        this.agentName = agentName;
-    }
-
-    public Boolean getIsread() {
-        return isread;
-    }
-
-    public void setIsread(Boolean isread) {
-        this.isread = isread;
-    }
 }

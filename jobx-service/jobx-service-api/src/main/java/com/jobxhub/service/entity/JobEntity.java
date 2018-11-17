@@ -22,10 +22,13 @@
 
 package com.jobxhub.service.entity;
 
+import lombok.Data;
+
 import javax.persistence.Transient;
 import java.io.Serializable;
 import java.util.Date;
 
+@Data
 public class JobEntity implements Serializable {
     private Long jobId;
     private Long agentId;
@@ -82,45 +85,9 @@ public class JobEntity implements Serializable {
     @Transient
     private String operateUname;
 
-
     private Integer alarmCode;//告警码
     private Integer alarmType;//告警方式
 
-    public Long getJobId() {
-        return jobId;
-    }
-
-    public void setJobId(Long jobId) {
-        this.jobId = jobId;
-    }
-
-    public Long getAgentId() {
-        return agentId;
-    }
-
-    public void setAgentId(Long agentId) {
-        this.agentId = agentId;
-    }
-
-    public String getJobName() {
-        return jobName;
-    }
-
-    public void setJobName(String jobName) {
-        this.jobName = jobName;
-    }
-
-    public String getCronExp() {
-        return cronExp;
-    }
-
-    public void setCronExp(String cronExp) {
-        this.cronExp = cronExp;
-    }
-
-    public String getExecUser() {
-        return execUser;
-    }
 
     public void setExecUser(String execUser) {
         if (execUser!=null) {
@@ -128,163 +95,4 @@ public class JobEntity implements Serializable {
         }
     }
 
-    public String getCommand() {
-        return command;
-    }
-
-    public void setCommand(String command) {
-        this.command = command;
-    }
-
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
-
-    public String getSuccessExit() {
-        return successExit;
-    }
-
-    public void setSuccessExit(String successExit) {
-        this.successExit = successExit;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    public Integer getRedo() {
-        return redo;
-    }
-
-    public void setRedo(Integer redo) {
-        this.redo = redo;
-    }
-
-    public Integer getRunCount() {
-        return runCount;
-    }
-
-    public void setRunCount(Integer runCount) {
-        this.runCount = runCount;
-    }
-
-    public Boolean getCluster() {
-        return cluster;
-    }
-
-    public void setCluster(Boolean cluster) {
-        this.cluster = cluster;
-    }
-
-    public Integer getJobType() {
-        return jobType;
-    }
-
-    public void setJobType(Integer jobType) {
-        this.jobType = jobType;
-    }
-
-    public Integer getCreateType() {
-        return createType;
-    }
-
-    public void setCreateType(Integer createType) {
-        this.createType = createType;
-    }
-
-    public Boolean getWarning() {
-        return warning;
-    }
-
-    public void setWarning(Boolean warning) {
-        this.warning = warning;
-    }
-
-    public String getMobile() {
-        return mobile;
-    }
-
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
-    }
-
-    public Boolean getPause() {
-        return pause;
-    }
-
-    public void setPause(Boolean pause) {
-        this.pause = pause;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public Integer getTimeout() {
-        return timeout;
-    }
-
-    public void setTimeout(Integer timeout) {
-        this.timeout = timeout;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public String getAgentName() {
-        return agentName;
-    }
-
-    public void setAgentName(String agentName) {
-        this.agentName = agentName;
-    }
-
-    public String getOperateUname() {
-        return operateUname;
-    }
-
-    public void setOperateUname(String operateUname) {
-        this.operateUname = operateUname;
-    }
-
-    public Integer getAlarmCode() {
-        return alarmCode;
-    }
-
-    public void setAlarmCode(Integer alarmCode) {
-        this.alarmCode = alarmCode;
-    }
-
-    public Integer getAlarmType() {
-        return alarmType;
-    }
-
-    public void setAlarmType(Integer alarmType) {
-        this.alarmType = alarmType;
-    }
 }

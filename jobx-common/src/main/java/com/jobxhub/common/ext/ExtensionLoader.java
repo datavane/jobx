@@ -22,9 +22,8 @@
 package com.jobxhub.common.ext;
 
 import com.jobxhub.common.Constants;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import com.jobxhub.common.util.CommonUtils;
-import org.slf4j.Logger;
 
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -38,9 +37,8 @@ import static com.jobxhub.common.util.AssertUtils.checkNotNull;
 /**
  * @author benjobs...
  */
+@Slf4j
 public class ExtensionLoader<T> {
-
-    private Logger logger = LoggerFactory.getLogger(ExtensionLoader.class);
 
     private Class<T> type;
 
@@ -171,14 +169,14 @@ public class ExtensionLoader<T> {
                             }
                         }
                     } catch (Throwable t) {
-                        logger.error("Exception when load extension class(interface: " + type + ", class file: " + url + ") in " + url, t);
+                        log.error("Exception when load extension class(interface: " + type + ", class file: " + url + ") in " + url, t);
                     } finally {
                         scanner.close();
                     }
                 } // end of while urls
             }
         } catch (Throwable t) {
-            logger.error("Exception when load extension class(interface: " + type + ", description file: " + fileName + ").", t);
+            log.error("Exception when load extension class(interface: " + type + ", description file: " + fileName + ").", t);
         }
 
     }

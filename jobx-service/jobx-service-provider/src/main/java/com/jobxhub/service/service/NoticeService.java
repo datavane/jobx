@@ -28,13 +28,12 @@ import com.jobxhub.service.model.*;
 import com.jobxhub.service.entity.UserEntity;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.mail.HtmlEmail;
 import com.jobxhub.common.util.CommonUtils;
 import com.jobxhub.common.util.DateUtils;
 import com.jobxhub.common.util.HttpUtils;
 import org.junit.runners.model.InitializationError;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
@@ -47,12 +46,12 @@ import java.util.*;
 /**
  * Created by benjobs on 16/3/18.
  */
+@Slf4j
 @Service
 public class NoticeService {
 
     @Autowired
     private ConfigService configService;
-
 
     @Autowired
     private LogService logService;
@@ -61,9 +60,6 @@ public class NoticeService {
     private ApplicationContext applicationContext;
 
     private Template template;
-
-    private Logger logger = LoggerFactory.getLogger(getClass());
-
 
     @PostConstruct
     public void initConfig() throws Exception {
@@ -89,7 +85,7 @@ public class NoticeService {
                 break;
             }
         } else {
-            logger.error("[JobX] email.html not found!");
+            log.error("[JobX] email.html not found!");
             throw new InitializationError("email.html not found!");
         }
     }
@@ -97,9 +93,7 @@ public class NoticeService {
     public void notice(Agent agent) {
         if (!agent.getWarning()) return;
         String content = getMessage(agent, "通信失败,请速速处理!");
-        if (logger.isInfoEnabled()) {
-            logger.info(content);
-        }
+        log.info(content);
         try {
             //  sendMessage(agent.getUsers(), agent.getAgentId(), agent.getEmail(), agent.getMobile(), content);
         } catch (Exception e) {
@@ -120,9 +114,7 @@ public class NoticeService {
                 message = String.format(message, "[" + msg + "]");
             }
             String content = null;//getMessage(agent, message);
-            if (logger.isInfoEnabled()) {
-                logger.info(content);
-            }
+            log.info(content);
             try {
 
                 //sendMessage(null, agent.getAgentId(),job.getEmail(), job.getMobile(),content);
@@ -177,9 +169,7 @@ public class NoticeService {
                 String postData = sendUrl.substring(sendUrl.indexOf("?") + 1);
                 String message = HttpUtils.doPost(url, postData, "UTF-8");
                 log.setResult(message);
-                if (logger.isInfoEnabled()) {
-                    logger.info(message);
-                }
+                log.setMessage(message);
                 log.setReceiver(_mobile);
                 log.setType(Constants.MsgType.SMS.getValue());
                 log.setSendTime(new Date());

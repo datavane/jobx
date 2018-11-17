@@ -23,6 +23,7 @@ package com.jobxhub.service.model;
 import com.google.common.base.Function;
 import com.jobxhub.common.util.StringUtils;
 import com.jobxhub.service.entity.UserEntity;
+import lombok.Data;
 import org.springframework.beans.BeanUtils;
 
 import java.io.Serializable;
@@ -30,6 +31,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+@Data
 public class User implements Serializable {
 
     private Long userId;
@@ -77,139 +79,4 @@ public class User implements Serializable {
         }
     };
 
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getSalt() {
-        return salt;
-    }
-
-    public void setSalt(String salt) {
-        this.salt = salt;
-    }
-
-    public Long getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(Long roleId) {
-        this.roleId = roleId;
-    }
-
-    public String getRoleName() {
-        return roleName;
-    }
-
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
-    }
-
-    public String getRealName() {
-        return realName;
-    }
-
-    public void setRealName(String realName) {
-        this.realName = realName;
-    }
-
-    public String getContact() {
-        return contact;
-    }
-
-    public void setContact(String contact) {
-        this.contact = contact;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getQq() {
-        return qq;
-    }
-
-    public void setQq(String qq) {
-        this.qq = qq;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Date getModifyTime() {
-        return modifyTime;
-    }
-
-    public void setModifyTime(Date modifyTime) {
-        this.modifyTime = modifyTime;
-    }
-
-    public byte[] getHeaderPic() {
-        return headerPic;
-    }
-
-    public void setHeaderPic(byte[] headerPic) {
-        this.headerPic = headerPic;
-    }
-
-    public String getPicExtName() {
-        return picExtName;
-    }
-
-    public void setPicExtName(String picExtName) {
-        this.picExtName = picExtName;
-    }
-
-    public String getHeaderPath() {
-        return headerPath;
-    }
-
-    public void setHeaderPath(String headerPath) {
-        this.headerPath = headerPath;
-    }
-
-    public List<Long> getAgentIds() {
-        return agentIds;
-    }
-
-    public void setAgentIds(List<Long> agentIds) {
-        this.agentIds = agentIds;
-    }
-
-    public List<String> getExecUser() {
-        return execUser;
-    }
-
-    public void setExecUser(List<String> execUser) {
-        this.execUser = execUser;
-    }
 }

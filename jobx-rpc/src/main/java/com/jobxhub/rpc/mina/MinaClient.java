@@ -20,6 +20,7 @@
  */
 package com.jobxhub.rpc.mina;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.mina.core.future.ConnectFuture;
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
@@ -27,15 +28,13 @@ import org.apache.mina.transport.socket.DefaultSocketSessionConfig;
 import org.apache.mina.transport.socket.nio.NioSocketConnector;
 import com.jobxhub.common.job.Request;
 import com.jobxhub.common.job.Response;
-import org.slf4j.LoggerFactory;
 import com.jobxhub.rpc.InvokeCallback;
 import com.jobxhub.rpc.RpcFuture;
 import com.jobxhub.rpc.support.AbstractClient;
-import org.slf4j.Logger;
 
+
+@Slf4j
 public class MinaClient extends AbstractClient {
-
-    private static Logger logger = LoggerFactory.getLogger(MinaClient.class);
 
     @Override
     public void connect(Request request) {

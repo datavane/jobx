@@ -16,9 +16,7 @@
 
 package com.jobxhub.common.util.internal;
 
-import org.slf4j.LoggerFactory;
-import com.jobxhub.common.util.SystemPropertyUtils;
-import org.slf4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Field;
 import java.security.AccessController;
@@ -30,10 +28,8 @@ import static com.jobxhub.common.util.ExceptionUtils.stackTrace;
 /**
  * For the {@link sun.misc.Unsafe} access.
  */
+@Slf4j
 public final class Unsafe {
-
-    private static final Logger logger = LoggerFactory.getLogger(SystemPropertyUtils.class);
-
 
     private static final sun.misc.Unsafe UNSAFE;
 
@@ -44,10 +40,7 @@ public final class Unsafe {
             unsafeField.setAccessible(true);
             unsafe = (sun.misc.Unsafe) unsafeField.get(null);
         } catch (Throwable t) {
-            if (logger.isWarnEnabled()) {
-                logger.warn("sun.misc.Unsafe.theUnsafe: unavailable, {}.", stackTrace(t));
-            }
-
+            log.warn("sun.misc.Unsafe.theUnsafe: unavailable, {}.", stackTrace(t));
             unsafe = null;
         }
 

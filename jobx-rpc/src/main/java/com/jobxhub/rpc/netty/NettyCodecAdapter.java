@@ -27,8 +27,7 @@ import io.netty.handler.codec.MessageToByteEncoder;
 import com.jobxhub.common.Constants;
 import com.jobxhub.common.ext.ExtensionLoader;
 import com.jobxhub.common.serialize.Serializer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.util.List;
@@ -39,9 +38,9 @@ import static com.jobxhub.common.util.ExceptionUtils.stackTrace;
 /**
  * @author benjobs
  */
-public class NettyCodecAdapter<T> {
 
-    private static Logger logger = LoggerFactory.getLogger(NettyCodecAdapter.class);
+@Slf4j
+public class NettyCodecAdapter<T> {
 
     private static Serializer serializer = ExtensionLoader.load(Serializer.class);
 
@@ -73,14 +72,10 @@ public class NettyCodecAdapter<T> {
                     out.writeInt(data.length);
                     out.writeBytes(data);
                 } else {
-                    if (logger.isErrorEnabled()) {
-                        logger.error("[JobX] NettyCodecAdapter encode error: this encode target is not instanceOf {}", this.type.getName());
-                    }
+                    log.error("[JobX] NettyCodecAdapter encode error: this encode target is not instanceOf {}", this.type.getName());
                 }
             } catch (Exception e) {
-                if (logger.isErrorEnabled()) {
-                    logger.error("[JobX] NettyCodecAdapter encode error:", stackTrace(e));
-                }
+                log.error("[JobX] NettyCodecAdapter encode error:", stackTrace(e));
             }
 
         }
@@ -110,9 +105,7 @@ public class NettyCodecAdapter<T> {
                 in.readBytes(data);
                 out.add(serializer.deserialize(data,type));
             } catch (Exception e) {
-                if (logger.isErrorEnabled()) {
-                    logger.error("[JobX] NettyCodecAdapter decode error:", stackTrace(e));
-                }
+                log.error("[JobX] NettyCodecAdapter decode error:", stackTrace(e));
             }
         }
     }

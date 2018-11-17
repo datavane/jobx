@@ -22,9 +22,13 @@
 
 package com.jobxhub.service.entity;
 
+import lombok.Data;
+
 import java.util.Date;
 import java.util.Objects;
 
+
+@Data
 public class AgentEntity {
 
     private Long agentId;
@@ -50,171 +54,4 @@ public class AgentEntity {
     private String comment;
     private Date updateTime;
 
-    public Long getAgentId() {
-        return agentId;
-    }
-
-    public void setAgentId(Long agentId) {
-        this.agentId = agentId;
-    }
-
-    public String getMachineId() {
-        return machineId;
-    }
-
-    public void setMachineId(String machineId) {
-        this.machineId = machineId;
-    }
-
-    public Long getProxyId() {
-        return proxyId;
-    }
-
-    public void setProxyId(Long proxyId) {
-        this.proxyId = proxyId;
-    }
-
-    public String getHost() {
-        return host;
-    }
-
-    public void setHost(String host) {
-        this.host = host;
-    }
-
-    public Integer getPlatform() {
-        return platform;
-    }
-
-    public void setPlatform(Integer platform) {
-        this.platform = platform;
-    }
-
-    public Integer getPort() {
-        return port;
-    }
-
-    public void setPort(Integer port) {
-        this.port = port;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Boolean getWarning() {
-        return warning;
-    }
-
-    public void setWarning(Boolean warning) {
-        this.warning = warning;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getMobile() {
-        return mobile;
-    }
-
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    public Date getNotifyTime() {
-        return notifyTime;
-    }
-
-    public void setNotifyTime(Date notifyTime) {
-        this.notifyTime = notifyTime;
-    }
-
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        AgentEntity agent = (AgentEntity) o;
-        return Objects.equals(agentId, agent.agentId) &&
-                Objects.equals(machineId, agent.machineId) &&
-                Objects.equals(proxyId, agent.proxyId) &&
-                Objects.equals(host, agent.host) &&
-                Objects.equals(platform, agent.platform) &&
-                Objects.equals(port, agent.port) &&
-                Objects.equals(name, agent.name) &&
-                Objects.equals(password, agent.password) &&
-                Objects.equals(warning, agent.warning) &&
-                Objects.equals(email, agent.email) &&
-                Objects.equals(mobile, agent.mobile) &&
-                Objects.equals(status, agent.status) &&
-                Objects.equals(notifyTime, agent.notifyTime) &&
-                Objects.equals(comment, agent.comment) &&
-                Objects.equals(updateTime, agent.updateTime);
-    }
-
-    @Override
-    public int hashCode() {
-        return getAgentId() != null ? getAgentId().hashCode() : 0;
-    }
-
-    @Override
-    public String toString() {
-        return "AgentBean{" +
-                "agentId=" + agentId +
-                ", machineId='" + machineId + '\'' +
-                ", proxyId=" + proxyId +
-                ", host='" + host + '\'' +
-                ", platform=" + platform +
-                ", port=" + port +
-                ", name='" + name + '\'' +
-                ", password='" + password + '\'' +
-                ", warning=" + warning +
-                ", email='" + email + '\'' +
-                ", mobile='" + mobile + '\'' +
-                ", status=" + status +
-                ", notifyTime=" + notifyTime +
-                ", comment='" + comment + '\'' +
-                ", updateTime=" + updateTime +
-                '}';
-    }
 }

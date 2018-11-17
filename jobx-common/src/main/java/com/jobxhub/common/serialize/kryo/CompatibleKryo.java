@@ -27,12 +27,10 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.Serializer;
 import com.esotericsoftware.kryo.serializers.JavaSerializer;
 import com.jobxhub.common.util.ReflectUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class CompatibleKryo extends Kryo {
-
-    private static final Logger logger = LoggerFactory.getLogger(CompatibleKryo.class);
 
     @Override
     public Serializer getDefaultSerializer(Class type) {
@@ -41,9 +39,7 @@ public class CompatibleKryo extends Kryo {
         }
 
         if (!type.isArray() && !type.isEnum() && !ReflectUtils.checkZeroArgConstructor(type)) {
-            if (logger.isWarnEnabled()) {
-                logger.warn(type + " has no zero-arg constructor and this will affect the serialization performance");
-            }
+            log.warn(type + " has no zero-arg constructor and this will affect the serialization performance");
             return new JavaSerializer();
         }
         return super.getDefaultSerializer(type);

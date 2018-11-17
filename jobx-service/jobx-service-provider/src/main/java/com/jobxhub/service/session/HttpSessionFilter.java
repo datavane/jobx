@@ -32,21 +32,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import com.jobxhub.common.Constants;
 import com.jobxhub.common.util.CommonUtils;
 import com.jobxhub.common.util.CookieUtils;
 import com.jobxhub.service.session.wrapper.HttpServletRequestSessionWrapper;
 import com.jobxhub.service.session.wrapper.HttpSessionStoreWrapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 
 @SuppressWarnings("unchecked")
+@Slf4j
 public class HttpSessionFilter extends OncePerRequestFilter implements Filter {
-
-    private static final Logger logger = LoggerFactory.getLogger(HttpSessionFilter.class);
 
     private HttpSessionStore sessionStore;
 
@@ -95,7 +93,7 @@ public class HttpSessionFilter extends OncePerRequestFilter implements Filter {
             sessionData = sessionStore.getSession(sessionId);
         } catch (Exception e) {
             sessionData = new HashMap();
-            logger.warn("load session data error,cause:" + e, e);
+            log.warn("load session data error,cause:" + e, e);
         }
         return sessionData;
     }

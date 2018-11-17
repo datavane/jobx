@@ -22,8 +22,7 @@
 package com.jobxhub.common.util;
 
 
-import org.slf4j.LoggerFactory;
-import org.slf4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 
 import java.security.AccessController;
 import java.security.PrivilegedAction;
@@ -35,9 +34,8 @@ import static com.jobxhub.common.util.ExceptionUtils.stackTrace;
 /**
  * A collection of utility methods to retrieve and parse the values of the Java system properties.
  */
+@Slf4j
 public class SystemPropertyUtils {
-
-    private static final Logger logger = LoggerFactory.getLogger(SystemPropertyUtils.class);
 
     /**
      * Returns {@code true} if and only if the system property with the specified {@code key}
@@ -88,9 +86,7 @@ public class SystemPropertyUtils {
                 });
             }
         } catch (Exception e) {
-            if (logger.isWarnEnabled()) {
-                logger.warn("Unable to retrieve a system property '{}'; default values will be used, {}.", key, stackTrace(e));
-            }
+            log.warn("Unable to retrieve a system property '{}'; default values will be used, {}.", key, stackTrace(e));
         }
 
         if (value == null) {
@@ -128,7 +124,7 @@ public class SystemPropertyUtils {
             return false;
         }
 
-        logger.warn("Unable to parse the boolean system property '{}':{} - using the default value: {}.", key, value, def);
+        log.warn("Unable to parse the boolean system property '{}':{} - using the default value: {}.", key, value, def);
 
         return def;
     }
@@ -158,7 +154,7 @@ public class SystemPropertyUtils {
             }
         }
 
-        logger.warn("Unable to parse the integer system property '{}':{} - using the default value: {}.", key, value, def);
+        log.warn("Unable to parse the integer system property '{}':{} - using the default value: {}.", key, value, def);
 
         return def;
     }
@@ -186,7 +182,7 @@ public class SystemPropertyUtils {
             }
         }
 
-        logger.warn("Unable to parse the long integer system property '{}':{} - using the default value: {}.", key, value, def);
+        log.warn("Unable to parse the long integer system property '{}':{} - using the default value: {}.", key, value, def);
 
         return def;
     }

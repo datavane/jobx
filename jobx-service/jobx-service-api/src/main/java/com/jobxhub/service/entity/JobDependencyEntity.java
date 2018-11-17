@@ -21,8 +21,11 @@
 
 package com.jobxhub.service.entity;
 
+import lombok.Data;
+
 import java.io.Serializable;
 
+@Data
 public class JobDependencyEntity implements Serializable {
 
     private Long dependencyId;
@@ -45,60 +48,4 @@ public class JobDependencyEntity implements Serializable {
     //上级依赖作业类型(1:作业,2:作业流)
     private Integer parentType;
 
-
-    public Long getDependencyId() {
-        return dependencyId;
-    }
-
-    public void setDependencyId(Long dependencyId) {
-        this.dependencyId = dependencyId;
-    }
-
-    public Long getFlowId() {
-        return flowId;
-    }
-
-    public void setFlowId(Long flowId) {
-        this.flowId = flowId;
-    }
-
-    public Integer getSource() {
-        return source;
-    }
-
-    public void setSource(Integer source) {
-        this.source = source;
-    }
-
-    public Long getTargetId() {
-        return targetId;
-    }
-
-    public void setTargetId(Long targetId) {
-        this.targetId = targetId;
-    }
-
-    public Integer getTargetType() {
-        return targetType;
-    }
-
-    public void setTargetType(Integer targetType) {
-        this.targetType = targetType;
-    }
-
-    public Long getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(Long parentId) {
-        this.parentId = parentId;
-    }
-
-    public Integer getParentType() {
-        return parentType;
-    }
-
-    public void setParentType(Integer parentType) {
-        this.parentType = parentType;
-    }
 }

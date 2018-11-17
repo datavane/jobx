@@ -20,19 +20,17 @@
  */
 package com.jobxhub.rpc.mina;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.mina.core.service.IoHandlerAdapter;
 import org.apache.mina.core.session.IoSession;
 import com.jobxhub.common.job.Response;
-import org.slf4j.LoggerFactory;
 import com.jobxhub.rpc.RpcFuture;
-import org.slf4j.Logger;
 
 /**
  * @author benjobs
  */
+@Slf4j
 public class MinaClientHandler extends IoHandlerAdapter {
-
-    private static final Logger logger = LoggerFactory.getLogger(MinaClientHandler.class);
 
     private MinaClient minaClient;
 
@@ -43,9 +41,7 @@ public class MinaClientHandler extends IoHandlerAdapter {
     @Override
     public void messageReceived(IoSession session, Object message) throws Exception {
         Response response = (Response) message;
-        if (logger.isInfoEnabled()) {
-            logger.info("[JobX] minaRPC client receive response id:{}", response.getId());
-        }
+        log.info("[JobX] minaRPC client receive response id:{}", response.getId());
         RpcFuture rpcFuture = this.minaClient.getRpcFuture(response.getId());
         rpcFuture.received(response);
     }

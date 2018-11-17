@@ -21,6 +21,7 @@
 package com.jobxhub.rpc.mina;
 
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.filter.executor.ExecutorFilter;
 import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
@@ -28,8 +29,6 @@ import com.jobxhub.common.job.Request;
 import com.jobxhub.common.job.Response;
 import com.jobxhub.rpc.Server;
 import com.jobxhub.rpc.ServerHandler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -38,9 +37,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.jobxhub.common.util.ExceptionUtils.stackTrace;
 
+@Slf4j
 public class MinaServer implements Server {
-
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private NioSocketAcceptor acceptor;
 
@@ -65,11 +63,9 @@ public class MinaServer implements Server {
                 acceptor.setHandler(serverHandler);
                 try {
                     acceptor.bind(socketAddress);
-                    if (logger.isInfoEnabled()) {
-                        logger.info("[JobX] MinaServer start at address:{} success", port);
-                    }
+                    log.info("[JobX] MinaServer start at address:{} success", port);
                 } catch (IOException e) {
-                    logger.error("[JobX] MinaServer start failure: {}", stackTrace(e));
+                    log.error("[JobX] MinaServer start failure: {}", stackTrace(e));
                 }
             }
         });
@@ -93,13 +89,9 @@ public class MinaServer implements Server {
                 acceptor.dispose();
             }
             this.serverDaemon.interrupt();
-            if (logger.isInfoEnabled()) {
-                logger.info("[JobX] MinaServer stoped!");
-            }
+            log.info("[JobX] MinaServer stoped!");
         } catch (Throwable e) {
-            if (logger.isErrorEnabled()) {
-                logger.error("[JobX] MinaServer stop error:{}", stackTrace(e));
-            }
+            log.error("[JobX] MinaServer stop error:{}", stackTrace(e));
         }
     }
 

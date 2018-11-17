@@ -30,7 +30,7 @@ import com.jobxhub.common.job.Action;
 import com.jobxhub.common.job.Monitor;
 import com.jobxhub.common.job.Request;
 import com.jobxhub.common.job.Response;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import com.jobxhub.common.util.*;
 import com.jobxhub.common.util.collection.HashMap;
 import com.jobxhub.registry.URL;
@@ -39,17 +39,14 @@ import com.jobxhub.registry.zookeeper.ZookeeperTransporter;
 import com.jobxhub.rpc.Client;
 import com.jobxhub.rpc.ServerHandler;
 import org.hyperic.sigar.SigarException;
-import org.slf4j.Logger;
 
 import java.io.File;
 import java.util.*;
 
 import static com.jobxhub.common.util.CommonUtils.*;
 
-
+@Slf4j
 public class AgentService implements ServerHandler, AgentJob {
-
-    private static Logger logger = LoggerFactory.getLogger(AgentService.class);
 
     private Client client = null;
 
@@ -214,9 +211,7 @@ public class AgentService implements ServerHandler, AgentJob {
 
         String execUser = request.getParams().getString(Constants.PARAM_EXECUSER_KEY);
 
-        if (logger.isInfoEnabled()) {
-            logger.info("[JobX]:execute:{},pid:{}", command, pid);
-        }
+        log.info("[JobX]:execute:{},pid:{}", command, pid);
 
         Response response = Response.response(request);
 
@@ -263,22 +258,16 @@ public class AgentService implements ServerHandler, AgentJob {
     @Override
     public Response kill(Request request) {
         String pid = request.getParams().getString(Constants.PARAM_PID_KEY);
-        if (logger.isInfoEnabled()) {
-            logger.info("[JobX]:kill pid:{}", pid);
-        }
+        log.info("[JobX]:kill pid:{}", pid);
         Response response = Response.response(request);
         JobXProcess jobXProcess = processMap.get(pid);
         if (jobXProcess!=null) {
             jobXProcess.kill(ExitCode.KILL);
             response.setExitCode(ExitCode.SUCCESS_EXIT.getValue()).end();
-            if (logger.isInfoEnabled()) {
-                logger.info("[JobX]:kill successful");
-            }
+            log.info("[JobX]:kill successful");
         }else {
             response.setExitCode(ExitCode.ERROR_EXIT.getValue()).end();
-            if (logger.isInfoEnabled()) {
-                logger.info("[JobX]:kill error,can not found process");
-            }
+            log.info("[JobX]:kill error,can not found process");
         }
         return response;
     }
@@ -342,25 +331,19 @@ public class AgentService implements ServerHandler, AgentJob {
          * 如果设置了host,则会一并设置port,server端不但可以更新连接状态还可以实现agent自动注册(agent未注册的情况下)
          */
         registry.register(getRegistryPath(host,port), true);
-        if (logger.isInfoEnabled()) {
-            logger.info("[JobX] agent register to zookeeper done");
-        }
+        log.info("[JobX] agent register to zookeeper done");
     }
 
     public static void unRegister(final String host,final Integer port) {
         registry.unRegister(getRegistryPath(host,port));
-        if (logger.isInfoEnabled()) {
-            logger.info("[JobX] agent unRegister to zookeeper done");
-        }
+        log.info("[JobX] agent unRegister to zookeeper done");
     }
 
     public static void bindShutdownHook(final String host,final Integer port) {
         //register shutdown hook
         Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
             public void run() {
-                if (logger.isInfoEnabled()) {
-                    logger.info("[JobX] run shutdown hook now...");
-                }
+                log.info("[JobX] run shutdown hook now...");
                 registry.unRegister(getRegistryPath(host,port));
             }
         }, "JobXShutdownHook"));
@@ -379,9 +362,7 @@ public class AgentService implements ServerHandler, AgentJob {
         //mac_password_platform_host_port
         String registryPath = String.format("%s/%s_%s_%s", Constants.ZK_REGISTRY_AGENT_PATH, machineId,password,platform);
         if (CommonUtils.isEmpty(host)) {
-            if (logger.isWarnEnabled()) {
-                logger.warn("[JobX] agent host not input,auto register can not be run，you can add this agent by yourself");
-            }
+            log.warn("[JobX] agent host not input,auto register can not be run，you can add this agent by yourself");
         } else {
             //mac_password_platform_host_port
             registryPath = String.format("%s/%s_%s_%s_%s_%s",

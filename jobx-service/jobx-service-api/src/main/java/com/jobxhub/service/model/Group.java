@@ -23,6 +23,7 @@ package com.jobxhub.service.model;
 
 import com.google.common.base.Function;
 import com.jobxhub.service.entity.GroupEntity;
+import lombok.Data;
 import org.springframework.beans.BeanUtils;
 
 import java.io.Serializable;
@@ -33,6 +34,7 @@ import java.util.List;
 /**
  * Created by th on 2017/5/8.
  */
+@Data
 public class Group implements Serializable {
 
     private Long groupId;
@@ -76,67 +78,4 @@ public class Group implements Serializable {
     };
 
 
-    public Long getGroupId() {
-        return groupId;
-    }
-
-    public void setGroupId(Long groupId) {
-        this.groupId = groupId;
-    }
-
-    public String getGroupName() {
-        return groupName;
-    }
-
-    public void setGroupName(String groupName) {
-        this.groupName = groupName;
-    }
-
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public List<Agent> getAgentList() {
-        return agentList;
-    }
-
-    public void setAgentList(List<Agent> agentList) {
-        this.agentList = agentList;
-    }
-
-    public Integer getAgentCount() {
-        return agentCount;
-    }
-
-    public void setAgentCount(Integer agentCount) {
-        this.agentCount = agentCount;
-    }
-
-    public String[] getAgentIds() {
-        return agentIds;
-    }
-
-    public void setAgentIds(String[] agentIds) {
-        this.agentIds = agentIds;
-    }
 }

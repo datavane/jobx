@@ -24,15 +24,13 @@ import com.jobxhub.rpc.support.ChannelWrapper;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author benjobs
  */
+@Slf4j
 public class NettyChannelWrapper implements ChannelWrapper {
-
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private final ChannelFuture channelFuture;
 
@@ -61,10 +59,8 @@ public class NettyChannelWrapper implements ChannelWrapper {
         getChannel().close().addListener(new ChannelFutureListener() {
             @Override
             public void operationComplete(ChannelFuture future) throws Exception {
-                if (logger.isInfoEnabled()) {
-                    logger.info("[JobX]closeChannel: close the connection to remote address:{}, result: {}",
+                log.info("[JobX]closeChannel: close the connection to remote address:{}, result: {}",
                             getChannel().remoteAddress(), future.isSuccess());
-                }
             }
         });
     }

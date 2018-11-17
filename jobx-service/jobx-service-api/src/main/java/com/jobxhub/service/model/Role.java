@@ -24,6 +24,7 @@ package com.jobxhub.service.model;
 
 import com.google.common.base.Function;
 import com.jobxhub.service.entity.RoleEntity;
+import lombok.Data;
 import org.springframework.beans.BeanUtils;
 
 import java.io.Serializable;
@@ -31,6 +32,7 @@ import java.io.Serializable;
 /**
  * Created by ChenHui on 2016/2/17.
  */
+@Data
 public class Role implements Serializable {
 
     private Long roleId;
@@ -61,40 +63,4 @@ public class Role implements Serializable {
 
     public Role(){}
 
-    public Role(RoleEntity roleBean){
-        BeanUtils.copyProperties(roleBean,this);
-    }
-
-    public Long getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(Long roleId) {
-        this.roleId = roleId;
-    }
-
-    public String getRoleName() {
-        return roleName;
-    }
-
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    @Override
-    public String toString() {
-        return "Role{" +
-                "roleId=" + roleId +
-                ", roleName='" + roleName + '\'' +
-                ", description='" + description + '\'' +
-                '}';
-    }
 }

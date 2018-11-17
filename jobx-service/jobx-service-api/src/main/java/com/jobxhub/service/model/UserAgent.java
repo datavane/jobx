@@ -22,10 +22,12 @@ package com.jobxhub.service.model;
 
 import com.google.common.base.Function;
 import com.jobxhub.service.entity.UserAgentEntity;
-import org.springframework.beans.BeanUtils;
-
+import lombok.Data;
 import java.io.Serializable;
 
+import static org.springframework.beans.BeanUtils.copyProperties;
+
+@Data
 public class UserAgent implements Serializable {
 
     private Long id;
@@ -39,7 +41,9 @@ public class UserAgent implements Serializable {
     public static Function<? super UserAgentEntity, ? extends UserAgent> transfer = new Function<UserAgentEntity, UserAgent>() {
         @Override
         public UserAgent apply(UserAgentEntity input) {
-            return new UserAgent(input);
+            UserAgent userAgent = new UserAgent();
+            copyProperties(input,userAgent);
+            return userAgent;
         }
     };
 
@@ -50,57 +54,6 @@ public class UserAgent implements Serializable {
         this.agentId = agentId;
     }
 
-    public UserAgent(UserAgentEntity userAgent){
-        BeanUtils.copyProperties(userAgent,this);
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public Long getAgentId() {
-        return agentId;
-    }
-
-    public void setAgentId(Long agentId) {
-        this.agentId = agentId;
-    }
-
-    public String getAgentName() {
-        return agentName;
-    }
-
-    public void setAgentName(String agentName) {
-        this.agentName = agentName;
-    }
-
-    public String getAgentHost() {
-        return agentHost;
-    }
-
-    public void setAgentHost(String agentHost) {
-        this.agentHost = agentHost;
-    }
 }
 
 

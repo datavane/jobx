@@ -24,8 +24,8 @@ package com.jobxhub.rpc;
 import com.jobxhub.common.Constants;
 import com.jobxhub.common.job.Request;
 import com.jobxhub.common.job.Response;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
+
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -36,10 +36,9 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-
+@Slf4j
 public class RpcFuture {
 
-    private static final Logger logger = LoggerFactory.getLogger(RpcFuture.class);
 
     public static final Map<Long, RpcFuture> futures = new ConcurrentHashMap<Long, RpcFuture>();
 
@@ -109,7 +108,7 @@ public class RpcFuture {
             if (future != null) {
                 future.doReceived(response);
             } else {
-                logger.warn("[JobX]The timeout response finally returned at "
+                log.warn("[JobX]The timeout response finally returned at "
                         + (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(new Date()))
                         + ", response " + future.getRequest().getAddress());
             }
@@ -124,7 +123,7 @@ public class RpcFuture {
             this.response = response;
             long useTime = System.currentTimeMillis() - startTime;
             if (useTime > this.timeout) {
-                logger.warn("[JobX]Service response time is too slow. Request id:{}. Response Time:{}", this.futureId, useTime);
+                log.warn("[JobX]Service response time is too slow. Request id:{}. Response Time:{}", this.futureId, useTime);
             }
             if (done != null) {
                 done.signal();
@@ -159,9 +158,7 @@ public class RpcFuture {
             return;
         }
 
-        if (logger.isInfoEnabled()) {
-            logger.info("[JobX] async callback invoke");
-        }
+        log.info("[JobX] async callback invoke");
 
         if (this.response == null) {
             throw new IllegalStateException("[JobX]response cannot be null. host:" + this.request.getAddress() + ",action: " + this.request.getAction());
@@ -171,13 +168,13 @@ public class RpcFuture {
             try {
                 invokeCallback.done(this.response);
             } catch (Exception e) {
-                logger.error("[JobX]callback done invoke error .host:{},action:{}:,caught:{}", this.request.getAddress(), this.request.getAction(), e);
+                log.error("[JobX]callback done invoke error .host:{},action:{}:,caught:{}", this.request.getAddress(), this.request.getAction(), e);
             }
         } else {
             try {
                 invokeCallback.caught(response.getThrowable());
             } catch (Exception e) {
-                logger.error("[JobX]callback caught invoke error .host:{},action:{}:,caught:{}", this.request.getAddress(), this.request.getAction(), e);
+                log.error("[JobX]callback caught invoke error .host:{},action:{}:,caught:{}", this.request.getAddress(), this.request.getAction(), e);
             }
         }
     }
@@ -202,7 +199,7 @@ public class RpcFuture {
                         }
                         Thread.sleep(30);
                     } catch (Throwable e) {
-                        logger.error("Exception when scan the timeout invocation of remoting.", e);
+                        log.error("Exception when scan the timeout invocation of remoting.", e);
                     }
                 }
             }

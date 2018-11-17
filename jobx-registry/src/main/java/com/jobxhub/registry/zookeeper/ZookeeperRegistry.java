@@ -22,11 +22,10 @@
 package com.jobxhub.registry.zookeeper;
 
 import com.jobxhub.common.exception.RpcException;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import com.jobxhub.common.util.collection.ConcurrentHashSet;
 import com.jobxhub.registry.URL;
 import com.jobxhub.registry.api.Registry;
-import org.slf4j.Logger;
 
 import java.util.*;
 
@@ -35,9 +34,8 @@ import java.util.*;
  *
  * @author benjobs
  */
+@Slf4j
 public class ZookeeperRegistry implements Registry {
-
-    private final static Logger logger = LoggerFactory.getLogger(ZookeeperRegistry.class);
 
     private final Set<URL> failedRegistered = new ConcurrentHashSet<URL>();
 
@@ -59,7 +57,7 @@ public class ZookeeperRegistry implements Registry {
                     try {
                         recover();
                     } catch (Exception e) {
-                        logger.error(e.getMessage(), e);
+                        log.error(e.getMessage(), e);
                     }
                 }
             }
@@ -77,7 +75,7 @@ public class ZookeeperRegistry implements Registry {
         try {
             zkClient.close();
         } catch (Exception e) {
-            logger.warn("[JobX] Failed to close zookeeper client " + getUrl() + ", cause: " + e.getMessage(), e);
+            log.warn("[JobX] Failed to close zookeeper client " + getUrl() + ", cause: " + e.getMessage(), e);
         }
     }
 
@@ -86,9 +84,7 @@ public class ZookeeperRegistry implements Registry {
         // register
         Set<URL> recoverRegistered = new HashSet<URL>(getRegistered());
         if (!recoverRegistered.isEmpty()) {
-            if (logger.isInfoEnabled()) {
-                logger.info("[JobX] Recover register url " + recoverRegistered);
-            }
+            log.info("[JobX] Recover register url " + recoverRegistered);
             for (URL url : recoverRegistered) {
                 failedRegistered.add(url);
             }

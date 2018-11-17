@@ -20,12 +20,11 @@
  */
 package com.jobxhub.registry.zookeeper.support;
 
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import com.jobxhub.registry.zookeeper.ChildListener;
 import com.jobxhub.registry.zookeeper.StateListener;
 import com.jobxhub.registry.URL;
 import com.jobxhub.registry.zookeeper.ZookeeperClient;
-import org.slf4j.Logger;
 
 import java.util.List;
 import java.util.Set;
@@ -33,9 +32,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.CopyOnWriteArraySet;
 
+@Slf4j
 public abstract class AbstractZookeeperClient<TargetChildListener> implements ZookeeperClient {
-
-    protected static final Logger logger = LoggerFactory.getLogger(AbstractZookeeperClient.class);
 
     private URL url;
 
@@ -115,7 +113,7 @@ public abstract class AbstractZookeeperClient<TargetChildListener> implements Zo
         try {
             doClose();
         } catch (Throwable t) {
-            logger.warn(t.getMessage(), t);
+            log.warn(t.getMessage(), t);
         }
     }
 

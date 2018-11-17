@@ -27,7 +27,7 @@ import com.jobxhub.service.api.JobService;
 import com.jobxhub.service.model.Agent;
 import com.jobxhub.common.Constants;
 import com.jobxhub.common.ext.ExtensionLoader;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import com.jobxhub.common.util.*;
 import com.jobxhub.registry.URL;
 import com.jobxhub.registry.api.Registry;
@@ -39,7 +39,6 @@ import com.jobxhub.service.service.*;
 import com.jobxhub.service.support.JobXTools;
 import com.jobxhub.service.model.Job;
 import com.jobxhub.service.util.PropertyPlaceholder;
-import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -55,11 +54,9 @@ import static com.jobxhub.common.util.StringUtils.line;
 /**
  * @author benjobs.
  */
-
+@Slf4j
 @Component
 public class JobXRegistry {
-
-    private static final Logger logger = LoggerFactory.getLogger(JobXRegistry.class);
 
     @Autowired
     private JobService jobService;
@@ -122,9 +119,7 @@ public class JobXRegistry {
         if (CommonUtils.notEmpty(children)) {
             for (String agent : children) {
                 agents.put(agent,agent);
-                if (logger.isInfoEnabled()) {
-                    logger.info("[JobX] agent auto connected! info:{}", agent);
-                }
+                log.info("[JobX] agent auto connected! info:{}", agent);
                 agentService.doConnect(agent);
             }
         }
@@ -132,9 +127,7 @@ public class JobXRegistry {
 
     public void destroy() {
         destroy = true;
-        if (logger.isInfoEnabled()) {
-            logger.info("[JobX] run destroy now...");
-        }
+        log.info("[JobX] run destroy now...");
 
         if (!Constants.JOBX_CLUSTER) return;
 
@@ -164,9 +157,7 @@ public class JobXRegistry {
                 if (agents.isEmpty()) {
                     for (String agent : children) {
                         agents.put(agent,agent);
-                        if (logger.isInfoEnabled()) {
-                            logger.info("[JobX] agent connected! info:{}", agent);
-                        }
+                        log.info("[JobX] agent connected! info:{}", agent);
                         agentService.doConnect(agent);
                     }
                 } else {
@@ -175,14 +166,14 @@ public class JobXRegistry {
                         unAgents.remove(agent);
                         if (!agents.containsKey(agent)) {
                             //新增...
-                            logger.info("[JobX] agent connected! info:{}", agent);
+                            log.info("[JobX] agent connected! info:{}", agent);
                             agents.put(agent,agent);
                             agentService.doConnect(agent);
                         }
                     }
                     if (CommonUtils.notEmpty(unAgents)) {
                         for (String child : unAgents.keySet()) {
-                            logger.info("[JobX] agent doDisconnect! info:{}", child);
+                            log.info("[JobX] agent doDisconnect! info:{}", child);
                             agents.remove(child);
                             agentService.doDisconnect(child);
                         }
@@ -246,9 +237,7 @@ public class JobXRegistry {
         Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
             @Override
             public void run() {
-                if (logger.isInfoEnabled()) {
-                    logger.info("[JobX] run shutdown hook now...");
-                }
+                log.info("[JobX] run shutdown hook now...");
                 registryService.unRegister(registryPath);
             }
         }, "JobXShutdownHook"));
@@ -398,7 +387,7 @@ public class JobXRegistry {
                 bodyFormat + "jobId:{}" +
                 bodyFormat + "totalJobs:[ {} ]" + endFormat;
 
-        logger.info(
+        log.info(
                 infoFormat,
                 DateUtils.formatFullDate(new Date()),
                 this.preServerSize,

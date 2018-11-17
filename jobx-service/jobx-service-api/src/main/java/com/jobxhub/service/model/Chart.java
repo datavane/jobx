@@ -22,11 +22,14 @@
 
 package com.jobxhub.service.model;
 
+import lombok.Data;
+
 import java.io.Serializable;
 
 /**
  * Created by ChenHui on 2016/3/3.
  */
+@Data
 public class Chart implements Serializable {
 
     /**
@@ -57,92 +60,4 @@ public class Chart implements Serializable {
 
     private String date;//折线图横坐标时间 格式 yy-MM-dd
 
-
-    public Integer getAuto() {
-        return auto;
-    }
-
-    public void setAuto(Integer auto) {
-        this.auto = auto;
-    }
-
-    public Integer getOperator() {
-        return operator;
-    }
-
-    public void setOperator(Integer operator) {
-        this.operator = operator;
-    }
-
-    public Integer getRerun() {
-        return rerun;
-    }
-
-    public void setRerun(Integer rerun) {
-        this.rerun = rerun;
-    }
-
-    public Integer getSuccess() {
-        return success;
-    }
-
-    public void setSuccess(Integer success) {
-        this.success = success;
-    }
-
-    public Integer getFailed() {
-        return failed;
-    }
-
-    public void setFailed(Integer failed) {
-        this.failed = failed;
-    }
-
-    public Integer getKilled() {
-        return killed;
-    }
-
-    public void setKilled(Integer killed) {
-        this.killed = killed;
-    }
-
-    public Integer getTimeout() {
-        return timeout;
-    }
-
-    public void setTimeout(Integer timeout) {
-        this.timeout = timeout;
-    }
-
-    public Integer getLost() {
-        return lost;
-    }
-
-    public void setLost(Integer lost) {
-        this.lost = lost;
-    }
-
-    public Integer getSingleton() {
-        return singleton;
-    }
-
-    public void setSingleton(Integer singleton) {
-        this.singleton = singleton;
-    }
-
-    public Integer getFlow() {
-        return flow;
-    }
-
-    public void setFlow(Integer flow) {
-        this.flow = flow;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
 }

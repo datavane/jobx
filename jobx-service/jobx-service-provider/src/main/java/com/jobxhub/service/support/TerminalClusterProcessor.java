@@ -25,7 +25,7 @@ package com.jobxhub.service.support;
 import com.jobxhub.common.Constants;
 import com.jobxhub.common.ext.ExtensionLoader;
 import com.jobxhub.common.ext.MethodMark;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import com.jobxhub.common.util.*;
 import com.jobxhub.registry.URL;
 import com.jobxhub.registry.api.Registry;
@@ -33,10 +33,8 @@ import com.jobxhub.registry.zookeeper.ChildListener;
 import com.jobxhub.registry.zookeeper.ZookeeperClient;
 import com.jobxhub.registry.zookeeper.ZookeeperRegistry;
 import com.jobxhub.registry.zookeeper.ZookeeperTransporter;
-import com.jobxhub.service.job.JobXRegistry;
 import com.jobxhub.service.service.TerminalService;
 import com.jobxhub.service.vo.Status;
-import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -50,10 +48,9 @@ import com.jobxhub.common.util.collection.HashMap;
  * 分布式web终端
  * 分布式+反射+多线程.别问我怎么实现的,忘了....
  */
+@Slf4j
 @Component
 public class TerminalClusterProcessor {
-
-    private static final Logger logger = LoggerFactory.getLogger(JobXRegistry.class);
 
     @Autowired
     private TerminalService termService;
@@ -87,7 +84,7 @@ public class TerminalClusterProcessor {
      */
     static {
         if (Constants.JOBX_CLUSTER) {
-            logger.info("[JobX] Terminal init zookeeper....");
+            log.info("[JobX] Terminal init zookeeper....");
            //registryURL = URL.valueOf(PropertyPlaceholder.get(Constants.PARAM_JOBX_REGISTRY_KEY));
             registryPath = Constants.ZK_REGISTRY_TERM_PATH;
             ZookeeperTransporter transporter = ExtensionLoader.load(ZookeeperTransporter.class);
@@ -137,7 +134,7 @@ public class TerminalClusterProcessor {
                                         String methodName = array[2];
                                         //该方法在该机器上
                                         if (terminalMapping.containsKey(token) && terminalMapping.containsValue(JobXTools.SERVER_ID)) {
-                                            logger.info("[JobX] Terminal method :{} in this server", methodMap.get(methodName).getName());
+                                            log.info("[JobX] Terminal method :{} in this server", methodMap.get(methodName).getName());
                                             //unregister
                                             registry.unRegister(registryPath + "/" + child);
                                             //invoke...
@@ -171,7 +168,7 @@ public class TerminalClusterProcessor {
 
         JobXTools.getCachedManager().set(token.concat(methodMD5), param);
 
-        logger.info("[JobX] Terminal registry to zookeeper");
+        log.info("[JobX] Terminal registry to zookeeper");
 
         //method_token_method
         String data = ZK_TERM_METHOD_PREFIX + token.concat("_").concat(methodMD5);

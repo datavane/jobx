@@ -28,8 +28,7 @@ import com.jobxhub.common.util.DigestUtils;
 import com.jobxhub.common.util.IOUtils;
 import com.jobxhub.common.util.StringUtils;
 import com.jobxhub.service.model.Terminal;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -39,9 +38,8 @@ import java.util.List;
 
 import static com.jobxhub.common.util.CommonUtils.notEmpty;
 
+@Slf4j
 public class TerminalClient {
-
-    private final Logger logger = LoggerFactory.getLogger(TerminalClient.class);
 
     private String clientId;//每次生成的唯一值token
     private String httpSessionId;//打开该终端的SessionId
@@ -153,9 +151,7 @@ public class TerminalClient {
                                     continue;
                                 }
                                 pwd = message.replace(sendTempCmdId, "").replaceAll("\r\n.*", "") + "/";
-                                if (logger.isInfoEnabled()) {
-                                    logger.info("[JobX] Sftp upload file target path:{}", pwd);
-                                }
+                                log.info("[JobX] Sftp upload file target path:{}", pwd);
                             }
                         } else {
                             webSocketSession.sendMessage(new TextMessage(message));

@@ -26,15 +26,13 @@ import com.jobxhub.common.Constants;
 import com.jobxhub.common.util.*;
 import com.jobxhub.service.session.cached.CachedManager;
 import com.jobxhub.service.model.User;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Enumeration;
@@ -43,14 +41,12 @@ import com.jobxhub.common.util.collection.HashMap;
 
 import static com.jobxhub.common.util.CommonUtils.uuid;
 
-
+@Slf4j
 public final class JobXTools {
 
     private static String resourceId;
 
     public static final String SERVER_ID = uuid();
-
-    private static Logger logger = LoggerFactory.getLogger(JobXTools.class);
 
     private static ApplicationContext cachedContext;
 

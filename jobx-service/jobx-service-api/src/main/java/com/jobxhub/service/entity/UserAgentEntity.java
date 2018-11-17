@@ -20,9 +20,12 @@
  */
 package com.jobxhub.service.entity;
 
+import lombok.Data;
+
 import javax.persistence.Transient;
 import java.io.Serializable;
 
+@Data
 public class UserAgentEntity implements Serializable {
 
     private Long id;
@@ -35,51 +38,4 @@ public class UserAgentEntity implements Serializable {
     @Transient
     private String agentHost;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public Long getAgentId() {
-        return agentId;
-    }
-
-    public void setAgentId(Long agentId) {
-        this.agentId = agentId;
-    }
-
-    public String getAgentName() {
-        return agentName;
-    }
-
-    public void setAgentName(String agentName) {
-        this.agentName = agentName;
-    }
-
-    public String getAgentHost() {
-        return agentHost;
-    }
-
-    public void setAgentHost(String agentHost) {
-        this.agentHost = agentHost;
-    }
 }

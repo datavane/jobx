@@ -29,11 +29,10 @@ import com.jobxhub.agent.service.AgentService;
 import com.jobxhub.agent.util.PropertiesLoader;
 import com.jobxhub.common.Constants;
 import com.jobxhub.common.ext.ExtensionLoader;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import com.jobxhub.common.util.*;
 import com.jobxhub.rpc.Server;
 import com.jobxhub.rpc.ServerHandler;
-import org.slf4j.Logger;
 
 import java.io.*;
 import java.lang.management.ManagementFactory;
@@ -50,13 +49,11 @@ import java.util.concurrent.Executors;
 import static com.jobxhub.common.util.CommonUtils.isEmpty;
 import static com.jobxhub.common.util.CommonUtils.notEmpty;
 
+@Slf4j
 public class JobXAgent implements Serializable {
 
 
     private static final long serialVersionUID = 20150614L;
-
-
-    private static Logger logger = LoggerFactory.getLogger(JobXAgent.class);
 
     /**
      * rpc server
@@ -110,9 +107,7 @@ public class JobXAgent implements Serializable {
 
         try {
             if (isEmpty(args)) {
-                if (logger.isWarnEnabled()) {
-                    logger.warn("Bootstrap: error,usage start|stop");
-                }
+                log.warn("Bootstrap: error,usage start|stop");
             } else {
                 String command = args[0];
                 if ("start".equals(command)) {
@@ -127,9 +122,7 @@ public class JobXAgent implements Serializable {
                 } else if ("stop".equals(command)) {
                     daemon.shutdown();
                 } else {
-                    if (logger.isWarnEnabled()) {
-                        logger.warn("Bootstrap: command \"" + command + "\" does not exist.");
-                    }
+                    log.warn("Bootstrap: command \"" + command + "\" does not exist.");
                 }
             }
         } catch (Throwable t) {
@@ -215,7 +208,7 @@ public class JobXAgent implements Serializable {
         }
 
         if (!IOUtils.fileExists(Constants.JOBX_LOG_PATH)) {
-            logger.warn("[JobX] logs folder is not found!make...");
+            log.warn("[JobX] logs folder is not found!make...");
             new File(Constants.JOBX_LOG_PATH).mkdir();
         }
 
@@ -248,9 +241,7 @@ public class JobXAgent implements Serializable {
             if (!CommonUtils.isWindows()) {
                 Integer pid = getPid();
                 IOUtils.writeText(Constants.JOBX_PID_FILE, pid, Constants.CHARSET_UTF8);
-                if (logger.isInfoEnabled()) {
-                    logger.info("[JobX]agent started @ port:{},pid:{}", port, pid);
-                }
+                log.info("[JobX]agent started @ port:{},pid:{}", port, pid);
             }
 
             /**
@@ -291,9 +282,7 @@ public class JobXAgent implements Serializable {
         try {
             awaitSocket = new ServerSocket(shutdownPort);
         } catch (IOException e) {
-            if (logger.isErrorEnabled()) {
-                logger.error("[JobX] agent .await: create[{}] ", shutdownPort, e);
-            }
+            log.error("[JobX] agent .await: create[{}] ", shutdownPort, e);
             return;
         }
 
@@ -317,22 +306,16 @@ public class JobXAgent implements Serializable {
                     } catch (SocketTimeoutException ste) {
                         // This should never happen but bug 56684 suggests that
                         // it does.
-                        if (logger.isWarnEnabled()) {
-                            logger.warn("[JobX] agentServer accept.timeout", Long.valueOf(System.currentTimeMillis() - acceptStartTime), ste);
-                        }
+                        log.warn("[JobX] agentServer accept.timeout", Long.valueOf(System.currentTimeMillis() - acceptStartTime), ste);
                         continue;
                     } catch (AccessControlException ace) {
-                        if (logger.isWarnEnabled()) {
-                            logger.warn("[JobX] agentServer .accept security exception: {}", ace.getMessage(), ace);
-                        }
+                        log.warn("[JobX] agentServer .accept security exception: {}", ace.getMessage(), ace);
                         continue;
                     } catch (IOException e) {
                         if (stopAwait) {
                             break;
                         }
-                        if (logger.isErrorEnabled()) {
-                            logger.error("[JobX] agent .await: accept: ", e);
-                        }
+                        log.error("[JobX] agent .await: accept: ", e);
                         break;
                     }
 
@@ -349,9 +332,7 @@ public class JobXAgent implements Serializable {
                         try {
                             ch = stream.read();
                         } catch (IOException e) {
-                            if (logger.isWarnEnabled()) {
-                                logger.warn("[JobX] agent .await: read: ", e);
-                            }
+                            log.warn("[JobX] agent .await: read: ", e);
                             ch = -1;
                         }
                         if (ch < 32)  // Control character or EOF terminates loop
@@ -371,9 +352,7 @@ public class JobXAgent implements Serializable {
                 if (match) {
                     break;
                 } else {
-                    if (logger.isWarnEnabled()) {
-                        logger.warn("[JobX] agent .await: Invalid command '" + command.toString() + "' received");
-                    }
+                    log.warn("[JobX] agent .await: Invalid command '" + command.toString() + "' received");
                 }
             }
         } finally {
@@ -413,14 +392,10 @@ public class JobXAgent implements Serializable {
             stream.flush();
             socket.close();
         } catch (ConnectException ce) {
-            if (logger.isErrorEnabled()) {
-                logger.error("[JobX] Agent.stop error:{} ", ce);
-            }
+            log.error("[JobX] Agent.stop error:{} ", ce);
             System.exit(1);
         } catch (Exception e) {
-            if (logger.isErrorEnabled()) {
-                logger.error("[JobX] Agent.stop error:{} ", e);
-            }
+            log.error("[JobX] Agent.stop error:{} ", e);
             System.exit(1);
         }
     }

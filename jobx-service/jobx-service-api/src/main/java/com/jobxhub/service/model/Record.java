@@ -27,6 +27,7 @@ import com.google.common.base.Function;
 import com.jobxhub.common.Constants;
 import com.jobxhub.common.util.CommonUtils;
 import com.jobxhub.service.entity.RecordEntity;
+import lombok.Data;
 import org.springframework.beans.BeanUtils;
 
 import java.io.Serializable;
@@ -34,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@Data
 public class Record implements Serializable {
 
     private Long recordId;
@@ -105,216 +107,12 @@ public class Record implements Serializable {
         this.start();
     }
 
-    public Long getRecordId() {
-        return recordId;
-    }
-
-    public void setRecordId(Long recordId) {
-        this.recordId = recordId;
-    }
-
-    public Long getJobId() {
-        return jobId;
-    }
-
-    public void setJobId(Long jobId) {
-        this.jobId = jobId;
-    }
-
-    public Long getAgentId() {
-        return agentId;
-    }
-
-    public void setAgentId(Long agentId) {
-        this.agentId = agentId;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public String getCommand() {
-        return command;
-    }
-
-    public void setCommand(String command) {
-        this.command = command;
-    }
-
-    public String getExecUser() {
-        return execUser;
-    }
-
-    public void setExecUser(String execUser) {
-        this.execUser = execUser;
-    }
-
-    public Integer getReturnCode() {
-        return returnCode;
-    }
-
-    public void setReturnCode(Integer returnCode) {
-        this.returnCode = returnCode;
-    }
-
-    public Integer getSuccess() {
-        return success;
-    }
-
-    public void setSuccess(Integer success) {
-        this.success = success;
-    }
-
-    public Date getStartTime() {
-        return startTime;
-    }
-
     public void start(){
         setStartTime(new Date());
     }
 
-    public void setStartTime(Date startTime) {
-        this.startTime = startTime;
-    }
-
-    public Date getEndTime() {
-        return endTime;
-    }
-
     public void end(){
         setEndTime(new Date());
-    }
-
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
-    }
-
-    public Integer getExecType() {
-        return execType;
-    }
-
-    public void setExecType(Integer execType) {
-        this.execType = execType;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    public String getPid() {
-        return pid;
-    }
-
-    public void setPid(String pid) {
-        this.pid = pid;
-    }
-
-    public Integer getRedoNum() {
-        return redoNum;
-    }
-
-    public void setRedoNum(Integer redoNum) {
-        this.redoNum = redoNum;
-    }
-
-    public Integer getRedoCount() {
-        return redoCount;
-    }
-
-    public void setRedoCount(Integer redoCount) {
-        this.redoCount = redoCount;
-    }
-
-    public Long getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(Long parentId) {
-        this.parentId = parentId;
-    }
-
-    public Long getGroupId() {
-        return groupId;
-    }
-
-    public void setGroupId(Long groupId) {
-        this.groupId = groupId;
-    }
-
-    public Integer getJobType() {
-        return jobType;
-    }
-
-    public void setJobType(Integer jobType) {
-        this.jobType = jobType;
-    }
-
-    public String getJobName() {
-        return jobName;
-    }
-
-    public void setJobName(String jobName) {
-        this.jobName = jobName;
-    }
-
-    public String getAgentName() {
-        return agentName;
-    }
-
-    public void setAgentName(String agentName) {
-        this.agentName = agentName;
-    }
-
-    public String getHost() {
-        return host;
-    }
-
-    public void setHost(String host) {
-        this.host = host;
-    }
-
-    public String getCronExp() {
-        return cronExp;
-    }
-
-    public void setCronExp(String cronExp) {
-        this.cronExp = cronExp;
-    }
-
-    public String getOperateUname() {
-        return operateUname;
-    }
-
-    public void setOperateUname(String operateUname) {
-        this.operateUname = operateUname;
-    }
-
-    public List<Record> getRedoList() {
-        return redoList;
-    }
-
-    public void setRedoList(List<Record> redoList) {
-        this.redoList = redoList;
-    }
-
-    public String getQueryDate() {
-        return queryDate;
     }
 
     public void setQueryDate(String queryDate) {

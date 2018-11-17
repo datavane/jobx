@@ -25,18 +25,15 @@ import com.jobxhub.common.Constants;
 import com.jobxhub.common.util.AssertUtils;
 import com.jobxhub.common.util.CommonUtils;
 import com.jobxhub.common.util.IOUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.io.IOException;
 
 import static com.jobxhub.common.util.CommandUtils.*;
 
+@Slf4j
 public class ExecuteUser {
-
-    private final static Logger logger = LoggerFactory.getLogger(ExecuteUser.class);
-
 
     public ExecuteUser() {
         if (!IOUtils.fileExists(Constants.JOBX_EXECUTE_AS_USER_LIB)) {
@@ -52,7 +49,7 @@ public class ExecuteUser {
      * @return The return value of the shell command
      */
     public static int execute(final String user, final File file, final String command) throws IOException {
-        logger.info("[Jobx]execute Command {} ", command);
+        log.info("[Jobx]execute Command {} ", command);
         final Process process = new ProcessBuilder()
                 .command(buildCommand(user, file, command))
                 .inheritIO()
@@ -61,7 +58,7 @@ public class ExecuteUser {
         try {
             exitCode = process.waitFor();
         } catch (final InterruptedException e) {
-            logger.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
             exitCode = 1;
         }
         return exitCode;

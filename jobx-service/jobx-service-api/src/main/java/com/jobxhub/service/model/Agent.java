@@ -25,6 +25,7 @@ package com.jobxhub.service.model;
 import com.google.common.base.Function;
 import com.jobxhub.service.entity.AgentEntity;
 import com.jobxhub.service.entity.GroupEntity;
+import lombok.Data;
 import org.springframework.beans.BeanUtils;
 
 import java.io.Serializable;
@@ -32,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@Data
 public class Agent implements Serializable {
 
     private Long agentId;
@@ -82,192 +84,6 @@ public class Agent implements Serializable {
             return agentEntity;
         }
     };
-
-    public Agent(){}
-
-    public Long getAgentId() {
-        return agentId;
-    }
-
-    public void setAgentId(Long agentId) {
-        this.agentId = agentId;
-    }
-
-    public String getMachineId() {
-        return machineId;
-    }
-
-    public void setMachineId(String machineId) {
-        this.machineId = machineId;
-    }
-
-    public Long getProxyId() {
-        return proxyId;
-    }
-
-    public void setProxyId(Long proxyId) {
-        this.proxyId = proxyId;
-    }
-
-    public String getHost() {
-        return host;
-    }
-
-    public void setHost(String host) {
-        this.host = host;
-    }
-
-    public Integer getPlatform() {
-        return platform;
-    }
-
-    public void setPlatform(Integer platform) {
-        this.platform = platform;
-    }
-
-    public Integer getPort() {
-        return port;
-    }
-
-    public void setPort(Integer port) {
-        this.port = port;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Boolean getWarning() {
-        return warning;
-    }
-
-    public void setWarning(Boolean warning) {
-        this.warning = warning;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getMobile() {
-        return mobile;
-    }
-
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    public Date getNotifyTime() {
-        return notifyTime;
-    }
-
-    public void setNotifyTime(Date notifyTime) {
-        this.notifyTime = notifyTime;
-    }
-
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
-
-
-    public List<GroupEntity> getGroups() {
-        return groups;
-    }
-
-    public void setGroups(List<GroupEntity> groups) {
-        this.groups = groups;
-    }
-
-    public Integer getTaskCount() {
-        return taskCount;
-    }
-
-    public void setTaskCount(Integer taskCount) {
-        this.taskCount = taskCount;
-    }
-
-    public List<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(List<User> users) {
-        this.users = users;
-    }
-
-    public Boolean getProxy() {
-        return proxy;
-    }
-
-    public void setProxy(Boolean proxy) {
-        this.proxy = proxy;
-    }
-
-
-    @Override
-    public int hashCode() {
-        return getAgentId() != null ? getAgentId().hashCode() : 0;
-    }
-
-    @Override
-    public String toString() {
-        return "Agent{" +
-                "agentId=" + agentId +
-                ", machineId='" + machineId + '\'' +
-                ", proxyId=" + proxyId +
-                ", host='" + host + '\'' +
-                ", platform=" + platform +
-                ", port=" + port +
-                ", name='" + name + '\'' +
-                ", password='" + password + '\'' +
-                ", warning=" + warning +
-                ", email='" + email + '\'' +
-                ", mobile='" + mobile + '\'' +
-                ", status=" + status +
-                ", notifyTime=" + notifyTime +
-                ", comment='" + comment + '\'' +
-                ", updateTime=" + updateTime +
-                ", groups=" + groups +
-                ", taskCount=" + taskCount +
-                ", users=" + users +
-                ", proxy=" + proxy +
-                '}';
-    }
 
 
 }

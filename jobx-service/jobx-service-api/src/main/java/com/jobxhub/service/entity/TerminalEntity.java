@@ -20,6 +20,8 @@
  */
 package com.jobxhub.service.entity;
 
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Date;
@@ -28,6 +30,7 @@ import java.util.Date;
  * Created by benjobs on 16/5/21.
  */
 
+@Data
 public class TerminalEntity implements Serializable {
 
     private Long id;
@@ -43,129 +46,6 @@ public class TerminalEntity implements Serializable {
     private byte[] authorization;
     private String status;
     private Date loginTime;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public String getHost() {
-        return host;
-    }
-
-    public void setHost(String host) {
-        this.host = host;
-    }
-
-    public int getPort() {
-        return port;
-    }
-
-    public void setPort(int port) {
-        this.port = port;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getTheme() {
-        return theme;
-    }
-
-    public void setTheme(String theme) {
-        this.theme = theme;
-    }
-
-    public Integer getSshType() {
-        return sshType;
-    }
-
-    public void setSshType(Integer sshType) {
-        this.sshType = sshType;
-    }
-
-    public byte[] getPrivateKey() {
-        return privateKey;
-    }
-
-    public void setPrivateKey(byte[] privateKey) {
-        this.privateKey = privateKey;
-    }
-
-    public byte[] getPassphrase() {
-        return passphrase;
-    }
-
-    public void setPassphrase(byte[] passphrase) {
-        this.passphrase = passphrase;
-    }
-
-    public byte[] getAuthorization() {
-        return authorization;
-    }
-
-    public void setAuthorization(byte[] authorization) {
-        this.authorization = authorization;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public Date getLoginTime() {
-        return loginTime;
-    }
-
-    public void setLoginTime(Date loginTime) {
-        this.loginTime = loginTime;
-    }
-
-    @Override
-    public String toString() {
-        return "Terminal{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", userId=" + userId +
-                ", host='" + host + '\'' +
-                ", port=" + port +
-                ", userName='" + userName + '\'' +
-                ", theme='" + theme + '\'' +
-                ", sshType='" + sshType + '\'' +
-                ", privateKey='" + privateKey + '\'' +
-                ", passphrase='" + passphrase + '\'' +
-                ", authorization=" + Arrays.toString(authorization) +
-                ", status='" + status + '\'' +
-                ", loginTime=" + loginTime +
-                '}';
-    }
 
 
 }

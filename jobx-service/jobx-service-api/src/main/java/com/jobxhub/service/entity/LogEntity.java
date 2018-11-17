@@ -22,6 +22,8 @@
 
 package com.jobxhub.service.entity;
 
+import lombok.Data;
+
 import javax.persistence.Transient;
 import java.io.Serializable;
 import java.util.Date;
@@ -29,6 +31,7 @@ import java.util.Date;
 /**
  * Created by ChenHui on 2016/3/31.
  */
+@Data
 public class LogEntity implements Serializable {
 
     private Long logId;
@@ -52,98 +55,4 @@ public class LogEntity implements Serializable {
 
     private Long userId;
 
-
-    public Long getLogId() {
-        return logId;
-    }
-
-    public void setLogId(Long logId) {
-        this.logId = logId;
-    }
-
-    public Long getAgentId() {
-        return agentId;
-    }
-
-    public void setAgentId(Long agentId) {
-        this.agentId = agentId;
-    }
-
-    public String getAgentName() {
-        return agentName;
-    }
-
-    public void setAgentName(String agentName) {
-        this.agentName = agentName;
-    }
-
-    public Integer getType() {
-        return type;
-    }
-
-    public void setType(Integer type) {
-        this.type = type;
-    }
-
-    public String getReceiver() {
-        return receiver;
-    }
-
-    public void setReceiver(String receiver) {
-        this.receiver = receiver;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public String getResult() {
-        return result;
-    }
-
-    public void setResult(String result) {
-        this.result = result;
-    }
-
-    public Date getSendTime() {
-        return sendTime;
-    }
-
-    public void setSendTime(Date sendTime) {
-        this.sendTime = sendTime;
-    }
-
-    public Boolean getIsread() {
-        return isread;
-    }
-
-    public void setIsread(Boolean isread) {
-        this.isread = isread;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    @Override
-    public String toString() {
-        return "Log{" +
-                "logId=" + logId +
-                ", agentId=" + agentId +
-                ", type=" + type +
-                ", receiver='" + receiver + '\'' +
-                ", message='" + message + '\'' +
-                ", result='" + result + '\'' +
-                ", sendTime=" + sendTime +
-                ", isread=" + isread +
-                '}';
-    }
 }

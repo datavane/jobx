@@ -23,6 +23,8 @@
 package com.jobxhub.service.entity;
 
 
+import lombok.Data;
+
 import javax.persistence.Transient;
 import java.io.Serializable;
 import java.util.Arrays;
@@ -31,6 +33,7 @@ import java.util.Date;
 /**
  * Created by benjobs on 14-6-25.
  */
+@Data
 public class UserEntity implements Serializable {
 
     private Long userId;
@@ -65,150 +68,4 @@ public class UserEntity implements Serializable {
 
     private String execUser;
 
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public Long getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(Long roleId) {
-        this.roleId = roleId;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getSalt() {
-        return salt;
-    }
-
-    public void setSalt(String salt) {
-        this.salt = salt;
-    }
-
-    public String getRealName() {
-        return realName;
-    }
-
-    public void setRealName(String realName) {
-        this.realName = realName;
-    }
-
-    public String getContact() {
-        return contact;
-    }
-
-    public void setContact(String contact) {
-        this.contact = contact;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getQq() {
-        return qq;
-    }
-
-    public void setQq(String qq) {
-        this.qq = qq;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Date getModifyTime() {
-        return modifyTime;
-    }
-
-    public void setModifyTime(Date modifyTime) {
-        this.modifyTime = modifyTime;
-    }
-
-    public String getRoleName() {
-        return roleName;
-    }
-
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
-    }
-
-    public byte[] getHeaderPic() {
-        return headerPic;
-    }
-
-    public void setHeaderPic(byte[] headerPic) {
-        this.headerPic = headerPic;
-    }
-
-    public String getPicExtName() {
-        return picExtName;
-    }
-
-    public void setPicExtName(String picExtName) {
-        this.picExtName = picExtName;
-    }
-
-    public String getExecUser() {
-        return execUser;
-    }
-
-    public void setExecUser(String execUser) {
-        this.execUser = execUser;
-    }
-
-    @Override
-    public int hashCode() {
-        return userId != null ? userId.hashCode() : 0;
-    }
-
-    @Override
-    public String toString() {
-        return "UserBean{" +
-                "userId=" + userId +
-                ", roleId=" + roleId +
-                ", userName='" + userName + '\'' +
-                ", password='" + password + '\'' +
-                ", salt='" + salt + '\'' +
-                ", realName='" + realName + '\'' +
-                ", contact='" + contact + '\'' +
-                ", email='" + email + '\'' +
-                ", qq='" + qq + '\'' +
-                ", createTime=" + createTime +
-                ", modifyTime=" + modifyTime +
-                ", roleName='" + roleName + '\'' +
-                ", headerPic=" + Arrays.toString(headerPic) +
-                ", picExtName='" + picExtName + '\'' +
-                ", execUser='" + execUser + '\'' +
-                '}';
-    }
 }

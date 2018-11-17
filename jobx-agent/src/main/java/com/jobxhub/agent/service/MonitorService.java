@@ -21,19 +21,17 @@
 
 package com.jobxhub.agent.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hyperic.sigar.*;
 import com.jobxhub.common.job.Monitor;
-import org.slf4j.LoggerFactory;
-import org.slf4j.Logger;
 
 import java.util.*;
 
 /**
  * Created by benjobs on 16/4/7.
  */
+@Slf4j
 public class MonitorService {
-
-    private Logger logger = LoggerFactory.getLogger(MonitorService.class);
 
     private Sigar sigar;
 

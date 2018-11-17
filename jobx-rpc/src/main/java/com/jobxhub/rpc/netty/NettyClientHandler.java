@@ -24,18 +24,16 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import com.jobxhub.common.Constants;
 import com.jobxhub.common.job.*;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import com.jobxhub.common.util.CommonUtils;
-import org.slf4j.Logger;
 
 import java.io.RandomAccessFile;
 
 /**
  * @author benjobs
  */
+@Slf4j
 public class NettyClientHandler extends SimpleChannelInboundHandler<Response> {
-
-    private Logger logger = LoggerFactory.getLogger(NettyClientHandler.class);
 
     private NettyClient nettyClient;
 
@@ -68,9 +66,9 @@ public class NettyClientHandler extends SimpleChannelInboundHandler<Response> {
                     handlerContext.writeAndFlush(request);
                     requestFile.setBytes(null);
                     requestFile.setEndPos(-1);
-                    logger.info("[JobX] NettyRPC file upload，readLength starting... request id:{}", request.getId());
+                    log.info("[JobX] NettyRPC file upload，readLength starting... request id:{}", request.getId());
                 } else {
-                    logger.info("[JobX] NettyRPC file upload，readLength done! request id:{}", request.getId());
+                    log.info("[JobX] NettyRPC file upload，readLength done! request id:{}", request.getId());
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -82,9 +80,7 @@ public class NettyClientHandler extends SimpleChannelInboundHandler<Response> {
     @Override
     protected void channelRead0(ChannelHandlerContext handlerContext, Response response) throws Exception {
         if (!response.getAction().equals(Action.UPLOAD)) {
-            if (logger.isInfoEnabled()) {
-                logger.info("[JobX] nettyRPC client receive response id:{}", response.getId());
-            }
+            log.info("[JobX] nettyRPC client receive response id:{}", response.getId());
             nettyClient.getRpcFuture(response.getId()).received(response);
             return;
         }
@@ -142,8 +138,6 @@ public class NettyClientHandler extends SimpleChannelInboundHandler<Response> {
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         super.exceptionCaught(ctx, cause);
-        if (logger.isErrorEnabled()) {
-            logger.error("[jobx nettyRPC error,cause{}]", cause);
-        }
+        log.error("[jobx nettyRPC error,cause{}]", cause);
     }
 }

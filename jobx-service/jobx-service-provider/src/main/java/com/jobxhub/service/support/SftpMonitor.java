@@ -22,17 +22,14 @@
 package com.jobxhub.service.support;
 
 import com.jcraft.jsch.SftpProgressMonitor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.text.DecimalFormat;
 import java.util.Timer;
 import java.util.TimerTask;
 
-
+@Slf4j
 public class SftpMonitor extends TimerTask implements SftpProgressMonitor {
-
-    private static Logger logger = LoggerFactory.getLogger(SftpMonitor.class);
 
     private long progressInterval = 2 * 1000; // 默认间隔时间为5秒
 
@@ -57,39 +54,29 @@ public class SftpMonitor extends TimerTask implements SftpProgressMonitor {
             if (transfered != fileSize) { // 判断当前已传输数据大小是否等于文件总大小
                 sendProgressMessage(transfered);
             } else {
-                if (logger.isInfoEnabled()) {
-                    logger.info("[JobX] Sftp file transfering is done.");
-                }
+                log.info("[JobX] Sftp file transfering is done.");
                 setEnd(true); // 如果当前已传输数据大小等于文件总大小，说明已完成，设置end
             }
         } else {
-            if (logger.isInfoEnabled()) {
-                logger.info("[JobX] Sftp file transfering is done.cancel timer");
-            }
+            log.info("[JobX] Sftp file transfering is done.cancel timer");
             stop(); // 如果传输结束，停止timer记时器
             return;
         }
     }
 
     public void stop() {
-        if (logger.isInfoEnabled()) {
-            logger.info("[JobX] Sftp progress monitor Stopping...");
-        }
+        log.info("[JobX] Sftp progress monitor Stopping...");
         if (timer != null) {
             timer.cancel();
             timer.purge();
             timer = null;
             isScheduled = false;
         }
-        if (logger.isInfoEnabled()) {
-            logger.info("[JobX] Sftp progress monitor Stoped.");
-        }
+        log.info("[JobX] Sftp progress monitor Stoped.");
     }
 
     public void start() {
-        if (logger.isInfoEnabled()) {
-            logger.info("[JobX] Sftp progress monitor Starting...");
-        }
+        log.info("[JobX] Sftp progress monitor Starting...");
         if (timer == null) {
             timer = new Timer();
         }
@@ -101,13 +88,9 @@ public class SftpMonitor extends TimerTask implements SftpProgressMonitor {
         if (fileSize != 0) {
             double d = ((double) transfered * 100) / (double) fileSize;
             DecimalFormat df = new DecimalFormat("#.##");
-            if (logger.isInfoEnabled()) {
-                logger.info("[JobX] Sftp Sending progress message: {} %", df.format(d));
-            }
+            log.info("[JobX] Sftp Sending progress message: {} %", df.format(d));
         } else {
-            if (logger.isInfoEnabled()) {
-                logger.info("[JobX] Sftp Sending progress message: ", transfered);
-            }
+            log.info("[JobX] Sftp Sending progress message: ", transfered);
         }
     }
 

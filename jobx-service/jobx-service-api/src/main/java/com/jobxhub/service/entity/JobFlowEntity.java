@@ -20,8 +20,11 @@
  */
 package com.jobxhub.service.entity;
 
+import lombok.Data;
+
 import java.io.Serializable;
 
+@Data
 public class JobFlowEntity implements Serializable {
 
     private Long flowId;
@@ -39,59 +42,5 @@ public class JobFlowEntity implements Serializable {
 
     private Boolean pause = false;//任务是否暂停(true:已经暂停,false:未暂停)
 
-    public Long getFlowId() {
-        return flowId;
-    }
 
-    public void setFlowId(Long flowId) {
-        this.flowId = flowId;
-    }
-
-    public String getFlowName() {
-        return flowName;
-    }
-
-    public void setFlowName(String flowName) {
-        this.flowName = flowName;
-    }
-
-    public String getCronExp() {
-        return cronExp;
-    }
-
-    public void setCronExp(String cronExp) {
-        this.cronExp = cronExp;
-    }
-
-    public Boolean getWarning() {
-        return warning;
-    }
-
-    public void setWarning(Boolean warning) {
-        this.warning = warning;
-    }
-
-    public String getMobile() {
-        return mobile;
-    }
-
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public Boolean getPause() {
-        return pause;
-    }
-
-    public void setPause(Boolean pause) {
-        this.pause = pause;
-    }
 }

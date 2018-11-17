@@ -24,12 +24,14 @@ package com.jobxhub.service.model;
 
 import com.jobxhub.common.util.StringUtils;
 import com.jobxhub.service.entity.ConfigEntity;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
+@Data
 public class Config implements Serializable {
 
     private String smtpHost;
@@ -91,85 +93,10 @@ public class Config implements Serializable {
     }
 
 
-    public String getSmtpHost() {
-        return smtpHost;
-    }
-
-    public void setSmtpHost(String smtpHost) {
-        this.smtpHost = smtpHost;
-    }
-
-    public Integer getSmtpPort() {
-        return smtpPort;
-    }
-
-    public void setSmtpPort(Integer smtpPort) {
-        this.smtpPort = smtpPort;
-    }
-
-    public Boolean getUseSsl() {
-        return useSsl;
-    }
-
-    public void setUseSsl(Boolean useSsl) {
-        this.useSsl = useSsl;
-    }
-
-    public String getSenderEmail() {
-        return senderEmail;
-    }
-
-    public void setSenderEmail(String senderEmail) {
-        this.senderEmail = senderEmail;
-    }
-
-    public String getEmailPassword() {
-        return emailPassword;
-    }
-
-    public void setEmailPassword(String emailPassword) {
-        this.emailPassword = emailPassword;
-    }
-
-    public String getSendUrl() {
-        return sendUrl;
-    }
-
-    public void setSendUrl(String sendUrl) {
-        this.sendUrl = sendUrl;
-    }
-
-    public Integer getSpaceTime() {
-        return spaceTime;
-    }
-
-    public void setSpaceTime(Integer spaceTime) {
-        this.spaceTime = spaceTime;
-    }
-
-    public String getTemplate() {
-        return template;
-    }
-
-    public void setTemplate(String template) {
-        this.template = template;
-    }
-
-    public String getExecUser() {
-        return execUser;
-    }
-
     public void setExecUser(String execUser) {
         if (execUser!=null) {
             this.execUser = execUser.trim().replaceAll("\\s+,\\s+",",");
         }
     }
 
-    public String getVersion() {
-        return version;
-    }
-
-    public void setVersion(String version) {
-        this.version = version;
-    }
 }
