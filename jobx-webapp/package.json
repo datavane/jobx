@@ -10,7 +10,6 @@
     "build": "node build/build.js"
   },
   "dependencies": {
-
     "vue": "^2.5.2",
     "vue-flatpickr": "^2.3.0",
     "vue-flatpickr-component": "^8.0.0",
@@ -76,14 +75,15 @@
     "rimraf": "^2.6.0",
     "salvattore": "^1.0.9",
     "sass-loader": "^7.0.3",
+    "select2": "^4.0.6-rc.1",
     "semver": "^5.3.0",
     "shelljs": "^0.7.6",
     "style": "0.0.3",
     "style-loader": "^0.21.0",
-    "select2": "^4.0.6-rc.1",
     "uglifyjs-webpack-plugin": "^1.1.1",
     "url-loader": "^1.0.1",
     "vmap": "^2.0.0",
+    "vue-easytable": "^1.7.1",
     "vue-loader": "^13.3.0",
     "vue-style-loader": "^3.1.2",
     "vue-template-compiler": "^2.5.2",

@@ -27,6 +27,7 @@ import 'fullcalendar'
 import 'popper.js'
 import 'autosize'
 
+
 import MuseUI from 'muse-ui'
 Vue.use(MuseUI)
 import 'muse-ui/dist/muse-ui.css'

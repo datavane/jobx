@@ -1622,8 +1622,8 @@ pre code {
 
 .table td,
 .table th {
-  padding: 1rem 1.5rem;
-  vertical-align: top;
+  padding: 1rem 1rem;
+  vertical-align: middle;
   border-top: 1px solid rgba(255, 255, 255, .125)
 }
 
@@ -4105,14 +4105,15 @@ tbody.collapse.show {
 
 .badge {
   display: inline-block;
-  padding: .4rem .55rem;
+  padding: .2rem .55rem;
   font-size: 85%;
   font-weight: 500;
   line-height: 1;
   color: #fff;
   text-align: center;
   vertical-align: baseline;
-  border-radius: 2px
+  border-radius: 2px;
+  opacity: 0.85;
 }
 
 .popover,
@@ -14135,4 +14136,50 @@ ul.jqtree-tree ul.jqtree_common {
 
 .error-text-min {
   float: right
+}
+
+/**
+new definde
+**/
+.input-basic {
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  text-shadow: none;
+  color: #fff;
+  box-shadow: none;
+  font-family: open-sans-regular;
+  -webkit-appearance: none;
+  display: block;
+  width: 100%;
+  min-width: 80px;
+  height: 32px;
+  padding: 6px 6px;
+  font-size: 12px;
+  line-height: 1.42857143;
+  background: rgba(0, 0, 0, 0.05);
+  background-image: none;
+  border-radius: 5px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+  -webkit-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+  transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+
+.input-basic:focus {
+  border: 1px solid rgba(255, 255, 255, 0.65);
+}
+
+.filter-itemx:after {
+  cursor: pointer;
+  content: '\F1C3';
+  font-family: Material-Design-Iconic-Font;
+  font-size: 1.3rem;
+  color: rgba(255, 255, 255, 0.45);
+  float: right;
+  margin-top: -28px;
+  margin-right: 8px;
+
+}
+
+.filter-itemx:after::hover {
+  color: rgba(255, 255, 255, 0.85);
 }

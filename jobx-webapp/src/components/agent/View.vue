@@ -2,7 +2,28 @@
   <section class="content">
     <div class="card">
       <div class="card-body">
-        <dataTable title="Basic example" :url="url" :column="column"></dataTable>
+        <h4 class="card-title">{{title}}</h4>
+        <div class="actions">
+          <i class="actions__item zmdi zmdi-print" data-table-action="print"></i>
+          <i class="actions__item zmdi zmdi-fullscreen" data-table-action="fullscreen"></i>
+          <i class="actions__item zmdi zmdi-download" data-table-toggle="dropdown"></i>
+          <i class="actions__item zmdi zmdi-plus" @click="goAdd()"></i>
+        </div>
+        <div class="table-responsive">
+          <table id="data-table" class="table">
+            <thead class="thead-default">
+              <tr>
+                <th v-for="h in column">{{h.title}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="page in pager.result">
+                <td v-for="col in column">{{page[col.name]}}</td>
+              </tr>
+            </tbody>
+          </table>
+          <pager v-if="pageData" :pageData="pageData" :offset="offset" @goPage="goPage" ref="pager"></pager>
+        </div>
       </div>
     </div>
   </section>
@@ -17,34 +38,27 @@
     },
     data() {
       return {
-        url: "/agent/view.do",
+        title:'执行器列表',
+        url: "/agent/view",
         column: [
-          {header: 'Host', data: 'host',filter:{type:'input'}},
-          {header: 'Name', data: 'name',filter:{type:'input'}},
-          {header: 'Port', data: 'port',filter:{type:'input'}},
-          {header: 'Status', data: 'status',
-            filter:{
-              type:'select',
-              values:[
-                {id:0,text:'正常'},
-                {id:1,text:'失联'},
-                {id:2,text:'密码错误'}
-              ]
-            }
+          {title: 'Name', name: 'name'},
+          {title: 'Port', name: 'port'},
+          {title: 'Status', name: 'status',
+            valueAs:[
+                {value:0,text:'正常'},
+                {value:1,text:'失联'},
+                {value:2,text:'密码错误'}
+            ]
           },
-          {header: 'Warning', data: 'warning',
-            filter:{
-              type:'select',
-              values:[
-                {id:0,text:'告警'},
-                {id:1,text:'不告警'}
-              ]
-            }
+          {title: 'Warning', name: 'warning',
+            valueAs:[
+              {value:0,text:'告警'},
+              {value:1,text:'不告警'}
+            ]
           },
-          {header: 'Proxy', data: 'proxy'}
+          {title: 'Proxy', name: 'proxy'}
         ],
         agentId:undefined,
-        agents:[],
         jobTypes:[
           { id:0, text:'单一' },
           { id:1, text:'流程' }
@@ -55,24 +69,23 @@
         ],
         jobType:undefined,
         rerun:undefined,
-        where:false
+        where:false,
+        pageData:null
       }
     },
     mounted(){
-      this.getAgent()
+      this.getPageData()
     },
     methods:{
-      getAgent() {
-        this.$http.post('/agent/all.do', {}).then(response => {
-          if (response.body) {
-            this.agents = response.body
-          }
-        }, error => {
-          console.log(error)
-        })
-      },
       goAdd(){
         this.$router.push('/agent/add')
+      },
+      getPageData(data) {
+        let $this = this
+        this.$http.post(this.url, data || {}).then(resp => {
+          $this.pageData = resp.body
+          $this.$refs.pager.render()
+        })
       }
     }
 

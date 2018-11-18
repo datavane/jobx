@@ -35,7 +35,6 @@
       <mu-flex justify-content="center" class="pagination">
         <mu-pagination raised circle :total="pager.totalRecord" :current.sync="pager.pageNo" :size="pager.pageSize" :count="pager.pageTotal" @change="gotoPage"></mu-pagination>
       </mu-flex>
-
     </div>
   </div>
 </template>
@@ -67,7 +66,24 @@
           this.current = this.pager.pageNo
           if(this.pager.data) {
               this.columns.forEach( column=> {
-                if(column.filter){
+                if(column.handler) {
+
+                  alert("5555")
+                  this.pager.data.forEach(obj => {
+                  let val = obj[column.name]
+
+                  console.log(val)
+
+                  column.handler.forEach(h=>{
+                    let hval = h.value
+                    if(val == hval){
+                      obj[column.name] = h.name
+                    }
+                  })
+
+                  })
+                }
+                if(column.filter) {
                   this.pager.data.forEach(obj => {
                     if(column.filter === "boolean") {
                       let val = obj[column.name]
@@ -94,9 +110,13 @@
                 }
               })
           }
+          setTimeout(()=>{
+            this.loading = false
+          },500)
         })
       },
       gotoPage(pageNo) {
+        this.loading = true
         this.getPager({
           pageNo: pageNo,
           pageSize: this.pager.pageSize,
