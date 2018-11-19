@@ -27,37 +27,37 @@
             </table>
           </div>
           <div class='data-table-item table-fixed-center'>
-              <table id='data-table' class='table'>
-                <thead>
-                  <tr v-if="actions.filter" class="table-inverse">
-                    <th v-for='h in column' :class="{'filter-item': ignoreFilter.indexOf(h.name)==-1}" v-if="!h.fixed">
-                      <input v-if="ignoreFilter.indexOf(h.name) == -1" type="text" class="input-basic" :placeholder="h.title">
-                    </th>
-                  </tr>
-                  <tr>
-                    <th v-for='h in column' v-if="!h.fixed">{{h.title}}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for='page,index in pageData.result' :class="{'line-hover':index == hoverIndex}" @mouseover='hoverIndex=index'>
-                    <td v-for='col in column' v-if="!col.fixed">
-                      <span v-if="col.name==='jobType'" class="badge btn-dark">
-                          {{page[col.name]|doValue(col.name)}}
-                      </span>
-                      <span v-else-if="col.name==='pause'" class="badge" :class="labelStyle(col.name,page[col.name])" >
+            <table id='data-table' class='table'>
+              <thead>
+                <tr v-if="actions.filter" class="table-inverse">
+                  <th v-for='h in column' :class="{'filter-item': ignoreFilter.indexOf(h.name)==-1}" v-if="!h.fixed">
+                    <input v-if="ignoreFilter.indexOf(h.name) == -1" type="text" class="input-basic" :placeholder="h.title">
+                  </th>
+                </tr>
+                <tr>
+                  <th v-for='h in column' v-if="!h.fixed">{{h.title}}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for='page,index in pageData.result' :class="{'line-hover':index == hoverIndex}" @mouseover='hoverIndex=index'>
+                  <td v-for='col in column' v-if="!col.fixed">
+                    <span v-if="col.name==='jobType'" class="badge btn-dark">
                         {{page[col.name]|doValue(col.name)}}
-                      </span>
-                      <span v-else-if="col.name==='execUser'" class="badge btn-light">{{page[col.name]}}</span>
-                      <span v-else-if="col.name==='redo'">
-                          {{page[col.name]|doValue(col.name)}}
-                      </span>
-                      <span v-else :title="col.name === 'command'?page[col.name]:''" class="command">
+                    </span>
+                    <span v-else-if="col.name==='pause'" class="badge" :class="labelStyle(col.name,page[col.name])" >
+                      {{page[col.name]|doValue(col.name)}}
+                    </span>
+                    <span v-else-if="col.name==='execUser'" class="badge btn-light">{{page[col.name]}}</span>
+                    <span v-else-if="col.name==='redo'">
                         {{page[col.name]|doValue(col.name)}}
-                      </span>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+                    </span>
+                    <span v-else :title="col.name === 'command'?page[col.name]:''" class="command">
+                      {{page[col.name]|doValue(col.name)}}
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
           <div class="data-table-item table-fixed-right">
             <table class='table'>
@@ -80,7 +80,7 @@
                   <td v-for='col in column' v-if="col.fixed == 'right'">
                     {{page[col.name]|doValue(col.name)}}
                   </td>
-                  <td >
+                  <td>
                     <i class="zmdi zmdi-eye"></i>&nbsp;&nbsp;
                     <i class="zmdi zmdi-edit"></i>&nbsp;&nbsp;
                     <i class="zmdi zmdi-play"></i>&nbsp;&nbsp;
@@ -89,7 +89,6 @@
                   </td>
                 </tr>
               </tbody>
-
             </table>
           </div>
         </div>
@@ -102,6 +101,7 @@
   import pager from '@/components/common/Pager'
   import action from '@/components/common/Action'
   import select2 from '@/components/common/Select2'
+  import BScroll from 'better-scroll'
 
   export default {
     components: {
@@ -138,6 +138,21 @@
      getPageData(data) {
         this.$http.post(this.url, data || {}).then(resp => {
           this.pageData = resp.body
+          this.$nextTick(()=>{
+            let wrapper = document.querySelector('.table-fixed-center')
+            let scroll = new BScroll(wrapper,{
+              scrollX: true,
+              bounce: {
+                left: false,
+                right: false
+              },
+              mouseWheel: {
+                speed: 20,
+                invert: false,
+                easeTime: 300
+              }
+            })
+          })
         })
       },
       goPageNo(pageNo) {
@@ -197,34 +212,39 @@
   overflow:hidden;
   display:flex;
   width:100%;
+  .table thead >tr >th {
+    min-width: 100px;
+  }
   .data-table-item {
     display:inline;
   }
+  .table-fixed-left {
+    //min-width:30%
+  }
+  .table-fixed-center {
+    cursor: pointer;
+    overflow:hidden;
+     .command {
+      display: inline-block;
+      width: max-content
+    }
+  }
+  .table-fixed-right {
+    min-width:180px;
+  }
+  .line-hover {
+      background-color: rgba(255, 255, 255, .04)
+  }
+  .table-search {
+    cursor: pointer;
+    padding: .55rem 1rem !important;
+  }
+  .zmdi {
+    cursor: pointer;
+  }
+ 
 }
-.table thead >tr >th {
-    min-width: 100px;
-}
-.command {
-  display: inline-block;
-  width: max-content
-}
-.table-fixed-left {
-  min-width:30%
-}
-.table-fixed-center {
-  max-width:50%;
-  min-width:55%;
-  overflow:hidden;
-  overflow-x:scroll;
-}
-.table-fixed-right {
-  min-width:180px;
-}
-.line-hover {
-    background-color: rgba(255, 255, 255, .04)
-}
-.table-search {
-  cursor: pointer;
-  padding: .55rem 1rem !important;
-}
+
+
+
 </style>
