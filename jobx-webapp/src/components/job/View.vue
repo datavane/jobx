@@ -1,14 +1,16 @@
 <template>
   <section class="content">
+      <header class="content__title">
+          <h4 class='card-title'>{{title}}</h4>
+          <action url='/job/add' :actions='actions' theme="list"></action>
+      </header>
     <div class="card">
       <div class="card-body">
-        <h4 class='card-title'>{{title}}</h4>
-        <action url='/job/add' :actions='actions' ></action>
         <div class="data-table">
           <div class='data-table-item table-fixed-left'>
             <table class='table'>
                 <thead>
-                  <tr v-if="checkFixed('left') && actions.filter" class="table-inverse">
+                  <tr v-if="checkFixed('left') && actions.filter">
                     <th v-for='h in column' :class="{'filter-item': ignoreFilter.indexOf(h.name)==-1}" v-if="h.fixed == 'left'" >
                       <input v-if="ignoreFilter.indexOf(h.name) == -1" type="text" class="input-basic" :placeholder="h.title">
                     </th>
@@ -29,7 +31,7 @@
           <div class='data-table-item table-fixed-center'>
             <table id='data-table' class='table'>
               <thead>
-                <tr v-if="actions.filter" class="table-inverse">
+                <tr v-if="actions.filter">
                   <th v-for='h in column' :class="{'filter-item': ignoreFilter.indexOf(h.name)==-1}" v-if="!h.fixed">
                     <input v-if="ignoreFilter.indexOf(h.name) == -1" type="text" class="input-basic" :placeholder="h.title">
                   </th>
@@ -62,7 +64,7 @@
           <div class="data-table-item table-fixed-right">
             <table class='table'>
               <thead>
-                  <tr v-if="actions.filter" class="table-inverse">
+                  <tr v-if="actions.filter">
                     <th v-for='h in column' :class="{'filter-item': ignoreFilter.indexOf(h.name)==-1}" v-if="h.fixed == 'right'" >
                       <input v-if="ignoreFilter.indexOf(h.name) == -1" type="text" class="input-basic" :placeholder="h.title">
                     </th>
@@ -84,7 +86,7 @@
                     <i class="zmdi zmdi-eye"></i>&nbsp;&nbsp;
                     <i class="zmdi zmdi-edit"></i>&nbsp;&nbsp;
                     <i class="zmdi zmdi-play"></i>&nbsp;&nbsp;
-                    <i class="zmdi zmdi-delete"></i>&nbsp;&nbsp;
+                    <i class="zmdi zmdi-delete" @click="remove(page.jobId)"></i>&nbsp;&nbsp;
                     <i class="zmdi zmdi-copy"></i>&nbsp;&nbsp;
                   </td>
                 </tr>
@@ -113,7 +115,7 @@
           filter:false
         },
         hoverIndex:0,
-        title:'作业列表',
+        title:'JOB LIST',
         url: "/job/view",
         pageData:{},
         column: [
@@ -138,8 +140,7 @@
         this.$http.post(this.url, data || {}).then(resp => {
           this.pageData = resp.body
           this.$nextTick(()=>{
-            let wrapper = document.querySelector('.table-fixed-center')
-            let scroll = new BScroll(wrapper,{
+            new BScroll(document.querySelector('.table-fixed-center'),{
               scrollX: true,
               bounce: {
                 left: false,
@@ -177,6 +178,39 @@
           }
         }
         return false
+      },
+      remove(id) {
+        let $this = this
+        $this.$swal({
+              title: 'Are you sure?',
+              text: 'You will not be able to recover this imaginary file!',
+              type: 'warning',
+              showCancelButton: true,
+              buttonsStyling: false,
+              confirmButtonClass: 'btn btn-danger',
+              confirmButtonText: 'Yes, delete it!',
+              cancelButtonClass: 'btn btn-light',
+              background: 'rgba(0, 0, 0, 0.96)'
+          }).then(function() {
+            $this.$http.post(
+              '/job/delete',
+              {jobId:id}
+            ).then(resp => {
+              if(resp.status == 200) {
+                $this.$swal({
+                    title: 'Are you sure?',
+                    text: 'You will not be able to recover this imaginary file!',
+                    type: 'success',
+                    buttonsStyling: false,
+                    confirmButtonClass: 'btn btn-light',
+                    background: 'rgba(0, 0, 0, 0.96)'
+                })
+              }else {
+                console.log(resp.message)
+              }
+            })
+          })
+
       }
     },
     filters: {
@@ -241,7 +275,7 @@
   .zmdi {
     cursor: pointer;
   }
- 
+
 }
 
 

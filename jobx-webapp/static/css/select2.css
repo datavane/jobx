@@ -29,10 +29,7 @@
 .card-body{
     padding:1.2rem
 }
-.swal2-popup {
-    border-radius: 0px  !important;
-    background: rgba(0,0,0,.7)  !important;
-}
+
 
 #swal2-content{
     color: #fff  !important;

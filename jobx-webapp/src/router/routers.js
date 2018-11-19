@@ -48,6 +48,11 @@ export default [
     component: () => import('@/components/job/Edit')
   },
   {
+    name:'job',
+    path: '/job/add',
+    component: () => import('@/components/job/Add')
+  },
+  {
     path:'/profile',
     redirect:'/profile/view'
   },
