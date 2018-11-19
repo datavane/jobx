@@ -92,7 +92,7 @@
             </table>
           </div>
         </div>
-        <pager :pageData='pageData' :offset='offset' @goPageNo='goPageNo'></pager>
+        <pager :pageData='pageData' @goPageNo='goPageNo'></pager>
       </div>
     </div>
   </section>
@@ -116,7 +116,6 @@
         title:'作业列表',
         url: "/job/view",
         pageData:{},
-        offset:5,
         column: [
           {title: '执行器', name: 'agentName',fixed: 'left' },
           {title: '名称', name: 'jobName',fixed: 'left' },

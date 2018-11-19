@@ -41,9 +41,10 @@
 
 <script>
   export default {
-    props: ['pageData','offset'],
+    props: ['pageData'],
     data() {
       return {
+        offset: 5,
         preNo: [],
         nextNo: []
       }
