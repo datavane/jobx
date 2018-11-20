@@ -49,6 +49,7 @@ public class MinaClient extends AbstractClient {
             sessionConfiguration.setWriteTimeout(5);
         }
     }
+
     @Override
     public Response sentSync(final Request request) throws Exception {
         final ConnectFuture connect = super.getConnect(request);

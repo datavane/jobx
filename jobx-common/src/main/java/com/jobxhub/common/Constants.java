@@ -626,48 +626,6 @@ public class Constants {
         }
     }
 
-    public enum LauncherType {
-        TOMCAT("tomcat"),
-        JETTY("jetty");
-
-        private String name;
-
-        LauncherType(String name) {
-            this.name = name;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public static ConnType getByName(String name) {
-            for (ConnType connType : ConnType.values()) {
-                if (connType.getName().equals(name)) {
-                    return connType;
-                }
-            }
-            return null;
-        }
-
-        public static boolean isTomcat(String name) {
-            if (CommonUtils.isEmpty(name)) {
-                return false;
-            }
-            return TOMCAT.getName().equalsIgnoreCase(name.trim());
-        }
-
-        public static boolean isJetty(String name) {
-            if (CommonUtils.isEmpty(name)) {
-                return false;
-            }
-            return JETTY.getName().equalsIgnoreCase(name.trim());
-        }
-    }
-
     public enum Platform {
 
         Windows("Windows",0),
