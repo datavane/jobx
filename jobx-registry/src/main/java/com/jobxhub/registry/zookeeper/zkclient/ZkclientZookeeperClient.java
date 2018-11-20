@@ -103,12 +103,7 @@ public class ZkclientZookeeperClient extends AbstractZookeeperClient<IZkChildLis
     }
 
     public IZkChildListener createTargetChildListener(String path, final ChildListener listener) {
-        return new IZkChildListener() {
-            public void handleChildChange(String parentPath, List<String> currentChilds)
-                    throws Exception {
-                listener.childChanged(parentPath, currentChilds);
-            }
-        };
+        return (parentPath, currentChilds) -> listener.childChanged(parentPath, currentChilds);
     }
 
     public List<String> addTargetChildListener(String path, final IZkChildListener listener) {

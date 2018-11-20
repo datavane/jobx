@@ -51,22 +51,19 @@ public class MinaServer implements Server {
     @Override
     public void start(final int port,final ServerHandler handler) {
 
-        this.serverDaemon = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                final MinaServerHandler serverHandler = new MinaServerHandler(handler);
-                socketAddress = new InetSocketAddress(port);
+        this.serverDaemon = new Thread(() -> {
+            final MinaServerHandler serverHandler = new MinaServerHandler(handler);
+            socketAddress = new InetSocketAddress(port);
 
-                acceptor = new NioSocketAcceptor();
-                acceptor.getFilterChain().addLast("threadPool", new ExecutorFilter(Executors.newCachedThreadPool()));
-                acceptor.getFilterChain().addLast("codec", new ProtocolCodecFilter(new MinaCodecAdapter(Response.class, Request.class)));
-                acceptor.setHandler(serverHandler);
-                try {
-                    acceptor.bind(socketAddress);
-                    log.info("[JobX] MinaServer start at address:{} success", port);
-                } catch (IOException e) {
-                    log.error("[JobX] MinaServer start failure: {}", stackTrace(e));
-                }
+            acceptor = new NioSocketAcceptor();
+            acceptor.getFilterChain().addLast("threadPool", new ExecutorFilter(Executors.newCachedThreadPool()));
+            acceptor.getFilterChain().addLast("codec", new ProtocolCodecFilter(new MinaCodecAdapter(Response.class, Request.class)));
+            acceptor.setHandler(serverHandler);
+            try {
+                acceptor.bind(socketAddress);
+                log.info("[JobX] MinaServer start at address:{} success", port);
+            } catch (IOException e) {
+                log.error("[JobX] MinaServer start failure: {}", stackTrace(e));
             }
         });
         this.serverDaemon.setDaemon(true);

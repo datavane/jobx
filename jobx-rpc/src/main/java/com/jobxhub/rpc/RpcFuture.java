@@ -184,23 +184,20 @@ public class RpcFuture {
     }
 
     private void scanCleanTimeOut() {
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (true) {
-                    try {
-                        for (RpcFuture future : futures.values()) {
-                            if (future == null || future.isDone()) {
-                                continue;
-                            }
-                            if (System.currentTimeMillis() - future.getStartTime() > future.getTimeout()) {
-                                RpcFuture.this.caught(getTimeoutException());
-                            }
+        Thread thread = new Thread(() -> {
+            while (true) {
+                try {
+                    for (RpcFuture future : futures.values()) {
+                        if (future == null || future.isDone()) {
+                            continue;
                         }
-                        Thread.sleep(30);
-                    } catch (Throwable e) {
-                        log.error("Exception when scan the timeout invocation of remoting.", e);
+                        if (System.currentTimeMillis() - future.getStartTime() > future.getTimeout()) {
+                            RpcFuture.this.caught(getTimeoutException());
+                        }
                     }
+                    Thread.sleep(30);
+                } catch (Throwable e) {
+                    log.error("Exception when scan the timeout invocation of remoting.", e);
                 }
             }
         }, "JobXRpcTimeoutScanTimer");

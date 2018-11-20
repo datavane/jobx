@@ -65,33 +65,30 @@ public class NettyServer implements Server {
 
     @Override
     public void  start(final int port, final ServerHandler serverHandler) {
-        serverDaemon = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                bootstrap = new ServerBootstrap();
-                bossGroup = new NioEventLoopGroup(1, new DefaultThreadFactory("NettyServerBoss", true));
-                workerGroup = new NioEventLoopGroup(Constants.DEFAULT_IO_THREADS, new DefaultThreadFactory("NettyServerWorker", true));
-                bootstrap.group(bossGroup, workerGroup)
-                        .channel(NioServerSocketChannel.class)
-                        .childOption(ChannelOption.TCP_NODELAY, Boolean.TRUE)
-                        .childOption(ChannelOption.SO_REUSEADDR, Boolean.TRUE)
-                        .childOption(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)
-                        .childHandler(new ChannelInitializer<SocketChannel>() {
-                            @Override
-                            protected void initChannel(SocketChannel channel) throws Exception {
-                                channel.pipeline().addLast(
-                                        new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 0, 4, 0, 0),
-                                        NettyCodecAdapter.getCodecAdapter().getDecoder(Request.class),
-                                        NettyCodecAdapter.getCodecAdapter().getEncoder(Response.class),
-                                        new NettyServerHandler(serverHandler)
-                                );
-                            }
-                        });
-                // bind
-                ChannelFuture channelFuture = bootstrap.bind(port);
-                channelFuture.syncUninterruptibly();
-                channel = channelFuture.channel();
-            }
+        serverDaemon = new Thread(() -> {
+            bootstrap = new ServerBootstrap();
+            bossGroup = new NioEventLoopGroup(1, new DefaultThreadFactory("NettyServerBoss", true));
+            workerGroup = new NioEventLoopGroup(Constants.DEFAULT_IO_THREADS, new DefaultThreadFactory("NettyServerWorker", true));
+            bootstrap.group(bossGroup, workerGroup)
+                    .channel(NioServerSocketChannel.class)
+                    .childOption(ChannelOption.TCP_NODELAY, Boolean.TRUE)
+                    .childOption(ChannelOption.SO_REUSEADDR, Boolean.TRUE)
+                    .childOption(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)
+                    .childHandler(new ChannelInitializer<SocketChannel>() {
+                        @Override
+                        protected void initChannel(SocketChannel channel) throws Exception {
+                            channel.pipeline().addLast(
+                                    new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 0, 4, 0, 0),
+                                    NettyCodecAdapter.getCodecAdapter().getDecoder(Request.class),
+                                    NettyCodecAdapter.getCodecAdapter().getEncoder(Response.class),
+                                    new NettyServerHandler(serverHandler)
+                            );
+                        }
+                    });
+            // bind
+            ChannelFuture channelFuture = bootstrap.bind(port);
+            channelFuture.syncUninterruptibly();
+            channel = channelFuture.channel();
         });
         serverDaemon.setDaemon(true);
         serverDaemon.start();

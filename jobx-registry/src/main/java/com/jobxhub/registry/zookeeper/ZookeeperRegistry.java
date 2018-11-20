@@ -51,14 +51,12 @@ public class ZookeeperRegistry implements Registry {
         }
         this.registryUrl = url;
         zkClient = zookeeperTransporter.connect(url);
-        zkClient.addStateListener(new StateListener() {
-            public void stateChanged(int state) {
-                if (state == RECONNECTED) {
-                    try {
-                        recover();
-                    } catch (Exception e) {
-                        log.error(e.getMessage(), e);
-                    }
+        zkClient.addStateListener(state -> {
+            if (state == StateListener.RECONNECTED) {
+                try {
+                    recover();
+                } catch (Exception e) {
+                    log.error(e.getMessage(), e);
                 }
             }
         });
