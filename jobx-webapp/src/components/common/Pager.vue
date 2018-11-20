@@ -1,39 +1,26 @@
 <template>
 <nav>
     <ul class="pagination justify-content-center">
-          <li class="page-item pagination-first"
-              :class="{'disabled':pageData.pageNo===1}">
+          <li class="page-item pagination-first" :class="{'disabled':pageData.pageNo===1}">
             <a class="page-link" @click="goPageNo(1)"></a>
           </li>
-          <li class="page-item pagination-prev"
-              :class="{'disabled':pageData.pageNo===1}">
-            <a class="page-link"
-               @click="goPageNo(pageData.pageNo-1)"></a>
+          <li class="page-item pagination-prev" :class="{'disabled':pageData.pageNo===1}">
+            <a class="page-link"  @click="goPageNo(pageData.pageNo-1)"></a>
           </li>
           <li class="page-item" v-for="index in preNo">
-            <a class="page-link"
-               @click="goPageNo(index)">{{index}}
-            </a>
+            <a class="page-link" @click="goPageNo(index)">{{index}}</a>
           </li>
           <li class="page-item active">
             <a class="page-link">{{pageData.pageNo}}</a>
           </li>
           <li class="page-item" v-for="index in nextNo">
-            <a class="page-link"
-               @click="goPageNo(index)">{{index}}
-            </a>
+            <a class="page-link" @click="goPageNo(index)">{{index}}</a>
           </li>
-          <li class="page-item pagination-next"
-             :class="{'disabled':pageData.pageNo===pageData.pageTotal}">
-            <a class="page-link"
-               @click="goPageNo(pageData.pageNo+1)">
-            </a>
+          <li class="page-item pagination-next" :class="{'disabled':pageData.pageNo===pageData.pageTotal}">
+            <a class="page-link" @click="goPageNo(pageData.pageNo+1)"></a>
           </li>
-          <li class="page-item pagination-last"
-           :class="{'disabled':pageData.pageNo===pageData.pageTotal}">
-            <a class="page-link"
-               @click="goPageNo(pageData.pageTotal)">
-            </a>
+          <li class="page-item pagination-last" :class="{'disabled':pageData.pageNo===pageData.pageTotal}">
+            <a class="page-link" @click="goPageNo(pageData.pageTotal)"></a>
           </li>
       </ul>
   </nav>

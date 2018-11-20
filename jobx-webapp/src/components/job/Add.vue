@@ -1,60 +1,60 @@
 <template>
-  <section class="content">
-      <div class="content__inner">
-        <header class="content__title">
-          <h1 class='card-title'>Add new Job</h1>
-          <action theme="input"></action>
-        </header>
-        <div class="card">
-          <div class="card-body">
-            <mu-form ref="form" :model="profile" class="mu-demo-form">
-                <mu-form-item label="发件邮箱" help-text="用于发送告警的邮箱" prop="senderEmail"  :rules="rules.mail">
-                  <mu-text-field v-model="profile.senderEmail" prop="senderEmail"></mu-text-field>
-                </mu-form-item>
-                <mu-form-item label="邮箱密码" help-text="发件邮箱的密码" prop="emailPassword" :rules="rules.password">
-                  <mu-text-field v-model="profile.emailPassword" type="password" prop="emailPassword"></mu-text-field>
-                </mu-form-item>
-                <mu-form-item label="SMTP地址" help-text="发件邮箱的SMTP地址" prop="smtpHost" :rules="rules.smtpHost">
-                  <mu-text-field v-model="profile.smtpHost" prop="profile.smtpHost"></mu-text-field>
-                </mu-form-item>
-                <mu-form-item label="SMTP端口" help-text="发件邮箱的SMTP端口" prop="smtpPort" :rules="rules.smtpPort">
-                  <mu-text-field v-model="profile.smtpPort" prop="profile.smtpPort"></mu-text-field>
-                </mu-form-item>
-                <mu-form-item label="SSL验证" help-text="发送邮箱是否需要开启SSL验证">
-                  <mu-switch v-model="profile.useSSL"></mu-switch>
-                </mu-form-item>
-                <mu-form-item label="告警间隔" help-text="告警间隔,两次发送告警的时间间隔,避免告警太频繁轰炸" prop="spaceTime" :rules="rules.spaceTime">
-                  <mu-text-field v-model.number="profile.spaceTime" prop="spaceTime" type="number"></mu-text-field>
-                </mu-form-item>
-                <mu-form-item label="短信URL" help-text="短信通道商提供的发送接口URL" prop="profile.sendUrl"  :rules="rules.sendUrl">
-                  <mu-text-field v-model="profile.sendUrl" prop="profile.sendUrl"></mu-text-field>
-                </mu-form-item>
-                <mu-form-item prop="短信模板" label="短信模板" :rules="rules.template">
-                  <mu-text-field multi-line :rows="2" :rows-max="6" v-model="profile.template"></mu-text-field>
-                </mu-form-item>
-                <mu-form-item prop="执行用户" label="执行用户"  :rules="rules.execUser">
-                  <mu-text-field multi-line :rows="2" :rows-max="6" v-model="profile.execUser"></mu-text-field>
-                </mu-form-item>
-                <mu-form-item>
-                  <mu-button color="primary" @click="submit">提交</mu-button>
-                  <mu-button @click="profile=profile1">重置</mu-button>
-                </mu-form-item>
-            </mu-form>
-          </div>
-        </div>
+
+
+<section class="content">
+      <header class="content__title">
+          <h4 class='card-title'>{{title}}</h4>
+          <action url='/job/add' :actions='actions' theme="input"></action>
+      </header>
+    <div class="card">
+      <div class="card-body">
+        <mu-form ref="form" :model="profile" class="mu-demo-form">
+            <mu-form-item label="发件邮箱" help-text="用于发送告警的邮箱" prop="senderEmail"  :rules="rules.mail">
+              <mu-text-field v-model="profile.senderEmail" prop="senderEmail"></mu-text-field>
+            </mu-form-item>
+            <mu-form-item label="邮箱密码" help-text="发件邮箱的密码" prop="emailPassword" :rules="rules.password">
+              <mu-text-field v-model="profile.emailPassword" type="password" prop="emailPassword"></mu-text-field>
+            </mu-form-item>
+            <mu-form-item label="SMTP地址" help-text="发件邮箱的SMTP地址" prop="smtpHost" :rules="rules.smtpHost">
+              <mu-text-field v-model="profile.smtpHost" prop="profile.smtpHost"></mu-text-field>
+            </mu-form-item>
+            <mu-form-item label="SMTP端口" help-text="发件邮箱的SMTP端口" prop="smtpPort" :rules="rules.smtpPort">
+              <mu-text-field v-model="profile.smtpPort" prop="profile.smtpPort"></mu-text-field>
+            </mu-form-item>
+            <mu-form-item label="SSL验证" help-text="发送邮箱是否需要开启SSL验证">
+              <mu-switch v-model="profile.useSSL"></mu-switch>
+            </mu-form-item>
+            <mu-form-item label="告警间隔" help-text="告警间隔,两次发送告警的时间间隔,避免告警太频繁轰炸" prop="spaceTime" :rules="rules.spaceTime">
+              <mu-text-field v-model.number="profile.spaceTime" prop="spaceTime" type="number"></mu-text-field>
+            </mu-form-item>
+            <mu-form-item label="短信URL" help-text="短信通道商提供的发送接口URL" prop="profile.sendUrl"  :rules="rules.sendUrl">
+              <mu-text-field v-model="profile.sendUrl" prop="profile.sendUrl"></mu-text-field>
+            </mu-form-item>
+            <mu-form-item prop="短信模板" label="短信模板" :rules="rules.template">
+              <mu-text-field multi-line :rows="2" :rows-max="6" v-model="profile.template"></mu-text-field>
+            </mu-form-item>
+            <mu-form-item prop="执行用户" label="执行用户"  :rules="rules.execUser">
+              <mu-text-field multi-line :rows="2" :rows-max="6" v-model="profile.execUser"></mu-text-field>
+            </mu-form-item>
+            <mu-form-item>
+              <mu-button color="primary" @click="submit">提交</mu-button>
+              <mu-button @click="profile=profile1">重置</mu-button>
+            </mu-form-item>
+        </mu-form>
       </div>
+    </div>
   </section>
 </template>
 <script type="application/ecmascript">
   import action from '@/components/common/Action'
   import select2 from '@/components/common/Select2'
-
   export default {
     components: {
       action,select2
     },
     data() {
       return {
+        title:'ADD NEW JOB',
         profile: {},
         profile1:{},
         rules:{
