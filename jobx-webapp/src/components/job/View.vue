@@ -6,94 +6,9 @@
       </header>
     <div class="card">
       <div class="card-body">
-        <div class="data-table">
-          <div class='data-table-item table-fixed-left'>
-            <table class='table'>
-                <thead>
-                  <tr v-if="checkFixed('left') && actions.filter">
-                    <th v-for='h in column' :class="{'filter-item': ignoreFilter.indexOf(h.name)==-1}" v-if="h.fixed == 'left'" >
-                      <input v-if="ignoreFilter.indexOf(h.name) == -1" type="text" class="input-basic" :placeholder="h.title">
-                    </th>
-                  </tr>
-                  <tr>
-                    <th v-for='h in column' v-if="h.fixed == 'left'">{{h.title}}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for='page,index in pageData.result' :class="{'line-hover':index == hoverIndex}" @mouseover='hoverIndex=index'>
-                    <td v-for='col in column' v-if="col.fixed == 'left'">
-                      {{page[col.name]|doValue(col.name)}}
-                    </td>
-                  </tr>
-                </tbody>
-            </table>
-          </div>
-          <div class='data-table-item table-fixed-center'>
-            <table id='data-table' class='table'>
-              <thead>
-                <tr v-if="actions.filter">
-                  <th v-for='h in column' :class="{'filter-item': ignoreFilter.indexOf(h.name)==-1}" v-if="!h.fixed">
-                    <input v-if="ignoreFilter.indexOf(h.name) == -1" type="text" class="input-basic" :placeholder="h.title">
-                  </th>
-                </tr>
-                <tr>
-                  <th v-for='h in column' v-if="!h.fixed">{{h.title}}</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for='page,index in pageData.result' :class="{'line-hover':index == hoverIndex}" @mouseover='hoverIndex=index'>
-                  <td v-for='col in column' v-if="!col.fixed">
-                    <span v-if="col.name==='jobType'" class="badge btn-dark">
-                        {{page[col.name]|doValue(col.name)}}
-                    </span>
-                    <span v-else-if="col.name==='pause'" class="badge" :class="labelStyle(col.name,page[col.name])" >
-                      {{page[col.name]|doValue(col.name)}}
-                    </span>
-                    <span v-else-if="col.name==='execUser'" class="badge btn-light">{{page[col.name]}}</span>
-                    <span v-else-if="col.name==='redo'">
-                        {{page[col.name]|doValue(col.name)}}
-                    </span>
-                    <span v-else :title="col.name === 'command'?page[col.name]:''" class="command">
-                      {{page[col.name]|doValue(col.name)}}
-                    </span>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="data-table-item table-fixed-right">
-            <table class='table'>
-              <thead>
-                  <tr v-if="actions.filter">
-                    <th v-for='h in column' :class="{'filter-item': ignoreFilter.indexOf(h.name)==-1}" v-if="h.fixed == 'right'" >
-                      <input v-if="ignoreFilter.indexOf(h.name) == -1" type="text" class="input-basic" :placeholder="h.title">
-                    </th>
-                    <th>
-                      <button class="btn btn-light table-search"><i class="zmdi zmdi-search"></i> Search</button>
-                    </th>
-                  </tr>
-                  <tr>
-                    <th v-for='h in column' v-if="h.fixed == 'right'">{{h.title}}</th>
-                    <th>操作</th>
-                  </tr>
-              </thead>
-              <tbody>
-                <tr v-for='page,index in pageData.result' :class="{'line-hover':index == hoverIndex}" @mouseover='hoverIndex=index'>
-                  <td v-for='col in column' v-if="col.fixed == 'right'">
-                    {{page[col.name]|doValue(col.name)}}
-                  </td>
-                  <td>
-                    <i class="zmdi zmdi-eye"></i>&nbsp;&nbsp;
-                    <i class="zmdi zmdi-edit"></i>&nbsp;&nbsp;
-                    <i class="zmdi zmdi-play"></i>&nbsp;&nbsp;
-                    <i class="zmdi zmdi-delete" @click="remove(page.jobId)"></i>&nbsp;&nbsp;
-                    <i class="zmdi zmdi-copy"></i>&nbsp;&nbsp;
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
+        <a-table :columns="columns" :dataSource="pageData.result" :scroll="{ x: 1300 }">
+          <a slot="action" slot-scope="text" href="javascript:;">action</a>
+        </a-table>
         <pager :pageData='pageData' @goPageNo='goPageNo'></pager>
       </div>
     </div>
@@ -118,18 +33,23 @@
         title:'JOB LIST',
         url: "/job/view",
         pageData:{},
-        column: [
-          {title: '执行器', name: 'agentName',fixed: 'left' },
-          {title: '名称', name: 'jobName',fixed: 'left' },
-          {title: '作业人', name: 'operateUname',fixed: 'left' },
-          {title: '执行身份	', name: 'execUser' },
-          {title: '命令', name: 'command' },
-          {title: '暂停', name: 'pause'},
-          {title: '重跑', name: 'redo'},
-          {title: '调度方式', name: 'jobType'},
-          {title: 'CRONEXP', name: 'cronExp'}
+        columns: [
+          {title: '执行器', key: 'agentName',dataIndex:'agentName' },
+          {title: '名称', key: 'jobName',dataIndex:'jobName' },
+          {title: '作业人', key: 'operateUname',dataIndex:'operateUname'},
+          {title: '执行身份	', key: 'execUser',dataIndex:'execUser' },
+          {title: '命令', key: 'command',dataIndex:'command' },
+          {title: '暂停', key: 'pause',dataIndex:'pause'},
+          {title: '重跑', key: 'redo',dataIndex:'redo'},
+          {title: '调度方式', key: 'jobType',dataIndex:'jobType'},
+          {title: 'CRONEXP', key: 'cronExp',dataIndex:'cronExp'},
+          {
+            title: 'Action',
+            fixed: 'right',
+            width: 100,
+            scopedSlots: { customRender: 'action' },
+          }
         ],
-        ignoreFilter:['cronExp']
       }
     },
     mounted() {
@@ -139,20 +59,6 @@
      getPageData(data) {
         this.$http.post(this.url, data || {}).then(resp => {
           this.pageData = resp.body
-          this.$nextTick(()=>{
-            new BScroll(document.querySelector('.table-fixed-center'),{
-              scrollX: true,
-              bounce: {
-                left: false,
-                right: false
-              },
-              mouseWheel: {
-                speed: 20,
-                invert: false,
-                easeTime: 300
-              }
-            })
-          })
         })
       },
       goPageNo(pageNo) {
@@ -232,7 +138,7 @@
     }
   }
 </script>
-<style lang="scss" scoped>
+<style lang="css" scoped>
 .select2-container--default .select2-selection--single {
     border-radius: 0;
     border: 0;
@@ -240,44 +146,5 @@
     border-bottom: 1px solid rgba(255, 255, 255, .2);
     height: 32.59px !important
 }
-.data-table {
-  clear:both;
-  overflow:hidden;
-  display:flex;
-  width:100%;
-  .table thead >tr >th {
-    min-width: 100px;
-  }
-  .data-table-item {
-    display:inline;
-  }
-  .table-fixed-left {
-    //min-width:30%
-  }
-  .table-fixed-center {
-    cursor: pointer;
-    overflow:hidden;
-     .command {
-      display: inline-block;
-      width: max-content
-    }
-  }
-  .table-fixed-right {
-    min-width:180px;
-  }
-  .line-hover {
-      background-color: rgba(255, 255, 255, .04)
-  }
-  .table-search {
-    cursor: pointer;
-    padding: .55rem 1rem !important;
-  }
-  .zmdi {
-    cursor: pointer;
-  }
-
-}
-
-
 
 </style>
