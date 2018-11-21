@@ -56,12 +56,7 @@ public class NettyChannelWrapper implements ChannelWrapper {
     }
 
     public void close() {
-        getChannel().close().addListener(new ChannelFutureListener() {
-            @Override
-            public void operationComplete(ChannelFuture future) throws Exception {
-                log.info("[JobX]closeChannel: close the connection to remote address:{}, result: {}",
-                            getChannel().remoteAddress(), future.isSuccess());
-            }
-        });
+        getChannel().close().addListener((ChannelFutureListener) future -> log.info("[JobX]closeChannel: close the connection to remote address:{}, result: {}",
+                    getChannel().remoteAddress(), future.isSuccess()));
     }
 }

@@ -1,7 +1,6 @@
 <template>
   <aside class="sidebar" v-if="!$route.path.endsWith('/login')">
     <div class="scrollbar-inner">
-
       <div class="user">
         <div class="user__info" data-toggle="dropdown">
           <img class="user__img" :src="user.headerPath" alt="">
@@ -32,7 +31,6 @@
         </li>
       </ul>
     </div>
-
   </aside>
 </template>
 

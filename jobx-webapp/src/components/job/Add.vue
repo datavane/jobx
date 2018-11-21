@@ -8,9 +8,9 @@
       </header>
     <div class="card">
       <div class="card-body">
-        <mu-form ref="form" :model="profile" class="mu-demo-form">
-            <mu-form-item label="发件邮箱" help-text="用于发送告警的邮箱" prop="senderEmail"  :rules="rules.mail">
-              <mu-text-field v-model="profile.senderEmail" prop="senderEmail"></mu-text-field>
+        <mu-form ref="form" :model="job" class="mu-demo-form">
+            <mu-form-item label="作业名称" help-text="作业名称必填项,不能为空" prop="jobName"  :rules="rules.jobName">
+              <mu-text-field v-model="job.jobName" prop="jobName"></mu-text-field>
             </mu-form-item>
             <mu-form-item label="邮箱密码" help-text="发件邮箱的密码" prop="emailPassword" :rules="rules.password">
               <mu-text-field v-model="profile.emailPassword" type="password" prop="emailPassword"></mu-text-field>
