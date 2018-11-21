@@ -1,0 +1,87 @@
+.ant-table table {
+  color:rgba(255,255,255,0.65);
+  .ant-table-tbody > tr > td {
+    border-bottom: 1px solid rgba(255,255,255,.125);
+    -webkit-transition: all .3s;
+    -o-transition: all .3s;
+    transition: all .3s;
+  }
+  .ant-table-thead > tr > th {
+    background: rgba(0,0,0,0);
+    -webkit-transition: background .3s ease;
+    -o-transition: background .3s ease;
+    transition: background .3s ease;
+    text-align: left;
+    color: #fff;
+    font-weight: 500;
+    border-bottom: 1px solid rgba(255,255,255,.125)
+  }
+  .ant-table-row-hover {
+    background-color:rgba(255, 255, 255, .04)!important
+  }
+
+  .ant-table-thead > tr.ant-table-row-hover > td, .ant-table-tbody > tr.ant-table-row-hover > td, .ant-table-thead > tr:hover > td, .ant-table-tbody > tr:hover > td {
+    background:rgba(255, 255, 255, .04);
+  }
+}
+
+.ant-table-fixed-left table,.ant-table-fixed-right table {
+    width: auto;
+    background: rgba(0,0,0,0);
+}
+
+.ant-pagination-prev .ant-pagination-item-link:after {
+    content:'\F2FF';
+}
+
+.ant-pagination-next .ant-pagination-item-link:after {
+  content: '\F301';
+}
+
+.ant-pagination-item{
+  border-radius: 50% !important;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  line-height: 32px;
+  transition: background-color .3s, color .3s;
+  margin: 0 2px;
+  border:none;
+  background-color: rgba(255, 255, 255, .08);
+  color: rgba(255, 255, 255, .85);
+}
+
+.ant-pagination-item-active {
+  z-index: 2;
+  color: rgba(0,0,0,0.85);
+  background-color: #fff;
+  border-color:none;
+}
+
+.ant-pagination-item-active:focus, .ant-pagination-item-active:hover {
+  border-color: #40a9ff;
+}
+
+.ant-pagination-prev .ant-pagination-item-link, .ant-pagination-next .ant-pagination-item-link {
+  border-radius: 50% !important;
+  width: 32px;
+  height: 32px;
+  line-height: 32px;
+  cursor: pointer;
+  transition: background-color .3s, color .3s;
+  background-color: rgba(255, 255, 255, .08);
+  color:#fff;
+  border: none;
+}
+
+.ant-pagination-prev, .ant-pagination-next, .ant-pagination-jump-prev, .ant-pagination-jump-next{
+  color:rgba(255, 255, 255, .85)
+}
+.ant-pagination-prev .ant-pagination-item-link:after, .ant-pagination-next .ant-pagination-item-link:after {
+  font-family: "Material-Design-Iconic-Font";
+}
+
+.ant-pagination-disabled, .ant-pagination-disabled:hover, .ant-pagination-disabled:focus {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
