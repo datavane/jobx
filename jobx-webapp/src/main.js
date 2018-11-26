@@ -14,18 +14,35 @@ import VueSweetalert2 from 'vue-sweetalert2'
 import flatPickr from 'vue-flatpickr-component'
 import 'flatpickr/dist/flatpickr.css'
 
+//Ant
+//import Ant from 'ant-design-vue'
+//import 'ant-design-vue/dist/antd.css'
+//import '../static/css/ant.scss'
+//Vue.use(Ant)
 
-import Ant from 'ant-design-vue'
-import 'ant-design-vue/dist/antd.css'
-Vue.use(Ant)
+//Vuetify
+import Vuetify from 'vuetify'
+import './stylus/vuetify.styl'
+Vue.use(Vuetify)
+
+//MuseUI
+//import MuseUI from 'muse-ui'
+//Vue.use(MuseUI)
+//import 'muse-ui/dist/muse-ui.css'
+//import '../static/css/muse.scss'
+
+//select2
 
 import 'select2/dist/css/select2.css'
 import 'select2/dist/js/select2.full.js'
 import '../static/css/select2.css'
-import '../static/css/ant.scss'
 
+
+
+//其他js依赖包
 import 'bootstrap/dist/js/bootstrap.min.js'
 import 'material-design-iconic-font/dist/css/material-design-iconic-font.css'
+import 'material-design-icons-iconfont/dist/material-design-icons.css'
 import 'jquery.scrollbar/jquery.scrollbar.css'
 import 'jquery.scrollbar/jquery.scrollbar.js'
 import 'jquery-scroll-lock'
@@ -34,16 +51,9 @@ import 'popper.js'
 import 'autosize'
 
 
-import MuseUI from 'muse-ui'
-Vue.use(MuseUI)
-import 'muse-ui/dist/muse-ui.css'
-import '../static/css/muse.scss'
-
-
 Vue.config.productionTip = false
 Vue.prototype.$storage = storage
 Vue.prototype.$const = constant
-
 
 Vue.prototype.$http = http
 Vue.use(VueSweetalert2)

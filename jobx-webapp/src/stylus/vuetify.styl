@@ -1,0 +1,46 @@
+@import '~vuetify/src/stylus/main'
+
+.theme--light
+  &.v-table
+    background-color rgba(0,0,0,0)
+    color rgba(255,255,255,0.65)
+    thead
+      tr
+        &:first-child
+          border-bottom 1px solid rgba(255,255,255,.125)
+        th
+          color #fff
+          &.column
+            &.sortable
+              &.active
+                color #fff
+                .v-icon
+                  color rgba(255,255,255,0.65)
+              &:hover
+                color rgba(255,255,255,0.85)
+    tbody
+      tr
+        &:not(:last-child)
+          border-bottom 1px solid rgba(255,255,255,.125)
+        &:hover
+          color rgba(255,255,255,0.85)
+          &:not(.v-datatable__expand-row)
+            background rgba(255, 255, 255, .04)
+  &.v-datatable
+    .v-datatable__actions
+      background-color rgba(0,0,0,0)
+      color rgba(255,255,255,0.65)
+      border-top 1px solid rgba(255,255,255,.125)
+    thead
+      th
+        &.column
+            &.sortable
+              .v-icon
+                color rgba(255,255,255,0.60)
+
+  &.v-icon
+    color rgba(255,255,255,0.65)
+
+
+
+

@@ -3410,12 +3410,10 @@ tbody.collapse.show {
   float: none
 }
 
-/*
 .breadcrumb-item,
 .column {
   float: left
 }
-*/
 
 .navbar-text {
   display: inline-block;
