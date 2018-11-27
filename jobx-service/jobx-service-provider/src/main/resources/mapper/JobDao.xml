@@ -60,7 +60,7 @@
     <select id="getById" parameterType="java.lang.Long" resultMap="jobEntity">
         select
         <include refid="query_Job"/>,
-        a.agnet_name,
+        a.agent_name,
         a.host as host
         from  t_job as j
         inner join t_agent a
