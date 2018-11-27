@@ -7,7 +7,9 @@
         <div class="card-body">
             <v-data-table
               :headers="headers"
-              :loading="true"
+              :loading="loading"
+              :pagination.sync="pagination"
+              :total-items="pagination.totalItems"
               :items="pageData">
               <v-progress-linear slot="progress" color="white" style="height:1px" indeterminate></v-progress-linear>
               <template slot="items" slot-scope="props">
@@ -21,6 +23,9 @@
                 <td class="text-left">{{ props.item.cronExp }}</td>
               </template>
           </v-data-table>
+          <div class="text-xs-center pt-2">
+            <v-pagination v-model="pagination.page" :length="pagination.pages"></v-pagination>
+          </div>
         </div>
       </div>
   </section>
@@ -30,6 +35,7 @@
   import action from '@/components/common/Action'
   import select2 from '@/components/common/Select2'
   import BScroll from 'better-scroll'
+import { setTimeout } from 'timers';
   export default {
     components: {
       pager,action,select2
@@ -38,6 +44,7 @@
       actions:{
         filter:false
       },
+      pagination: {},
       hoverIndex:0,
       title:'JOB LIST',
       url: "/job/view",
@@ -59,18 +66,34 @@
       pageData:{}
   }),
 
-   mounted () {
+  mounted () {
     this.getPageData()
   },
 
   methods: {
     getPageData (data) {
+      this.loading = true
       this.$http.post(this.url, data || {}).then(resp => {
+        this.pagination.page = resp.body.pageNo
+        this.pagination.pages = resp.body.pageTotal
+        this.pagination.totalItems = resp.body.pageSize
         this.pageData = resp.body.result
-        console.log(this.pageData)
+        setTimeout(() => {
+          this.loading = false
+        },500)
       })
     }
-  }
+  },
+  watch: {
+      pagination: {
+        handler (data) {
+          this.getPageData({
+            pageNo:this.pagination.page
+          })
+        },
+        deep: true
+      }
+  },
 }
 
 </script>
