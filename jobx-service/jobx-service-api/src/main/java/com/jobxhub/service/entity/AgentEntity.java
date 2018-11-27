@@ -32,6 +32,7 @@ import java.util.Objects;
 public class AgentEntity {
 
     private Long agentId;
+    private String agentName;
 
     //执行器机器的唯一id(当前取的是机器的MAC地址)
     private String machineId;
@@ -42,10 +43,9 @@ public class AgentEntity {
     private String host;
     private Integer platform;
     private Integer port;
-    private String name;
+
     private String password;
     private Boolean warning;
-
     private String email;
     private String mobile;
 

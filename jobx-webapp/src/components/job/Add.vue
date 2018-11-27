@@ -1,6 +1,5 @@
 <template>
 
-
 <section class="content">
       <header class="content__title">
           <h4 class='card-title'>{{title}}</h4>
@@ -12,29 +11,20 @@
             <mu-form-item label="作业名称" help-text="作业名称必填项,不能为空" prop="jobName"  :rules="rules.jobName">
               <mu-text-field v-model="job.jobName" prop="jobName"></mu-text-field>
             </mu-form-item>
-            <mu-form-item label="邮箱密码" help-text="发件邮箱的密码" prop="emailPassword" :rules="rules.password">
-              <mu-text-field v-model="profile.emailPassword" type="password" prop="emailPassword"></mu-text-field>
+            <mu-form-item label="规则表达式" help-text="请采用quartz框架的时间格式表达式,不能为空" prop="cronExp"  :rules="rules.cronExp">
+              <mu-text-field v-model="job.cronExp" prop="cronExp"></mu-text-field>
             </mu-form-item>
-            <mu-form-item label="SMTP地址" help-text="发件邮箱的SMTP地址" prop="smtpHost" :rules="rules.smtpHost">
-              <mu-text-field v-model="profile.smtpHost" prop="profile.smtpHost"></mu-text-field>
+            <mu-form-item label="执行器" help-text="要执行此作业的机器" prop="agentId"  :rules="rules.agentId">
+              <mu-text-field v-model="job.agentId" prop="agentId"></mu-text-field>
             </mu-form-item>
-            <mu-form-item label="SMTP端口" help-text="发件邮箱的SMTP端口" prop="smtpPort" :rules="rules.smtpPort">
-              <mu-text-field v-model="profile.smtpPort" prop="profile.smtpPort"></mu-text-field>
+            <mu-form-item prop="" label="执行命令" :rules="rules.command">
+              <mu-text-field multi-line :rows="2" :rows-max="20" v-model="job.command"></mu-text-field>
             </mu-form-item>
-            <mu-form-item label="SSL验证" help-text="发送邮箱是否需要开启SSL验证">
-              <mu-switch v-model="profile.useSSL"></mu-switch>
+            <mu-form-item label="执行身份" help-text="执行该作业的用户身份" prop="execUser"  :rules="rules.execUser">
+              <mu-text-field v-model="job.execUser" prop="execUser"></mu-text-field>
             </mu-form-item>
-            <mu-form-item label="告警间隔" help-text="告警间隔,两次发送告警的时间间隔,避免告警太频繁轰炸" prop="spaceTime" :rules="rules.spaceTime">
-              <mu-text-field v-model.number="profile.spaceTime" prop="spaceTime" type="number"></mu-text-field>
-            </mu-form-item>
-            <mu-form-item label="短信URL" help-text="短信通道商提供的发送接口URL" prop="profile.sendUrl"  :rules="rules.sendUrl">
-              <mu-text-field v-model="profile.sendUrl" prop="profile.sendUrl"></mu-text-field>
-            </mu-form-item>
-            <mu-form-item prop="短信模板" label="短信模板" :rules="rules.template">
-              <mu-text-field multi-line :rows="2" :rows-max="6" v-model="profile.template"></mu-text-field>
-            </mu-form-item>
-            <mu-form-item prop="执行用户" label="执行用户"  :rules="rules.execUser">
-              <mu-text-field multi-line :rows="2" :rows-max="6" v-model="profile.execUser"></mu-text-field>
+            <mu-form-item label="成功标识" help-text="自定义作业执行成功的返回标识(默认执行成功是0)" prop="successExit"  :rules="rules.successExit">
+              <mu-text-field v-model="job.successExit" prop="successExit"></mu-text-field>
             </mu-form-item>
             <mu-form-item>
               <mu-button color="primary" @click="submit">提交</mu-button>
@@ -55,18 +45,21 @@
     data() {
       return {
         title:'ADD NEW JOB',
-        profile: {},
+        job: {},
         profile1:{},
         rules:{
-          mail: [
-            { validate: (val) => !!val, message: '发送邮箱不能为空'},
+          jobName: [
+            { validate: (val) => !!val, message: '作业名称必填项,不能为空'},
             { validate: (val) => val.length >= 3, message: '用户名长度大于3'}
           ],
-          password:[
-            { validate: (val) => !!val, message: '必须填写密码'}
+          cronExp:[
+            { validate: (val) => !!val, message: '请采用quartz框架的时间格式表达式(双击控件输入或手动输入)'}
           ],
-          spaceTime:[
-             { validate: (val) => !!val>0, message: '告警间隔必须大于0'}
+          agentId:[
+             { validate: (val) => !!val, message: '请选择要执行执行器'}
+          ],
+          command:[
+             { validate: (val) => !!val, message: ' 执行命令不能为空,请填写执行命令'}
           ]
         }
       }

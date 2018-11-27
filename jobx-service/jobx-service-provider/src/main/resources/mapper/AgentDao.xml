@@ -11,7 +11,7 @@
         <result column="platform"      property="platform" />
         <result column="machine_id"    property="machineId" />
         <result column="mobile"        property="mobile" />
-        <result column="name"          property="name" />
+        <result column="agent_name"    property="agentName" />
         <result column="notify_time"   property="notifyTime" />
         <result column="password"      property="password" />
         <result column="port"          property="port" />
@@ -29,7 +29,7 @@
         a.platform,
         a.machine_id,
         a.mobile,
-        a.name,
+        a.agent_name,
         a.notify_time,
         a.password,
         a.port,
@@ -86,7 +86,7 @@
             and a.status=#{pager.filter.status}
         </if>
         <if test="pager.filter !=null and pager.filter.agentName != null">
-            and a.name like concat('%',#{pager.filter.agentName},'%')
+            and a.agent_name like concat('%',#{pager.filter.agentName},'%')
         </if>
         <if test="pager.orderBy!=null">
             order by a.${pager.orderBy} ${pager.order}
@@ -107,7 +107,7 @@
             and a.status=#{filter.status}
         </if>
         <if test="filter !=null and filter.agentName != null">
-            and a.name like concat('%',#{filter.agentName},'%')
+            and a.agent_name like concat('%',#{filter.agentName},'%')
         </if>
     </select>
 
@@ -148,8 +148,8 @@
             <if test="mobile != null" >
                 mobile,
             </if>
-            <if test="name != null" >
-                name,
+            <if test="agentName != null" >
+                agent_name,
             </if>
             <if test="notifyTime != null" >
                 notify_time,
@@ -193,8 +193,8 @@
             <if test="mobile != null" >
                 #{mobile},
             </if>
-            <if test="name != null" >
-                #{name},
+            <if test="agentName != null" >
+                #{agentName},
             </if>
             <if test="notifyTime != null" >
                 #{notifyTime},
@@ -228,7 +228,7 @@
              host = #{host},        
              machine_id = #{machineId},   
              mobile = #{mobile},      
-             `name` = #{name},
+             agent_name = #{agentName},
              notify_time = #{notifyTime},  
              password = #{password},    
              port = #{port},        

@@ -40,6 +40,44 @@
 
   &.v-icon
     color rgba(255,255,255,0.65)
+  &.v-pagination
+    li 
+      &:hover
+      &:focue
+        color rgba(255,255,255,.85)
+        text-decoration none
+        background-color rgba(255,255,255,.2)
+        border-color #ddd
+      .v-pagination__navigation 
+        background-color rgba(255,255,255,.08)
+        color rgba(255,255,255,.85)
+        border-radius 50%!important
+        width 40px
+        height 40px
+        line-height 40px
+        text-align center
+        z-index 1
+        cursor pointer
+        transition background-color .3s,color .3s
+        margin 0 2px
+        .v-icon 
+          color rgba(255,255,255,.65)
+          &:hover
+            color rgba(255,255,255,.85)
+      .v-pagination__item
+        background-color rgba(255,255,255,.08)
+        color rgba(255,255,255,.85)
+        border-radius 50%!important
+        width 40px
+        height 40px
+        line-height 40px
+      .v-pagination__item--active
+        background-color rgba(255,255,255,.85)
+        color rgba(0,0,0,.85)
+
+
+
+
 
 
 

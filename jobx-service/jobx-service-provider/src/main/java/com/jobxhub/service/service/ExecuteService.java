@@ -229,7 +229,7 @@ public class ExecuteService {
             record.setReturnCode(ExitCode.ERROR_PING.getValue());
             String format = "can't to communicate with agent:%s(%s:%d),execute job:%s failed";
             String content = String.format(format,
-                    job.getAgent().getName(),
+                    job.getAgent().getAgentName(),
                     job.getAgent().getHost(),
                     job.getAgent().getPort(),
                     job.getJobName());

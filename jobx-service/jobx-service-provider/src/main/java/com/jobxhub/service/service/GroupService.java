@@ -80,7 +80,7 @@ public class GroupService {
             for (AgentGroupEntity agentGroup : agentGroups) {
                 Agent agent = new Agent();
                 agent.setAgentId(agentGroup.getAgentId());
-                agent.setName(agentGroup.getAgentName());
+                agent.setAgentName(agentGroup.getAgentName());
                 agent.setHost(agentGroup.getAgentHost());
                 if (agentGroup.getGroupId() == null) {
                     noGroup.getAgentList().add(agent);

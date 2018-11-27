@@ -108,7 +108,7 @@ public class Job implements Serializable {
 
     public Job(Long userId, String command, Agent agent) {
         this.jobId = 0L;
-        this.jobName = agent.getName() + "-batchJob";
+        this.jobName = agent.getAgentName() + "-batchJob";
         this.userId = userId;
         this.command = command;
         this.agent = agent;

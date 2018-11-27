@@ -74,11 +74,11 @@ public class AgentServiceImpl implements AgentService {
         List<AgentEntity> list;
         if (!JobXTools.isPermission(session)) {
             User user = JobXTools.getUser(session);
-            list = agentDao.getByConnType(user.getUserId(),Constants.ConnStatus.CONNECTED.getValue());
-        }else {
-            list = agentDao.getByConnType(null,Constants.ConnStatus.CONNECTED.getValue());
+            list = agentDao.getByConnType(user.getUserId(), Constants.ConnStatus.CONNECTED.getValue());
+        } else {
+            list = agentDao.getByConnType(null, Constants.ConnStatus.CONNECTED.getValue());
         }
-        return Lists.transform(list,Agent.transferModel);
+        return Lists.transform(list, Agent.transferModel);
     }
 
     public List<Agent> getAll() {
@@ -92,21 +92,22 @@ public class AgentServiceImpl implements AgentService {
     private synchronized void flushLocalAgent() {
         JobXTools.CACHE.put(
                 Constants.PARAM_CACHED_AGENT_KEY,
-                Lists.transform(agentDao.getAll(),Agent.transferModel)
+                Lists.transform(agentDao.getAll(), Agent.transferModel)
         );
     }
 
     public int getCountByStatus(HttpSession session, Constants.ConnStatus status) {
-        Map<String,Object> map = new HashMap<String, Object>(0);
+        Map<String, Object> map = new HashMap<String, Object>(0);
         if (!JobXTools.isPermission(session)) {
-            map.put("userId",JobXTools.getUserId(session));
+            map.put("userId", JobXTools.getUserId(session));
         }
-        map.put("status",status.getValue());
+        map.put("status", status.getValue());
         return agentDao.getCount(map);
     }
 
     /**
      * 获取所属用户的agent
+     *
      * @param session
      * @param pageBean
      */
@@ -115,13 +116,13 @@ public class AgentServiceImpl implements AgentService {
             User user = JobXTools.getUser(session);
             pageBean.put("userId", user.getUserId());
         }
-        pageBean.put("agentName", agent.getName());
-        pageBean.put("status",agent.getStatus());
+        pageBean.put("agentName", agent.getAgentName());
+        pageBean.put("status", agent.getStatus());
         pageBean.verifyOrderBy("name", "name", "host", "port");
         List<AgentEntity> agentList = agentDao.getByPageBean(pageBean);
         if (CommonUtils.notEmpty(agentList)) {
             int count = agentDao.getCount(pageBean.getFilter());
-            List<Agent> agents = Lists.transform(agentList,Agent.transferModel);
+            List<Agent> agents = Lists.transform(agentList, Agent.transferModel);
             pageBean.setResult(agents);
             pageBean.setTotalRecord(count);
         }
@@ -141,7 +142,7 @@ public class AgentServiceImpl implements AgentService {
         if (agentEntity.getAgentId() == null) {
             agentDao.save(agentEntity);
             agent.setAgentId(agentEntity.getAgentId());
-        }else {
+        } else {
             agentDao.update(agentEntity);
         }
         flushLocalAgent();
@@ -150,6 +151,7 @@ public class AgentServiceImpl implements AgentService {
     /**
      * true can delete
      * false can't delete
+     *
      * @param id
      * @return
      */
@@ -170,11 +172,11 @@ public class AgentServiceImpl implements AgentService {
     }
 
     public boolean existsName(Long id, String name) {
-        return agentDao.existsCount(id,"name",name) > 0;
+        return agentDao.existsCount(id, "name", name) > 0;
     }
 
     public boolean existsHost(Long id, String host) {
-        return agentDao.existsCount(id,"host", host) > 0;
+        return agentDao.existsCount(id, "host", host) > 0;
     }
 
     public String editPassword(Long id, Boolean type, String pwd0, String pwd1, String pwd2) {
@@ -182,7 +184,7 @@ public class AgentServiceImpl implements AgentService {
         boolean verify;
         if (type) {//直接输入的密钥
             agent.setPassword(pwd0);
-            verify = executeService.ping(agent,false).equals(Constants.ConnStatus.CONNECTED);
+            verify = executeService.ping(agent, false).equals(Constants.ConnStatus.CONNECTED);
         } else {//密码...
             verify = DigestUtils.md5Hex(pwd0).equals(agent.getPassword());
         }
@@ -192,7 +194,7 @@ public class AgentServiceImpl implements AgentService {
                 Boolean flag = executeService.password(agent, pwd1);
                 if (flag) {
                     agent.setPassword(pwd1);
-                    executeService.ping(agent,true);
+                    executeService.ping(agent, true);
                     return "true";
                 } else {
                     return "false";
@@ -210,15 +212,15 @@ public class AgentServiceImpl implements AgentService {
         pageBean.setPageNo(0);
         if (!JobXTools.isPermission(session)) {
             User userDto = JobXTools.getUser(session);
-            pageBean.put("user_id",userDto.getUserId());
+            pageBean.put("user_id", userDto.getUserId());
         }
         List<AgentEntity> agentList = agentDao.getByPageBean(pageBean);
-        return Lists.transform(agentList,Agent.transferModel);
+        return Lists.transform(agentList, Agent.transferModel);
     }
 
     public Agent getByMacId(String machineId) {
         AgentEntity agent = agentDao.getByMacId(machineId);
-        if (agent!=null) {
+        if (agent != null) {
             return Agent.transferModel.apply(agent);
         }
         return null;
@@ -237,9 +239,9 @@ public class AgentServiceImpl implements AgentService {
     public void doDisconnect(String info) {
         if (CommonUtils.notEmpty(info)) {
             String macId = info.split("_")[0];
-            String password =  info.split("_")[1];
+            String password = info.split("_")[1];
             Agent agent = getByMacId(macId);
-            if ( CommonUtils.notEmpty(agent,password) && password.equals(agent.getPassword()) ) {
+            if (CommonUtils.notEmpty(agent, password) && password.equals(agent.getPassword())) {
                 doDisconnect(agent);
             }
         }
@@ -256,7 +258,7 @@ public class AgentServiceImpl implements AgentService {
         Agent agent = transfers.get(1);
 
         //exists in db...
-        if ( agent!=null ) {
+        if (agent != null) {
             //agent和server密码一致则连接...
             if (registry.getPassword().equals(agent.getPassword())) {
                 executeService.ping(agent, true);
@@ -270,13 +272,13 @@ public class AgentServiceImpl implements AgentService {
         }
 
         //新的机器，需要自动注册.
-        registry.setName(registry.getHost());
+        registry.setAgentName(registry.getHost());
         registry.setComment("auto registered.");
         registry.setWarning(false);
         registry.setMobile(null);
         registry.setEmail(null);
         registry.setProxyId(null);
-        if (executeService.ping(registry,false).equals(Constants.ConnStatus.CONNECTED)) {
+        if (executeService.ping(registry, false).equals(Constants.ConnStatus.CONNECTED)) {
             registry.setStatus(Constants.ConnStatus.CONNECTED.getValue());
             merge(registry);
         }
@@ -310,13 +312,13 @@ public class AgentServiceImpl implements AgentService {
 
     public List<Agent> getByGroup(Long groupId) {
         List<AgentEntity> list = agentDao.getByGroup(groupId);
-        return Lists.transform(list,Agent.transferModel);
+        return Lists.transform(list, Agent.transferModel);
     }
 
     public void updateStatus(Agent agent) {
-        if (agent!=null) {
-            if (agent.getAgentId()!=null&&agent.getStatus()!=null) {
-                agentDao.updateStatus(agent.getAgentId(),agent.getStatus());
+        if (agent != null) {
+            if (agent.getAgentId() != null && agent.getStatus() != null) {
+                agentDao.updateStatus(agent.getAgentId(), agent.getStatus());
             }
         }
     }

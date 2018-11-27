@@ -37,6 +37,7 @@ import java.util.List;
 public class Agent implements Serializable {
 
     private Long agentId;
+    private String agentName;
 
     private String machineId;
 
@@ -47,7 +48,6 @@ public class Agent implements Serializable {
     //agent系统平台,0:其他,1:unix内核系统,2:window
     private Integer platform;
     private Integer port;
-    private String name;
     private String password;
     private Boolean warning;
 
