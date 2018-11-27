@@ -19,6 +19,8 @@
               &:hover
                 color rgba(255,255,255,0.85)
     tbody
+      th 
+        height 48px       
       tr
         &:not(:last-child)
           border-bottom 1px solid rgba(255,255,255,.125)
@@ -26,6 +28,11 @@
           color rgba(255,255,255,0.85)
           &:not(.v-datatable__expand-row)
             background rgba(255, 255, 255, .04)
+        td 
+          overflow hidden
+          text-overflow ellipsis
+          word-break keep-all
+          white-space nowrap    
   &.v-datatable
     .v-datatable__actions
       background-color rgba(0,0,0,0)
@@ -40,6 +47,15 @@
 
   &.v-icon
     color rgba(255,255,255,0.65)
+    align-items center
+    display inline-flex
+    -webkit-font-feature-settings 'liga'
+    font-feature-settings 'liga'
+    font-size 24px
+    justify-content center
+    line-height 1
+    transition 0.3s cubic-bezier(0.25, 0.8, 0.5, 1)
+    vertical-align: text-bottom
   &.v-pagination
     li 
       &:hover
@@ -52,9 +68,9 @@
         background-color rgba(255,255,255,.08)
         color rgba(255,255,255,.85)
         border-radius 50%!important
-        width 40px
-        height 40px
-        line-height 40px
+        width 32px
+        height 32px
+        line-height 32px
         text-align center
         z-index 1
         cursor pointer
@@ -68,9 +84,9 @@
         background-color rgba(255,255,255,.08)
         color rgba(255,255,255,.85)
         border-radius 50%!important
-        width 40px
-        height 40px
-        line-height 40px
+        width 32px
+        height 32px
+        line-height 32px
       .v-pagination__item--active
         background-color rgba(255,255,255,.85)
         color rgba(0,0,0,.85)

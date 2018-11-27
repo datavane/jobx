@@ -23,7 +23,17 @@ import 'flatpickr/dist/flatpickr.css'
 //Vuetify
 import Vuetify from 'vuetify'
 import './stylus/vuetify.styl'
-Vue.use(Vuetify)
+Vue.use(Vuetify, {
+  iconfont: 'material-icons',
+  icons: {
+    'cancel': 'mdi-cancel',
+    'detail':'mdi-eye',
+    'edit':'mdi-playlist-edit',
+    'add':'mdi-plus-box',
+    'delete':'mdi-delete',
+    'play':'mdi-play'
+  }
+})
 
 //MuseUI
 //import MuseUI from 'muse-ui'

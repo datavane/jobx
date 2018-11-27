@@ -10,8 +10,9 @@
               :loading="loading"
               :pagination.sync="pagination"
               :total-items="pagination.totalItems"
-              :items="pageData"
-              hide-actions>
+              :items="pageData.result"
+              hide-actions 
+             >
               <v-progress-linear slot="progress" color="white" style="height:1px" indeterminate></v-progress-linear>
               <template slot="items" slot-scope="props">
                 <td class="text-left">{{ props.item.agentName }}</td>
@@ -22,6 +23,38 @@
                 <td class="text-left">{{ props.item.redo }}</td>
                 <td class="text-left">{{ props.item.jobType }}</td>
                 <td class="text-left">{{ props.item.cronExp }}</td>
+                <td class="justify-center layout px-0">
+                   <v-icon
+                    small
+                    class="mr-2"
+                    @click="editItem(props.item)">
+                    play_arrow
+                  </v-icon>
+                  <v-icon
+                    small
+                     class="mr-2"
+                    @click="editItem(props.item)">
+                    pause
+                  </v-icon>
+                  <v-icon
+                    small
+                    class="mr-2"
+                    @click="editItem(props.item)">
+                    edit
+                  </v-icon>
+                  <v-icon
+                    small
+                    class="mr-2"
+                    @click="deleteItem(props.item)">
+                    visibility
+                  </v-icon>
+                  <v-icon
+                    small
+                    class="mr-2"
+                    @click="deleteItem(props.item)">
+                    delete
+                  </v-icon>
+                </td>
               </template>
               <template slot="no-data">
                 <v-alert :value="true" color="error" icon="warning">
@@ -29,7 +62,7 @@
                 </v-alert>
               </template>
           </v-data-table>
-          <div class="text-xs-center pt-2" v-if="pageData">
+          <div class="text-xs-center pt-2" v-if="!noData()">
             <v-pagination v-model="pagination.page" :length="pagination.pages"></v-pagination>
           </div>
         </div>
@@ -40,8 +73,6 @@
   import pager from '@/components/common/Pager'
   import action from '@/components/common/Action'
   import select2 from '@/components/common/Select2'
-  import BScroll from 'better-scroll'
-  import { setTimeout } from 'timers'
   export default {
     components: {
       pager,action,select2
@@ -50,19 +81,20 @@
       actions:{
         filter:false
       },
-      loading:true,
+      loading:false,
       pagination: {},
       title:'JOB LIST',
       url: "/job/view",
       headers: [
-        {text: '执行器',value: 'agent_name',sortable: true},
-        { text: '名称', value: 'job_name',sortable: true },
-        { text: '执行身份', value: 'exec_user',sortable: true },
-        { text: '命令', value: 'command' },
-        { text: '暂停', value: 'pause' },
-        { text: '重跑', value: 'redo' },
-        { text: '调度方式', value: 'job_type' },
-        { text: 'CRONEXP', value: 'cron_exp' }
+        { text: '执行器',value: 'agent_name'},
+        { text: '名称', value: 'job_name'},
+        { text: '执行身份', value: 'exec_user'},
+        { text: '命令', value: 'command',sortable: false  },
+        { text: '暂停', value: 'pause',sortable: false  },
+        { text: '重跑', value: 'redo',sortable: false  },
+        { text: '调度方式', value: 'job_type',sortable: false  },
+        { text: 'CRONEXP', value: 'cron_exp',sortable: false  },
+        { text: 'Actions', value: 'name', sortable: false }
       ],
       pageData:{},
       postData:{}
@@ -76,28 +108,38 @@
     getPageData () {
       this.loading = true
       this.$http.post(this.url,this.postData).then(resp => {
-        this.pagination.page = resp.body.pageNo
-        this.pagination.pages = resp.body.pageTotal
-        this.pagination.totalItems = resp.body.pageSize
-        this.pageData = resp.body.result
+        this.pageData = resp.body
+        this.pagination.page = this.pageData.pageNo
+        this.pagination.pages = this.pageData.pageTotal
+        this.pagination.totalItems = this.pageData.totalRecord
+        this.pagination.rowsPerPage = this.pageData.pageSize
         setTimeout(() => {
           this.loading = false
         },1000)
+      },error=>{
+        this.loading = false
       })
+    },
+    noData:function(){
+      return this.pageData == {}|!this.pageData.result
     }
   },
   watch: {
-      pagination: {
-        deep: true,
-        handler (data) {
-          this.postData.pageNo = this.pagination.page
+    pagination: {
+      deep: true,
+      handler (data) {
+        if(!this.loading) {
           if(this.pagination.descending != null) {
             this.postData.orderBy = this.pagination.sortBy
             this.postData.order = this.pagination.descending?'desc':'asc'
           }
+          this.postData.pageNo = this.pagination.page
+          this.postData.pageSize = this.pagination.rowsPerPage
           this.getPageData()
         }
       }
+    }
+      
   },
 }
 
