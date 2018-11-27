@@ -19,8 +19,8 @@
               &:hover
                 color rgba(255,255,255,0.85)
     tbody
-      th 
-        height 48px       
+      th
+        height 48px
       tr
         &:not(:last-child)
           border-bottom 1px solid rgba(255,255,255,.125)
@@ -28,11 +28,11 @@
           color rgba(255,255,255,0.85)
           &:not(.v-datatable__expand-row)
             background rgba(255, 255, 255, .04)
-        td 
+        td
           overflow hidden
           text-overflow ellipsis
           word-break keep-all
-          white-space nowrap    
+          white-space nowrap
   &.v-datatable
     .v-datatable__actions
       background-color rgba(0,0,0,0)
@@ -57,14 +57,14 @@
     transition 0.3s cubic-bezier(0.25, 0.8, 0.5, 1)
     vertical-align: text-bottom
   &.v-pagination
-    li 
+    li
       &:hover
       &:focue
         color rgba(255,255,255,.85)
         text-decoration none
         background-color rgba(255,255,255,.2)
         border-color #ddd
-      .v-pagination__navigation 
+      .v-pagination__navigation
         background-color rgba(255,255,255,.08)
         color rgba(255,255,255,.85)
         border-radius 50%!important
@@ -76,7 +76,7 @@
         cursor pointer
         transition background-color .3s,color .3s
         margin 0 2px
-        .v-icon 
+        .v-icon
           color rgba(255,255,255,.65)
           &:hover
             color rgba(255,255,255,.85)
@@ -93,6 +93,36 @@
 
 
 
+
+.label
+  border-radius 0
+  text-shadow none
+  font-weight bold
+  color #fff
+  text-align center
+  white-space nowrap
+  vertical-align baseline
+  background-color rgba(255,255,255,.225)
+  padding .3em 1em .4em
+  font-size 13px
+  line-height 24px
+  height 24px
+.arrowed-right
+  margin-right 6px
+  position relative
+  z-index 1
+  &:after
+    right -7px
+    display inline-block
+    content ""
+    position absolute
+    top 0
+    z-index -1
+    width 0
+    height 0
+    border-top 14px solid transparent
+    border-left 7px solid rgba(255,255,255,.225)
+    border-bottom 14px solid transparent
 
 
 

@@ -5,13 +5,34 @@
       </header>
       <div class="card">
         <div class="card-body">
+          <div class="table-filter">
+            <span class="label arrowed-right">筛选： </span>
+            <v-text-field
+                v-model="name"
+                :rules="nameRules"
+                label="作业名称"
+                required
+              ></v-text-field>
+              <v-text-field
+                v-model="name"
+                :rules="nameRules"
+                label="作业名称"
+                required
+              ></v-text-field>
+              <v-text-field
+                v-model="name"
+                :rules="nameRules"
+                label="作业名称"
+                required
+              ></v-text-field>
+          </div>
             <v-data-table
               :headers="headers"
               :loading="loading"
               :pagination.sync="pagination"
               :total-items="pagination.totalItems"
               :items="pageData.result"
-              hide-actions 
+              hide-actions
              >
               <v-progress-linear slot="progress" color="white" style="height:1px" indeterminate></v-progress-linear>
               <template slot="items" slot-scope="props">
@@ -24,36 +45,11 @@
                 <td class="text-left">{{ props.item.jobType }}</td>
                 <td class="text-left">{{ props.item.cronExp }}</td>
                 <td class="justify-center layout px-0">
-                   <v-icon
-                    small
-                    class="mr-2"
-                    @click="editItem(props.item)">
-                    play_arrow
-                  </v-icon>
-                  <v-icon
-                    small
-                     class="mr-2"
-                    @click="editItem(props.item)">
-                    pause
-                  </v-icon>
-                  <v-icon
-                    small
-                    class="mr-2"
-                    @click="editItem(props.item)">
-                    edit
-                  </v-icon>
-                  <v-icon
-                    small
-                    class="mr-2"
-                    @click="deleteItem(props.item)">
-                    visibility
-                  </v-icon>
-                  <v-icon
-                    small
-                    class="mr-2"
-                    @click="deleteItem(props.item)">
-                    delete
-                  </v-icon>
+                  <v-icon small class="mr-2" @click="editItem(props.item)">play_arrow</v-icon>
+                  <v-icon small class="mr-2" @click="editItem(props.item)">pause</v-icon>
+                  <v-icon small class="mr-2" @click="editItem(props.item)">edit</v-icon>
+                  <v-icon small class="mr-2" @click="deleteItem(props.item)">visibility</v-icon>
+                  <v-icon small class="mr-2" @click="deleteItem(props.item)">delete</v-icon>
                 </td>
               </template>
               <template slot="no-data">
@@ -139,7 +135,7 @@
         }
       }
     }
-      
+
   },
 }
 
