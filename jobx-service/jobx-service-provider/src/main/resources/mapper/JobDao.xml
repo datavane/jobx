@@ -20,7 +20,7 @@
         <result column="pause"          property="pause"/>
         <result column="redo"           property="redo"/>
         <result column="run_count"      property="runCount"/>
-        <result column="success_exit"  property="successExit"/>
+        <result column="success_exit"   property="successExit"/>
         <result column="timeout"        property="timeout"/>
         <result column="token"          property="token"/>
         <result column="update_time"    property="updateTime"/>

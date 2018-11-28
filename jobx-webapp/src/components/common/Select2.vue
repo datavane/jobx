@@ -1,5 +1,5 @@
 <template>
-   <select class="select2">
+   <select class="select2" :style="{width:width}">
         <slot></slot>
   </select>
 </template>
@@ -9,9 +9,9 @@
         data() {
            return {
                sel:null
-           }     
+           }
         },
-        props: ['options','selected','value'],
+        props: ['options','selected','value','width'],
         mounted() {
             var vm = this
             this.sel = $(this.$el)

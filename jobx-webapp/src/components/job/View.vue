@@ -7,24 +7,11 @@
         <div class="card-body">
           <div class="table-filter">
             <span class="label arrowed-right">筛选： </span>
-            <v-text-field
-                v-model="name"
-                :rules="nameRules"
-                label="作业名称"
-                required
-              ></v-text-field>
-              <v-text-field
-                v-model="name"
-                :rules="nameRules"
-                label="作业名称"
-                required
-              ></v-text-field>
-              <v-text-field
-                v-model="name"
-                :rules="nameRules"
-                label="作业名称"
-                required
-              ></v-text-field>
+            <div class="opt-bar">
+              <label for="agentId">执行器</label><select2 width='12rem' ></select2>
+              <label for="agentId">作业名称</label><input type="text" id="agent" class="input-basic filter-input" placeholder="作业名称">
+              <label for="agentId">作业类型</label><input type="text" id="agent" class="input-basic filter-input" placeholder="作业类型">
+            </div>
           </div>
             <v-data-table
               :headers="headers"
@@ -140,3 +127,43 @@
 }
 
 </script>
+<style type="css">
+.opt-bar {
+  display: inline-block;
+  margin-left: 10px;
+  margin-bottom: 10px;
+}
+
+.opt-bar > label{
+  display: inline-block;
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+.opt-bar > input{
+  min-width: 8rem;
+  max-width: 10rem;
+  display: inline-block;
+  height: 30px;
+  line-height: 30px;
+}
+.select2-container--default .select2-selection--single {
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    min-width: 8rem;
+    max-width: 10rem;
+    height: 30px;
+    padding: 6px 6px;
+    background-color: transparent;
+    text-shadow: none;
+    color: #fff;
+    box-shadow: none;
+    font-family: open-sans-regular;
+    -webkit-appearance: none;
+    border-radius: 5px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    -webkit-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+</style>
+
