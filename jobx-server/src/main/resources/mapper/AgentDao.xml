@@ -223,16 +223,19 @@
     <update id="update" parameterType="com.jobxhub.server.domain.AgentBean">
         update t_agent
         set
-             warning = #{warning},
-             comment = #{comment},
-             email = #{email},
-             mobile = #{mobile},
-             host = #{host},        
-             machine_id = #{machineId},   
-             `name` = #{name},
-             password = #{password},
-             port = #{port},
-             proxy_id = #{proxyId}
+            comment = #{comment},
+            email = #{email},
+            host = #{host},
+            platform = #{platform},
+            machine_id = #{machineId},
+            mobile = #{mobile},
+            `name` = #{name},
+            notify_time = #{notifyTime},
+            password = #{password},
+            port = #{port},
+            proxy_id = #{proxyId},
+            status = #{status},
+            warning = #{warning}
         where agent_id = #{agentId}
 	</update>
 

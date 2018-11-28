@@ -61,8 +61,8 @@ public class VerifyController extends BaseController {
     public List<String> getRecentTriggerTime(String cronExp) {
        return PageUtils.getRecentTriggerTime(cronExp);
     }
+
     /**
-     * 仅检查是否可以连接
      * @return
      */
     @RequestMapping(value = "ping.do", method = RequestMethod.POST)
@@ -70,7 +70,7 @@ public class VerifyController extends BaseController {
     public Map<String,Integer> validatePing(Agent agent) {
         Map<String,Integer> result = new HashMap<String, Integer>(0);
         if (hasProxy(agent, result)) return result;
-        Constants.ConnStatus connStatus = executeService.ping(agent,true);
+        Constants.ConnStatus connStatus = executeService.ping(agent,false);
         result.put("status",connStatus.getValue());
         return result;
     }

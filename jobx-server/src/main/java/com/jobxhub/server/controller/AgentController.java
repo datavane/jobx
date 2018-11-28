@@ -119,7 +119,7 @@ public class AgentController extends BaseController {
         }
         agent.setPassword(DigestUtils.md5Hex(agent.getPassword()));
         agent.setStatus(Constants.ConnStatus.CONNECTED.getValue());
-        agentService.merge(agent);
+        agentService.saveOrUpdate(agent);
         return "redirect:/agent/view.htm";
     }
 
@@ -155,7 +155,7 @@ public class AgentController extends BaseController {
             agent.setEmail(agentParam.getEmail());
         }
         agent.setComment(agentParam.getComment());
-        agentService.merge(agent);
+        agentService.saveOrUpdate(agent);
         return Status.TRUE;
     }
 

@@ -294,7 +294,7 @@ public class ExecuteService {
 
         if (update) {
             agent.setStatus(status.getValue());
-            agentService.updateStatus(agent);
+            agentService.saveOrUpdate(agent);
         }
 
         return status;

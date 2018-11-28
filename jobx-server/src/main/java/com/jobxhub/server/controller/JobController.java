@@ -104,7 +104,7 @@ public class JobController extends BaseController {
     @ResponseBody
     public Status checkDelete(Long id) {
         boolean status = jobService.checkDelete(id);
-        return  Status.create(status);
+        return Status.create(status);
     }
 
     @RequestMapping(value = "delete.do", method = RequestMethod.POST)
@@ -128,7 +128,7 @@ public class JobController extends BaseController {
         }
         List<Agent> agents = agentService.getOwnerAgents(session);
         model.addAttribute("agents", agents);
-        model.addAttribute("execUser",userService.getExecUser(JobXTools.getUserId(session)));
+        model.addAttribute("execUser", userService.getExecUser(JobXTools.getUserId(session)));
         return "/job/add";
     }
 
@@ -145,13 +145,13 @@ public class JobController extends BaseController {
 
     @RequestMapping(value = "search.do", method = RequestMethod.POST)
     @ResponseBody
-    public PageBean<Job> search(HttpSession session, Long agentId,String jobName, Integer pageNo) {
+    public PageBean<Job> search(HttpSession session, Long agentId, String jobName, Integer pageNo) {
         PageBean pageBean = new PageBean<JobBean>(6);
-        pageBean.setPageNo(pageNo == null?1:pageNo);
+        pageBean.setPageNo(pageNo == null ? 1 : pageNo);
         if (agentId == null && CommonUtils.isEmpty(jobName)) {
             return pageBean;
         }
-        return jobService.search(session,pageBean,agentId,jobName);
+        return jobService.search(session, pageBean, agentId, jobName);
     }
 
     @RequestMapping(value = "save.do", method = RequestMethod.POST)
@@ -192,8 +192,8 @@ public class JobController extends BaseController {
             jobParam.setCreateType(Constants.CreateType.NORMAL.getValue());
             jobParam.setToken(CommonUtils.uuid());
             Agent agent = agentService.getAgent(jobParam.getAgentId());
-            if (agent!=null) {
-                if (agent.getPlatform() != 1 ) {
+            if (agent != null) {
+                if (agent.getPlatform() == null || agent.getPlatform() != 1) {
                     jobParam.setExecUser(null);
                 }
             }
@@ -334,12 +334,12 @@ public class JobController extends BaseController {
 
     @RequestMapping(value = "execute.do", method = RequestMethod.POST)
     @ResponseBody
-    public Status remoteExecute(HttpSession session, Long id,String param) {
+    public Status remoteExecute(HttpSession session, Long id, String param) {
         final Job job = jobService.getById(id);//找到要执行的任务
         if (!jobService.checkJobOwner(session, job.getUserId())) return Status.FALSE;
         //手动执行
         Long userId = JobXTools.getUserId(session);
-        if(StringUtils.isNotEmpty(param)){
+        if (StringUtils.isNotEmpty(param)) {
             job.setInputParam(param);
         }
         job.setUserId(userId);
@@ -383,7 +383,7 @@ public class JobController extends BaseController {
         String token = CommonUtils.uuid();
         if (job != null) {
             job.setToken(CommonUtils.uuid());
-            jobService.updateToken(jobId,token);
+            jobService.updateToken(jobId, token);
         }
         return ParamsMap.map().set("token", token);
     }
