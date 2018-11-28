@@ -3,7 +3,7 @@
 .theme--light
   &.v-table
     background-color rgba(0,0,0,0)
-    color rgba(255,255,255,0.65)
+    color rgba(255,255,255,0.85)
     thead
       tr
         &:first-child
@@ -44,7 +44,8 @@
             &.sortable
               .v-icon
                 color rgba(255,255,255,0.60)
-
+  &.v-text-field
+    margin-bottom: 20px
   &.v-icon
     color rgba(255,255,255,0.65)
     align-items center
@@ -91,22 +92,36 @@
         background-color rgba(255,255,255,.85)
         color rgba(0,0,0,.85)
 
+  &.label
+    border-radius 0
+    text-shadow none
+    font-weight bold
+    color #fff
+    text-align center
+    white-space nowrap
+    vertical-align baseline
+    background-color rgba(255,255,255,.225)
+    padding .3em 1em .4em
+    font-size 13px
+    line-height 24px
+    height 24px
+  &.v-text-field
+    .v-input__slot
+      &:before
+        border-color rgba(255,255,255,.125)
+      &:not(.v-input--has-state)
+      .v-input__slot
+        &:hover
+          &:before
+            border-color rgba(255,255,255,.325)
+  &.v-label
+    color rgba(255,255,255,0.65)
 
-
-
-.label
-  border-radius 0
-  text-shadow none
-  font-weight bold
-  color #fff
-  text-align center
-  white-space nowrap
-  vertical-align baseline
-  background-color rgba(255,255,255,.225)
-  padding .3em 1em .4em
-  font-size 13px
-  line-height 24px
-  height 24px
+.v-datatable__progress
+  th
+    .v-progress-linear
+      margin 0
+      margin-top -1px
 .arrowed-right
   margin-right 6px
   position relative
@@ -123,8 +138,5 @@
     border-top 14px solid transparent
     border-left 7px solid rgba(255,255,255,.225)
     border-bottom 14px solid transparent
-
-
-
-
-
+.theme--light.v-input:not(.v-input--is-disabled) input, .theme--light.v-input:not(.v-input--is-disabled) textarea
+  color rgba(255,255,255,0.85)
