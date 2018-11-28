@@ -5,6 +5,7 @@
       </header>
       <div class="card">
         <div class="card-body">
+          <!--
           <div class="table-filter">
             <span class="label arrowed-right">筛选： </span>
             <div class="opt-bar">
@@ -13,41 +14,48 @@
               <label for="agentId">作业类型</label><input type="text" id="agent" class="input-basic filter-input" placeholder="作业类型">
             </div>
           </div>
-            <v-data-table
-              :headers="headers"
-              :loading="loading"
-              :pagination.sync="pagination"
-              :total-items="pagination.totalItems"
-              :items="pageData.result"
-              hide-actions
-             >
-              <v-progress-linear slot="progress" color="white" style="height:1px" indeterminate></v-progress-linear>
-              <template slot="items" slot-scope="props">
-                <td class="text-left">{{ props.item.agentName }}</td>
-                <td class="text-left">{{ props.item.jobName }}</td>
-                <td class="text-left">{{ props.item.execUser }}</td>
-                <td class="text-left">{{ props.item.command }}</td>
-                <td class="text-left">{{ props.item.pause }}</td>
-                <td class="text-left">{{ props.item.redo }}</td>
-                <td class="text-left">{{ props.item.jobType }}</td>
-                <td class="text-left">{{ props.item.cronExp }}</td>
-                <td class="justify-center layout px-0">
-                  <v-icon small class="mr-2" @click="editItem(props.item)">play_arrow</v-icon>
-                  <v-icon small class="mr-2" @click="editItem(props.item)">pause</v-icon>
-                  <v-icon small class="mr-2" @click="editItem(props.item)">edit</v-icon>
-                  <v-icon small class="mr-2" @click="deleteItem(props.item)">visibility</v-icon>
-                  <v-icon small class="mr-2" @click="deleteItem(props.item)">delete</v-icon>
-                </td>
-              </template>
-              <template slot="no-data">
-                <v-alert :value="true" color="error" icon="warning">
-                  Sorry, nothing to display here :(
-                </v-alert>
-              </template>
+          -->
+          <v-spacer></v-spacer>
+          <v-text-field
+            v-model="search"
+            append-icon="search"
+            label="Search"
+            single-line
+            hide-details>
+          </v-text-field>
+          <v-data-table
+            :search="search"
+            :headers="headers"
+            :loading="loading"
+            :pagination.sync="pagination"
+            :total-items="pagination.totalItems"
+            :items="pageData.result"
+            hide-actions>
+            <v-progress-linear slot="progress" color="white" style="height:1px" indeterminate></v-progress-linear>
+            <template slot="items" slot-scope="props">
+              <td class="text-left">{{ props.item.agentName }}</td>
+              <td class="text-left">{{ props.item.jobName }}</td>
+              <td class="text-left">{{ props.item.execUser }}</td>
+              <td class="text-left">{{ props.item.command }}</td>
+              <td class="text-left">{{ props.item.pause }}</td>
+              <td class="text-left">{{ props.item.redo }}</td>
+              <td class="text-left">{{ props.item.jobType }}</td>
+              <td class="text-left">{{ props.item.cronExp }}</td>
+              <td class="justify-center layout px-0">
+                <v-icon small class="mr-2" @click="editItem(props.item)">play_arrow</v-icon>
+                <v-icon small class="mr-2" @click="editItem(props.item)">pause</v-icon>
+                <v-icon small class="mr-2" @click="editItem(props.item)">edit</v-icon>
+                <v-icon small class="mr-2" @click="deleteItem(props.item)">visibility</v-icon>
+                <v-icon small class="mr-2" @click="deleteItem(props.item)">delete</v-icon>
+              </td>
+            </template>
+            <template slot="no-data">
+              <v-alert :value="true" color="error" icon="warning">
+                Sorry, nothing to display here :(
+              </v-alert>
+            </template>
           </v-data-table>
-          <div class="text-xs-center pt-2" v-if="!noData()">
-            <v-pagination v-model="pagination.page" :length="pagination.pages"></v-pagination>
-          </div>
+          <pager :pager="pagination" ></pager>
         </div>
       </div>
   </section>
@@ -64,6 +72,7 @@
       actions:{
         filter:false
       },
+      search:'',
       loading:false,
       pagination: {},
       title:'JOB LIST',
@@ -80,7 +89,8 @@
         { text: 'Actions', value: 'name', sortable: false }
       ],
       pageData:{},
-      postData:{}
+      postData:{},
+      pagerInfo:{}
   }),
 
   mounted () {
@@ -99,7 +109,7 @@
         setTimeout(() => {
           this.loading = false
         },1000)
-      },error=>{
+      },error=> {
         this.loading = false
       })
     },
@@ -111,6 +121,7 @@
     pagination: {
       deep: true,
       handler (data) {
+        console.log("parent....")
         if(!this.loading) {
           if(this.pagination.descending != null) {
             this.postData.orderBy = this.pagination.sortBy
@@ -122,7 +133,6 @@
         }
       }
     }
-
   },
 }
 
@@ -133,13 +143,11 @@
   margin-left: 10px;
   margin-bottom: 10px;
 }
-
 .opt-bar > label{
   display: inline-block;
   margin-right: 10px;
   margin-left: 10px;
 }
-
 .opt-bar > input{
   min-width: 8rem;
   max-width: 10rem;

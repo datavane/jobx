@@ -1,26 +1,26 @@
 <template>
 <nav>
     <ul class="pagination justify-content-center">
-          <li class="page-item pagination-first" :class="{'disabled':pageData.pageNo===1}">
-            <a class="page-link" @click="goPageNo(1)"></a>
+          <li class="page-item pagination-first" :class="{'disabled':pager.page===1}">
+            <a class="page-link" @click="pager.page=1"></a>
           </li>
-          <li class="page-item pagination-prev" :class="{'disabled':pageData.pageNo===1}">
-            <a class="page-link"  @click="goPageNo(pageData.pageNo-1)"></a>
+          <li class="page-item pagination-prev" :class="{'disabled':pager.page===1}">
+            <a class="page-link"  @click="pager.page-=1"></a>
           </li>
           <li class="page-item" v-for="index in preNo">
-            <a class="page-link" @click="goPageNo(index)">{{index}}</a>
+            <a class="page-link" @click="pager.page=index">{{index}}</a>
           </li>
           <li class="page-item active">
-            <a class="page-link">{{pageData.pageNo}}</a>
+            <a class="page-link">{{pager.page}}</a>
           </li>
           <li class="page-item" v-for="index in nextNo">
-            <a class="page-link" @click="goPageNo(index)">{{index}}</a>
+            <a class="page-link" @click="pager.page=index">{{index}}</a>
           </li>
-          <li class="page-item pagination-next" :class="{'disabled':pageData.pageNo===pageData.pageTotal}">
-            <a class="page-link" @click="goPageNo(pageData.pageNo+1)"></a>
+          <li class="page-item pagination-next" :class="{'disabled':pager.page===pager.pages}">
+            <a class="page-link" @click="pager.page+=1"></a>
           </li>
-          <li class="page-item pagination-last" :class="{'disabled':pageData.pageNo===pageData.pageTotal}">
-            <a class="page-link" @click="goPageNo(pageData.pageTotal)"></a>
+          <li class="page-item pagination-last" :class="{'disabled':pager.page===pager.pages}">
+            <a class="page-link" @click="pager.page=pager.pages"></a>
           </li>
       </ul>
   </nav>
@@ -28,7 +28,7 @@
 
 <script>
   export default {
-    props: ['pageData'],
+    props: ['pager'],
     data() {
       return {
         offset: 5,
@@ -36,37 +36,32 @@
         nextNo: []
       }
     },
-    methods:{
-       goPageNo(pageNo) {
-          this.$emit('goPageNo',pageNo)
-       },
-    },
-    watch:{
-      pageData:{
-    　　 immediate:true,
+    watch: {
+      pager: {
+        deep: true,
         handler:function(){
+           console.log("chind....")
           this.preNo = []
           let preStart = 1
-          if (this.pageData.pageNo > 1) {
-            if (this.pageData.pageNo - this.offset > 1) {
-              preStart = this.pageData.pageNo - this.offset
-              if (this.pageData.pageTotal - this.pageData.pageNo < this.offset) {
-                preStart -=
-                  this.offset - (this.pageData.pageTotal - this.pageData.pageNo)
+          if (this.pager.page > 1) {
+            if (this.pager.page - this.offset > 1) {
+              preStart = this.pager.page - this.offset
+              if (this.pager.pages - this.pager.page < this.offset) {
+                preStart -= this.offset - (this.pager.pages - this.pager.page)
               }
             }
-            for (let i = preStart; i < this.pageData.pageNo; i++) {
+            for (let i = preStart; i < this.pager.page; i++) {
               this.preNo.push(i)
             }
           }
           this.nextNo = []
-          if (this.pageData.pageNo < this.pageData.pageTotal) {
+          if (this.pager.page < this.pager.pages) {
             let nextLen = this.offset * 2 - this.preNo.length
             let nextEnd =
-              this.pageData.pageNo + nextLen > this.pageData.pageTotal
-                ? this.pageData.pageTotal
-                : this.pageData.pageNo + nextLen
-            for (let i = this.pageData.pageNo + 1; i <= nextEnd; i++) {
+              this.pager.page + nextLen > this.pager.pages
+                ? this.pager.pages
+                : this.pager.page + nextLen
+            for (let i = this.pager.page + 1; i <= nextEnd; i++) {
               this.nextNo.push(i)
             }
           }
@@ -75,7 +70,3 @@
     }
   }
 </script>
-
-<style scoped>
-
-</style>
