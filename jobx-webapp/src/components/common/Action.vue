@@ -1,6 +1,6 @@
 <template>
   <div class="actions">
-    <i class="actions__item zmdi zmdi-filter-list" data-table-action="search" @click="actions.search = !actions.search"></i>
+   <!-- <i class="actions__item zmdi zmdi-filter-list" data-table-action="search" @click="actions.search = !actions.search"></i>-->
     <i class="actions__item zmdi zmdi-print" data-table-action="print" @click="actions.print = true"></i>
     <i class="actions__item zmdi zmdi-fullscreen" data-table-action="fullscreen" @click="actions.fullscreen=true"></i>
     <i class="actions__item zmdi zmdi-download" data-table-toggle="dropdown" @click="actions.download=true"></i>

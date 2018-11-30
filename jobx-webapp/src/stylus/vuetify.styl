@@ -6,6 +6,7 @@
     color rgba(255,255,255,0.85)
     thead
       tr
+        //background rgba(0,0,0,.2)
         &:first-child
           border-bottom 1px solid rgba(255,255,255,.125)
         th
@@ -33,6 +34,9 @@
           text-overflow ellipsis
           word-break keep-all
           white-space nowrap
+      tr[active] 
+        background-color rgba(0,0,0,.2)
+          
   &.v-datatable
     .v-datatable__actions
       background-color rgba(0,0,0,0)

@@ -6,18 +6,45 @@
     </header>
     <div class="card">
       <div class="card-body">
-        <pagerSearch :search="search" v-if="actions.search"/>
+        <div class="pager-search">
+          <div class="data-table_option">
+            <button class="btn btn-light btn--icon-text" @click="refresh"><i class="zmdi zmdi-refresh"></i>刷新</button>
+            <button class="btn btn-light btn--icon-text" @click="pause(false)"><i class="zmdi zmdi-play-circle"></i>启用</button>
+            <button class="btn btn-light btn--icon-text" @click="pause(true)"><i class="zmdi zmdi-pause-circle"></i>托管</button>
+          </div>
+          <div class="dataTables_length" id="data-table_length">
+            <label>
+              <select name="data-table_length" aria-controls="data-table" class="" v-model="search.pageSize">
+                <option v-for="index in [15,30,50,100,-1]" :value="index" >{{index == -1 ? 'All':index}} Rows</option>
+              </select>
+            </label>
+          </div>
+          <div id="data-table_filter" class="dataTables_filter">
+            <label>Search:<input type="search" class="" v-model="search.word" placeholder="Search" aria-controls="data-table"></label>
+          </div>
+        </div>
+
         <v-data-table
           :search="search"
           :headers="headers"
           :loading="loading"
           :pagination.sync="pagination"
           :total-items="pagination.totalItems"
+          v-model="selected"
+          select-all
+          item-key="jobId"
           :items="pageData.result"
           hide-actions
-        >
+        > 
           <v-progress-linear slot="progress" color="white" style="height:1px" indeterminate></v-progress-linear>
           <template slot="items" slot-scope="props">
+            <td>
+              <v-checkbox
+                v-model="props.selected"
+                primary
+                hide-details
+              ></v-checkbox>
+            </td>
             <td class="text-left">{{ props.item.agentName }}</td>
             <td class="text-left">{{ props.item.jobName }}</td>
             <td class="text-left">
@@ -26,22 +53,16 @@
             <td class="text-left">{{ props.item.command }}</td>
             <td class="text-left">
               <span class="badge" :class="{'btn-info':props.item.pause,'btn-primary':!props.item.pause}">
-                {{ props.item.pause?'是':'否' }}
-              </span>
-            </td>
-            <td class="text-left">{{ props.item.redo }}</td>
-            <td class="text-left">
-              <span class="badge btn-dark">
-                {{props.item.jobType ==  0 ? '自动':'手动'}}
+                {{ props.item.pause?'就绪':'托管' }}
               </span>
             </td>
             <td class="text-left">{{ props.item.cronExp }}</td>
-            <td class="justify-center layout px-0">
-              <v-icon small class="mr-2" @click="execute(props.item.jobId)">play_arrow</v-icon>
-              <v-icon small class="mr-2" @click="pause(props.item.jobId)">pause</v-icon>
-              <v-icon small class="mr-2" @click="edit(props.item)">edit</v-icon>
-              <v-icon small class="mr-2" @click="detail(props.item.jobId)">visibility</v-icon>
-              <v-icon small class="mr-2" @click="remove(props.item.jobId)">delete</v-icon>
+            <td class="justify-center layout px-0 table-option-icon">
+              <i class="zmdi zmdi-play"  @click="execute(props.item.jobId)"></i>
+              <i class="zmdi zmdi-edit" @click="edit(props.item)"></i>
+              <i class="zmdi zmdi-eye" @click="detail(props.item.jobId)"></i>
+              <i class="zmdi zmdi-delete" v-if="props.item.pause" @click="remove(props.item.jobId)"></i>
+              <i class="zmdi zmdi-copy" @click="copy(props.item.jobId)"></i>
             </td>
           </template>
           <template slot="no-data">
@@ -78,18 +99,17 @@
         {text: '执行器', value: 'agent_name'},
         {text: '作业名称', value: 'job_name'},
         {text: '执行身份', value: 'exec_user'},
-        {text: '执行命令', value: 'command', sortable: false},
+        {text: '执行命令', value: 'command'},
         {text: '托管状态', value: 'pause', sortable: false},
-        {text: '重跑次数', value: 'redo', sortable: false},
-        {text: '调度方式', value: 'job_type', sortable: false},
         {text: 'CRONEXP', value: 'cron_exp', sortable: false},
-        {text: 'Actions', value: 'name', sortable: false}
+        {text: '操作', value: 'name', sortable: false}
       ],
       search: {},
       pageData: {},
       postData: {},
       loading: false,
-      pagination: {}
+      pagination: {},
+      selected: [],
     }),
 
     mounted () {
@@ -222,6 +242,19 @@
             }
           })
         })
+      },
+
+      refresh(){
+        if(!this.checkSelect()) return
+
+
+        
+      },
+      checkSelect() {
+        let _selected = !this.selected || !this.selected.length
+        if(_selected) {
+
+        }
       }
     },
     watch: {
@@ -268,8 +301,32 @@
             data.download = false
           }
         }
+      },
+      selected:{
+        deep: true,
+        handler (data) {
+          console.log(data)
+        }
       }
     },
   }
 </script>
+<style lang="stylus">
+.data-table_option
+  float left
+  position relative
+  margin-right 10px
+  .btn
+    margin-right 2px
+.table-option-icon
+  margin-right 10px
+  .zmdi
+    font-size 15px
+    height 48px
+    line-height 48px
+    padding-left 10px
+    color rgba(255,255,255,0.85)
+
+
+</style>
 
