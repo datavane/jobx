@@ -20,7 +20,6 @@
  */
 package com.jobxhub.rpc.mina;
 
-import lombok.extern.slf4j.Slf4j;
 import org.apache.mina.core.future.ConnectFuture;
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
@@ -33,7 +32,6 @@ import com.jobxhub.rpc.RpcFuture;
 import com.jobxhub.rpc.support.AbstractClient;
 
 
-@Slf4j
 public class MinaClient extends AbstractClient {
 
     @Override

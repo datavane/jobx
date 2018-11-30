@@ -20,14 +20,12 @@
  */
 package com.jobxhub.rpc.mina;
 
-import lombok.extern.slf4j.Slf4j;
 import org.apache.mina.core.service.IoHandlerAdapter;
 import org.apache.mina.core.session.IoSession;
 import com.jobxhub.common.job.Request;
 import com.jobxhub.common.job.Response;
 import com.jobxhub.rpc.ServerHandler;
 
-@Slf4j
 public class MinaServerHandler extends IoHandlerAdapter {
 
     private ServerHandler handler;

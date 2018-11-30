@@ -20,7 +20,6 @@
  */
 package com.jobxhub.rpc.mina;
 
-import lombok.extern.slf4j.Slf4j;
 import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.*;
@@ -29,7 +28,6 @@ import com.jobxhub.common.ext.ExtensionLoader;
 import com.jobxhub.common.serialize.Serializer;
 
 
-@Slf4j
 public class MinaCodecAdapter implements ProtocolCodecFactory {
 
     private Serializer serializer = ExtensionLoader.load(Serializer.class);

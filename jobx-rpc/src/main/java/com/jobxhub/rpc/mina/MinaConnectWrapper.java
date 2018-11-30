@@ -21,13 +21,11 @@
 package com.jobxhub.rpc.mina;
 
 import com.jobxhub.rpc.support.ChannelWrapper;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.mina.core.future.ConnectFuture;
 import org.apache.mina.core.session.IoSession;
 /**
  * @author benjobs
  */
-@Slf4j
 public class MinaConnectWrapper implements ChannelWrapper {
 
     private ConnectFuture connectFuture;
