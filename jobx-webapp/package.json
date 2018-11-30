@@ -89,7 +89,6 @@
     "uglifyjs-webpack-plugin": "^1.1.1",
     "url-loader": "^1.0.1",
     "vmap": "^2.0.0",
-    "vue-easytable": "^1.7.1",
     "vue-loader": "^13.3.0",
     "vue-style-loader": "^3.1.2",
     "vue-template-compiler": "^2.5.2",

@@ -48,7 +48,6 @@ import 'select2/dist/js/select2.full.js'
 import '../static/css/select2.css'
 
 
-
 //其他js依赖包
 import 'bootstrap/dist/js/bootstrap.min.js'
 import 'material-design-iconic-font/dist/css/material-design-iconic-font.css'

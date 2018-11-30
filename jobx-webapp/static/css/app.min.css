@@ -4033,7 +4033,8 @@ tbody.collapse.show {
   display: -ms-flexbox;
   display: flex;
   padding-left: 0;
-  border-radius: 2px
+  border-radius: 2px;
+  margin-top: 40px;
 }
 
 .page-item:first-child .page-link {
@@ -13815,7 +13816,7 @@ span.flatpickr-weekday {
   margin-top: 30px
 }
 
-.swal2-modal .swal2-buttonswrapper .btn {
+.swal2-actions .btn {
   margin: 0 3px;
   box-shadow: none !important
 }
@@ -14183,4 +14184,8 @@ new definde
 
 .filter-itemx:after::hover {
   color: rgba(255, 255, 255, 0.85);
+}
+
+.pager-search {
+  margin-bottom: 40px;
 }
