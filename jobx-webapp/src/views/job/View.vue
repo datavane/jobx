@@ -9,8 +9,8 @@
         <div class="pager-search">
           <div class="data-table_option">
             <button class="btn btn-light btn--icon-text" @click="refresh"><i class="zmdi zmdi-refresh"></i>刷新</button>
-            <button class="btn btn-light btn--icon-text" @click="pause(false)"><i class="zmdi zmdi-play-circle"></i>启用</button>
-            <button class="btn btn-light btn--icon-text" @click="pause(true)"><i class="zmdi zmdi-pause-circle"></i>托管</button>
+            <button class="btn btn--icon-text" :class="{'btn-light cursor':selected.length>0,'btn-dark no_cursor':selected.length == 0}" @click="pause(false)"><i class="zmdi zmdi-play-circle"></i>启用</button>
+            <button class="btn btn--icon-text" :class="{'btn-light cursor':selected.length>0,'btn-dark no_cursor':selected.length == 0}" @click="pause(true)"><i class="zmdi zmdi-pause-circle"></i>托管</button>
           </div>
           <div class="dataTables_length" id="data-table_length">
             <label>
@@ -35,7 +35,51 @@
           item-key="jobId"
           :items="pageData.result"
           hide-actions
-        > 
+        >
+          <template slot="headerCell" slot-scope="props">
+            {{ props.header.text }}
+            <div class="dropdown actions__item hidden-sm-down" data-toggle="tooltip" data-title="Severity" data-original-title="" title="">
+              <i class="zmdi zmdi-filter-list" data-toggle="dropdown" aria-expanded="false"></i>
+              <div class="dropdown-menu dropdown-menu-right dropdown-menu--active" x-placement="bottom-end">
+                <div class="dropdown-item">
+                  <label class="custom-control custom-radio">
+                    <input name="issue-severity" type="radio" class="custom-control-input" checked="">
+                    <span class="custom-control-indicator"></span>
+                    <span class="custom-control-description">All</span>
+                  </label>
+                </div>
+                <div class="dropdown-item">
+                  <label class="custom-control custom-radio">
+                    <input name="issue-severity" type="radio" class="custom-control-input">
+                    <span class="custom-control-indicator"></span>
+                    <span class="custom-control-description">Severe</span>
+                  </label>
+                </div>
+                <div class="dropdown-item">
+                  <label class="custom-control custom-radio">
+                    <input name="issue-severity" type="radio" class="custom-control-input">
+                    <span class="custom-control-indicator"></span>
+                    <span class="custom-control-description">High</span>
+                  </label>
+                </div>
+                <div class="dropdown-item">
+                  <label class="custom-control custom-radio">
+                    <input name="issue-severity" type="radio" class="custom-control-input">
+                    <span class="custom-control-indicator"></span>
+                    <span class="custom-control-description">Medium</span>
+                  </label>
+                </div>
+                <div class="dropdown-item">
+                  <label class="custom-control custom-radio">
+                    <input name="issue-severity" type="radio" class="custom-control-input">
+                    <span class="custom-control-indicator"></span>
+                    <span class="custom-control-description">Low</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </template>
+
           <v-progress-linear slot="progress" color="white" style="height:1px" indeterminate></v-progress-linear>
           <template slot="items" slot-scope="props">
             <td>
@@ -77,9 +121,9 @@
   </section>
 </template>
 <script type="text/ecmascript-6">
-  import pager from '@/components/common/Pager'
-  import pagerSearch from '@/components/common/PagerSearch'
-  import action from '@/components/common/Action'
+  import pager from '@/components/Pager'
+  import pagerSearch from '@/components/PagerSearch'
+  import action from '@/components/Action'
 
   export default {
     components: {
@@ -173,6 +217,7 @@
       },
 
       pause (id) {
+        if(this.selected.length == 0) return
         let $this = this
         $this.$swal({
           title: '',
@@ -244,18 +289,10 @@
         })
       },
 
-      refresh(){
-        if(!this.checkSelect()) return
-
-
-        
-      },
-      checkSelect() {
-        let _selected = !this.selected || !this.selected.length
-        if(_selected) {
-
-        }
+      refresh() {
+        this.getPageData()
       }
+
     },
     watch: {
       pagination: {
@@ -312,12 +349,18 @@
   }
 </script>
 <style lang="stylus">
+
+
 .data-table_option
   float left
   position relative
   margin-right 10px
   .btn
     margin-right 2px
+  .cursor
+    cursor pointer
+  .no_cursor
+    cursor default
 .table-option-icon
   margin-right 10px
   .zmdi

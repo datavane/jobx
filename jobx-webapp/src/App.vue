@@ -8,8 +8,8 @@
 
 <script type="text/ecmascript-6">
   import {moment} from 'moment'
-  import Header from '@/components/common/Header'
-  import Navigation from '@/components/common/Navigation'
+  import Header from '@/components/Header'
+  import Navigation from '@/components/Navigation'
 
   export default {
     components: {

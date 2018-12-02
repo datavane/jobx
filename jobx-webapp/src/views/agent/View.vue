@@ -29,8 +29,7 @@
   </section>
 </template>
 <script type="text/ecmascript-6">
-  import dataTable from "@/components/common/DataTable"
-  import select2 from '@/components/common/Select2'
+  import select2 from '@/components/Select2'
   export default {
     components: {
       dataTable,

@@ -6,31 +6,31 @@ export default [
   {
     name: 'login',
     path: '/login',
-    component: () => import('@/components/login/Login')
+    component: () => import('@/views/login/Login')
   },
   {
     name: 'dashboard',
     path: '/dashboard',
-    component: () => import('@/components/dashboard/Dashboard')
+    component: () => import('@/views/dashboard/Dashboard')
   },
   {
     name: 'agent',
     path: '/agent',
-    component: () => import('@/components/agent/View'),
+    component: () => import('@/views/agent/View'),
     children: [
       {
         path: '/agent/add',
-        component: () => import('@/components/agent/Add')
+        component: () => import('@/views/agent/Add')
       }]
   },
   {
     name: 'group',
     path: '/group',
-    component: () => import('@/components/group/View'),
+    component: () => import('@/views/group/View'),
     children: [
       {
         path: '/group/add',
-        component: () => import('@/components/group/Add')
+        component: () => import('@/views/group/Add')
       }]
   },
   {
@@ -40,17 +40,17 @@ export default [
   {
     name:'job',
     path: '/job/view',
-    component: () => import('@/components/job/View')
+    component: () => import('@/views/job/View')
   },
   {
     name:'job',
     path: '/job/edit',
-    component: () => import('@/components/job/Edit')
+    component: () => import('@/views/job/Edit')
   },
   {
     name:'job',
     path: '/job/add',
-    component: () => import('@/components/job/Add')
+    component: () => import('@/views/job/Add')
   },
   {
     path:'/profile',
@@ -59,11 +59,11 @@ export default [
   {
     name:'profile',
     path: '/profile/view',
-    component: () => import('@/components/profile/View')
+    component: () => import('@/views/profile/View')
   },
   {
     name:'profile',
     path: '/profile/edit',
-    component: () => import('@/components/profile/Edit')
+    component: () => import('@/views/profile/Edit')
   }
 ]

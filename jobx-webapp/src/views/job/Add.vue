@@ -36,8 +36,8 @@
   </section>
 </template>
 <script type="application/ecmascript">
-  import action from '@/components/common/Action'
-  import select2 from '@/components/common/Select2'
+  import action from '@/components/Action'
+  import select2 from '@/components/Select2'
   export default {
     components: {
       action,select2

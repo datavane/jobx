@@ -14,11 +14,6 @@ import VueSweetalert2 from 'vue-sweetalert2'
 import flatPickr from 'vue-flatpickr-component'
 import 'flatpickr/dist/flatpickr.css'
 
-//Ant
-//import Ant from 'ant-design-vue'
-//import 'ant-design-vue/dist/antd.css'
-//import '../static/css/ant.scss'
-//Vue.use(Ant)
 
 //Vuetify
 import Vuetify from 'vuetify'
@@ -35,18 +30,12 @@ Vue.use(Vuetify, {
   }
 })
 
-//MuseUI
-//import MuseUI from 'muse-ui'
-//Vue.use(MuseUI)
-//import 'muse-ui/dist/muse-ui.css'
-//import '../static/css/muse.scss'
 
 //select2
 
 import 'select2/dist/css/select2.css'
 import 'select2/dist/js/select2.full.js'
 import '../static/css/select2.css'
-
 
 //其他js依赖包
 import 'bootstrap/dist/js/bootstrap.min.js'
@@ -58,7 +47,6 @@ import 'jquery-scroll-lock'
 import 'fullcalendar'
 import 'popper.js'
 import 'autosize'
-
 
 Vue.config.productionTip = false
 Vue.prototype.$storage = storage
