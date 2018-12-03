@@ -83,30 +83,9 @@ if [ ! -f "${WORKDIR}/${APP_TAR_NAME}" ] ; then
 fi
 
 [ -d "${DEPLOY_PATH}" ] && rm -rf ${DEPLOY_PATH}/* || mkdir -p ${DEPLOY_PATH}
-
 #untar..
 tar -xzvf ${WORKDIR}/${APP_TAR_NAME} && chmod +x ${DEPLOY_PATH}/bin/* >/dev/null 2>&1
-
-#read user config...
-config_registry="`awk -F '=' '{if($1~/jobx.registry/) print}' ${CONFIG_TEMPLATE}`"
-config_password="`awk -F '=' '{if($1~/jobx.password/) print}' ${CONFIG_TEMPLATE}`"
-config_port="`awk -F '=' '{if($1~/jobx.port/) print}' ${CONFIG_TEMPLATE}`"
-
-
-if [ ${darwin} ] ; then
-    config_registry=$(echo ${config_registry}|sed 's/\//\\\//g'|sed 's/\=/\\=/g'|sed 's/&/\\&/g')
-    sed -i "" "s/^jobx\.registry.*$/${config_registry}/g" ${CONFIG_PATH}
-    sed -i "" "s/^jobx\.password.*$/${config_password}/g" ${CONFIG_PATH}
-    sed -i "" "s/^jobx\.port.*$/${config_port}/g" ${CONFIG_PATH}
-else
-    config_registry=$(echo ${config_registry}|sed -r 's/\//\\\//g'|sed -r 's/\=/\\=/g'|sed -r 's/&/\\&/g')
-    sed -i "s/^jobx\.password.*$/${config_password}/g" ${CONFIG_PATH}
-    sed -i "s/^jobx\.port.*$/${config_port}/g" ${CONFIG_PATH}
-    sed -i "s/^jobx\.registry.*$/${config_registry}/g" ${CONFIG_PATH}
-fi
-
 EXECUTABLE=${DEPLOY_PATH}/bin/startup.sh
-
 # Check that target executable exists
 if $os400; then
   # -x will Only work on the os400 if the files are:
@@ -122,5 +101,4 @@ else
     exit 1
   fi
 fi
-
 exec "$EXECUTABLE" "$@"
