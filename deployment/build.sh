@@ -191,7 +191,7 @@ fi
 #gcc compile executor.c
 exec_retval=0
 GCCCMD="`which gcc`" >/dev/null 2>&1
-if [ $? eq 1 ];then
+if [ $? -eq 1 ];then
     exec_retval=-1
 else
     echo_g "compile executor.c starting..."
