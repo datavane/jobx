@@ -42,7 +42,7 @@ public class PageBean<T> implements Serializable {
 
     // -- 分页参数 --//
     protected Integer pageNo = 1;
-    protected Integer pageSize = 15;
+    protected Integer pageSize = 10;
     private Integer offset;
     protected String orderBy = null;
     protected String order = null;

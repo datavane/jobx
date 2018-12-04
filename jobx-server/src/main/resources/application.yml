@@ -2,6 +2,13 @@
 spring:
   application:
     name: jobx
+  redis:
+    database: 4
+    host: 172.17.112.163
+    port: 6379
+    password: null
+  session:
+    store-type: redis
 server:
   port: 9090
 management:

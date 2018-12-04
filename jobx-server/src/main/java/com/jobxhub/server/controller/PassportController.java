@@ -23,15 +23,18 @@ package com.jobxhub.server.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.jobxhub.common.Constants;
+import com.jobxhub.common.util.CommonUtils;
 import com.jobxhub.common.util.DigestUtils;
 import com.jobxhub.service.api.UserService;
 import com.jobxhub.service.model.User;
 import com.jobxhub.service.vo.RestResult;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 
@@ -39,16 +42,16 @@ import static com.jobxhub.common.util.WebUtils.getWebUrlPath;
 
 @RestController
 @RequestMapping("/passport")
+@Slf4j
 public class PassportController {
 
     @Reference
     private UserService userService;
 
     @PostMapping("/login")
-    public RestResult login(HttpServletRequest request, String userName, String password) throws IOException {
+    public RestResult login(HttpServletRequest request, HttpSession session, String userName, String password) throws IOException {
 
         User user = userService.login(userName, password);
-
         if (user == null) {
             return RestResult.rest(500);
         }
@@ -69,12 +72,17 @@ public class PassportController {
             user.setHeaderPath(getWebUrlPath(request) + "/upload/" + name);
         }
 
-        request.getSession().setAttribute(Constants.PARAM_LOGIN_USER_KEY, user);
-
-        user.setPassword(null);
-        user.setSalt(null);
-        return RestResult.ok(user);
-
+        String xsrf = (String) session.getAttribute(Constants.PARAM_XSRF_NAME_KEY);
+        if (xsrf != null) {
+            session.removeAttribute(xsrf);
+            session.removeAttribute(Constants.PARAM_XSRF_NAME_KEY);
+        }
+        xsrf = CommonUtils.uuid();
+        session.setAttribute(Constants.PARAM_XSRF_NAME_KEY, xsrf);
+        //登陆成功了则生成csrf...
+        log.info("[JobX]login seccussful,generate csrf:{}", xsrf);
+        session.setAttribute(xsrf, user);
+        return RestResult.ok().put("token", xsrf);
     }
 
 }
