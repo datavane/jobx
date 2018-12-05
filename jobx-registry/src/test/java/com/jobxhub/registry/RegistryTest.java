@@ -14,7 +14,7 @@ public class RegistryTest {
 
     private ZookeeperClient zookeeperClient;
 
-    String url = "zookeeper://127.0.0.1:2181";
+    String url = "zookeeper://127.0.0.1:2181?backup=127.0.0.1:2182,127.0.0.1:2182";
 
  //   @Before
     public void init() {
