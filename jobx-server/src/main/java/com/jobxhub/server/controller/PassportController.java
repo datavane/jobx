@@ -88,12 +88,7 @@ public class PassportController {
     }
 
     @PostMapping("/logout")
-    public RestResult logout(HttpSession session) {
-        String xsrf = (String) session.getAttribute(Constants.PARAM_XSRF_NAME_KEY);
-        if (xsrf != null) {
-            session.removeAttribute(xsrf);
-        }
-        session.removeAttribute(Constants.PARAM_XSRF_NAME_KEY);
+    public RestResult logout() {
         SessionHolder.invalidSession();
         return RestResult.ok();
     }

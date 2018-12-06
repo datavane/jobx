@@ -15,6 +15,12 @@ public class SessionHolder {
     }
 
     public static void invalidSession() {
+        HttpSession session = localSession.get();
+        String xsrf = (String) session.getAttribute(Constants.PARAM_XSRF_NAME_KEY);
+        if (xsrf != null) {
+            session.removeAttribute(xsrf);
+        }
+        session.removeAttribute(Constants.PARAM_XSRF_NAME_KEY);
         localSession.remove();
     }
 
