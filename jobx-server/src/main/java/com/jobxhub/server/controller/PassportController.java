@@ -25,6 +25,7 @@ import com.alibaba.dubbo.config.annotation.Reference;
 import com.jobxhub.common.Constants;
 import com.jobxhub.common.util.CommonUtils;
 import com.jobxhub.common.util.DigestUtils;
+import com.jobxhub.server.util.SessionHolder;
 import com.jobxhub.service.api.UserService;
 import com.jobxhub.service.model.User;
 import com.jobxhub.service.vo.RestResult;
@@ -82,7 +83,19 @@ public class PassportController {
         //登陆成功了则生成csrf...
         log.info("[JobX]login seccussful,generate csrf:{}", xsrf);
         session.setAttribute(xsrf, user);
+        SessionHolder.holdSession(session);
         return RestResult.ok().put("token", xsrf);
+    }
+
+    @PostMapping("/logout")
+    public RestResult logout(HttpSession session) {
+        String xsrf = (String) session.getAttribute(Constants.PARAM_XSRF_NAME_KEY);
+        if (xsrf != null) {
+            session.removeAttribute(xsrf);
+        }
+        session.removeAttribute(Constants.PARAM_XSRF_NAME_KEY);
+        SessionHolder.invalidSession();
+        return RestResult.ok();
     }
 
 }

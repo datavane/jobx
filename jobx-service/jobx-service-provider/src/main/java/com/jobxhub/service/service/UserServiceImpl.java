@@ -139,16 +139,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<String> getExecUser(Long userId) {
-        UserEntity user = userDao.getById(userId);
-        if (user.getRoleId() == 999L) {
-            return configService.getExecUser();
-        } else {
-            String execUser = userDao.getExecUser(userId);
-            if (CommonUtils.notEmpty(execUser)) {
-                return Arrays.asList(execUser.split(","));
-            }
-        }
-        return Collections.EMPTY_LIST;
+        return configService.getExecUser();
     }
 
     private User getById(Long id) {
