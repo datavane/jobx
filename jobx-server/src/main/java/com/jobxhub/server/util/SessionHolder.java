@@ -24,7 +24,7 @@ public class SessionHolder {
         localSession.remove();
     }
 
-    public static User getUser(){
+    public static User getUser() {
         if (localSession.get() == null) {
             return null;
         }
