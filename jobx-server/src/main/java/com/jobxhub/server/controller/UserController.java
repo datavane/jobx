@@ -21,7 +21,7 @@
 package com.jobxhub.server.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.jobxhub.server.util.SessionHolder;
+import com.jobxhub.server.util.SessionUtils;
 import com.jobxhub.service.api.UserService;
 import com.jobxhub.service.model.User;
 import com.jobxhub.service.vo.RestResult;
@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 
@@ -42,8 +43,8 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/info")
-    public Object getInfo() {
-        User user = SessionHolder.getUser();
+    public Object getInfo(HttpSession session) {
+        User user = SessionUtils.getUser(session);
         if (user != null) {
             return RestResult.ok(200)
                     .put("name",user.getUserName())
@@ -53,8 +54,8 @@ public class UserController {
     }
 
     @PostMapping("/execUser")
-    public RestResult execUser() {
-        List<String> execUser = userService.getExecUser(SessionHolder.getUser().getUserId());
+    public RestResult execUser(HttpSession session) {
+        List<String> execUser = userService.getExecUser(SessionUtils.getUser(session).getUserId());
         return RestResult.ok(execUser);
     }
 
