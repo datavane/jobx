@@ -109,6 +109,25 @@ public class JobServiceImpl implements JobService {
         }
     }
 
+    @Override
+    public void addDependency(Job job) {
+        JobEntity jobEntity = Job.transferEntity.apply(job);
+        jobEntity.setUpdateTime(new Date());
+        jobEntity.setCreateType(Constants.CreateType.FLOW.getValue());
+        jobEntity.setJobType(Constants.JobType.DEPENDENCY.getCode());
+        jobDao.addDependency(jobEntity);
+        job.setJobId(jobEntity.getJobId());
+    }
+
+    @Override
+    public List<Job> getJobByUser(Long userId,Integer createType) {
+        List<JobEntity> jobs = jobDao.getJobByUser(userId,createType);
+        if (CommonUtils.notEmpty(jobs)) {
+            return Lists.transform(jobs, Job.transferModel);
+        }
+        return Collections.EMPTY_LIST;
+    }
+
     public Job getById(Long id) {
         JobEntity job = jobDao.getById(id);
         return Job.transferModel.apply(job);
@@ -199,6 +218,7 @@ public class JobServiceImpl implements JobService {
         }
         return Collections.EMPTY_LIST;
     }
+
 
     public PageBean<Job> search(HttpSession session, PageBean pageBean, Long agentId,String jobName) {
         Job job = new Job();

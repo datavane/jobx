@@ -75,6 +75,14 @@
         where j.agent_id = #{agentId}
     </select>
 
+    <select id="getJobByUser" resultMap="jobEntity">
+        select
+        <include refid="query_Job"/>
+        from  t_job as j
+        where j.user_id=#{userId}
+        and j.create_type=#{createType}
+    </select>
+
     <select id="getScheduleJob" resultMap="jobEntity">
         select
         <include refid="query_Job"/>
@@ -153,6 +161,29 @@
             and j.job_id <![CDATA[ <>  ]]>#{jobId}
         </if>
     </select>
+
+    <insert id="addDependency" parameterType="com.jobxhub.service.entity.JobEntity" useGeneratedKeys="true" keyProperty="jobId">
+        insert into t_job (
+            agent_id,
+            user_id,
+            job_type,
+            job_name,
+            command,
+            success_exit,
+            create_type,
+            exec_user
+        ) values (
+            #{agentId},
+            #{userId},
+            #{jobType},
+            #{jobName},
+            #{command},
+            #{successExit},
+            #{createType},
+            #{execUser}
+        )
+    </insert>
+
 
     <insert id="save" parameterType="com.jobxhub.service.entity.JobEntity" useGeneratedKeys="true" keyProperty="jobId">
         insert into t_job (

@@ -432,6 +432,7 @@ public class Constants {
     }
 
     public enum JobType implements Serializable {
+        DEPENDENCY(-1,"依赖"),
         SIMPLE(0x0, "简单作业"),
         FLOW(0x1, "工作流");
 

@@ -45,6 +45,8 @@ public interface JobDao {
 
     void save(JobEntity job);
 
+    void addDependency(JobEntity job);
+
     void update(JobEntity job);
 
     void delete(Long id);
@@ -52,4 +54,8 @@ public interface JobDao {
     void updateToken(@Param("jobId") Long jobId,@Param("token") String token);
 
     void pause(@Param("jobId") Long jobId,@Param("pause") Boolean pause);
+
+    List<JobEntity> getDependencyByUser(@Param("userId")Long userId);
+
+    List<JobEntity> getJobByUser(@Param("userId")Long userId,@Param("createType")Integer createType);
 }

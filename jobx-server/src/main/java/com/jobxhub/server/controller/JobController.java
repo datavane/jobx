@@ -21,13 +21,19 @@
 package com.jobxhub.server.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.jobxhub.common.Constants;
+import com.jobxhub.server.util.SessionUtils;
 import com.jobxhub.service.api.JobService;
 import com.jobxhub.service.model.Job;
+import com.jobxhub.service.model.User;
 import com.jobxhub.service.vo.PageBean;
 import com.jobxhub.service.vo.RestResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpSession;
+import java.util.List;
 
 
 @RestController
@@ -43,5 +49,17 @@ public class JobController {
         return RestResult.rest(pager);
     }
 
+    @PostMapping("/getJob")
+    public RestResult getJob(HttpSession session,Integer createType) {
+        User user = SessionUtils.getUser(session);
+        List<Job> jobList = jobService.getJobByUser(user.getUserId(),createType);
+        return RestResult.ok(jobList);
+    }
+
+    @PostMapping("/addDependency")
+    public RestResult addDependency(Job job) {
+        jobService.addDependency(job);
+        return RestResult.ok(job);
+    }
 
 }
