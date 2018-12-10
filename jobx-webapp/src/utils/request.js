@@ -1,8 +1,8 @@
 import axios from 'axios'
 import qs from 'qs'
-import { Message, MessageBox } from 'element-ui'
+import {Message, MessageBox} from 'element-ui'
 import store from '../store'
-import { getToken } from '@/utils/auth'
+import {getToken} from '@/utils/auth'
 
 // 创建axios实例
 
@@ -14,7 +14,7 @@ const http = axios.create({
 })
 
 // request拦截器
-http.interceptors.request.use( config => {
+http.interceptors.request.use(config => {
     config.headers = {
       'X-Requested-With': 'XMLHttpRequest',
       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -40,18 +40,18 @@ http.interceptors.response.use(
      */
     const res = response.data
     if (res.code !== 200) {
-     /* Message({
-        message: res.message,
-        type: 'error',
-        duration: 5 * 1000
-      })*/
-     if (res.code == 500) {
-       Message({
-         message: '用户名密码错误',
+      /* Message({
+         message: res.message,
          type: 'error',
          duration: 5 * 1000
-       })
-     }
+       })*/
+      if (res.code == 500) {
+        Message({
+          message: '用户名密码错误',
+          type: 'error',
+          duration: 5 * 1000
+        })
+      }
       // 50008:非法的token; 50012:其他客户端登录了;  50014:Token 过期了;
       if (res.code === 508 || res.code === 50012 || res.code === 50014) {
         MessageBox.confirm(
@@ -85,18 +85,17 @@ http.interceptors.response.use(
 )
 
 export default {
-
   get(url, data = {}) {
-    return http.get(url,{params: data})
+    return http.get(url, {params: data})
   },
   post(url, data = {}) {
-    return http.post(url,qs.stringify(data) )
+    return http.post(url, qs.stringify(data))
   },
   patch(url, data = {}) {
-    return http.post(url,data)
+    return http.post(url, data)
   },
   put(url, data = {}) {
-    return http.put(url,data)
+    return http.put(url, data)
   }
 
 }
