@@ -9,7 +9,7 @@ export function login(userName, password) {
 }
 
 export function getInfo() {
-  return request.post('/user/info',{})
+  return request.post('/user/info')
 }
 
 export function logout() {
