@@ -43,7 +43,7 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/info")
-    public Object getInfo(HttpSession session) {
+    public RestResult getInfo(HttpSession session) {
         User user = SessionUtils.getUser(session);
         if (user != null) {
             return RestResult.ok(200)
