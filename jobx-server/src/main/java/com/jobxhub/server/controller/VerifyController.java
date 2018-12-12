@@ -49,7 +49,7 @@ public class VerifyController {
             for (Date date : dates) {
                 list.add(DateUtils.parseStringFromDate(date,DateUtils.format));
             }
-            return RestResult.ok().setBody(list);
+            return RestResult.ok(list);
         } catch (ParseException e) {
             e.printStackTrace();
             return RestResult.rest(412).setBody(e.getLocalizedMessage());
