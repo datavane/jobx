@@ -13,6 +13,24 @@ export function validateURL(textval) {
   return urlregex.test(textval)
 }
 
+/* 合法钉钉机器人URL*/
+export function validateDingDing(textval) {
+  const urlregex = /^https\\:\/\/oapi\.dingtalk\.com\/robot\/send\\?access_token=[a-z0-9]{64}$/
+  return urlregex.test(textval)
+}
+
+/* 邮箱*/
+export function validateEmail(textval) {
+  const urlregex = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/
+  return urlregex.test(textval)
+}
+
+/* 手机号*/
+export function validatePhone(textval) {
+  const urlregex = /^1(3|4|5|7|8)\d{9}$/
+  return urlregex.test(textval)
+}
+
 /* 小写字母*/
 export function validateLowerCase(str) {
   const reg = /^[a-z]+$/

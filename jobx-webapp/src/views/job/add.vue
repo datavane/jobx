@@ -126,8 +126,8 @@
           </div>
         </el-form-item>
 
-        <el-form-item :label="$t('job.successExit')"  v-if="form.job.jobType == 0">
-          <el-input :placeholder="$t('job.successExit')" v-model="form.job.successExit" clearable class="input-item"/>
+        <el-form-item :label="$t('job.successExit')"  v-if="form.job.jobType == 0" prop="successExit">
+          <el-input :placeholder="$t('job.successExit')" v-model.number="form.job.successExit" clearable class="input-item"/>
         </el-form-item>
 
         <el-form-item :label="$t('job.alarm')">
@@ -141,29 +141,29 @@
         </el-form-item>
 
         <!--告警方式-->
-        <div v-show="form.job.alarm ==1">
-          <el-form-item :label="$t('job.alarmType')" >
+        <div v-show="form.job.alarm==1">
+          <el-form-item :label="$t('job.alarmType')" prop="alarmType">
             <el-select v-model="form.job.alarmType" :placeholder="$t('job.alarmType')" clearable multiple class="input-item">
               <el-option v-for="item in control.alarmType" :key="item" :label="item.name" :value="item.id"/>
             </el-select>
           </el-form-item>
 
-          <el-form-item :label="$t('job.dingTask')" v-show="form.job.alarmType.indexOf(1)>-1">
+          <el-form-item :label="$t('job.dingTask')" v-show="form.job.alarmType.indexOf(1)>-1" prop="alarmDingDing">
             <el-input :placeholder="$t('job.dingTask')" v-model="form.job.dingTask" clearable class="input-item"/>
           </el-form-item>
 
-          <el-form-item :label="$t('job.atUser')" v-show="form.job.alarmType.indexOf(1)>-1">
+          <el-form-item :label="$t('job.atUser')" v-show="form.job.alarmType.indexOf(1)>-1" prop="dingTaskAtUser">
             <el-input :placeholder="$t('job.atUser')" v-model="form.job.dingTaskAtUser" clearable class="input-item"/>
           </el-form-item>
 
-          <el-form-item :label="$t('job.email')" v-show="form.job.alarmType.indexOf(2)>-1">
+          <el-form-item :label="$t('job.email')" v-show="form.job.alarmType.indexOf(2)>-1" prop="alarmEmail">
             <el-input :placeholder="$t('job.email')" v-model="form.job.email" clearable class="input-item"/>
           </el-form-item>
 
-          <el-form-item :label="$t('job.sms')" v-show="form.job.alarmType.indexOf(3)>-1">
+          <el-form-item :label="$t('job.sms')" v-show="form.job.alarmType.indexOf(3)>-1" prop="alarmSms">
             <el-input :placeholder="$t('job.sms')" v-model="form.job.sms" clearable class="input-item"/>
           </el-form-item>
-          <el-form-item :label="$t('job.smsTemplate')" v-show="form.job.alarmType.indexOf(3)>-1">
+          <el-form-item :label="$t('job.smsTemplate')" v-show="form.job.alarmType.indexOf(3)>-1" prop="alarmSmsTemplate">
             <el-input :placeholder="$t('job.smsTemplate')" v-model="form.job.smsTemplate" clearable class="input-item"/>
           </el-form-item>
         </div>
@@ -232,7 +232,7 @@
           </el-form-item>
 
           <el-form-item :label="$t('job.successExit')">
-            <el-input :placeholder="$t('job.successExit')" v-model="form.dependency.successExit" clearable class="input-item"/>
+            <el-input :placeholder="$t('job.successExit')" v-model.number="form.dependency.successExit" clearable class="input-item"/>
           </el-form-item>
 
         </el-form>
@@ -255,6 +255,7 @@
   import {allAgent} from '@/api/agent'
   import {execUser} from '@/api/user'
   import {addJob,getJob,addDependency,getDependency} from '@/api/job'
+  import {validateDingDing,validatePhone,validateEmail,validateURL} from '@/utils/validate'
   import CodeMirror from 'codemirror'
   import 'codemirror/addon/lint/lint.css'
   import 'codemirror/lib/codemirror.css'
@@ -318,6 +319,7 @@
             alarmType: [],
             runCount: 0,
             timeout: 0,
+            dingTask:null
           },
           workFlow: {
             count:[{}],
@@ -332,19 +334,29 @@
           }
         },
         jobFormRule:{
-          //通用验证
-          jobType:[{required: true,message: '请选择作业类型',trigger: 'change'}],
-          cronExp:[{required: true,message: '请输入表达式',trigger: 'change'}],
           jobName:[
             {required: true,message: '请输入AppName',trigger: 'change'},
             {min: 3,max: 20,message: '长度在 3 到 20 个字符'}
           ],
+          jobType:[{required: true,message: '请选择作业类型',trigger: 'change'}],
+          cronExp:[{required: true,message: '请输入表达式',trigger: 'change'}],
           agentId:[{trigger:'change',validator:(r, v, c)=>this.checkNull(r, v, c,this.$t('agent.agentName'))}],
           execUser:[{trigger:'change',validator:(r, v, c)=>this.checkNull(r, v, c,this.$t('job.execUser'))}],
           command:[{trigger:'change',validator:(r, v, c)=>this.checkNull(r, this.form.job.command, c,this.$t('job.command'))}],
+          successExit:[
+            {trigger:'change',required: true, message: this.$t('job.successExit').concat('不能为空')},
+            { type:'number',message:this.$t('job.successExit').concat('必须为数字值')}
+          ],
+          alarmType:[{trigger:'change',validator:this.checkAlarm}],
+          alarmDingDing:[{trigger:'change',validator:this.checkDingDing}],
+          dingTaskAtUser:[{trigger:'change',validator:this.checkDingTaskAtUser}],
+          alarmEmail:[{trigger:'change',validator:this.checkAlarmEmail}],
+          alarmSms:[{trigger:'change',validator:this.checkAlarmSms}],
+          alarmSmsTemplate:[{trigger:'change',validator:(r, v, c)=>this.checkNull(r, v, c,this.$t('job.smsTemplate'))}],
         }
       }
     },
+
 
     created() {
       this.getAgent()
@@ -357,6 +369,7 @@
       this.control.command = this.handleCodeMirror(this.$refs.command)
       this.control.command.on('change', cm => {
         this.form.job.command = cm.getValue()
+        this.$refs.jobForm.validateField('command')
       })
     },
 
@@ -365,7 +378,7 @@
       checkNull(rule, value, callback,field) {
         if (this.form.job.jobType === 0) {
           if (!value) {
-            callback(new Error('请输入'.concat(field)));
+            callback(new Error('请输入'.concat(field)))
           }else {
             callback()
           }
@@ -374,23 +387,85 @@
         }
       },
 
-      validate(){
-        console.log("Running....")
+      checkAlarm(rule, value, callback) {
+        if (this.form.job.alarm == 1) {
+          if (!value||value.length == 0) {
+            callback(new Error('请至少选择一种报警通知方式'))
+          }else {
+            callback()
+          }
+        }else {
+          callback()
+        }
+      },
+
+      checkDingDing(rule, value, callback) {
+        if ( this.form.job.alarm == 1 && this.form.job.alarmType.indexOf(1)>-1 ) {
+          if (!value) {
+            callback(new Error('请输入钉钉机器人URL'))
+          }else if (!validateDingDing(value)) {
+            callback(new Error('钉钉机器人URL错误,请参考钉钉官网规范'))
+          }else {
+            callback()
+          }
+        }else {
+          callback()
+        }
+      },
+
+      checkDingTaskAtUser(rule, value, callback) {
+        if ( this.form.job.alarm == 1 && this.form.job.alarmType.indexOf(1)>-1 ) {
+          if (value && !validatePhone(value)) {
+            callback(new Error('钉钉@通知人,格式有误,请参考钉钉官网规范'));
+          }else {
+            callback()
+          }
+        }else {
+          callback()
+        }
+      },
+
+      checkAlarmEmail(rule, value, callback) {
+        if ( this.form.job.alarm == 1 && this.form.job.alarmType.indexOf(2)>-1 ) {
+          if ( !value ) {
+            callback(new Error('请输入正确的邮箱地址'))
+          } else if (!validateEmail(value)) {
+            callback(new Error('邮箱格式错误'))
+          } else {
+            callback()
+          }
+        }else {
+          callback()
+        }
+      },
+
+      checkAlarmSms(rule, value, callback){
+        if ( this.form.job.alarm == 1 && this.form.job.alarmType.indexOf(2)>-1 ) {
+          if (!value) {
+            callback(new Error('请输入正确短信通道商http请求URL'))
+          }else if(!validateURL(value)){
+            callback(new Error('短信通道商http请求URL错误'))
+          }else{
+            callback()
+          }
+        }else {
+          callback()
+        }
       },
 
       onSubmit(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            alert('submit!');
+            alert('submit!')
           } else {
-            console.log('error submit!!');
+            console.log('error submit!!')
             return false;
           }
         });
       },
 
       onReset(formName) {
-        this.$refs[formName].resetFields();
+        this.$refs[formName].resetFields()
       },
 
       getAgent() {
@@ -459,6 +534,7 @@
             this.control.command1 = this.handleCodeMirror(this.$refs.command1)
             this.control.command1.on('change', cm => {
               this.form.dependency.command = cm.getValue()
+
             })
           }
         })
@@ -506,12 +582,22 @@
         if (value === 0) {
           this.form.alarmType = []
         }
+        this.$refs.jobForm.clearValidate('alarmType')
+      },
+
+      'form.job.alarmType': function (value) {
+        this.$refs.jobForm.clearValidate('alarmDingDing')
+        this.$refs.jobForm.clearValidate('dingTaskAtUser')
+        this.$refs.jobForm.clearValidate('alarmEmail')
+        this.$refs.jobForm.clearValidate('alarmSms')
+        this.$refs.jobForm.clearValidate('alarmSmsTemplate')
       },
 
       'form.job.command': function (value) {
         let codeValue = this.control.command.getValue()
         if (value !== codeValue) {
           this.control.command.setValue(value)
+
         }
       },
       'form.dependency.command': function (value) {
