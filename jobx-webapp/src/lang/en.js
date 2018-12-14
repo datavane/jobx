@@ -14,11 +14,13 @@ export default {
     delete:'删除',
     export:'导出',
     search:'搜索',
-    detail:'详情'
+    detail:'详情',
+    create:'创建',
+    cancel:'取消'
   },
   job:{
     job:'作业',
-    jobName:'作业名称',
+    jobName:'AppName',
     execUser:'执行身份',
     command:'执行命令',
     pause:'托管状态',

@@ -3,20 +3,20 @@
 
     <div class="steps-form">
 
-      <el-form ref="form" label-width="120px">
+      <el-form :model="form.job" ref="jobForm" :rules="jobFormRule" label-width="120px" >
 
-        <el-form-item :label="$t('job.jobName')">
-          <el-input :placeholder="$t('job.jobName')" v-model="form.job.jobName" clearable class="input-item"/>
+        <el-form-item :label="$t('job.jobName')" prop="jobName">
+          <el-input :placeholder="$t('job.jobName')" v-model="form.job.jobName" clearable class="input-item" />
         </el-form-item>
 
-        <el-form-item :label="$t('job.jobType')">
+        <el-form-item :label="$t('job.jobType')" prop="jobType">
           <el-select v-model="form.job.jobType" :placeholder="$t('job.jobType')" clearable class="input-item">
             <el-option v-for="item in control.jobType" :key="item" :label="item.name" :value="item.id"/>
           </el-select>
         </el-form-item>
 
-        <el-form-item :label="$t('agent.agentName')" v-show="form.job.jobType == 0">
-          <el-select v-model="form.job.agentId" clearable filterable class="input-item"  :placeholder="$t('agent.agentName')">
+        <el-form-item :label="$t('agent.agentName')" v-show="form.job.jobType == 0" prop="agentId">
+          <el-select v-model="form.job.agentId" clearable filterable class="input-item"  :placeholder="$t('agent.agentName')" >
             <el-option
               v-for="item in control.agents"
               :key="item.value"
@@ -32,7 +32,11 @@
           <cron v-model="form.job.cronExp" url="/verify/recent"></cron>
         </el-dialog>
 
-        <el-form-item :label="$t('job.execUser')" v-show="form.job.jobType == 0">
+        <el-form-item :label="$t('job.cronExp')" prop="cronExp">
+          <el-input :placeholder="$t('job.cronExp')" v-model="form.job.cronExp" class="input-item" @focus="control.showCron=!control.showCron"/>
+        </el-form-item>
+
+        <el-form-item :label="$t('job.execUser')" v-show="form.job.jobType == 0" prop="execUser">
           <el-select v-model="form.job.execUser" clearable filterable class="input-item" :placeholder="$t('job.execUser')">
             <el-option
               v-for="item in control.execUsers"
@@ -43,14 +47,10 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item :label="$t('job.command')" v-show="form.job.jobType == 0">
+        <el-form-item :label="$t('job.command')" v-show="form.job.jobType == 0" prop="command">
           <div class="command-input">
             <textarea ref="command" placeholder="请输入内容" v-model="form.job.command"/>
           </div>
-        </el-form-item>
-
-        <el-form-item :label="$t('job.cronExp')">
-          <el-input :placeholder="$t('job.cronExp')" v-model="form.job.cronExp" class="input-item" @focus="control.showCron=!control.showCron"/>
         </el-form-item>
 
         <el-form-item :label="$t('agent.upload')" v-show="form.job.jobType == 0">
@@ -59,10 +59,6 @@
             <div class="el-upload__text">{{$t('agent.uploadText')}}<em>{{$t('agent.clickUpload')}}</em></div>
             <div class="el-upload__tip" slot="tip">{{$t('agent.uploadTip')}}</div>
           </el-upload>
-        </el-form-item>
-
-        <el-form-item :label="$t('job.successExit')">
-          <el-input :placeholder="$t('job.successExit')" v-model="form.job.successExit" clearable class="input-item"/>
         </el-form-item>
 
         <!--工作流-->
@@ -130,6 +126,10 @@
           </div>
         </el-form-item>
 
+        <el-form-item :label="$t('job.successExit')"  v-if="form.job.jobType == 0">
+          <el-input :placeholder="$t('job.successExit')" v-model="form.job.successExit" clearable class="input-item"/>
+        </el-form-item>
+
         <el-form-item :label="$t('job.alarm')">
           <el-switch
             v-model="form.job.alarm"
@@ -186,10 +186,15 @@
           </el-input>
         </el-form-item>
 
+        <el-form-item>
+          <el-button type="primary" @click="onSubmit('jobForm')">{{$t('action.create')}}</el-button>
+          <el-button @click="onCancel">{{$t('action.cancel')}}</el-button>
+        </el-form-item>
+
       </el-form>
 
       <!--工作流添加弹窗-->
-      <el-dialog :visible.sync="control.showJob" width="700px" class="jobForm">
+      <el-dialog :visible.sync="control.showJob" width="700px" class="dependencyForm">
         <el-form ref="job" label-width="100px">
 
           <el-form-item :label="$t('job.jobName')">
@@ -270,6 +275,7 @@
       cron
     },
     data() {
+
       return {
         control:{//控制页面显示,提供表单数据等...
           agents: [],//已有的执行器
@@ -325,6 +331,18 @@
             successExit:null
           }
         },
+        jobFormRule:{
+          //通用验证
+          jobType:[{required: true,message: '请选择作业类型',trigger: 'change'}],
+          cronExp:[{required: true,message: '请输入表达式',trigger: 'change'}],
+          jobName:[
+            {required: true,message: '请输入AppName',trigger: 'change'},
+            {min: 3,max: 20,message: '长度在 3 到 20 个字符'}
+          ],
+          agentId:[{trigger:'change',validator:(r, v, c)=>this.checkNull(r, v, c,this.$t('agent.agentName'))}],
+          execUser:[{trigger:'change',validator:(r, v, c)=>this.checkNull(r, v, c,this.$t('job.execUser'))}],
+          command:[{trigger:'change',validator:(r, v, c)=>this.checkNull(r, this.form.job.command, c,this.$t('job.command'))}],
+        }
       }
     },
 
@@ -344,8 +362,35 @@
 
     methods: {
 
-      doSubmit() {
+      checkNull(rule, value, callback,field) {
+        if (this.form.job.jobType === 0) {
+          if (!value) {
+            callback(new Error('请输入'.concat(field)));
+          }else {
+            callback()
+          }
+        }else {
+          callback()
+        }
+      },
 
+      validate(){
+        console.log("Running....")
+      },
+
+      onSubmit(formName) {
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            alert('submit!');
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
+      },
+
+      onReset(formName) {
+        this.$refs[formName].resetFields();
       },
 
       getAgent() {
@@ -452,7 +497,7 @@
         let id = new Date().getTime()
         this.form.workFlow.count[0].id = id;
         this.form.workFlow.detail[0].id = id;
-      },
+      }
 
     },
 
@@ -480,6 +525,7 @@
         if (value === 1) {
         }
       }
+
     }
   }
 </script>
@@ -529,7 +575,7 @@
     }
   }
 
-  .jobForm {
+  .dependencyForm {
     .input-item {
       width: 85%;
     }
