@@ -11,7 +11,7 @@
 
         <el-form-item :label="$t('job.jobType')" prop="jobType">
           <el-select v-model="form.job.jobType" :placeholder="$t('job.jobType')" clearable class="input-item">
-            <el-option v-for="item in control.jobType" :key="item" :label="item.name" :value="item.id"/>
+            <el-option v-for="item in control.jobType" :key="item.id" :label="item.name" :value="item.id"/>
           </el-select>
         </el-form-item>
 
@@ -19,7 +19,7 @@
           <el-select v-model="form.job.agentId" clearable filterable class="input-item"  :placeholder="$t('agent.agentName')" >
             <el-option
               v-for="item in control.agents"
-              :key="item.value"
+              :key="item.agentId"
               :label="item.agentName"
               :value="item.agentId">
               <span style="float: left">{{ item.agentName }}</span>
@@ -113,7 +113,7 @@
             <el-table-column :label="$t('job.trigger.name')" align="center">
               <template slot-scope="scope">
                 <el-select v-model="form.workFlow.detail[handleFindDependency(scope.row.id)].trigger" :placeholder="$t('job.trigger.name')" clearable>
-                  <el-option v-for="item in control.triggerType" :key="item" :label="item.name" :value="item.id"/>
+                  <el-option v-for="item in control.triggerType" :key="item.id" :label="item.name" :value="item.id"/>
                 </el-select>
                 <i class="el-icon-delete" type="danger" style="margin-left: 10px" v-if="form.workFlow.count.length>1" @click="handleDeleteDependency(scope.row.id)"></i>
               </template>
@@ -141,30 +141,30 @@
         </el-form-item>
 
         <!--告警方式-->
-        <div v-show="form.job.alarm==1">
+        <div v-if="form.job.alarm==1">
           <el-form-item :label="$t('job.alarmType')" prop="alarmType">
             <el-select v-model="form.job.alarmType" :placeholder="$t('job.alarmType')" clearable multiple class="input-item">
-              <el-option v-for="item in control.alarmType" :key="item" :label="item.name" :value="item.id"/>
+              <el-option v-for="item in control.alarmType" :key="item.id" :label="item.name" :value="item.id"/>
             </el-select>
           </el-form-item>
 
-          <el-form-item :label="$t('job.dingTask')" v-show="form.job.alarmType.indexOf(1)>-1" prop="alarmDingDing">
-            <el-input :placeholder="$t('job.dingTask')" v-model="form.job.dingTask" clearable class="input-item"/>
+          <el-form-item :label="$t('job.dingTask')" v-if="form.job.alarmType.indexOf(1)>-1" prop="alarmDingURL">
+            <el-input :placeholder="$t('job.dingTask')" v-model="form.job.alarmDingURL" clearable class="input-item"/>
           </el-form-item>
 
-          <el-form-item :label="$t('job.atUser')" v-show="form.job.alarmType.indexOf(1)>-1" prop="dingTaskAtUser">
-            <el-input :placeholder="$t('job.atUser')" v-model="form.job.dingTaskAtUser" clearable class="input-item"/>
+          <el-form-item :label="$t('job.atUser')" v-if="form.job.alarmType.indexOf(1)>-1" prop="alarmDingAtUser">
+            <el-input :placeholder="$t('job.atUser')" v-model="form.job.alarmDingAtUser" clearable class="input-item"/>
           </el-form-item>
 
-          <el-form-item :label="$t('job.email')" v-show="form.job.alarmType.indexOf(2)>-1" prop="alarmEmail">
-            <el-input :placeholder="$t('job.email')" v-model="form.job.email" clearable class="input-item"/>
+          <el-form-item :label="$t('job.email')" v-if="form.job.alarmType.indexOf(2)>-1" prop="alarmEmail">
+            <el-input :placeholder="$t('job.email')" v-model="form.job.alarmEmail" clearable class="input-item"/>
           </el-form-item>
 
-          <el-form-item :label="$t('job.sms')" v-show="form.job.alarmType.indexOf(3)>-1" prop="alarmSms">
-            <el-input :placeholder="$t('job.sms')" v-model="form.job.sms" clearable class="input-item"/>
+          <el-form-item :label="$t('job.sms')" v-if="form.job.alarmType.indexOf(3)>-1" prop="alarmSms">
+            <el-input :placeholder="$t('job.sms')" v-model="form.job.alarmSms" clearable class="input-item"/>
           </el-form-item>
-          <el-form-item :label="$t('job.smsTemplate')" v-show="form.job.alarmType.indexOf(3)>-1" prop="alarmSmsTemplate">
-            <el-input :placeholder="$t('job.smsTemplate')" v-model="form.job.smsTemplate" clearable class="input-item"/>
+          <el-form-item :label="$t('job.smsTemplate')" v-if="form.job.alarmType.indexOf(3)>-1" prop="alarmSmsTemplate">
+            <el-input :placeholder="$t('job.smsTemplate')" v-model="form.job.alarmSmsTemplate" clearable class="input-item"/>
           </el-form-item>
         </div>
 
@@ -188,7 +188,7 @@
 
         <el-form-item>
           <el-button type="primary" @click="onSubmit('jobForm')">{{$t('action.create')}}</el-button>
-          <el-button @click="onCancel">{{$t('action.cancel')}}</el-button>
+          <el-button @click="onReset">{{$t('action.cancel')}}</el-button>
         </el-form-item>
 
       </el-form>
@@ -205,7 +205,7 @@
             <el-select v-model="form.dependency.agentId" clearable filterable class="input-item" :placeholder="$t('agent.agentName')">
               <el-option
                 v-for="item in control.agents"
-                :key="item.value"
+                :key="item.agentId"
                 :label="item.agentName"
                 :value="item.agentId">
                 <span style="float: left">{{ item.agentName }}</span>
@@ -255,7 +255,6 @@
   import {allAgent} from '@/api/agent'
   import {execUser} from '@/api/user'
   import {addJob,getJob,addDependency,getDependency} from '@/api/job'
-  import {validateDingDing,validatePhone,validateEmail,validateURL} from '@/utils/validate'
   import CodeMirror from 'codemirror'
   import 'codemirror/addon/lint/lint.css'
   import 'codemirror/lib/codemirror.css'
@@ -319,7 +318,11 @@
             alarmType: [],
             runCount: 0,
             timeout: 0,
-            dingTask:null
+            alarmDingURL:null,
+            alarmDingAtUser:null,
+            alarmEmail:null,
+            alarmSms:null,
+            alarmSmsTemplate:null,
           },
           workFlow: {
             count:[{}],
@@ -343,15 +346,12 @@
           agentId:[{trigger:'change',validator:(r, v, c)=>this.checkNull(r, v, c,this.$t('agent.agentName'))}],
           execUser:[{trigger:'change',validator:(r, v, c)=>this.checkNull(r, v, c,this.$t('job.execUser'))}],
           command:[{trigger:'change',validator:(r, v, c)=>this.checkNull(r, this.form.job.command, c,this.$t('job.command'))}],
-          successExit:[
-            {trigger:'change',required: true, message: this.$t('job.successExit').concat('不能为空')},
-            { type:'number',message:this.$t('job.successExit').concat('必须为数字值')}
-          ],
+          successExit:[{trigger:'change',validator:(r, v, c)=>this.checkSuccessExit(r,v, c)}],
           alarmType:[{trigger:'change',validator:this.checkAlarm}],
-          alarmDingDing:[{trigger:'change',validator:this.checkDingDing}],
-          dingTaskAtUser:[{trigger:'change',validator:this.checkDingTaskAtUser}],
-          alarmEmail:[{trigger:'change',validator:this.checkAlarmEmail}],
-          alarmSms:[{trigger:'change',validator:this.checkAlarmSms}],
+          alarmDingURL:[{trigger:'change',validator:this.checkDingURL}],
+          alarmDingAtUser:[{trigger:'change',validator:this.checkDingAtUser}],
+          alarmEmail:[{trigger:'change',validator:this.checkEmail}],
+          alarmSms:[{trigger:'change',validator:this.checkSms}],
           alarmSmsTemplate:[{trigger:'change',validator:(r, v, c)=>this.checkNull(r, v, c,this.$t('job.smsTemplate'))}],
         }
       }
@@ -368,7 +368,7 @@
     mounted() {
       this.control.command = this.handleCodeMirror(this.$refs.command)
       this.control.command.on('change', cm => {
-        this.form.job.command = cm.getValue()
+        this.form.job.command = cm.getValue
         this.$refs.jobForm.validateField('command')
       })
     },
@@ -387,6 +387,22 @@
         }
       },
 
+      checkSuccessExit(rule, value, callback) {
+        if (this.form.job.alarm == 0) {
+          if (value == null || value == undefined || value.length == 0) {
+            callback(new Error('请输入成功标志'))
+          } else {
+            if (!this.$verify.isPositiveNum(value)) {
+              callback(new Error('成功标志必须为整数'))
+            } else {
+              callback()
+            }
+          }
+        }else {
+          callback()
+        }
+      },
+
       checkAlarm(rule, value, callback) {
         if (this.form.job.alarm == 1) {
           if (!value||value.length == 0) {
@@ -399,11 +415,11 @@
         }
       },
 
-      checkDingDing(rule, value, callback) {
+      checkDingURL(rule, value, callback) {
         if ( this.form.job.alarm == 1 && this.form.job.alarmType.indexOf(1)>-1 ) {
           if (!value) {
             callback(new Error('请输入钉钉机器人URL'))
-          }else if (!validateDingDing(value)) {
+          }else if (!this.$verify.isDingTaskURL(value)) {
             callback(new Error('钉钉机器人URL错误,请参考钉钉官网规范'))
           }else {
             callback()
@@ -413,9 +429,9 @@
         }
       },
 
-      checkDingTaskAtUser(rule, value, callback) {
+      checkDingAtUser(rule, value, callback) {
         if ( this.form.job.alarm == 1 && this.form.job.alarmType.indexOf(1)>-1 ) {
-          if (value && !validatePhone(value)) {
+          if (value && !this.$verify.isPhone(value)) {
             callback(new Error('钉钉@通知人,格式有误,请参考钉钉官网规范'));
           }else {
             callback()
@@ -425,7 +441,7 @@
         }
       },
 
-      checkAlarmEmail(rule, value, callback) {
+      checkEmail(rule, value, callback) {
         if ( this.form.job.alarm == 1 && this.form.job.alarmType.indexOf(2)>-1 ) {
           if ( !value ) {
             callback(new Error('请输入正确的邮箱地址'))
@@ -439,7 +455,7 @@
         }
       },
 
-      checkAlarmSms(rule, value, callback){
+      checkSms(rule, value, callback){
         if ( this.form.job.alarm == 1 && this.form.job.alarmType.indexOf(2)>-1 ) {
           if (!value) {
             callback(new Error('请输入正确短信通道商http请求URL'))
@@ -507,7 +523,7 @@
       },
 
       submitDependency() {
-        addDependency(this.form.dependency).then(response=>{
+        addDependency(this.form.dependency).then(resp=>{
           this.control.showJob = false
         })
       },
@@ -533,8 +549,7 @@
           if(!this.control.command1){
             this.control.command1 = this.handleCodeMirror(this.$refs.command1)
             this.control.command1.on('change', cm => {
-              this.form.dependency.command = cm.getValue()
-
+              this.form.dependency.command = cm.getValue
             })
           }
         })
@@ -578,30 +593,41 @@
     },
 
     watch: {
+      'form.job.jobType': function (value) {
+        if (value == 1 ) {
+          this.$refs.jobForm.clearValidate('agentId')
+          this.$refs.jobForm.clearValidate('execUser')
+          this.$refs.jobForm.clearValidate('execUser')
+          this.$refs.jobForm.clearValidate('successExit')
+        } else {
+          this.$refs.jobForm.clearValidate()
+        }
+      },
+
       'form.job.alarm': function (value) {
         if (value === 0) {
           this.form.alarmType = []
         }
-        this.$refs.jobForm.clearValidate('alarmType')
       },
 
       'form.job.alarmType': function (value) {
-        this.$refs.jobForm.clearValidate('alarmDingDing')
-        this.$refs.jobForm.clearValidate('dingTaskAtUser')
+        this.$refs.jobForm.clearValidate('alarmType')
+        this.$refs.jobForm.clearValidate('alarmDingURL')
+        this.$refs.jobForm.clearValidate('alarmDingAtUser')
         this.$refs.jobForm.clearValidate('alarmEmail')
         this.$refs.jobForm.clearValidate('alarmSms')
         this.$refs.jobForm.clearValidate('alarmSmsTemplate')
       },
 
       'form.job.command': function (value) {
-        let codeValue = this.control.command.getValue()
+        let codeValue = this.control.command.getValue
         if (value !== codeValue) {
           this.control.command.setValue(value)
 
         }
       },
       'form.dependency.command': function (value) {
-        let codeValue = this.control.command1.getValue()
+        let codeValue = this.control.command1.getValue
         if (value !== codeValue) {
           this.control.command1.setValue(value)
         }

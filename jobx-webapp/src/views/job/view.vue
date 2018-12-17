@@ -4,10 +4,10 @@
     <div class="filter-container" style="padding:10px">
       <el-input :placeholder="$t('job.jobName')" v-model="queryData.jobName" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
       <el-select v-model="queryData.agentId" :placeholder="$t('agent.agentName')" clearable class="filter-item" style="width: 150px">
-        <el-option v-for="item in agents" :key="item.key" :label="item.agentName" :value="item.agentId"/>
+        <el-option v-for="item in agents" :key="item.agentId" :label="item.agentName" :value="item.agentId"/>
       </el-select>
       <el-select v-model="queryData.jobType" :placeholder="$t('job.jobType')" clearable style="width: 110px" class="filter-item">
-        <el-option v-for="item in jobTypes" :key="item" :label="item.name" :value="item.id"/>
+        <el-option v-for="item in jobTypes" :key="item.id" :label="item.name" :value="item.id"/>
       </el-select>
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('action.search') }}</el-button>
       <el-button class="filter-item" type="primary" icon="el-icon-plus" @click="handleAdd">{{ $t('action.add') }}</el-button>&nbsp;
@@ -79,10 +79,9 @@
 <script>
   import { allAgent } from '@/api/agent'
   import { view as getList } from '@/api/job'
-  import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+  import Pagination from '@/components/Pagination'
 
   export default {
-    name: 'ComplexTable',
     components: { Pagination },
     data() {
       return {
