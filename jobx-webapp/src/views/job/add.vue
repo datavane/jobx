@@ -357,7 +357,6 @@
       }
     },
 
-
     created() {
       this.getAgent()
       this.getJob()
@@ -445,7 +444,7 @@
         if ( this.form.job.alarm == 1 && this.form.job.alarmType.indexOf(2)>-1 ) {
           if ( !value ) {
             callback(new Error('请输入正确的邮箱地址'))
-          } else if (!validateEmail(value)) {
+          } else if (!this.$verify.isEmail(value)) {
             callback(new Error('邮箱格式错误'))
           } else {
             callback()
@@ -459,7 +458,7 @@
         if ( this.form.job.alarm == 1 && this.form.job.alarmType.indexOf(2)>-1 ) {
           if (!value) {
             callback(new Error('请输入正确短信通道商http请求URL'))
-          }else if(!validateURL(value)){
+          }else if(!this.$verify.isURL(value)){
             callback(new Error('短信通道商http请求URL错误'))
           }else{
             callback()
@@ -475,7 +474,7 @@
             alert('submit!')
           } else {
             console.log('error submit!!')
-            return false;
+            return false
           }
         });
       },
@@ -586,8 +585,8 @@
 
       handleInitWorkFlow() {
         let id = new Date().getTime()
-        this.form.workFlow.count[0].id = id;
-        this.form.workFlow.detail[0].id = id;
+        this.form.workFlow.count[0].id = id
+        this.form.workFlow.detail[0].id = id
       }
 
     },
