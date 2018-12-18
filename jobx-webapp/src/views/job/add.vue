@@ -318,6 +318,7 @@
             alarmType: [],
             runCount: 0,
             timeout: 0,
+            cronExp:null,
             alarmDingURL:null,
             alarmDingAtUser:null,
             alarmEmail:null,
