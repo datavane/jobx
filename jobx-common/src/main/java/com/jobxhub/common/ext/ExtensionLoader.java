@@ -75,7 +75,7 @@ public class ExtensionLoader<T> {
             throw new IllegalArgumentException("Extension type(" + type + ") is not interface!");
         }
         if (!withExtensionAnnotation(type)) {
-            throw new IllegalArgumentException("Extension type(" + type + ") is not extension, because WITHOUT @" + SPI.class.getSimpleName() + " Annotation!");
+            throw new IllegalArgumentException("Extension type(" + type + ") is not extension, because without @" + SPI.class.getSimpleName() + " Annotation!");
         }
         this.type = checkNotNull(type, "type interface cannot be null");
         this.loader = checkNotNull(loader, "Extension loader == null");
@@ -128,7 +128,7 @@ public class ExtensionLoader<T> {
                             String line = scanner.nextLine();
                             if (CommonUtils.notEmpty(line)) {
                                 //已经注释的结构的统统跳过.
-                                if (line.indexOf("#") == 0) {
+                                if (line.startsWith("#")) {
                                     continue;
                                 }
 
