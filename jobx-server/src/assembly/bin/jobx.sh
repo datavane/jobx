@@ -272,7 +272,7 @@ if [ $have_tty -eq 1 ]; then
   fi
 fi
 
-MAIN_JAR = "jobx-server-${JOBX_VERSION}.jar"
+MAIN_JAR="jobx-server-${JOBX_VERSION}.jar"
 CLASSPATH="$CLASSPATH":"$JOBX_BASE"/lib/${MAIN_JAR}
 MAIN="com.jobxhub.server.JobXWebApplication"
 
