@@ -1,6 +1,5 @@
 <template>
   <div class="app-container">
-
     <div class="steps-form">
 
       <el-form :model="form.job" ref="jobForm" :rules="jobFormRule" label-width="120px" >
@@ -9,7 +8,7 @@
           <el-input :placeholder="$t('job.jobName')" v-model="form.job.jobName" clearable class="input-item" />
         </el-form-item>
 
-        <el-form-item :label="$t('job.jobType')" prop="jobType">
+        <el-form-item :label="$t('job.jobType')">
           <el-select v-model="form.job.jobType" :placeholder="$t('job.jobType')" clearable class="input-item">
             <el-option v-for="item in control.jobType" :key="item.id" :label="item.name" :value="item.id"/>
           </el-select>
@@ -23,7 +22,7 @@
               :label="item.agentName"
               :value="item.agentId">
               <span style="float: left">{{ item.agentName }}</span>
-              <span style="float: right;margin-right: 25px; color: #8492a6; font-size: 13px">{{ item.host }}</span>
+              <span class="select-item-right">{{ item.host }}</span>
             </el-option>
           </el-select>
         </el-form-item>
@@ -245,7 +244,6 @@
       </el-dialog>
 
     </div>
-
   </div>
 
 </template>
@@ -254,7 +252,7 @@
   import cron from '@/components/Cron'
   import {allAgent} from '@/api/agent'
   import {execUser} from '@/api/user'
-  import {addJob,getJob,addDependency,getDependency} from '@/api/job'
+  import {addJob, getJob, addDependency, getDependency} from '@/api/job'
   import CodeMirror from 'codemirror'
   import 'codemirror/addon/lint/lint.css'
   import 'codemirror/lib/codemirror.css'
@@ -277,18 +275,18 @@
     data() {
 
       return {
-        control:{//控制页面显示,提供表单数据等...
+        control: {//控制页面显示,提供表单数据等...
           agents: [],//已有的执行器
-          jobs:[
+          jobs: [
             {
-              params:{ createType:1 },
-              label:this.$t('job.simpleJob'),
-              options:[]
+              params: {createType: 1},
+              label: this.$t('job.simpleJob'),
+              options: []
             },
             {
-              params:{ createType:2 },
-              label:this.$t('job.dependencyItem'),
-              options:[]
+              params: {createType: 2},
+              label: this.$t('job.dependencyItem'),
+              options: []
             }
           ],//已有的作业
           execUsers: [],//执行身份
@@ -308,52 +306,58 @@
             {id: 1, name: this.$t('job.workFlow')}
           ],
           showCron: false,//是否显示cron控件
-          showJob:false,//是否显示添加作业弹窗,
-          command:null,
-          command1:null
+          showJob: false,//是否显示添加作业弹窗,
+          command: null,
+          command1: null
         },
         form: {//绑定form表单的数据
-          job:{
+          job: {
             jobType: 0,
             alarmType: [],
             runCount: 0,
             timeout: 0,
-            cronExp:null,
-            alarmDingURL:null,
-            alarmDingAtUser:null,
-            alarmEmail:null,
-            alarmSms:null,
-            alarmSmsTemplate:null,
+            cronExp: null,
+            alarmDingURL: null,
+            alarmDingAtUser: null,
+            alarmEmail: null,
+            alarmSms: null,
+            alarmSmsTemplate: null,
           },
           workFlow: {
-            count:[{}],
-            detail:[{}]
+            count: [{}],
+            detail: [{}]
           },
-          dependency:{
-            jobName:null,
-            agentId:null,
-            execUser:null,
-            command:null,
-            successExit:null
+          dependency: {
+            jobName: null,
+            agentId: null,
+            execUser: null,
+            command: null,
+            successExit: null
           }
         },
-        jobFormRule:{
-          jobName:[
-            {required: true,message: '请输入AppName',trigger: 'change'},
-            {min: 3,max: 20,message: '长度在 3 到 20 个字符'}
+        jobFormRule: {
+          jobName: [
+            {required: true, message: '请输入AppName', trigger: 'change'},
+            {min: 3, max: 20, message: '长度在 3 到 20 个字符'}
           ],
-          jobType:[{required: true,message: '请选择作业类型',trigger: 'change'}],
-          cronExp:[{required: true,message: '请输入表达式',trigger: 'change'}],
-          agentId:[{trigger:'change',validator:(r, v, c)=>this.checkNull(r, v, c,this.$t('agent.agentName'))}],
-          execUser:[{trigger:'change',validator:(r, v, c)=>this.checkNull(r, v, c,this.$t('job.execUser'))}],
-          command:[{trigger:'change',validator:(r, v, c)=>this.checkNull(r, this.form.job.command, c,this.$t('job.command'))}],
-          successExit:[{trigger:'change',validator:(r, v, c)=>this.checkSuccessExit(r,v, c)}],
-          alarmType:[{trigger:'change',validator:this.checkAlarm}],
-          alarmDingURL:[{trigger:'change',validator:this.checkDingURL}],
-          alarmDingAtUser:[{trigger:'change',validator:this.checkDingAtUser}],
-          alarmEmail:[{trigger:'change',validator:this.checkEmail}],
-          alarmSms:[{trigger:'change',validator:this.checkSms}],
-          alarmSmsTemplate:[{trigger:'change',validator:(r, v, c)=>this.checkNull(r, v, c,this.$t('job.smsTemplate'))}],
+          jobType: [{required: true, message: '请选择作业类型', trigger: 'change'}],
+          cronExp: [{required: true, message: '请输入表达式', trigger: 'change'}],
+          agentId: [{trigger: 'change', validator: (r, v, c) => this.checkNull(r, v, c, this.$t('agent.agentName'))}],
+          execUser: [{trigger: 'change', validator: (r, v, c) => this.checkNull(r, v, c, this.$t('job.execUser'))}],
+          command: [{
+            trigger: 'change',
+            validator: (r, v, c) => this.checkNull(r, this.form.job.command, c, this.$t('job.command'))
+          }],
+          successExit: [{trigger: 'change', validator: (r, v, c) => this.checkSuccessExit(r, v, c)}],
+          alarmType: [{trigger: 'change', validator: this.checkAlarm}],
+          alarmDingURL: [{trigger: 'change', validator: this.checkDingURL}],
+          alarmDingAtUser: [{trigger: 'change', validator: this.checkDingAtUser}],
+          alarmEmail: [{trigger: 'change', validator: this.checkEmail}],
+          alarmSms: [{trigger: 'change', validator: this.checkSms}],
+          alarmSmsTemplate: [{
+            trigger: 'change',
+            validator: (r, v, c) => this.checkNull(r, v, c, this.$t('job.smsTemplate'))
+          }],
         }
       }
     },
@@ -375,14 +379,14 @@
 
     methods: {
 
-      checkNull(rule, value, callback,field) {
+      checkNull(rule, value, callback, field) {
         if (this.form.job.jobType === 0) {
           if (!value) {
             callback(new Error('请输入'.concat(field)))
-          }else {
+          } else {
             callback()
           }
-        }else {
+        } else {
           callback()
         }
       },
@@ -398,73 +402,73 @@
               callback()
             }
           }
-        }else {
+        } else {
           callback()
         }
       },
 
       checkAlarm(rule, value, callback) {
         if (this.form.job.alarm == 1) {
-          if (!value||value.length == 0) {
+          if (!value || value.length == 0) {
             callback(new Error('请至少选择一种报警通知方式'))
-          }else {
+          } else {
             callback()
           }
-        }else {
+        } else {
           callback()
         }
       },
 
       checkDingURL(rule, value, callback) {
-        if ( this.form.job.alarm == 1 && this.form.job.alarmType.indexOf(1)>-1 ) {
+        if (this.form.job.alarm == 1 && this.form.job.alarmType.indexOf(1) > -1) {
           if (!value) {
             callback(new Error('请输入钉钉机器人URL'))
-          }else if (!this.$verify.isDingTaskURL(value)) {
+          } else if (!this.$verify.isDingTaskURL(value)) {
             callback(new Error('钉钉机器人URL错误,请参考钉钉官网规范'))
-          }else {
+          } else {
             callback()
           }
-        }else {
+        } else {
           callback()
         }
       },
 
       checkDingAtUser(rule, value, callback) {
-        if ( this.form.job.alarm == 1 && this.form.job.alarmType.indexOf(1)>-1 ) {
+        if (this.form.job.alarm == 1 && this.form.job.alarmType.indexOf(1) > -1) {
           if (value && !this.$verify.isPhone(value)) {
             callback(new Error('钉钉@通知人,格式有误,请参考钉钉官网规范'));
-          }else {
+          } else {
             callback()
           }
-        }else {
+        } else {
           callback()
         }
       },
 
       checkEmail(rule, value, callback) {
-        if ( this.form.job.alarm == 1 && this.form.job.alarmType.indexOf(2)>-1 ) {
-          if ( !value ) {
+        if (this.form.job.alarm == 1 && this.form.job.alarmType.indexOf(2) > -1) {
+          if (!value) {
             callback(new Error('请输入正确的邮箱地址'))
           } else if (!this.$verify.isEmail(value)) {
             callback(new Error('邮箱格式错误'))
           } else {
             callback()
           }
-        }else {
+        } else {
           callback()
         }
       },
 
-      checkSms(rule, value, callback){
-        if ( this.form.job.alarm == 1 && this.form.job.alarmType.indexOf(2)>-1 ) {
+      checkSms(rule, value, callback) {
+        if (this.form.job.alarm == 1 && this.form.job.alarmType.indexOf(2) > -1) {
           if (!value) {
             callback(new Error('请输入正确短信通道商http请求URL'))
-          }else if(!this.$verify.isURL(value)){
+          } else if (!this.$verify.isURL(value)) {
             callback(new Error('短信通道商http请求URL错误'))
-          }else{
+          } else {
             callback()
           }
-        }else {
+        } else {
           callback()
         }
       },
@@ -492,23 +496,23 @@
 
       getJob() {
 
-        getJob(this.control.jobs[0].params).then(response=> {
+        getJob(this.control.jobs[0].params).then(response => {
           this.control.jobs[0].options = []
           let job = response.body
-          job.forEach(x=>{
+          job.forEach(x => {
             this.control.jobs[0].options.push({
-              id:x.jobId,
-              name:x.jobName
+              id: x.jobId,
+              name: x.jobName
             })
           })
 
-          getJob(this.control.jobs[1].params).then(response=> {
+          getJob(this.control.jobs[1].params).then(response => {
             this.control.jobs[1].options = []
             let job = response.body
-            job.forEach(x=>{
+            job.forEach(x => {
               this.control.jobs[1].options.push({
-                id:x.jobId,
-                name:x.jobName
+                id: x.jobId,
+                name: x.jobName
               })
             })
           })
@@ -523,12 +527,12 @@
       },
 
       submitDependency() {
-        addDependency(this.form.dependency).then(resp=>{
+        addDependency(this.form.dependency).then(resp => {
           this.control.showJob = false
         })
       },
 
-      handleCodeMirror(el){
+      handleCodeMirror(el) {
         return CodeMirror.fromTextArea(el, {
           lineNumbers: true,
           lint: true,
@@ -545,8 +549,8 @@
 
       handleAddJob() {
         this.control.showJob = true
-        this.$nextTick(()=>{
-          if(!this.control.command1){
+        this.$nextTick(() => {
+          if (!this.control.command1) {
             this.control.command1 = this.handleCodeMirror(this.$refs.command1)
             this.control.command1.on('change', cm => {
               this.form.dependency.command = cm.getValue
@@ -594,14 +598,7 @@
 
     watch: {
       'form.job.jobType': function (value) {
-        if (value == 1 ) {
-          this.$refs.jobForm.clearValidate('agentId')
-          this.$refs.jobForm.clearValidate('execUser')
-          this.$refs.jobForm.clearValidate('execUser')
-          this.$refs.jobForm.clearValidate('successExit')
-        } else {
-          this.$refs.jobForm.clearValidate()
-        }
+        this.$refs.jobForm.clearValidate()
       },
 
       'form.job.alarm': function (value) {
@@ -632,23 +629,25 @@
           this.control.command1.setValue(value)
         }
       },
-
-      'form.job.jobType': function (value) {
-        if (value === 1) {
-        }
-      }
-
     }
   }
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
+
+  body {
+    text-align: center;
+  }
+
   .steps-btn {
     margin-left: 200px;
   }
 
   .steps-form {
+    position: static;
     padding: 20px;
+    width: 80%;
+    margin-left: 15%;
   }
 
   .input-item {
@@ -676,14 +675,16 @@
 
   .dependency {
     .el-table .cell, .el-table th div {
-      padding-left:0px;
+      padding-left: 0px;
       padding-right: 0px;
     }
-    .el-input__inner{
-      height:30px;
+
+    .el-input__inner {
+      height: 30px;
     }
+
     .el-table__header-wrapper {
-      line-height:20px;
+      line-height: 20px;
     }
   }
 
@@ -691,17 +692,27 @@
     .input-item {
       width: 85%;
     }
+
     .command-input1 {
       width: 85%;
       font-size: 12px;
       position: relative;
-      .CodeMirror{
+
+      .CodeMirror {
         height: 150px;
       }
-      .CodeMirror-scroll{
+
+      .CodeMirror-scroll {
         height: 150px;
       }
     }
+  }
+
+  .select-item-right {
+    float: right;
+    margin-right: 25px;
+    color: #8492a6;
+    font-size: 13px
   }
 
 </style>
