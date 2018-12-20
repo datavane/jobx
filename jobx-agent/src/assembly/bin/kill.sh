@@ -48,9 +48,9 @@ if [ -n "`which pstree`" ];then
      do
        if [ ${pid} -gt 300 ];then
          if [ "${kill_model}" == "0"x ];then
-           echo kill ${id} >/dev/null 2>&1;
+           kill ${id} >/dev/null 2>&1;
           else
-           echo kill -9 ${id} >/dev/null 2>&1;
+           kill -9 ${id} >/dev/null 2>&1;
          fi
        fi
      done
