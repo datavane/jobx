@@ -635,10 +635,6 @@
 
 <style rel="stylesheet/scss" lang="scss" scoped>
 
-  body {
-    text-align: center;
-  }
-
   .steps-btn {
     margin-left: 200px;
   }
@@ -646,7 +642,7 @@
   .steps-form {
     position: static;
     padding: 20px;
-    width: 80%;
+    width: 90%;
     margin-left: 15%;
   }
 

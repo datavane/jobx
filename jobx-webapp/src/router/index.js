@@ -38,6 +38,7 @@ export const constantRouterMap = [
   {
     path: '/job',
     component: Layout,
+    name:'作业管理',
     redirect: '/job/view',
     children: [
       {
@@ -81,12 +82,6 @@ export const constantRouterMap = [
     name: 'Example',
     meta: { title: 'Example', icon: 'example' },
     children: [
-      {
-        path: 'table',
-        name: 'Table',
-        component: () => import('@/views/table/index'),
-        meta: { title: 'Table', icon: 'table' }
-      },
       {
         path: 'tree',
         name: 'Tree',
