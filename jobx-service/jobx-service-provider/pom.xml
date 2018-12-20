@@ -216,9 +216,6 @@
                             <mainClass>com.jobxhub.service.JobXServiceApplication</mainClass>
                         </manifest>
                     </archive>
-                    <excludes>
-                        <exclude>*.properties</exclude>
-                    </excludes>
                 </configuration>
             </plugin>
 
