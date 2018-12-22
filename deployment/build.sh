@@ -61,7 +61,7 @@ JOBX_VERSION="1.2.0-RELEASE";                                                   
 JOBX_AGENT=${WORKBASE}/jobx-agent/target/jobx-agent-${JOBX_VERSION}.tar.gz                  ##
 JOBX_SERVER=${WORKBASE}/jobx-server/target/jobx-server-${JOBX_VERSION}.war                  ##
 EXEC_LIB=${WORKDIR}/executor.c                                                              ##
-JOBX_AGENT_BIN_DIR=${WORKBASE}/jobx-agent/src/assembly/bin                                      ##
+JOBX_AGENT_BIN_DIR=${WORKBASE}/jobx-agent/src/assembly/bin                                  ##
 ##############################################################################################
 
 echo_r () {
