@@ -30,27 +30,27 @@ kill_model=$1
 #this process id
 pid=$2
 
-if [ !"${kill_model}" == "0"x ] ||[ !"${kill_model}" == "1"x ];  then
+if [[ !"${kill_model}" == "0"x ]] ||[[ !"${kill_model}" == "1"x ]];  then
     echo "[JobX] the first args must be [0|1]"
     exit 1;
 fi
 
-if [ "${pid}"x == ""x ];then
+if [[ "${pid}"x == ""x ]];then
   echo "[JobX] pid is null"
   exit 1;
 fi
 
 
 # if pstree exists
-if [ -n "`which pstree`" ];then
+if [[ -n "`which pstree`" ]];then
      array=$(pstree -p ${pid}| sed 's/[^0-9]/ /g');
      for id in ${array}
      do
-       if [ ${pid} -gt 300 ];then
-         if [ "${kill_model}" == "0"x ];then
-           echo kill ${id} >/dev/null 2>&1;
+       if [[ ${pid} -gt 300 ]];then
+         if [[ "${kill_model}" == "0"x ]];then
+           kill ${id} >/dev/null 2>&1;
           else
-           echo kill -9 ${id} >/dev/null 2>&1;
+           kill -9 ${id} >/dev/null 2>&1;
          fi
        fi
      done
@@ -60,10 +60,10 @@ else
       #find pid by ppid
       cmd="ps -ef|awk '{if(\$3~/${pid}/) print \$2}'"
       pid=$(eval ${cmd})
-      if [ "${pid}"x == ""x ] || [ ${pid} -lt 300 ] ; then
+      if [[ "${pid}"x == ""x ]] || [[ ${pid} -lt 300 ]] ; then
         break;
       fi
-      if [ "${kill_model}"x == "0"x ];then
+      if [[ "${kill_model}"x == "0"x ]];then
        kill ${pid} >/dev/null 2>&1;
       else
        kill -9 ${pid} >/dev/null 2>&1;

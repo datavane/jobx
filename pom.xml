@@ -652,25 +652,6 @@
             </plugin>
 
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>2.11</version>
-                <executions>
-                    <execution>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>checkstyle</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <consoleOutput>true</consoleOutput>
-                    <enableRSS>false</enableRSS>
-                    <configLocation>/checkstyle.xml</configLocation>
-                </configuration>
-            </plugin>
-
-            <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.1</version>
                 <configuration>
