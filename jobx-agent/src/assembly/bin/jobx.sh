@@ -195,10 +195,10 @@ if [ $? -ne 1 ];then
 fi
 
 #check openjdk
-if [ "`${RUNJAVA} -version 2>&1 | head -1|grep "openjdk"|wc -l`"x == "1"x ]; then
-  echo_r "ERROR: please uninstall OpenJDK and install jdk first"
-  exit 1;
-fi
+#if [ "`${RUNJAVA} -version 2>&1 | head -1|grep "openjdk"|wc -l`"x == "1"x ]; then
+#  echo_r "ERROR: please uninstall OpenJDK and install jdk first"
+#  exit 1;
+#fi
 
 if [ -z "$JOBX_OUT" ] ; then
   JOBX_OUT="$JOBX_BASE"/logs/jobx.out
@@ -353,7 +353,7 @@ case "$1" in
         fi
 
         touch "$JOBX_OUT"
-        eval $_NOHUP "\"$RUNJAVA\"" \
+        eval "\"$RUNJAVA\"" \
         -classpath "\"$CLASSPATH\"" \
         -Djobx.home="$JOBX_HOME" \
         -Djobx.pid="$JOBX_PID" \
@@ -361,7 +361,7 @@ case "$1" in
         -Djobx.port="$JOBX_PORT" \
         -Djobx.host="$JOBX_HOST" \
         -Djobx.password="$JOBX_PASSWORD" \
-        ${MAIN} start >> $JOBX_OUT 2>&1 "&";
+        ${MAIN} start
 
       if [ ! -z "$JOBX_PID" ]; then
          echo +x $! > "$JOBX_PID"

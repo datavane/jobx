@@ -1,0 +1,33 @@
+version: 3
+services:
+  jobx-agent:
+    build:
+      context: .
+      dockerfile: docker/jobx-agent/Dockerfile
+    volumes:
+    - ./config/jobx-agent/conf.properties:/working/jobx-agent/target/jobx-agent/conf/conf.properties
+    - ./config/jobx-agent/log4j.properties:/working/jobx-agent/target/jobx-agent/conf/log4j.properties
+    ports:
+    - 1577
+  jobx-server:
+    build:
+      context: .
+      dockerfile: docker/jobx-server/Dockerfile
+    volumes:
+    - ./config/jobx-server/application.yml:/working/jobx-server/target/jobx-server/conf/application.yml
+    - ./config/jobx-server/logback.xml:/working/jobx-server/target/jobx-server/conf/logback.xml
+    ports:
+    - 9090
+  jobx-service:
+    build:
+      context: .
+      dockerfile: docker/jobx-service/Dockerfile
+    volumes:
+    - ./config/jobx-service/application.yml:/working/jobx-service/jobx-service-provider/target/jobx-service-provider/conf/application.yml
+    - ./config/jobx-service/logback.xml:/working/jobx-service/jobx-service-provider/target/jobx-service-provider/conf/logback.xml
+  zookeeper:
+    image: zookeeper:3.4.13
+  redis:
+    image: redis:5.0.3
+  mysql:
+    image: mysql:5.7.24

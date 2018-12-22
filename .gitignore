@@ -1,4 +1,3 @@
-*/target
 .idea/*
 *.iml
 .metadata/*
@@ -10,3 +9,11 @@
 .idea/
 opencron-server/src/main/webapp/upload/
 opencron-server/webapp/
+jobx-common/target/*
+jobx-server/target/*
+jobx-agent/target/*
+jobx-api/target/*
+jobx-examples/target/*
+jobx-registry/target/*
+jobx-rpc/target/*
+jobx-service/jobx-service-provider/target/*

@@ -1,0 +1,82 @@
+---
+spring:
+  aop:
+    proxy-target-class: true
+    auto: true
+  application:
+    name: jobX
+  datasource:
+    druid:
+      max-pool-prepared-statement-per-connection-size: 20
+      min-idle: 1
+      max-open-prepared-statements: 50
+      max-active: 100
+      test-while-idle: true
+      time-between-eviction-runs-millis: 60000
+      validation-query: select 'x'
+      filters: stat,log4j,config
+      max-wait: 60000
+      url: jdbc:mysql://mysql:3306/jobx?useUnicode=true&characterEncoding=utf8&useCursorFetch=true&autoReconnect=true&failOverReadOnly=false&useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai
+      password: 123322242
+      test-on-borrow: false
+      pool-prepared-statements: true
+      initial-size: 1
+      min-evictable-idle-time-millis: 300000
+      driver-class-name: com.mysql.jdbc.Driver
+      test-on-return: false
+      username: root
+    name: jobx
+    type: com.alibaba.druid.pool.DruidDataSource
+management:
+  endpoint:
+    dubbo-configs:
+      enabled: true
+    dubbo:
+      enabled: true
+    dubbo-services:
+      enabled: true
+    dubbo-properties:
+      enabled: true
+    dubbo-references:
+      enabled: true
+    dubbo-shutdown:
+      enabled: true
+  health:
+    dubbo:
+      status:
+        defaults: memory
+        extras: load,threadpool
+mybatis:
+  configuration:
+    default-fetch-size: 500
+    default-statement-timeout: 80
+    map-underscore-to-camel-case: true
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.jobxhub.service.entity
+dubbo:
+  registry:
+    address: zookeeper://zookeeper:2181
+    id: my-register
+    timeout: 30000
+  protocol:
+    port: 12345
+    name: dubbo
+    threads: 10
+    id: dubbo
+    status: server
+  application:
+    owner: benjobs,jobxhub
+    qos-enable: false
+    organization: jobxhub.com
+    name: jobx-provider
+    id: jobx-provider
+  qos:
+    port: 22223
+  provider:
+    server: netty4
+jobx:
+  cluster: false
+  registry: zookeeper://zookeeper:2181
+  monitor-port: 17502
+  cached: memcached
+  version: 1.2.0

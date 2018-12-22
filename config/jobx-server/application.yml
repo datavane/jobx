@@ -1,0 +1,33 @@
+---
+spring:
+  application:
+    name: jobx
+  redis:
+    database: 4
+    host: redis
+    port: 6379
+    password: null
+  session:
+    store-type: redis
+server:
+  port: 9090
+management:
+  server:
+    port: 9091
+dubbo:
+  registry:
+    address: zookeeper://zookeeper:2181
+    id: my-register
+    timeout: 30000
+  protocol:
+    port: 12345
+    name: dubbo
+    id: dubbo
+    status: client
+  application:
+    name: jobx-server
+    id: jobx-server
+  qos:
+    port: 22223
+  consumer:
+    client: netty4

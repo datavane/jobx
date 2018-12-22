@@ -1,0 +1,7 @@
+.gitattributes
+.gitignore
+header.txt
+LICENSE.txt
+README.md
+.idea
+.mvn
