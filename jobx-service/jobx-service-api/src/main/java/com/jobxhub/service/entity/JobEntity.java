@@ -22,6 +22,8 @@
 
 package com.jobxhub.service.entity;
 
+import com.jobxhub.service.model.Agent;
+import com.jobxhub.service.model.User;
 import lombok.Data;
 
 import javax.persistence.Transient;
@@ -30,63 +32,131 @@ import java.util.Date;
 
 @Data
 public class JobEntity implements Serializable {
+
+    /**
+     * 主键ID
+     */
     private Long jobId;
-    private Long agentId;
 
+    /**
+     * 作业名称
+     */
     private String jobName;
-    private String cronExp;
 
     /**
-     * 当前作业的执行身份
-     */
-    private String execUser;
-    private String command;
-
-    private String comment;
-    private String successExit;
-    private Long userId;
-    private Date updateTime;
-    private Integer redo;
-    private Integer runCount;
-
-    /**
-     * job是否是分布式部署
-     */
-    private Boolean cluster = false;
-
-    /**
-     * 0:作业
-     * 1:工作流
+     * 作业类型
      */
     private Integer jobType;
 
     /**
-     * 创建类型(1:正常简单任务创建,2:工作流子任务创建)
+     * 时间表达式
+     */
+    private String cronExp;
+
+    /**
+     * 执行身份
+     */
+    private String execUser;
+
+    /**
+     * 执行命令
+     */
+    private String command;
+
+    /**
+     * 描述信息
+     */
+    private String comment;
+
+    /**
+     * 任务成功code
+     */
+    private String successExit;
+
+    /**
+     * 重跑次数,0:不重跑
+     */
+    private Integer runCount;
+
+    /**
+     * 作业创建类型
      */
     private Integer createType;
 
-    private Boolean warning;
+    /**
+     * 任务是否托管
+     */
+    private Boolean pause;
 
-    private String mobile;
+    /**
+     * 任务失败是否告警
+     */
+    private Boolean alarm;
 
-    //任务是否暂停(true:已经暂停,false:未暂停)
-    private Boolean pause = false;
+    /**
+     * 钉钉机器人URL
+     */
+    private String alarmDingURL;
+    /**
+     * 钉钉@用户手机号
+     */
+    private String alarmDingAtUser;
 
-    private String email;
+    /**
+     * 收件邮箱地址
+     */
+    private String alarmEmail;
 
-    //运行超时的截止时间
+    /**
+     * 短信通道商URL
+     */
+    private String alarmSms;
+
+    /**
+     * 短信模板
+     */
+    private String alarmSmsTemplate;
+
+    /**
+     * 超时时间
+     */
     private Integer timeout;
 
-    private String token;//api调用的认证token
+    /**
+     * 任务所属的用户
+     */
+    private Long userId;
+
+    /**
+     * 该任务运作在哪台agent上
+     */
+    private Long agentId;
+
+
+    private Date updateTime;
 
     @Transient
     private String agentName;
 
-    @Transient
-    private String operateUname;
+    /**
+     * 回调URL
+     */
+    private String callbackURL;
 
-    private Integer alarmCode;//告警码
-    private Integer alarmType;//告警方式
+    /**
+     * api调用的认证token
+     */
+    private String token;
+
+    private String sn;
+
+    @Transient
+    private Agent agent;
+
+    @Transient
+    private User user;
+
+    private String operateUname;
 
 
     public void setExecUser(String execUser) {

@@ -55,6 +55,11 @@ public class JobController {
         return RestResult.ok(jobList);
     }
 
+    @PostMapping("/addJob")
+    public RestResult addJob(Job job) {
+        jobService.addJob(job);
+        return RestResult.ok(job);
+    }
 
     @PostMapping("/addDependency")
     public RestResult addDependency(Job job) {
