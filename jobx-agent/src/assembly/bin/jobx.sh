@@ -355,11 +355,14 @@ case "$1" in
            fi
         fi
 
-        REDIRECT_LOG=">> ${JOBX_OUT} 2>&1 \"&\""
-        if [[ ! "$JOBX_DAEMON" ]]; then
+
+        if [[ "$JOBX_DAEMON"x == "daemon" ]]; then
+            REDIRECT_LOG=">> ${JOBX_OUT} 2>&1 \"&\""
+        else
             _NOHUP=""
             REDIRECT_LOG=""
         fi
+
         touch "$JOBX_OUT"
 
         eval ${_NOHUP} "\"${RUNJAVA}\"" \
