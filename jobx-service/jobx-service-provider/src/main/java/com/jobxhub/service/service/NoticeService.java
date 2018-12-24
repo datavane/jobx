@@ -102,10 +102,10 @@ public class NoticeService {
     }
 
     public void notice(Job job, String msg) {
-        if (!job.getWarning()) return;
+        if (!job.getAlarm()) return;
 
         //当前的单一任务只运行一次未设置重跑.
-        if (job.getRedo() == 0 || job.getRunCount() == 0) {
+        if (job.getRunCount() == 0) {
             Agent agent = job.getAgent();
             String message = "执行任务:" + job.getCommand() + "(" + job.getCronExp() + ")失败,%s!";
             if (msg == null) {

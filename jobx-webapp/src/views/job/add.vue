@@ -252,7 +252,7 @@
   import cron from '@/components/Cron'
   import {allAgent} from '@/api/agent'
   import {execUser} from '@/api/user'
-  import {addJob, getJob, addDependency, getDependency} from '@/api/job'
+  import {addJob, addWorkFlow,getJob, addDependency, getDependency} from '@/api/job'
   import CodeMirror from 'codemirror'
   import 'codemirror/addon/lint/lint.css'
   import 'codemirror/lib/codemirror.css'
@@ -316,12 +316,7 @@
             alarmType: [],
             runCount: 0,
             timeout: 0,
-            cronExp: null,
-            alarmDingURL: null,
-            alarmDingAtUser: null,
-            alarmEmail: null,
-            alarmSms: null,
-            alarmSmsTemplate: null,
+            cronExp: null
           },
           workFlow: {
             count: [{}],
@@ -476,12 +471,25 @@
       onSubmit(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            alert('submit!')
+            //提交简单任务
+            if (this.form.job.jobType === 0) {
+              addJob(this.form.job).then(response =>{
+
+
+              })
+            } else {
+              this.submitWorkFlow
+            }
           } else {
             console.log('error submit!!')
             return false
           }
         });
+      },
+
+      //提交一个复杂的工作流任务
+      submitWorkFlow() {
+
       },
 
       onReset(formName) {

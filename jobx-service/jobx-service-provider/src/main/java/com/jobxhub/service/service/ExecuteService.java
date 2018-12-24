@@ -32,7 +32,6 @@ import com.jobxhub.rpc.InvokeCallback;
 import com.jobxhub.service.api.AgentService;
 import com.jobxhub.service.api.JobService;
 import com.jobxhub.service.api.RecordService;
-import com.jobxhub.service.util.Parser;
 import com.jobxhub.service.job.JobXInvoker;
 import com.jobxhub.service.model.Agent;
 import com.jobxhub.service.model.Job;
@@ -89,31 +88,28 @@ public class ExecuteService {
      * 单一任务执行过程
      */
     private void executeSimpleJob(final Job job, final ExecType execType) {
-        threadPoolExecutor.submit(new Runnable() {
-            @Override
-            public void run() {
-                final Record record = new Record(job, execType,JobType.SIMPLE);
-                record.setCommand(Parser.parse(job));
-                InvokeCallback invokeCallback = new ExecuteCallback(job,execType,record);
-                try {
-                    checkPing(job, record);
-                    Agent agent = job.getAgent();
-                    Request request = Request.request(agent.getHost(),
-                            agent.getPort(),
-                            Action.EXECUTE,
-                            agent.getPassword(),
-                            job.getTimeout(),
-                            agent.getProxyId());
-                    request.putParam(Constants.PARAM_COMMAND_KEY, record.getCommand());
-                    request.putParam(Constants.PARAM_PID_KEY, record.getPid());
-                    request.putParam(Constants.PARAM_SUCCESSEXIT_KEY, job.getSuccessExit());
-                    request.putParam(Constants.PARAM_TIMEOUT_KEY, job.getTimeout());
-                    request.putParam(Constants.PARAM_EXECUSER_KEY, job.getExecUser());
-                    caller.sentAsync(request,invokeCallback);
-                } catch (Exception e) {
-                    if ( !(e instanceof PingException) ) {
-                        invokeCallback.caught(e);
-                    }
+        threadPoolExecutor.submit(() -> {
+            final Record record = new Record(job, execType,JobType.SIMPLE);
+            record.setCommand(job.getCommand());
+            InvokeCallback invokeCallback = new ExecuteCallback(job,execType,record);
+            try {
+                checkPing(job, record);
+                Agent agent = job.getAgent();
+                Request request = Request.request(agent.getHost(),
+                        agent.getPort(),
+                        Action.EXECUTE,
+                        agent.getPassword(),
+                        job.getTimeout(),
+                        agent.getProxyId());
+                request.putParam(Constants.PARAM_COMMAND_KEY, record.getCommand());
+                request.putParam(Constants.PARAM_PID_KEY, record.getPid());
+                request.putParam(Constants.PARAM_SUCCESSEXIT_KEY, job.getSuccessExit());
+                request.putParam(Constants.PARAM_TIMEOUT_KEY, job.getTimeout());
+                request.putParam(Constants.PARAM_EXECUSER_KEY, job.getExecUser());
+                caller.sentAsync(request,invokeCallback);
+            } catch (Exception e) {
+                if ( !(e instanceof PingException) ) {
+                    invokeCallback.caught(e);
                 }
             }
         });
@@ -137,16 +133,13 @@ public class ExecuteService {
             Agent agent = agentService.getAgent(Long.parseLong(agentId));
             final Job job = new Job(userId, command, agent);
             job.setSuccessExit(ExitCode.SUCCESS_EXIT.getValue().toString());
-            exec.submit(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        semaphore.acquire();
-                        executeSimpleJob(job, ExecType.BATCH);
-                        semaphore.release();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+            exec.submit(() -> {
+                try {
+                    semaphore.acquire();
+                    executeSimpleJob(job, ExecType.BATCH);
+                    semaphore.release();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             });
         }

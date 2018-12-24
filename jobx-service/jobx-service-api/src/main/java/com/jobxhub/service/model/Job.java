@@ -32,78 +32,158 @@ import com.jobxhub.service.entity.JobEntity;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
 
+import javax.persistence.Transient;
 import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 @Data
 public class Job implements Serializable {
 
-    private Long jobId;
-    private Long agentId;
-    private String agentName;
-    private String jobName;
-    private String cronExp;
     /**
-     * 当前作业的执行身份
+     * 主键ID
+     */
+    private Long jobId;
+
+    /**
+     * 作业名称
+     */
+    private String jobName;
+
+    /**
+     * 作业类型
+     */
+    private Integer jobType;
+
+    /**
+     * 时间表达式
+     */
+    private String cronExp;
+
+    /**
+     * 执行身份
      */
     private String execUser;
+
+    /**
+     * 执行命令
+     */
     private String command;
+
+    /**
+     * 描述信息
+     */
     private String comment;
+
+    /**
+     * 任务成功code
+     */
     private String successExit;
-    private Long userId;
-    private Date updateTime;
-    private Integer redo;
+
+    /**
+     * 重跑次数,0:不重跑
+     */
     private Integer runCount;
-    private Integer jobType;
+
+    /**
+     * 作业创建类型
+     */
     private Integer createType;
-    private Boolean warning;
-    private String mobile;
+
+    /**
+     * 任务是否托管
+     */
     private Boolean pause;
-    private String email;
+
+    /**
+     * 任务失败是否告警
+     */
+    private Boolean alarm;
+
+    /**
+     * 告警通知方式...
+     */
+    private Integer[] alarmType;
+    /**
+     * 钉钉机器人URL
+     */
+    private String alarmDingURL;
+    /**
+     * 钉钉@用户手机号
+     */
+    private String alarmDingAtUser;
+
+    /**
+     * 收件邮箱地址
+     */
+    private String alarmEmail;
+
+    /**
+     * 短信通道商URL
+     */
+    private String alarmSms;
+
+    /**
+     * 短信模板
+     */
+    private String alarmSmsTemplate;
+
+    /**
+     * 超时时间
+     */
+    private Integer timeout;
+
+    /**
+     * 任务所属的用户
+     */
+    private Long userId;
+
+    /**
+     * 该任务运作在哪台agent上
+     */
+    private Long agentId;
+
+    @Transient
+    private String agentName;
+
+    /**
+     * 回调URL
+     */
     private String callbackURL;
 
-    //job是否分布式部署
-    private Boolean cluster = false;
+    /**
+     * api调用的认证token
+     */
+    private String token;
 
-    //job分布式在哪些机器上
-    private List<Agent> clusterAgent;
-
-    //运行超时的截止时间
-    private Integer timeout;
-    private String token;//api调用的认证token
     private String sn;
+
+    @Transient
     private Agent agent;
+
+    @Transient
     private User user;
+
     private String operateUname;
 
-
-    private String inputParam;//手动触发时的参数
-
-    private Integer alarmCode;//通知类型
-    private Integer alarmType;//通知方式
+    /**
+     * 手动触发时的动态参数
+     */
+    private String runParam;
 
     public Job() {
 
     }
 
-    public static Function<JobEntity,Job> transferModel = new Function<JobEntity, Job>() {
-        @Override
-        public Job apply(JobEntity input) {
-            Job job = new Job();
-            BeanUtils.copyProperties(input,job);
-            return job;
-        }
+    public static Function<JobEntity, Job> transferModel = input -> {
+        Job job = new Job();
+        BeanUtils.copyProperties(input, job);
+        return job;
     };
 
-    public static Function<Job,JobEntity> transferEntity = new Function<Job,JobEntity>() {
-        @Override
-        public JobEntity apply(Job input) {
-            JobEntity jobEntity = new JobEntity();
-            BeanUtils.copyProperties(input,jobEntity);
-            return jobEntity;
-        }
+    public static Function<Job, JobEntity> transferEntity = input -> {
+        JobEntity jobEntity = new JobEntity();
+        BeanUtils.copyProperties(input, jobEntity);
+        return jobEntity;
     };
 
     public Job(Long userId, String command, Agent agent) {
@@ -113,24 +193,21 @@ public class Job implements Serializable {
         this.command = command;
         this.agent = agent;
         this.agentId = agent.getAgentId();
-        this.redo = 0;
         this.runCount = 0;
     }
 
     public void callBack(Response response, Constants.ExecType execType) {
         if (execType.getStatus().equals(Constants.ExecType.API.getStatus())) {
-            if (CommonUtils.notEmpty(this.getCallbackURL())) {
-                try {
-                    Map<String,Object> params = new HashMap<String, Object>(0);
-                    params.put("jobId", this.getJobId());
-                    params.put("startTime", response.getStartTime());
-                    params.put("endTime", response.getEndTime());
-                    params.put("success", response.isSuccess());
-                    params.put("message", response.getMessage());
-                    HttpClientUtils.httpPostRequest(this.getCallbackURL(), params);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+            if (CommonUtils.notEmpty(this.getCallbackURL())) try {
+                Map<String, Object> params = new HashMap<>(0);
+                params.put("jobId", this.getJobId());
+                params.put("startTime", response.getStartTime());
+                params.put("endTime", response.getEndTime());
+                params.put("success", response.isSuccess());
+                params.put("message", response.getMessage());
+                HttpClientUtils.httpPostRequest(this.getCallbackURL(), params);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }

@@ -20,6 +20,8 @@ public interface JobService {
 
     void addDependency(Job job);
 
+    void addJob(Job job);
+
     List<Job> getJobByUser(Long userId,Integer createType);
 
 }

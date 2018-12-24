@@ -30,53 +30,53 @@ RES="\E[0m";
 
 echo_r () {
     # Color red: Error, Failed
-    [ $# -ne 1 ] && return 1
+    [[ $# -ne 1 ]] && return 1
     printf "[${BLUE_COLOR}jobx${RES}] ${RED_COLOR}$1${RES}\n"
 }
 
 echo_g () {
     # Color green: Success
-    [ $# -ne 1 ] && return 1
+    [[ $# -ne 1 ]] && return 1
     printf "[${BLUE_COLOR}jobx${RES}] ${GREEN_COLOR}$1${RES}\n"
 }
 
 echo_y () {
     # Color yellow: Warning
-    [ $# -ne 1 ] && return 1
+    [[ $# -ne 1 ]] && return 1
     printf "[${BLUE_COLOR}jobx${RES}] ${YELLOW_COLOR}$1${RES}\n"
 }
 
 echo_w () {
     # Color yellow: White
-    [ $# -ne 1 ] && return 1
+    [[ $# -ne 1 ]] && return 1
     printf "[${BLUE_COLOR}jobx${RES}] ${WHITE_COLOR}$1${RES}\n"
 }
 
-if [ -z "$JAVA_HOME" -a -z "$JRE_HOME" ]; then
+if [[ -z "$JAVA_HOME" && -z "$JRE_HOME" ]]; then
     echo_r "Neither the JAVA_HOME nor the JRE_HOME environment variable is defined"
     echo_r "At least one of these environment variable is needed to run this program"
     exit 1
 fi
 
 # Set standard commands for invoking Java, if not already set.
-if [ -z "$RUNJAVA" ]; then
+if [[ -z "$RUNJAVA" ]]; then
   RUNJAVA="$JAVA_HOME"/bin/java
 fi
 
-if [ -z "$RUNJAR" ]; then
+if [[ -z "$RUNJAR" ]]; then
   RUNJAR="$JAVA_HOME"/bin/jar
 fi
 
 #check java exists.
 $RUNJAVA >/dev/null 2>&1
 
-if [ $? -ne 1 ];then
+if [[ $? -ne 1 ]];then
   echo_r "ERROR: java is not install,please install java first!"
   exit 1;
 fi
 
 #check openjdk
-if [ "`${RUNJAVA} -version 2>&1 | head -1|grep "openjdk"|wc -l`"x == "1"x ]; then
+if [[ "`${RUNJAVA} -version 2>&1 | head -1|grep "openjdk"|wc -l`"x == "1"x ]]; then
   echo_r "ERROR: please uninstall OpenJDK and install jdk first"
   exit 1;
 fi
@@ -94,7 +94,7 @@ esac
 # resolve links - $0 may be a softlink
 PRG="$0"
 
-while [ -h "$PRG" ]; do
+while [[ -h "$PRG" ]]; do
   ls=`ls -ld "$PRG"`
   link=`expr "$ls" : '.*-> \(.*\)$'`
   if expr "$link" : '/.*' > /dev/null; then
@@ -123,16 +123,16 @@ CONFIG_PATH=${DEPLOY_PATH}/WEB-INF/classes/config.properties
 ###############################################################################################
 
 #先检查dist下是否有war包
-if [ ! -f "${WORKDIR}/${APP_WAR_NAME}" ] ; then
+if [[ ! -f "${WORKDIR}/${APP_WAR_NAME}" ]] ; then
     #dist下没有war包则检查server的target下是否有war包.
-   if [ ! -f "${MAVEN_TARGET_WAR}" ] ; then
+   if [[ ! -f "${MAVEN_TARGET_WAR}" ]] ; then
       echo_w "[JobX] please build project first!"
       exit 0;
    else
       cp ${MAVEN_TARGET_WAR} ${WORKDIR};
    fi
 fi
-if [ ! -f "${DEPLOY_PATH}" ] ; then
+if [[ ! -f "${DEPLOY_PATH}" ]] ; then
     mkdir -p ${DEPLOY_PATH}
     # unpackage war to dist
     cp ${WORKDIR}/${APP_WAR_NAME} ${DEPLOY_PATH} &&
@@ -142,7 +142,7 @@ if [ ! -f "${DEPLOY_PATH}" ] ; then
 fi
 
 # Add jars to classpath
-if [ ! -z "$CLASSPATH" ] ; then
+if [[ ! -z "$CLASSPATH" ]] ; then
   CLASSPATH="$CLASSPATH":
 fi
 
@@ -153,13 +153,13 @@ done
 CLASSPATH="$CLASSPATH":${DEPLOY_PATH}/WEB-INF/classes
 
 #default launcher
-[ -z "${JOBX_LAUNCHER}" ] && JOBX_LAUNCHER="tomcat";
+[[ -z "${JOBX_LAUNCHER}" ]] && JOBX_LAUNCHER="tomcat";
 
 #server'port
-if [ $# -gt 0 ] ;then
+if [[ $# -gt 0 ]] ;then
   JOBX_PORT=$1
-  if [ "$JOBX_PORT" -gt 0 ] 2>/dev/null ;then
-      if [ $JOBX_PORT -lt 0 ] || [ $JOBX_PORT -gt 65535 ];then
+  if [[ "$JOBX_PORT" -gt 0 ]] 2>/dev/null ;then
+      if [[ ${JOBX_PORT} -lt 0 ]] || [[ ${JOBX_PORT} -gt 65535 ]];then
          echo_r "server'port error,muse be between 0 and 65535!"
       fi
   else
@@ -167,15 +167,15 @@ if [ $# -gt 0 ] ;then
       exit 1;
   fi
 fi
-[ -z "${JOBX_PORT}" ] && JOBX_PORT="20501";
+[[ -z "${JOBX_PORT}" ]] && JOBX_PORT="20501";
 
 #start server....
 printf "[${BLUE_COLOR}jobx${RES}] ${WHITE_COLOR} server Starting @ [${GREEN_COLOR}${JOBX_PORT}${RES}].... ${RES}\n"
 
 MAIN="com.jobxhub.server.JobXServer"
 cd ${DEPLOY_PATH}
-eval "$RUNJAVA" \
-        -classpath "$CLASSPATH" \
+eval "${RUNJAVA}" \
+        -classpath "${CLASSPATH}" \
         -Dserver.launcher=${JOBX_LAUNCHER} \
         -Dserver.port=${JOBX_PORT} \
         ${MAIN} $1 >> /dev/null 2>&1 &
