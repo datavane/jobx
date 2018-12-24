@@ -2,8 +2,8 @@
   "name": "jobx-webapp",
   "version": "1.2.0",
   "license": "MIT",
-  "description": "JobX webapp",
-  "author": "benjobs <benjobs@11.com>",
+  "description": "JobX Webapp",
+  "author": "benjobs <benjobs@qq.com>",
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
