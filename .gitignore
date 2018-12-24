@@ -17,3 +17,4 @@ jobx-examples/target/*
 jobx-registry/target/*
 jobx-rpc/target/*
 jobx-service/jobx-service-provider/target/*
+data/*

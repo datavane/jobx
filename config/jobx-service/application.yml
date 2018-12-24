@@ -55,7 +55,7 @@ mybatis:
   type-aliases-package: com.jobxhub.service.entity
 dubbo:
   registry:
-    address: zookeeper://zookeeper:2181
+    address: zookeeper://zookeeper1:2181?bakup=zookeeper2:2181,zookeeper3:2181
     id: my-register
     timeout: 30000
   protocol:
@@ -76,7 +76,7 @@ dubbo:
     server: netty4
 jobx:
   cluster: false
-  registry: zookeeper://zookeeper:2181
+  registry: zookeeper://zookeeper1:2181?bakup=zookeeper2:2181,zookeeper3:2181
   monitor-port: 17502
   cached: memcached
   version: 1.2.0
