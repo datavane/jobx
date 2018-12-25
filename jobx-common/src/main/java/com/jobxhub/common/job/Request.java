@@ -91,8 +91,8 @@ public class Request implements Serializable  {
     }
 
     public Integer getTimeOut() {
-        //如果timeOut为设置,则返回24小时(1440分钟)
-        if ( timeOut == null || timeOut<=0 ) {
+        //如果timeOut未设置,则返回24小时(1440分钟)
+        if ( timeOut == null || timeOut<0 ) {
             return 60 * 24;
         }
         return timeOut;
