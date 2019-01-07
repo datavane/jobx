@@ -14,11 +14,11 @@
         <result column="exec_user" property="execUser"/>
         <result column="cron_exp" property="cronExp"/>
         <result column="alarm" property="alarm"/>
-        <result column="alarmEmail" property="alarm_email"/>
-        <result column="alarmDingURL" property="alarm_dingURL"/>
-        <result column="alarmDingAtUser" property="alarm_ding_user"/>
-        <result column="alarmSms" property="alarm_sms"/>
-        <result column="alarmSmsTemplate" property="alarm_sms_template"/>
+        <result column="alarm_email" property="alarmEmail"/>
+        <result column="alarm_ding_url" property="alarmDingURL"/>
+        <result column="alarm_ding_user" property="alarmDingAtUser"/>
+        <result column="alarm_sms" property="alarmSms"/>
+        <result column="alarm_sms_template" property="alarmSmsTemplate"/>
         <result column="pause" property="pause"/>
         <result column="run_count" property="runCount"/>
         <result column="success_exit" property="successExit"/>
@@ -41,7 +41,7 @@
         j.cron_exp,
         j.alarm,
         j.alarm_email,
-        j.alarm_dingURL,
+        j.alarm_ding_url,
         j.alarm_ding_user,
         j.alarm_sms,
         j.alarm_sms_template,
@@ -96,13 +96,10 @@
     <select id="getByPageBean" resultMap="jobEntity">
         select
         <include refid="query_Job"/>,
-        a.agent_name,
-        u.user_name
+        a.agent_name
         from t_job as j
         inner join t_agent as a
         on j.agent_id = a.agent_id
-        inner join t_user as u
-        on j.user_id = u.user_id
         where create_type = 1
         <if test="pager.filter.keys.size>0">
             <if test="pager.filter.job.userId != null">
@@ -216,7 +213,7 @@
                 alarm_email,
             </if>
             <if test="alarmDingURL != null">
-                alarm_dingURL,
+                alarm_ding_url,
             </if>
             <if test="alarmDingAtUser != null">
                 alarm_ding_user,
@@ -251,67 +248,67 @@
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="agentId != null">
-                agentId,
+                #{agentId},
             </if>
             <if test="userId != null">
-                userId,
+                #{userId},
             </if>
             <if test="jobType != null">
-                jobType,
+                #{jobType},
             </if>
             <if test="jobName != null">
-                jobName,
+                #{jobName},
             </if>
             <if test="command != null">
-                command,
+                #{command},
             </if>
             <if test="comment != null">
-                comment,
+                #{comment},
             </if>
             <if test="execUser != null">
-                execUser,
+                #{execUser},
             </if>
             <if test="cronExp != null">
-                cronExp,
+                #{cronExp},
             </if>
             <if test="alarm != null">
-                alarm,
+                #{alarm},
             </if>
             <if test="alarmEmail != null">
-                alarmEmail,
+                #{alarmEmail},
             </if>
             <if test="alarmDingURL != null">
-                alarmDingURL,
+                #{alarmDingURL},
             </if>
             <if test="alarmDingAtUser != null">
-                alarmDingAtUser,
+                #{alarmDingAtUser},
             </if>
             <if test="alarmSms != null">
-                alarmSms,
+                #{alarmSms},
             </if>
             <if test="alarmSmsTemplate != null">
-                alarmSmsTemplate,
+                #{alarmSmsTemplate},
             </if>
             <if test="pause != null">
-                pause,
+                #{pause},
             </if>
             <if test="runCount != null">
-                runCount,
+                #{runCount},
             </if>
             <if test="successExit != null">
-                successExit,
+                #{successExit},
             </if>
             <if test="timeout != null">
-                timeout,
+                #{timeout},
             </if>
             <if test="token != null">
-                token,
+                #{token},
             </if>
             <if test="updateTime != null">
-                updateTime,
+                #{updateTime},
             </if>
             <if test="createType != null">
-                createType
+                #{createType}
             </if>
         </trim>
     </insert>

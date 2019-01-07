@@ -313,6 +313,7 @@
         form: {//绑定form表单的数据
           job: {
             jobType: 0,
+            alarm:1,
             alarmType: [],
             runCount: 0,
             timeout: 0,
@@ -367,7 +368,7 @@
     mounted() {
       this.control.command = this.handleCodeMirror(this.$refs.command)
       this.control.command.on('change', cm => {
-        this.form.job.command = cm.getValue
+        this.form.job.command = cm.getValue()
         this.$refs.jobForm.validateField('command')
       })
     },
@@ -561,7 +562,7 @@
           if (!this.control.command1) {
             this.control.command1 = this.handleCodeMirror(this.$refs.command1)
             this.control.command1.on('change', cm => {
-              this.form.dependency.command = cm.getValue
+              this.form.dependency.command = cm.getValue()
             })
           }
         })
@@ -625,14 +626,14 @@
       },
 
       'form.job.command': function (value) {
-        let codeValue = this.control.command.getValue
+        let codeValue = this.control.command.getValue()
         if (value !== codeValue) {
           this.control.command.setValue(value)
 
         }
       },
       'form.dependency.command': function (value) {
-        let codeValue = this.control.command1.getValue
+        let codeValue = this.control.command1.getValue()
         if (value !== codeValue) {
           this.control.command1.setValue(value)
         }
