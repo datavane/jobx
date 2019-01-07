@@ -7,7 +7,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>jobx-server</artifactId>
-    <name>jobx-server</name>
+    <name>${project.artifactId}</name>
 
     <dependencies>
 
