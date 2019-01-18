@@ -27,7 +27,7 @@ RES="\E[0m";
 
 echo_r () {
     # Color red: Error, Failed
-    [ $# -ne 1 ] && return 1
+    [[ $# -ne 1 ]] && return 1
     printf "[${BLUE_COLOR}jobx${RES}] ${RED_COLOR}$1${RES}\n"
 }
 
@@ -44,7 +44,7 @@ esac
 # resolve links - $0 may be a softlink
 PRG="$0"
 
-while [ -h "$PRG" ]; do
+while [[ -h "$PRG" ]]; do
   ls=`ls -ld "$PRG"`
   link=`expr "$ls" : '.*-> \(.*\)$'`
   if expr "$link" : '/.*' > /dev/null; then
@@ -72,9 +72,9 @@ CONFIG_PATH=${DEPLOY_PATH}/conf/conf.properties
 ###############################################################################################
 
 #先检查dist下是否有war包
-if [ ! -f "${WORKDIR}/${APP_TAR_NAME}" ] ; then
+if [[ ! -f "${WORKDIR}/${APP_TAR_NAME}" ]] ; then
     #dist下没有tar包则检查agent的target下是否有tar包.
-   if [ ! -f "${MAVEN_TARGET_TAR}" ] ; then
+   if [[ ! -f "${MAVEN_TARGET_TAR}" ]] ; then
       echo_r "[JobX] please build project first!"
       exit 0;
    else
@@ -82,7 +82,7 @@ if [ ! -f "${WORKDIR}/${APP_TAR_NAME}" ] ; then
    fi
 fi
 
-[ -d "${DEPLOY_PATH}" ] && rm -rf ${DEPLOY_PATH}/* || mkdir -p ${DEPLOY_PATH}
+[[ -d "${DEPLOY_PATH}" ]] && rm -rf ${DEPLOY_PATH}/* || mkdir -p ${DEPLOY_PATH}
 
 #untar..
 tar -xzvf ${WORKDIR}/${APP_TAR_NAME} && chmod +x ${DEPLOY_PATH}/bin/* >/dev/null 2>&1
@@ -90,14 +90,14 @@ tar -xzvf ${WORKDIR}/${APP_TAR_NAME} && chmod +x ${DEPLOY_PATH}/bin/* >/dev/null
 EXECUTABLE=${DEPLOY_PATH}/bin/startup.sh
 
 # Check that target executable exists
-if $os400; then
+if ${os400}; then
   # -x will Only work on the os400 if the files are:
   # 1. owned by the user
   # 2. owned by the PRIMARY group of the user
   # this will not work if the user belongs in secondary groups
   eval
 else
-  if [ ! -x "$EXECUTABLE" ]; then
+  if [[ ! -x "$EXECUTABLE" ]]; then
     echo "Cannot find $EXECUTABLE"
     echo "The file is absent or does not have execute permission"
     echo "This file is needed to run this program"

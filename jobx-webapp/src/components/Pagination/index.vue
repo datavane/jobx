@@ -89,16 +89,13 @@ export default {
 }
 </script>
 
-<style scoped>
+<style rel="stylesheet/scss" lang="scss" scoped>
 .pagination-container {
   background: #fff;
   padding: 32px 16px;
   float: right;
+  .pagination-container.hidden {
+    display: none;
+  }
 }
-.pagination-container.hidden {
-  display: none;
-}
-
-
-
 </style>

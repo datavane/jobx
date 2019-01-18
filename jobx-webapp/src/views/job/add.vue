@@ -252,7 +252,7 @@
   import cron from '@/components/Cron'
   import {allAgent} from '@/api/agent'
   import {execUser} from '@/api/user'
-  import {addJob, getJob, addDependency, getDependency} from '@/api/job'
+  import {addJob, addWorkFlow,getJob, addDependency, getDependency} from '@/api/job'
   import CodeMirror from 'codemirror'
   import 'codemirror/addon/lint/lint.css'
   import 'codemirror/lib/codemirror.css'
@@ -313,15 +313,11 @@
         form: {//绑定form表单的数据
           job: {
             jobType: 0,
+            alarm:1,
             alarmType: [],
             runCount: 0,
             timeout: 0,
-            cronExp: null,
-            alarmDingURL: null,
-            alarmDingAtUser: null,
-            alarmEmail: null,
-            alarmSms: null,
-            alarmSmsTemplate: null,
+            cronExp: null
           },
           workFlow: {
             count: [{}],
@@ -372,7 +368,7 @@
     mounted() {
       this.control.command = this.handleCodeMirror(this.$refs.command)
       this.control.command.on('change', cm => {
-        this.form.job.command = cm.getValue
+        this.form.job.command = cm.getValue()
         this.$refs.jobForm.validateField('command')
       })
     },
@@ -476,12 +472,25 @@
       onSubmit(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            alert('submit!')
+            //提交简单任务
+            if (this.form.job.jobType === 0) {
+              addJob(this.form.job).then(response =>{
+
+
+              })
+            } else {
+              this.submitWorkFlow
+            }
           } else {
             console.log('error submit!!')
             return false
           }
         });
+      },
+
+      //提交一个复杂的工作流任务
+      submitWorkFlow() {
+
       },
 
       onReset(formName) {
@@ -553,7 +562,7 @@
           if (!this.control.command1) {
             this.control.command1 = this.handleCodeMirror(this.$refs.command1)
             this.control.command1.on('change', cm => {
-              this.form.dependency.command = cm.getValue
+              this.form.dependency.command = cm.getValue()
             })
           }
         })
@@ -617,14 +626,14 @@
       },
 
       'form.job.command': function (value) {
-        let codeValue = this.control.command.getValue
+        let codeValue = this.control.command.getValue()
         if (value !== codeValue) {
           this.control.command.setValue(value)
 
         }
       },
       'form.dependency.command': function (value) {
-        let codeValue = this.control.command1.getValue
+        let codeValue = this.control.command1.getValue()
         if (value !== codeValue) {
           this.control.command1.setValue(value)
         }
@@ -635,10 +644,6 @@
 
 <style rel="stylesheet/scss" lang="scss" scoped>
 
-  body {
-    text-align: center;
-  }
-
   .steps-btn {
     margin-left: 200px;
   }
@@ -646,7 +651,7 @@
   .steps-form {
     position: static;
     padding: 20px;
-    width: 80%;
+    width: 90%;
     margin-left: 15%;
   }
 

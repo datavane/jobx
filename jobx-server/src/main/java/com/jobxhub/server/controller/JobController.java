@@ -21,7 +21,6 @@
 package com.jobxhub.server.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.jobxhub.common.Constants;
 import com.jobxhub.server.util.SessionUtils;
 import com.jobxhub.service.api.JobService;
 import com.jobxhub.service.model.Job;
@@ -54,6 +53,12 @@ public class JobController {
         User user = SessionUtils.getUser(session);
         List<Job> jobList = jobService.getJobByUser(user.getUserId(),createType);
         return RestResult.ok(jobList);
+    }
+
+    @PostMapping("/addJob")
+    public RestResult addJob(Job job) {
+        jobService.addJob(job);
+        return RestResult.ok(job);
     }
 
     @PostMapping("/addDependency")

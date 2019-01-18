@@ -2,30 +2,31 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.jobxhub.service.dao.JobDao">
-
-    <resultMap id="jobEntity" type="com.jobxhub.service.entity.JobEntity" >
-        <result column="job_id"         property="jobId"/>
-        <result column="agent_id"       property="agentId"/>
-        <result column="agent_name"     property="agentName"/>
-        <result column="user_id"        property="userId"/>
-        <result column="job_type"       property="jobType"/>
-        <result column="job_name"       property="jobName"/>
-        <result column="command"        property="command"/>
-        <result column="comment"        property="comment"/>
-        <result column="exec_user"      property="execUser"/>
-        <result column="cron_exp"       property="cronExp"/>
-        <result column="warning"        property="warning"/>
-        <result column="email"          property="email"/>
-        <result column="mobile"         property="mobile"/>
-        <result column="pause"          property="pause"/>
-        <result column="redo"           property="redo"/>
-        <result column="run_count"      property="runCount"/>
-        <result column="success_exit"   property="successExit"/>
-        <result column="timeout"        property="timeout"/>
-        <result column="token"          property="token"/>
-        <result column="update_time"    property="updateTime"/>
-        <result column="create_type"    property="createType"/>
-        <result column="user_name"      property="operateUname"/>
+    <resultMap id="jobEntity" type="com.jobxhub.service.entity.JobEntity">
+        <result column="job_id" property="jobId"/>
+        <result column="agent_id" property="agentId"/>
+        <result column="agent_name" property="agentName"/>
+        <result column="user_id" property="userId"/>
+        <result column="job_type" property="jobType"/>
+        <result column="job_name" property="jobName"/>
+        <result column="command" property="command"/>
+        <result column="comment" property="comment"/>
+        <result column="exec_user" property="execUser"/>
+        <result column="cron_exp" property="cronExp"/>
+        <result column="alarm" property="alarm"/>
+        <result column="alarm_email" property="alarmEmail"/>
+        <result column="alarm_ding_url" property="alarmDingURL"/>
+        <result column="alarm_ding_user" property="alarmDingAtUser"/>
+        <result column="alarm_sms" property="alarmSms"/>
+        <result column="alarm_sms_template" property="alarmSmsTemplate"/>
+        <result column="pause" property="pause"/>
+        <result column="run_count" property="runCount"/>
+        <result column="success_exit" property="successExit"/>
+        <result column="timeout" property="timeout"/>
+        <result column="token" property="token"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="create_type" property="createType"/>
+        <result column="user_name" property="operateUname"/>
     </resultMap>
 
     <sql id="query_Job">
@@ -38,11 +39,13 @@
         j.comment,
         j.exec_user,
         j.cron_exp,
-        j.warning,
-        j.email,
-        j.mobile,
+        j.alarm,
+        j.alarm_email,
+        j.alarm_ding_url,
+        j.alarm_ding_user,
+        j.alarm_sms,
+        j.alarm_sms_template,
         j.pause,
-        j.redo,
         j.run_count,
         j.success_exit,
         j.timeout,
@@ -54,7 +57,7 @@
     <select id="getAll" resultMap="jobEntity">
         select
         <include refid="query_Job"/>
-        from  t_job as j
+        from t_job as j
     </select>
 
     <select id="getById" parameterType="java.lang.Long" resultMap="jobEntity">
@@ -62,7 +65,7 @@
         <include refid="query_Job"/>,
         a.agent_name,
         a.host as host
-        from  t_job as j
+        from t_job as j
         inner join t_agent a
         on j.agent_id = a.agent_id
         where j.job_id=#{jobId}
@@ -71,14 +74,14 @@
     <select id="getByAgent" parameterType="java.lang.Long" resultMap="jobEntity">
         select
         <include refid="query_Job"/>
-        from  t_job as j
+        from t_job as j
         where j.agent_id = #{agentId}
     </select>
 
     <select id="getJobByUser" resultMap="jobEntity">
         select
         <include refid="query_Job"/>
-        from  t_job as j
+        from t_job as j
         where j.user_id=#{userId}
         and j.create_type=#{createType}
     </select>
@@ -86,20 +89,17 @@
     <select id="getScheduleJob" resultMap="jobEntity">
         select
         <include refid="query_Job"/>
-        from  t_job as j
+        from t_job as j
         where j.pause = 0
     </select>
 
     <select id="getByPageBean" resultMap="jobEntity">
         select
         <include refid="query_Job"/>,
-        a.agent_name,
-        u.user_name
-        from  t_job as j
+        a.agent_name
+        from t_job as j
         inner join t_agent as a
-        on  j.agent_id = a.agent_id
-        inner join t_user as u
-        on j.user_id = u.user_id
+        on j.agent_id = a.agent_id
         where create_type = 1
         <if test="pager.filter.keys.size>0">
             <if test="pager.filter.job.userId != null">
@@ -110,9 +110,6 @@
             </if>
             <if test="pager.filter.job.jobType != null">
                 and j.job_type = #{pager.filter.job.jobType}
-            </if>
-            <if test="pager.filter.job.redo != null">
-                and j.redo = #{pager.filter.job.redo}
             </if>
             <if test="pager.filter.job.jobName != null and pager.filter.job.jobName!='' ">
                 and j.job_name like concat('%',#{pager.filter.job.jobName},'%')
@@ -132,7 +129,7 @@
     </select>
 
     <select id="getCount" resultType="java.lang.Integer">
-        select count(1) from  t_job as j
+        select count(1) from t_job as j
         where create_type = 1
         <if test="filter.keys.size>0">
             <if test="filter.job.userId != null">
@@ -144,9 +141,6 @@
             <if test="filter.job.jobType != null">
                 and j.job_type = #{filter.job.jobType}
             </if>
-            <if test="filter.job.redo != null">
-                and j.redo = #{filter.job.redo}
-            </if>
             <if test=" filter.job.jobName != null and filter.job.jobName != '' ">
                 and j.job_name like concat('%',#{filter.job.jobName},'%')
             </if>
@@ -154,15 +148,16 @@
     </select>
 
     <select id="existsCount" resultType="java.lang.Integer">
-        select count(1) from  t_job as j
+        select count(1) from t_job as j
         where j.agent_id = #{agentId}
-        and j.job_name  = #{name}
+        and j.job_name = #{name}
         <if test="jobId!=null">
             and j.job_id <![CDATA[ <>  ]]>#{jobId}
         </if>
     </select>
 
-    <insert id="addDependency" parameterType="com.jobxhub.service.entity.JobEntity" useGeneratedKeys="true" keyProperty="jobId">
+    <insert id="addDependency" parameterType="com.jobxhub.service.entity.JobEntity" useGeneratedKeys="true"
+            keyProperty="jobId">
         insert into t_job (
             agent_id,
             user_id,
@@ -184,49 +179,138 @@
         )
     </insert>
 
-
     <insert id="save" parameterType="com.jobxhub.service.entity.JobEntity" useGeneratedKeys="true" keyProperty="jobId">
-        insert into t_job (
-            agent_id,
-            user_id,
-            job_type,
-            job_name,
-            command,
-            comment,
-            exec_user,
-            cron_exp,
-            warning,
-            email,
-            mobile,
-            pause,
-            redo,
-            run_count,
-            success_exit,
-            timeout,
-            token,
-            update_time,
-            create_type
-        ) values (
-            #{agentId},
-            #{userId},
-            #{jobType},
-            #{jobName},
-            #{command},
-            #{comment},
-            #{execUser},
-            #{cronExp},
-            #{warning},
-            #{email},
-            #{mobile},
-            #{pause},
-            #{redo},
-            #{runCount},
-            #{successExit},
-            #{timeout},
-            #{token},
-            #{updateTime},
-            #{createType}
-        )
+        insert into t_job
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="agentId != null">
+                agent_id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="jobType != null">
+                job_type,
+            </if>
+            <if test="jobName != null">
+                job_name,
+            </if>
+            <if test="command != null">
+                command,
+            </if>
+            <if test="comment != null">
+                comment,
+            </if>
+            <if test="execUser != null">
+                exec_user,
+            </if>
+            <if test="cronExp != null">
+                cron_exp,
+            </if>
+            <if test="alarm != null">
+                alarm,
+            </if>
+            <if test="alarmEmail != null">
+                alarm_email,
+            </if>
+            <if test="alarmDingURL != null">
+                alarm_ding_url,
+            </if>
+            <if test="alarmDingAtUser != null">
+                alarm_ding_user,
+            </if>
+            <if test="alarmSms != null">
+                alarm_sms,
+            </if>
+            <if test="alarmSmsTemplate != null">
+                alarm_sms_template,
+            </if>
+            <if test="pause != null">
+                pause,
+            </if>
+            <if test="runCount != null">
+                run_count,
+            </if>
+            <if test="successExit != null">
+                success_exit,
+            </if>
+            <if test="timeout != null">
+                timeout,
+            </if>
+            <if test="token != null">
+                token,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="createType != null">
+                create_type
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="agentId != null">
+                #{agentId},
+            </if>
+            <if test="userId != null">
+                #{userId},
+            </if>
+            <if test="jobType != null">
+                #{jobType},
+            </if>
+            <if test="jobName != null">
+                #{jobName},
+            </if>
+            <if test="command != null">
+                #{command},
+            </if>
+            <if test="comment != null">
+                #{comment},
+            </if>
+            <if test="execUser != null">
+                #{execUser},
+            </if>
+            <if test="cronExp != null">
+                #{cronExp},
+            </if>
+            <if test="alarm != null">
+                #{alarm},
+            </if>
+            <if test="alarmEmail != null">
+                #{alarmEmail},
+            </if>
+            <if test="alarmDingURL != null">
+                #{alarmDingURL},
+            </if>
+            <if test="alarmDingAtUser != null">
+                #{alarmDingAtUser},
+            </if>
+            <if test="alarmSms != null">
+                #{alarmSms},
+            </if>
+            <if test="alarmSmsTemplate != null">
+                #{alarmSmsTemplate},
+            </if>
+            <if test="pause != null">
+                #{pause},
+            </if>
+            <if test="runCount != null">
+                #{runCount},
+            </if>
+            <if test="successExit != null">
+                #{successExit},
+            </if>
+            <if test="timeout != null">
+                #{timeout},
+            </if>
+            <if test="token != null">
+                #{token},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime},
+            </if>
+            <if test="createType != null">
+                #{createType}
+            </if>
+        </trim>
     </insert>
 
     <update id="update" parameterType="com.jobxhub.service.entity.JobEntity">
@@ -240,10 +324,9 @@
             comment       =     #{comment},
             exec_user     =     #{execUser},
             cron_exp      =     #{cronExp},
-            warning       =     #{warning},
-            email         =     #{email},
+            alarm         =     #{alarm},
+            alarm_email   =     #{alarmEmail},
             mobile        =     #{mobile},
-            redo          =     #{redo},
             run_count     =     #{runCount},
             success_exit  =     #{successExit},
             timeout       =     #{timeout},
