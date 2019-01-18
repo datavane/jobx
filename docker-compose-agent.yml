@@ -1,0 +1,17 @@
+version: '3.1'
+services:
+  jobx-agent:
+    build:
+      context: .
+      dockerfile: jobx-docker/jobx-agent/Dockerfile
+    volumes:
+    - ./config/jobx-agent/conf.properties:/working/jobx-agent/target/jobx-agent/conf/conf.properties
+    - ./config/jobx-agent/log4j.properties:/working/jobx-agent/target/jobx-agent/conf/log4j.properties
+    ports:
+    - 1577
+    networks:
+    - jobx-agent
+networks:
+  jobx-agent:
+    external:
+      name: jobx_jobx
