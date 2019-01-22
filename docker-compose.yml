@@ -1,0 +1,90 @@
+version: '3.1'
+services:
+  #  jobx-agent:
+  #    build:
+  #      context: .
+  #      dockerfile: docker/jobx-agent/Dockerfile
+  #    volumes:
+  #    - ./config/jobx-agent/conf.properties:/working/jobx-agent/target/jobx-agent/conf/conf.properties
+  #    - ./config/jobx-agent/log4j.properties:/working/jobx-agent/target/jobx-agent/conf/log4j.properties
+  #    ports:
+  #    - 1577
+  #    networks:
+  #    - jobx
+  jobx-server:
+    build:
+      context: .
+      dockerfile: jobx-docker/jobx-server/Dockerfile
+    volumes:
+    - ./config/jobx-server/application.yml:/working/jobx-server/target/jobx-server/conf/application.yml
+    - ./config/jobx-server/logback.xml:/working/jobx-server/target/jobx-server/conf/logback.xml
+    ports:
+    - 9090
+    networks:
+    - jobx
+  jobx-service:
+    build:
+      context: .
+      dockerfile: jobx-docker/jobx-service/Dockerfile
+    volumes:
+    - ./config/jobx-service/application.yml:/working/jobx-service/jobx-service-provider/target/jobx-service-provider/conf/application.yml
+    - ./config/jobx-service/logback.xml:/working/jobx-service/jobx-service-provider/target/jobx-service-provider/conf/logback.xml
+    networks:
+    - jobx
+    depends_on:
+    - mysql
+  zookeeper1:
+    image: zookeeper
+    restart: always
+    hostname: zookeeper1
+    ports:
+    - 2181:2181
+    networks:
+    - jobx
+    environment:
+    - ZOO_MY_ID=1
+    - ZOO_SERVERS=server.1=0.0.0.0:2888:3888 server.2=zookeeper2:2888:3888 server.3=zookeeper3:2888:3888
+  zookeeper2:
+    image: zookeeper
+    restart: always
+    hostname: zookeeper2
+    ports:
+    - 2182:2181
+    networks:
+    - jobx
+    environment:
+    - ZOO_MY_ID=2
+    - ZOO_SERVERS=server.1=zookeeper1:2888:3888 server.2=0.0.0.0:2888:3888 server.3=zookeeper3:2888:3888
+  zookeeper3:
+    image: zookeeper
+    restart: always
+    hostname: zookeeper3
+    ports:
+    - 2183:2181
+    networks:
+    - jobx
+    environment:
+    - ZOO_MY_ID=3
+    - ZOO_SERVERS=server.1=zookeeper1:2888:3888 server.2=zookeeper2:2888:3888 server.3=0.0.0.0:2888:3888
+  redis:
+    image: redis:5.0.3
+    ports:
+    - 8073:6379
+    networks:
+    - jobx
+    environment:
+    - TZ="Asia/Shanghai"
+  mysql:
+    image: mysql:5.7.22
+    environment:
+    - TZ="Asia/Shanghai"
+    - MYSQL_ROOT_PASSWORD=123322242
+    volumes:
+    - ./data:/var/lib/mysql
+    ports:
+    - 8092:3306
+    networks:
+    - jobx
+    command: mysqld --default-authentication-plugin=mysql_native_password
+networks:
+  jobx:

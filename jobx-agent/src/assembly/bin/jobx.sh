@@ -195,10 +195,10 @@ if [[ $? -ne 1 ]];then
 fi
 
 #check openjdk
-if [[ "`${RUNJAVA} -version 2>&1 | head -1|grep "openjdk"|wc -l`"x == "1"x ]]; then
-  echo_r "ERROR: please uninstall OpenJDK and install jdk first"
-  exit 1;
-fi
+#if [ "`${RUNJAVA} -version 2>&1 | head -1|grep "openjdk"|wc -l`"x == "1"x ]; then
+#  echo_r "ERROR: please uninstall OpenJDK and install jdk first"
+#  exit 1;
+#fi
 
 if [[ -z "$JOBX_OUT" ]] ; then
   JOBX_OUT="$JOBX_BASE"/logs/jobx.out
@@ -364,18 +364,17 @@ case "$1" in
         fi
 
         touch "$JOBX_OUT"
+        eval "\"$RUNJAVA\"" \
+        -classpath "\"$CLASSPATH\"" \
+        -Djobx.home="$JOBX_HOME" \
+        -Djobx.pid="$JOBX_PID" \
+        -Djava.io.tmpdir="$JOBX_TMPDIR" \
+        -Djobx.port="$JOBX_PORT" \
+        -Djobx.host="$JOBX_HOST" \
+        -Djobx.password="$JOBX_PASSWORD" \
+        ${MAIN} start
 
-        eval ${_NOHUP} "\"${RUNJAVA}\"" \
-            -classpath "\"${CLASSPATH}\"" \
-            -Djobx.home="${JOBX_HOME}" \
-            -Djobx.pid="${JOBX_PID}" \
-            -Djava.io.tmpdir="${JOBX_TMPDIR}" \
-            -Djobx.port="${JOBX_PORT}" \
-            -Djobx.host="${JOBX_HOST}" \
-            -Djobx.password="${JOBX_PASSWORD}" \
-            ${MAIN} start "${REDIRECT_LOG}";
-
-      if [[ ! -z "$JOBX_PID" ]]; then
+      if [ ! -z "$JOBX_PID" ]; then
          echo +x $! > "$JOBX_PID"
       fi
 

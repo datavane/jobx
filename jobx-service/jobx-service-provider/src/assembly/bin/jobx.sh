@@ -184,10 +184,10 @@ if [[ $? -ne 1 ]];then
 fi
 
 #check openjdk
-if [[ "`${RUNJAVA} -version 2>&1 | head -1|grep "openjdk"|wc -l`"x == "1"x ]]; then
-  echo_r "ERROR: please uninstall OpenJDK and install jdk first"
-  exit 1;
-fi
+#if [ "`${RUNJAVA} -version 2>&1 | head -1|grep "openjdk"|wc -l`"x == "1"x ]; then
+#  echo_r "ERROR: please uninstall OpenJDK and install jdk first"
+#  exit 1;
+#fi
 
 if [[ -z "$JOBX_CONF" ]] ; then
   JOBX_CONF="$JOBX_BASE"/conf
@@ -297,10 +297,8 @@ MAIN_JAR="jobx-service-provider-${JOBX_VERSION}.jar"
 CLASSPATH="$CLASSPATH":"$JOBX_BASE"/lib/${MAIN_JAR}
 MAIN="com.jobxhub.service.JobXServiceApplication"
 
-eval ${_NOHUP} "\"${RUNJAVA}\"" \
-    -classpath "\"${CLASSPATH}\"" \
-    -Djobx.home="${JOBX_HOME}" \
+eval "\"$RUNJAVA\"" \
+    -classpath "\"$CLASSPATH\"" \
+    -Djobx.home="$JOBX_HOME" \
     -Dspring.config.location="${JOBX_CONF}/application.yml" \
-     ${MAIN} "${REDIRECT_LOG}"
-
-exit 0;
+    ${MAIN}
