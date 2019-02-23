@@ -56,6 +56,7 @@
         select
         <include refid="query_Job"/>
         from t_job as j
+        where j.job_type <![CDATA[ <  ]]> 3
     </select>
 
     <select id="getById" parameterType="java.lang.Long" resultMap="jobEntity">
@@ -74,14 +75,23 @@
         <include refid="query_Job"/>
         from t_job as j
         where j.agent_id = #{agentId}
+        <if test="jobType != null">
+            and j.job_type=#{jobType}
+        </if>
+        <if test="jobType == null">
+            and j.job_type <![CDATA[ <  ]]> 3
+        </if>
     </select>
 
     <select id="getJob" resultMap="jobEntity">
         select
         <include refid="query_Job"/>
         from t_job as j
-        <if test="job_type != null">
+        <if test="jobType != null">
             where j.job_type=#{jobType}
+        </if>
+        <if test="jobType == null">
+            where j.job_type <![CDATA[ <  ]]> 3
         </if>
     </select>
 
@@ -90,6 +100,7 @@
         <include refid="query_Job"/>
         from t_job as j
         where j.pause = 0
+        and j.job_type <![CDATA[ <  ]]> 3
     </select>
 
     <select id="getByPageBean" resultMap="jobEntity">
@@ -99,13 +110,16 @@
         from t_job as j
         inner join t_agent as a
         on j.agent_id = a.agent_id
-        where job_type < 3
+        where 1 = 1
         <if test="pager.filter.keys.size>0">
             <if test="pager.filter.job.userId != null">
                 and j.user_id = #{pager.filter.job.userId}
             </if>
             <if test="pager.filter.job.agentId != null">
                 and j.agent_id = #{pager.filter.job.agentId}
+            </if>
+            <if test="pager.filter.job.jobType == null">
+                and j.job_type <![CDATA[ < ]]> 3
             </if>
             <if test="pager.filter.job.jobType != null">
                 and j.job_type = #{pager.filter.job.jobType}
@@ -129,7 +143,7 @@
 
     <select id="getCount" resultType="java.lang.Integer">
         select count(1) from t_job as j
-        where create_type <![CDATA[ <  ]]> 3
+        where job_type <![CDATA[ <  ]]> 3
         <if test="filter.keys.size>0">
             <if test="filter.job.userId != null">
                 and j.user_id = #{filter.job.userId}
@@ -139,6 +153,9 @@
             </if>
             <if test="filter.job.jobType != null">
                 and j.job_type = #{filter.job.jobType}
+            </if>
+            <if test="filter.job.jobType == null">
+                and j.job_type <![CDATA[ < ]]> 3
             </if>
             <if test=" filter.job.jobName != null and filter.job.jobName != '' ">
                 and j.job_name like concat('%',#{filter.job.jobName},'%')
@@ -150,6 +167,7 @@
         select count(1) from t_job as j
         where j.agent_id = #{agentId}
         and j.job_name = #{name}
+        and j.job_type <![CDATA[ < ]]> 3
         <if test="jobId!=null">
             and j.job_id <![CDATA[ <>  ]]>#{jobId}
         </if>
