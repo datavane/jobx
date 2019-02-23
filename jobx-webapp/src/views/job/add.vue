@@ -3,11 +3,11 @@
 
     <div class="steps-form">
 
-      <el-steps :active="control.step" align-center style="width: 90%;margin-bottom: 30px">
+      <el-steps :active="control.step" align-center style="width: 90%;margin-bottom: 50px">
         <el-step title="基础信息"></el-step>
         <el-step title="调度信息"></el-step>
         <el-step title="告警信息"></el-step>
-        <el-step title="预览"></el-step>
+        <el-step title="作业预览"></el-step>
       </el-steps>
 
       <el-form :model="form.job" ref="jobForm" :rules="jobFormRule" label-width="120px" >
@@ -203,6 +203,9 @@
               </el-input>
             </el-form-item>
 
+          </div>
+
+          <div v-show="control.step == 4">
             <el-form-item>
               <el-button type="primary" @click="handleSubmitJob('jobForm')">{{$t('action.create')}}</el-button>
               <el-button @click="handleResetJob">{{$t('action.cancel')}}</el-button>
@@ -210,7 +213,7 @@
           </div>
 
           <el-form-item style="margin-top: 30px">
-            <el-button @click="handleSetpNext(-1)" v-if="control.step>1">上一步</el-button>
+            <el-button @click="handleSetpNext(-1)" v-if="control.step>1 && control.step<4">上一步</el-button>
             <el-button @click="handleSetpNext(1)" v-if="control.step<4">下一步</el-button>
           </el-form-item>
 
@@ -676,7 +679,7 @@
 
   .steps-form {
     position: static;
-    padding: 20px;
+    padding-top: 50px;
     width: 90%;
     margin-left: 10%;
   }
