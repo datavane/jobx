@@ -116,3 +116,28 @@
    height: 30px;
    line-height: 30px;
  }
+
+ .el-step__icon{
+   width:40px;
+   height: 40px;
+ }
+
+ .el-step__icon.is-text{
+   border:5px solid;
+ }
+
+ .el-step.is-horizontal .el-step__line {
+   top: 18px;
+ }
+
+ .el-step__head.is-wait {
+   color: #ced1d6;
+   border-color: #ced1d6;
+ }
+
+ .el-step__head.is-process {
+   color: #5293c4;
+   border-color: #5293c4;
+ }
+
+

@@ -162,7 +162,7 @@ public class Constants {
 
     public static final String JOBX_CACHED = null;//PropertyPlaceholder.get(Constants.PARAM_CACHED_NAME_KEY);
 
-    public static final String JOBX_HOME = SystemPropertyUtils.get(PARAM_JOBX_HOME_KEY,"");
+    public static final String JOBX_HOME = SystemPropertyUtils.get(PARAM_JOBX_HOME_KEY, "");
 
     public static final String JOBX_NATIVE_PATH = JOBX_HOME + "/native";
 
@@ -172,7 +172,7 @@ public class Constants {
 
     public static final String JOBX_USER_HOME = SystemPropertyUtils.get("user.home") + File.separator + ".jobx";
 
-    public static final File JOBX_UID_FILE = new File(JOBX_USER_HOME,"id");
+    public static final File JOBX_UID_FILE = new File(JOBX_USER_HOME, "id");
 
     /**
      * password file
@@ -188,7 +188,7 @@ public class Constants {
     /**
      * ExecuteUser lib
      */
-    public static final String JOBX_EXECUTE_AS_USER_LIB =  JOBX_HOME + "/bin/executor.so";
+    public static final String JOBX_EXECUTE_AS_USER_LIB = JOBX_HOME + "/bin/executor.so";
 
 
     public enum CachedProvider implements Serializable {
@@ -310,7 +310,7 @@ public class Constants {
     }
 
     public enum ConnStatus implements Serializable {
-        CONNECTED(0x1,  "通信成功"),
+        CONNECTED(0x1, "通信成功"),
         DISCONNECTED(0x0, "通信失败"),
         UNAUTHORIZED(0x2, "密码错误,认证失败");
 
@@ -432,7 +432,7 @@ public class Constants {
     }
 
     public enum JobType implements Serializable {
-        NODE(0x0,"节点作业"),
+        NODE(0x0, "节点作业"),
         SIMPLE(0x1, "简单作业"),
         FLOW(0x2, "工作流");
 
@@ -592,53 +592,53 @@ public class Constants {
 
     public enum Platform {
 
-        Windows("Windows",0),
+        Windows("Windows", 0),
 
-        Unix("Unix",1),
+        Unix("Unix", 1),
 
-        Linux("Linux",2),
+        Linux("Linux", 2),
 
-        Mac_OS("Mac OS",3),
+        Mac_OS("Mac OS", 3),
 
-        Mac_OS_X("Mac OS X",4),
+        Mac_OS_X("Mac OS X", 4),
 
-        OS2("OS/2",5),
+        OS2("OS/2", 5),
 
-        Solaris("Solaris",6),
+        Solaris("Solaris", 6),
 
-        SunOS("SunOS",7),
+        SunOS("SunOS", 7),
 
-        MPEiX("MPE/iX",8),
+        MPEiX("MPE/iX", 8),
 
-        HP_UX("HP-UX",9),
+        HP_UX("HP-UX", 9),
 
-        AIX("AIX",10),
+        AIX("AIX", 10),
 
-        OS390("OS/390",11),
+        OS390("OS/390", 11),
 
-        FreeBSD("FreeBSD",12),
+        FreeBSD("FreeBSD", 12),
 
-        Irix("Irix",13),
+        Irix("Irix", 13),
 
-        Digital_Unix("Digital Unix",14),
+        Digital_Unix("Digital Unix", 14),
 
-        NetWare_411("NetWare",15),
+        NetWare_411("NetWare", 15),
 
-        OSF1("OSF1",16),
+        OSF1("OSF1", 16),
 
-        OpenVMS("OpenVMS",17),
+        OpenVMS("OpenVMS", 17),
 
-        Others("Others",18);
+        Others("Others", 18);
 
         private String name;
         private int index;
 
-        Platform(String name,int index){
+        Platform(String name, int index) {
             this.name = name;
             this.index = index;
         }
 
-        public String toString(){
+        public String toString() {
             return name;
         }
 
@@ -667,8 +667,6 @@ public class Constants {
             this.index = index;
         }
     }
-
-
 
 
 }

@@ -42,7 +42,7 @@ export default {
     smsTemplate:'短信模板',
     comment:'描述信息',
     dependency:'作业依赖',
-    dependencyItem:'工作流作业项',
+    dependencyItem:'工作流节点',
     trigger:{
       name:'触发方式',
       parallel:'并行触发',

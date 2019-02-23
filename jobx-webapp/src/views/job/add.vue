@@ -1,194 +1,217 @@
 <template>
   <div class="app-container">
+
     <div class="steps-form">
+
+      <el-steps :active="control.active" align-center style="width: 90%;margin-bottom: 30px">
+        <el-step title="基础信息"></el-step>
+        <el-step title="调度信息"></el-step>
+        <el-step title="告警信息"></el-step>
+      </el-steps>
 
       <el-form :model="form.job" ref="jobForm" :rules="jobFormRule" label-width="120px" >
 
-        <el-form-item :label="$t('job.jobName')" prop="jobName">
-          <el-input :placeholder="$t('job.jobName')" v-model="form.job.jobName" clearable class="input-item" />
-        </el-form-item>
+          <div v-show="control.active == 1">
+            <el-form-item :label="$t('job.jobName')" prop="jobName">
+              <el-input :placeholder="$t('job.jobName')" v-model="form.job.jobName" clearable class="input-item" />
+            </el-form-item>
 
-        <el-form-item :label="$t('job.jobType')">
-          <el-select v-model="form.job.jobType" :placeholder="$t('job.jobType')" clearable class="input-item">
-            <el-option v-for="item in control.jobType" :key="item.id" :label="item.name" :value="item.id"/>
-          </el-select>
-        </el-form-item>
-
-        <el-form-item :label="$t('agent.agentName')" v-show="form.job.jobType == 1" prop="agentId">
-          <el-select v-model="form.job.agentId" clearable filterable class="input-item"  :placeholder="$t('agent.agentName')" >
-            <el-option
-              v-for="item in control.agents"
-              :key="item.agentId"
-              :label="item.agentName"
-              :value="item.agentId">
-              <span style="float: left">{{ item.agentName }}</span>
-              <span class="select-item-right">{{ item.host }}</span>
-            </el-option>
-          </el-select>
-        </el-form-item>
-
-        <el-dialog class="cronExp" :visible.sync="control.showCron" width="560px">
-          <cron v-model="form.job.cronExp" url="/verify/recent"></cron>
-        </el-dialog>
-
-        <el-form-item :label="$t('job.cronExp')" prop="cronExp">
-          <el-input :placeholder="$t('job.cronExp')" v-model="form.job.cronExp" class="input-item" @focus="control.showCron=!control.showCron"/>
-        </el-form-item>
-
-        <el-form-item :label="$t('job.execUser')" v-show="form.job.jobType == 1" prop="execUser">
-          <el-select v-model="form.job.execUser" clearable filterable class="input-item" :placeholder="$t('job.execUser')">
-            <el-option
-              v-for="item in control.execUsers"
-              :key="item"
-              :label="item"
-              :value="item">
-            </el-option>
-          </el-select>
-        </el-form-item>
-
-        <el-form-item :label="$t('job.command')" v-show="form.job.jobType == 1" prop="command">
-          <div class="command-input">
-            <textarea ref="command" placeholder="请输入内容" v-model="form.job.command"/>
+            <el-form-item :label="$t('job.jobType')">
+              <el-select v-model="form.job.jobType" :placeholder="$t('job.jobType')" clearable class="input-item">
+                <el-option v-for="item in control.jobType" :key="item.id" :label="item.name" :value="item.id"/>
+              </el-select>
+            </el-form-item>
           </div>
-        </el-form-item>
 
-        <el-form-item :label="$t('agent.upload')" v-show="form.job.jobType == 1">
-          <el-upload drag action="https://jsonplaceholder.typicode.com/posts/">
-            <i class="el-icon-upload"></i>
-            <div class="el-upload__text">{{$t('agent.uploadText')}}<em>{{$t('agent.clickUpload')}}</em></div>
-            <div class="el-upload__tip" slot="tip">{{$t('agent.uploadTip')}}</div>
-          </el-upload>
-        </el-form-item>
+          <div v-show="control.active == 2">
 
-        <!--工作流-->
-        <el-form-item :label="$t('job.dependency')" v-if="form.job.jobType == 2">
-          <el-table class="input-item dependency" border stripe highlight-current-row :data="form.workFlow.count">
-            <el-table-column :label="$t('job.job')" align="center">
-              <template slot-scope="scope">
-                <el-select v-model="form.workFlow.detail[handleFindNode(scope.row.id)].jobId" placeholder="请选择">
-                  <el-option-group
-                    v-for="(group,index) in control.jobs"
-                    :key="group.label"
-                    :label="group.label">
-                    <el-option
-                      v-for="item in group.options"
-                      :key="item.id"
-                      :label="item.name"
-                      :value="item.id">
-                      <span style="float: left; color: #8492a6; font-size: 13px">
-                        <font-awesome-icon icon="list" size="xs" v-if="index == 0"/>
-                        <font-awesome-icon icon="sitemap" size="xs" v-if="index == 1"/>
-                      </span>
-                      <span style="float: left;margin-left:5px">{{ item.name }}</span>
-                    </el-option>
-                  </el-option-group>
-                </el-select>
-              </template>
-            </el-table-column>
+            <el-form-item :label="$t('agent.agentName')" v-show="form.job.jobType == 1" prop="agentId">
+              <el-select v-model="form.job.agentId" clearable filterable class="input-item"  :placeholder="$t('agent.agentName')" >
+                <el-option
+                  v-for="item in control.agents"
+                  :key="item.agentId"
+                  :label="item.agentName"
+                  :value="item.agentId">
+                  <span style="float: left">{{ item.agentName }}</span>
+                  <span class="select-item-right">{{ item.host }}</span>
+                </el-option>
+              </el-select>
+            </el-form-item>
 
-            <el-table-column :label="$t('job.parentDependency')" align="center">
-              <template slot-scope="scope">
-                <el-select v-model="form.workFlow.detail[handleFindNode(scope.row.id)].dependency" :placeholder="$t('job.parentDependency')" clearable>
-                  <el-option-group
-                    v-for="(group,index) in control.jobs"
-                    :key="group.label"
-                    :label="group.label">
-                    <el-option
-                      v-for="item in group.options"
-                      :key="item.id"
-                      :label="item.name"
-                      :value="item.id">
-                      <span style="float: left; color: #8492a6; font-size: 13px">
-                        <font-awesome-icon icon="list" size="xs" v-if="index == 0"/>
-                        <font-awesome-icon icon="sitemap" size="xs" v-if="index == 1"/>
-                      </span>
-                      <span style="float: left;margin-left:5px">{{ item.name }}</span>
-                    </el-option>
-                  </el-option-group>
-                </el-select>
-              </template>
-            </el-table-column>
+            <el-dialog class="cronExp" :visible.sync="control.showCron" width="560px">
+              <cron v-model="form.job.cronExp" url="/verify/recent"></cron>
+            </el-dialog>
 
-            <el-table-column :label="$t('job.trigger.name')" align="center">
-              <template slot-scope="scope">
-                <el-select v-model="form.workFlow.detail[handleFindNode(scope.row.id)].trigger" :placeholder="$t('job.trigger.name')" clearable>
-                  <el-option v-for="item in control.triggerType" :key="item.id" :label="item.name" :value="item.id"/>
-                </el-select>
-                <i class="el-icon-delete" type="danger" style="margin-left: 10px" v-if="form.workFlow.count.length>1" @click="handleDeleteNode(scope.row.id)"></i>
-              </template>
-            </el-table-column>
+            <el-form-item :label="$t('job.cronExp')" prop="cronExp">
+              <el-input :placeholder="$t('job.cronExp')" v-model="form.job.cronExp" class="input-item" @focus="control.showCron=!control.showCron"/>
+            </el-form-item>
 
-          </el-table>
-          <div style="margin-top: 20px">
-            <el-button size="mini" type="primary" @click="handleAddJob()">新增节点作业</el-button>
-            <el-button size="mini" type="success" @click="handleAddNode">增加依赖</el-button>
+            <el-form-item :label="$t('job.command')" v-show="form.job.jobType == 1" prop="command">
+              <div class="command-input">
+                <textarea ref="command" placeholder="请输入内容" v-model="form.job.command"/>
+              </div>
+            </el-form-item>
+
+            <el-form-item :label="$t('job.execUser')" v-show="form.job.jobType == 1" prop="execUser">
+              <el-select v-model="form.job.execUser" clearable filterable class="input-item" :placeholder="$t('job.execUser')">
+                <el-option
+                  v-for="item in control.execUsers"
+                  :key="item"
+                  :label="item"
+                  :value="item">
+                </el-option>
+              </el-select>
+            </el-form-item>
+
+            <el-form-item :label="$t('job.successExit')"  v-if="form.job.jobType == 1" prop="successExit">
+              <el-input :placeholder="$t('job.successExit')" v-model.number="form.job.successExit" clearable class="input-item"/>
+            </el-form-item>
+
+           <!-- <el-form-item :label="$t('agent.upload')" v-show="form.job.jobType == 1">
+              <el-upload drag action="https://jsonplaceholder.typicode.com/posts/">
+                <i class="el-icon-upload"></i>
+                <div class="el-upload__text">{{$t('agent.uploadText')}}<em>{{$t('agent.clickUpload')}}</em></div>
+                <div class="el-upload__tip" slot="tip">{{$t('agent.uploadTip')}}</div>
+              </el-upload>
+            </el-form-item>
+            -->
+
+            <!--工作流-->
+            <el-form-item :label="$t('job.dependency')" v-if="form.job.jobType == 2">
+              <el-table class="input-item dependency" border stripe highlight-current-row :data="form.workFlow.count">
+                <el-table-column :label="$t('job.job')" align="center">
+                  <template slot-scope="scope">
+                    <el-select v-model="form.workFlow.detail[handleFindNode(scope.row.id)].jobId" placeholder="请选择">
+                      <el-option-group
+                        v-for="(group,index) in control.jobs"
+                        :key="group.label"
+                        :label="group.label">
+                        <el-option
+                          v-for="item in group.options"
+                          :key="item.id"
+                          :label="item.name"
+                          :value="item.id">
+                        <span style="float: left; color: #8492a6; font-size: 13px">
+                          <font-awesome-icon icon="list" size="xs" v-if="index == 0"/>
+                          <font-awesome-icon icon="sitemap" size="xs" v-if="index == 1"/>
+                        </span>
+                          <span style="float: left;margin-left:5px">{{ item.name }}</span>
+                        </el-option>
+                      </el-option-group>
+                    </el-select>
+                  </template>
+                </el-table-column>
+
+                <el-table-column :label="$t('job.parentDependency')" align="center">
+                  <template slot-scope="scope">
+                    <el-select v-model="form.workFlow.detail[handleFindNode(scope.row.id)].dependency" :placeholder="$t('job.parentDependency')" clearable>
+                      <el-option-group
+                        v-for="(group,index) in control.jobs"
+                        :key="group.label"
+                        :label="group.label">
+                        <el-option
+                          v-for="item in group.options"
+                          :key="item.id"
+                          :label="item.name"
+                          :value="item.id">
+                        <span style="float: left; color: #8492a6; font-size: 13px">
+                          <font-awesome-icon icon="list" size="xs" v-if="index == 0"/>
+                          <font-awesome-icon icon="sitemap" size="xs" v-if="index == 1"/>
+                        </span>
+                          <span style="float: left;margin-left:5px">{{ item.name }}</span>
+                        </el-option>
+                      </el-option-group>
+                    </el-select>
+                  </template>
+                </el-table-column>
+
+                <el-table-column :label="$t('job.trigger.name')" align="center">
+                  <template slot-scope="scope">
+                    <el-select v-model="form.workFlow.detail[handleFindNode(scope.row.id)].trigger" :placeholder="$t('job.trigger.name')" clearable>
+                      <el-option v-for="item in control.triggerType" :key="item.id" :label="item.name" :value="item.id"/>
+                    </el-select>
+                    <i class="el-icon-delete" type="danger" style="margin-left: 10px" v-if="form.workFlow.count.length>1" @click="handleDeleteNode(scope.row.id)"></i>
+                  </template>
+                </el-table-column>
+
+              </el-table>
+
+              <div style="margin-top: 20px">
+                <el-button size="mini" type="primary" @click="handleAddJob()">新增依赖节点</el-button>
+                <el-button size="mini" type="success" @click="handleAddNode">增加依赖作业</el-button>
+              </div>
+            </el-form-item>
+
           </div>
-        </el-form-item>
 
-        <el-form-item :label="$t('job.successExit')"  v-if="form.job.jobType == 1" prop="successExit">
-          <el-input :placeholder="$t('job.successExit')" v-model.number="form.job.successExit" clearable class="input-item"/>
-        </el-form-item>
+          <div v-show="control.active == 3">
 
-        <el-form-item :label="$t('job.alarm')">
-          <el-switch
-            v-model="form.job.alarm"
-            active-color="#13ce66"
-            inactive-color="#ff4949"
-            active-value="1"
-            inactive-value="0">
-          </el-switch>
-        </el-form-item>
+            <el-form-item :label="$t('job.runCount')" prop="runCount">
+              <el-input v-model="form.job.runCount" controls-position="right" clearable class="input-item"></el-input>
+            </el-form-item>
 
-        <!--告警方式-->
-        <div v-if="form.job.alarm==1">
-          <el-form-item :label="$t('job.alarmType')" prop="alarmType">
-            <el-select v-model="form.job.alarmType" :placeholder="$t('job.alarmType')" clearable multiple class="input-item">
-              <el-option v-for="item in control.alarmType" :key="item.id" :label="item.name" :value="item.id"/>
-            </el-select>
+            <el-form-item :label="$t('job.timeout')" prop="timeout">
+              <el-input v-model="form.job.timeout" controls-position="right" clearable class="input-item"></el-input>
+            </el-form-item>
+
+            <el-form-item :label="$t('job.alarm')">
+              <el-switch
+                v-model="form.job.alarm"
+                active-color="#13ce66"
+                inactive-color="#ff4949"
+                active-value="1"
+                inactive-value="0">
+              </el-switch>
+            </el-form-item>
+
+            <!--告警方式-->
+            <div v-if="form.job.alarm==1">
+              <el-form-item :label="$t('job.alarmType')" prop="alarmType">
+                <el-select v-model="form.job.alarmType" :placeholder="$t('job.alarmType')" clearable multiple class="input-item">
+                  <el-option v-for="item in control.alarmType" :key="item.id" :label="item.name" :value="item.id"/>
+                </el-select>
+              </el-form-item>
+
+              <el-form-item :label="$t('job.dingTask')" v-if="form.job.alarmType.indexOf(1)>-1" prop="alarmDingURL">
+                <el-input :placeholder="$t('job.dingTask')" v-model="form.job.alarmDingURL" clearable class="input-item"/>
+              </el-form-item>
+
+              <el-form-item :label="$t('job.atUser')" v-if="form.job.alarmType.indexOf(1)>-1" prop="alarmDingAtUser">
+                <el-input :placeholder="$t('job.atUser')" v-model="form.job.alarmDingAtUser" clearable class="input-item"/>
+              </el-form-item>
+
+              <el-form-item :label="$t('job.email')" v-if="form.job.alarmType.indexOf(2)>-1" prop="alarmEmail">
+                <el-input :placeholder="$t('job.email')" v-model="form.job.alarmEmail" clearable class="input-item"/>
+              </el-form-item>
+
+              <el-form-item :label="$t('job.sms')" v-if="form.job.alarmType.indexOf(3)>-1" prop="alarmSms">
+                <el-input :placeholder="$t('job.sms')" v-model="form.job.alarmSms" clearable class="input-item"/>
+              </el-form-item>
+              <el-form-item :label="$t('job.smsTemplate')" v-if="form.job.alarmType.indexOf(3)>-1" prop="alarmSmsTemplate">
+                <el-input :placeholder="$t('job.smsTemplate')" v-model="form.job.alarmSmsTemplate" clearable class="input-item"/>
+              </el-form-item>
+            </div>
+
+            <el-form-item :label="$t('job.comment')">
+              <el-input
+                type="textarea"
+                :rows="4"
+                class="input-item"
+                :placeholder="$t('job.comment')"
+                v-model="form.job.comment">
+              </el-input>
+            </el-form-item>
+
+            <el-form-item>
+              <el-button type="primary" @click="handleSubmitJob('jobForm')">{{$t('action.create')}}</el-button>
+              <el-button @click="handleResetJob">{{$t('action.cancel')}}</el-button>
+            </el-form-item>
+          </div>
+
+          <el-form-item style="margin-top: 30px">
+            <el-button @click="handleSetpNext(-1)" v-if="control.active>1">上一步</el-button>
+            <el-button @click="handleSetpNext(1)" v-if="control.active<3">下一步</el-button>
           </el-form-item>
-
-          <el-form-item :label="$t('job.dingTask')" v-if="form.job.alarmType.indexOf(1)>-1" prop="alarmDingURL">
-            <el-input :placeholder="$t('job.dingTask')" v-model="form.job.alarmDingURL" clearable class="input-item"/>
-          </el-form-item>
-
-          <el-form-item :label="$t('job.atUser')" v-if="form.job.alarmType.indexOf(1)>-1" prop="alarmDingAtUser">
-            <el-input :placeholder="$t('job.atUser')" v-model="form.job.alarmDingAtUser" clearable class="input-item"/>
-          </el-form-item>
-
-          <el-form-item :label="$t('job.email')" v-if="form.job.alarmType.indexOf(2)>-1" prop="alarmEmail">
-            <el-input :placeholder="$t('job.email')" v-model="form.job.alarmEmail" clearable class="input-item"/>
-          </el-form-item>
-
-          <el-form-item :label="$t('job.sms')" v-if="form.job.alarmType.indexOf(3)>-1" prop="alarmSms">
-            <el-input :placeholder="$t('job.sms')" v-model="form.job.alarmSms" clearable class="input-item"/>
-          </el-form-item>
-          <el-form-item :label="$t('job.smsTemplate')" v-if="form.job.alarmType.indexOf(3)>-1" prop="alarmSmsTemplate">
-            <el-input :placeholder="$t('job.smsTemplate')" v-model="form.job.alarmSmsTemplate" clearable class="input-item"/>
-          </el-form-item>
-        </div>
-
-        <el-form-item :label="$t('job.runCount')">
-          <el-input-number v-model="form.job.runCount" controls-position="right" :min="0" :max="10"></el-input-number>
-        </el-form-item>
-
-        <el-form-item :label="$t('job.timeout')">
-          <el-input-number v-model="form.job.timeout" controls-position="right" :min="0" :max="10"></el-input-number>
-        </el-form-item>
-
-        <el-form-item :label="$t('job.comment')">
-          <el-input
-            type="textarea"
-            :rows="4"
-            class="input-item"
-            :placeholder="$t('job.comment')"
-            v-model="form.job.comment">
-          </el-input>
-        </el-form-item>
-
-        <el-form-item>
-          <el-button type="primary" @click="handleSubmitJob('jobForm')">{{$t('action.create')}}</el-button>
-          <el-button @click="handleResetJob">{{$t('action.cancel')}}</el-button>
-        </el-form-item>
 
       </el-form>
 
@@ -276,6 +299,7 @@
 
       return {
         control: {//控制页面显示,提供表单数据等...
+          active:1,
           agents: [],//已有的执行器
           jobs: [
             {
@@ -284,7 +308,7 @@
               options: []
             },
             {
-              params: {jobType: 2},
+              params: {jobType: 0},
               label: this.$t('job.dependencyItem'),
               options: []
             }
@@ -361,9 +385,9 @@
 
     created() {
       this.httpGetAgent()
-      this.httpGetJob()
       this.httpGetExecUser()
       this.initWorkFlow()
+      this.handleGetJob()
     },
 
     mounted() {
@@ -375,6 +399,7 @@
     },
 
     methods: {
+
       //init初始化环境相关。。。
       initWorkFlow() {
         let id = new Date().getTime()
@@ -404,28 +429,21 @@
         })
       },
 
-      httpGetJob() {
-        getJob(this.control.jobs[0].params).then(response => {
-          this.control.jobs[0].options = []
+      handleGetJob() {
+        this.httpGetJob(0);
+        this.httpGetJob(1);
+      },
+
+      httpGetJob(index) {
+        getJob(this.control.jobs[index].params).then(response => {
+          this.control.jobs[index].options = []
           let job = response.body
           job.forEach(x => {
-            this.control.jobs[0].options.push({
+            this.control.jobs[index].options.push({
               id: x.jobId,
               name: x.jobName
             })
           })
-
-          getJob(this.control.jobs[1].params).then(response => {
-            this.control.jobs[1].options = []
-            let job = response.body
-            job.forEach(x => {
-              this.control.jobs[1].options.push({
-                id: x.jobId,
-                name: x.jobName
-              })
-            })
-          })
-
         })
       },
 
@@ -433,6 +451,10 @@
         getExecUser().then(response => {
           this.control.execUsers = response.body
         })
+      },
+
+      handleSetpNext(setp){
+        this.control.active += setp;
       },
 
       //其他事件相关。。。
@@ -467,6 +489,7 @@
       handleSubmitNode() {
         addNode(this.form.dependency).then(resp => {
           this.control.showJob = false
+          this.httpGetJob(1);
         })
       },
 
@@ -654,15 +677,15 @@
     position: static;
     padding: 20px;
     width: 90%;
-    margin-left: 15%;
+    margin-left: 10%;
   }
 
   .input-item {
-    width: 70%;
+    width: 80%;
   }
 
   .command-input {
-    width: 70%;
+    width: 80%;
     font-size: 12px;
     position: relative;
   }
@@ -721,5 +744,7 @@
     color: #8492a6;
     font-size: 13px
   }
+
+
 
 </style>
