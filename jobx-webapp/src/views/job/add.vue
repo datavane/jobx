@@ -65,7 +65,7 @@
           <el-table class="input-item dependency" border stripe highlight-current-row :data="form.workFlow.count">
             <el-table-column :label="$t('job.job')" align="center">
               <template slot-scope="scope">
-                <el-select v-model="form.workFlow.detail[handleFindDependency(scope.row.id)].jobId" placeholder="请选择">
+                <el-select v-model="form.workFlow.detail[handleFindNode(scope.row.id)].jobId" placeholder="请选择">
                   <el-option-group
                     v-for="(group,index) in control.jobs"
                     :key="group.label"
@@ -88,7 +88,7 @@
 
             <el-table-column :label="$t('job.parentDependency')" align="center">
               <template slot-scope="scope">
-                <el-select v-model="form.workFlow.detail[handleFindDependency(scope.row.id)].dependency" :placeholder="$t('job.parentDependency')" clearable>
+                <el-select v-model="form.workFlow.detail[handleFindNode(scope.row.id)].dependency" :placeholder="$t('job.parentDependency')" clearable>
                   <el-option-group
                     v-for="(group,index) in control.jobs"
                     :key="group.label"
@@ -111,17 +111,17 @@
 
             <el-table-column :label="$t('job.trigger.name')" align="center">
               <template slot-scope="scope">
-                <el-select v-model="form.workFlow.detail[handleFindDependency(scope.row.id)].trigger" :placeholder="$t('job.trigger.name')" clearable>
+                <el-select v-model="form.workFlow.detail[handleFindNode(scope.row.id)].trigger" :placeholder="$t('job.trigger.name')" clearable>
                   <el-option v-for="item in control.triggerType" :key="item.id" :label="item.name" :value="item.id"/>
                 </el-select>
-                <i class="el-icon-delete" type="danger" style="margin-left: 10px" v-if="form.workFlow.count.length>1" @click="handleDeleteDependency(scope.row.id)"></i>
+                <i class="el-icon-delete" type="danger" style="margin-left: 10px" v-if="form.workFlow.count.length>1" @click="handleDeleteNode(scope.row.id)"></i>
               </template>
             </el-table-column>
 
           </el-table>
           <div style="margin-top: 20px">
             <el-button size="mini" type="primary" @click="handleAddJob()">新增节点作业</el-button>
-            <el-button size="mini" type="success" @click="handleAddDependency">增加依赖</el-button>
+            <el-button size="mini" type="success" @click="handleAddNode">增加依赖</el-button>
           </div>
         </el-form-item>
 
@@ -238,7 +238,7 @@
 
         <div slot="footer" class="dialog-footer">
           <el-button @click="control.showJob = false">取 消</el-button>
-          <el-button type="primary" @click="handleSubmitDependency()">确 定</el-button>
+          <el-button type="primary" @click="handleSubmitNode()">确 定</el-button>
         </div>
 
       </el-dialog>
@@ -252,7 +252,7 @@
   import cron from '@/components/Cron'
   import {getAgent} from '@/api/agent'
   import {getExecUser} from '@/api/user'
-  import {addJob, addWorkFlow,getJob, addDependency, getDependency} from '@/api/job'
+  import {addJob, addFlow,getJob, addNode, getNode} from '@/api/job'
   import CodeMirror from 'codemirror'
   import 'codemirror/addon/lint/lint.css'
   import 'codemirror/lib/codemirror.css'
@@ -463,9 +463,8 @@
         this.$refs[formName].resetFields()
       },
 
-
-      handleSubmitDependency() {
-        addDependency(this.form.dependency).then(resp => {
+      handleSubmitNode() {
+        addNode(this.form.dependency).then(resp => {
           this.control.showJob = false
         })
       },
@@ -482,7 +481,7 @@
         })
       },
 
-      handleAddDependency() {
+      handleAddNode() {
         let id = new Date().getMilliseconds()
         this.form.workFlow.count.push({"id": id})
         this.form.workFlow.detail.push({
@@ -493,7 +492,7 @@
         })
       },
 
-      handleFindDependency(id) {
+      handleFindNode(id) {
         for (let index = 0; index < this.form.workFlow.detail.length; index++) {
           let detail = this.form.workFlow.detail[index]
           if (detail.id === id) {
@@ -502,7 +501,7 @@
         }
       },
 
-      handleDeleteDependency(id) {
+      handleDeleteNode(id) {
         this.form.workFlow.count.forEach((item, index) => {
           if (item.id == id) {
             this.form.workFlow.count.splice(index, 1)

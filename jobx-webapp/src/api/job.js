@@ -8,8 +8,8 @@ export function addJob(params) {
   return request.post('/job/addJob',params)
 }
 
-export function addDependency(params) {
-  return request.post('/job/addDependency',params)
+export function addNode(params) {
+  return request.post('/job/addNode',params)
 }
 
 export function getJob(params) {
