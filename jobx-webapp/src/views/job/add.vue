@@ -3,15 +3,16 @@
 
     <div class="steps-form">
 
-      <el-steps :active="control.active" align-center style="width: 90%;margin-bottom: 30px">
+      <el-steps :active="control.step" align-center style="width: 90%;margin-bottom: 30px">
         <el-step title="基础信息"></el-step>
         <el-step title="调度信息"></el-step>
         <el-step title="告警信息"></el-step>
+        <el-step title="预览"></el-step>
       </el-steps>
 
       <el-form :model="form.job" ref="jobForm" :rules="jobFormRule" label-width="120px" >
 
-          <div v-show="control.active == 1">
+          <div v-show="control.step == 1">
             <el-form-item :label="$t('job.jobName')" prop="jobName">
               <el-input :placeholder="$t('job.jobName')" v-model="form.job.jobName" clearable class="input-item" />
             </el-form-item>
@@ -23,7 +24,7 @@
             </el-form-item>
           </div>
 
-          <div v-show="control.active == 2">
+          <div v-show="control.step == 2">
 
             <el-form-item :label="$t('agent.agentName')" v-show="form.job.jobType == 1" prop="agentId">
               <el-select v-model="form.job.agentId" clearable filterable class="input-item"  :placeholder="$t('agent.agentName')" >
@@ -144,7 +145,7 @@
 
           </div>
 
-          <div v-show="control.active == 3">
+          <div v-show="control.step == 3">
 
             <el-form-item :label="$t('job.runCount')" prop="runCount">
               <el-input v-model="form.job.runCount" controls-position="right" clearable class="input-item"></el-input>
@@ -209,8 +210,8 @@
           </div>
 
           <el-form-item style="margin-top: 30px">
-            <el-button @click="handleSetpNext(-1)" v-if="control.active>1">上一步</el-button>
-            <el-button @click="handleSetpNext(1)" v-if="control.active<3">下一步</el-button>
+            <el-button @click="handleSetpNext(-1)" v-if="control.step>1">上一步</el-button>
+            <el-button @click="handleSetpNext(1)" v-if="control.step<4">下一步</el-button>
           </el-form-item>
 
       </el-form>
@@ -299,7 +300,7 @@
 
       return {
         control: {//控制页面显示,提供表单数据等...
-          active:1,
+          step:1,
           agents: [],//已有的执行器
           jobs: [
             {
@@ -422,7 +423,7 @@
         })
       },
 
-      //http和后台交互相关。。。。。
+      //http和后台交互相关...
       httpGetAgent() {
         getAgent().then(response => {
           this.control.agents = response.body
@@ -454,7 +455,7 @@
       },
 
       handleSetpNext(setp){
-        this.control.active += setp;
+        this.control.step += setp;
       },
 
       //其他事件相关。。。
