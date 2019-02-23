@@ -432,9 +432,9 @@ public class Constants {
     }
 
     public enum JobType implements Serializable {
-        SIMPLE(0x0, "简单作业"),
-        FLOW(0x1, "工作流"),
-        NODE(0x3,"工作流节点");
+        NODE(0x0,"节点作业"),
+        SIMPLE(0x1, "简单作业"),
+        FLOW(0x2, "工作流");
 
         private Integer code;
         private String description;

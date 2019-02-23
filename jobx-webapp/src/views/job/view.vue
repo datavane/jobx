@@ -22,7 +22,7 @@
                 highlight-current-row
                 style="width: 100%"
                 @selection-change="handleSelectionChange"
-                @sort-change="sortChange">
+                @sort-change="handleSortChange">
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column :label="$t('agent.agentName')" prop="agentName" sortable="custom" align="left" width="150px">
           <template slot-scope="scope">
@@ -77,8 +77,8 @@
 </template>
 
 <script>
-  import { allAgent } from '@/api/agent'
-  import { view as getList } from '@/api/job'
+  import { getAgent } from '@/api/agent'
+  import { view } from '@/api/job'
   import Pagination from '@/components/Pagination'
 
   export default {
@@ -103,19 +103,20 @@
       }
     },
     created() {
-      this.getAgent()
-      this.getList()
+      this.httpGetAgent()
+      this.httpGetList()
     },
     methods: {
 
-      getAgent() {
-        allAgent().then(response => {
+      httpGetAgent() {
+        getAgent().then(response => {
           this.agents = response.body
         })
       },
-      getList() {
+      
+      httpGetList() {
         this.loading = true
-        getList(this.queryData).then(response => {
+        view(this.queryData).then(response => {
           this.list = response.body.result
           this.total = response.body.totalRecord
           setTimeout(() => {
@@ -124,13 +125,14 @@
         })
       },
 
-      sortChange(data) {
+      handleSortChange(data) {
         const { prop, order } = data
         if (prop === 'id') {
-          this.sortByID(order)
+          this.handleSortByID(order)
         }
       },
-      sortByID(order) {
+
+      handleSortByID(order) {
         if (order === 'ascending') {
           this.queryData.sort = '+id'
         } else {
@@ -171,20 +173,12 @@
         }).catch(() => {
         });
       },
+
       handleSelectionChange(item){
         this.jobId = []
         item.forEach(x=>{
           this.jobId.push(x.jobId)
         })
-      },
-      formatJson(filterVal, jsonData) {
-        return jsonData.map(v => filterVal.map(j => {
-          if (j === 'timestamp') {
-            return parseTime(v[j])
-          } else {
-            return v[j]
-          }
-        }))
       },
 
       handleDownload() {
@@ -192,7 +186,7 @@
         import('@/vendor/Export2Excel').then(excel => {
           const tHeader = ['timestamp', 'title', 'type', 'importance', 'status']
           const filterVal = ['timestamp', 'title', 'type', 'importance', 'status']
-          const data = this.formatJson(filterVal, this.list)
+          const data = this.handleFormatJson(filterVal, this.list)
           excel.export_json_to_excel({
             header: tHeader,
             data,
@@ -200,6 +194,16 @@
           })
           this.downloadLoading = false
         })
+      },
+
+      handleFormatJson(filterVal, jsonData) {
+        return jsonData.map(v => filterVal.map(j => {
+          if (j === 'timestamp') {
+            return parseTime(v[j])
+          } else {
+            return v[j]
+          }
+        }))
       }
 
     }

@@ -14,7 +14,7 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item :label="$t('agent.agentName')" v-show="form.job.jobType == 0" prop="agentId">
+        <el-form-item :label="$t('agent.agentName')" v-show="form.job.jobType == 1" prop="agentId">
           <el-select v-model="form.job.agentId" clearable filterable class="input-item"  :placeholder="$t('agent.agentName')" >
             <el-option
               v-for="item in control.agents"
@@ -35,7 +35,7 @@
           <el-input :placeholder="$t('job.cronExp')" v-model="form.job.cronExp" class="input-item" @focus="control.showCron=!control.showCron"/>
         </el-form-item>
 
-        <el-form-item :label="$t('job.execUser')" v-show="form.job.jobType == 0" prop="execUser">
+        <el-form-item :label="$t('job.execUser')" v-show="form.job.jobType == 1" prop="execUser">
           <el-select v-model="form.job.execUser" clearable filterable class="input-item" :placeholder="$t('job.execUser')">
             <el-option
               v-for="item in control.execUsers"
@@ -46,13 +46,13 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item :label="$t('job.command')" v-show="form.job.jobType == 0" prop="command">
+        <el-form-item :label="$t('job.command')" v-show="form.job.jobType == 1" prop="command">
           <div class="command-input">
             <textarea ref="command" placeholder="请输入内容" v-model="form.job.command"/>
           </div>
         </el-form-item>
 
-        <el-form-item :label="$t('agent.upload')" v-show="form.job.jobType == 0">
+        <el-form-item :label="$t('agent.upload')" v-show="form.job.jobType == 1">
           <el-upload drag action="https://jsonplaceholder.typicode.com/posts/">
             <i class="el-icon-upload"></i>
             <div class="el-upload__text">{{$t('agent.uploadText')}}<em>{{$t('agent.clickUpload')}}</em></div>
@@ -61,7 +61,7 @@
         </el-form-item>
 
         <!--工作流-->
-        <el-form-item :label="$t('job.dependency')" v-if="form.job.jobType == 1">
+        <el-form-item :label="$t('job.dependency')" v-if="form.job.jobType == 2">
           <el-table class="input-item dependency" border stripe highlight-current-row :data="form.workFlow.count">
             <el-table-column :label="$t('job.job')" align="center">
               <template slot-scope="scope">
@@ -125,7 +125,7 @@
           </div>
         </el-form-item>
 
-        <el-form-item :label="$t('job.successExit')"  v-if="form.job.jobType == 0" prop="successExit">
+        <el-form-item :label="$t('job.successExit')"  v-if="form.job.jobType == 1" prop="successExit">
           <el-input :placeholder="$t('job.successExit')" v-model.number="form.job.successExit" clearable class="input-item"/>
         </el-form-item>
 
@@ -284,7 +284,7 @@
               options: []
             },
             {
-              params: {jobType: 3},
+              params: {jobType: 2},
               label: this.$t('job.dependencyItem'),
               options: []
             }
@@ -302,8 +302,8 @@
             {id: 4, name: this.$t('job.trigger.fail')}
           ],
           jobType: [//作业类型
-            {id: 0, name: this.$t('job.simpleJob')},
-            {id: 1, name: this.$t('job.workFlow')}
+            {id: 1, name: this.$t('job.simpleJob')},
+            {id: 2, name: this.$t('job.workFlow')}
           ],
           showCron: false,//是否显示cron控件
           showJob: false,//是否显示添加作业弹窗,
@@ -312,7 +312,7 @@
         },
         form: {//绑定form表单的数据
           job: {
-            jobType: 0,
+            jobType: 1,
             alarm:1,
             alarmType: [],
             runCount: 0,
@@ -328,7 +328,8 @@
             agentId: null,
             execUser: null,
             command: null,
-            successExit: null
+            successExit: null,
+            jobType:0
           }
         },
         jobFormRule: {
@@ -439,7 +440,7 @@
         this.$refs[formName].validate((valid) => {
           if (valid) {
             //提交简单任务
-            if (this.form.job.jobType === 0) {
+            if (this.form.job.jobType === 1) {
               addJob(this.form.job).then(response =>{
 
 
@@ -473,7 +474,7 @@
         this.control.showJob = true
         this.$nextTick(() => {
           if (!this.control.command1) {
-            this.control.command1 = this.handleCodeMirror(this.$refs.command1)
+            this.control.command1 = this.initCodeMirror(this.$refs.command1)
             this.control.command1.on('change', cm => {
               this.form.dependency.command = cm.getValue()
             })
@@ -512,7 +513,7 @@
 
       //check..验证表单相关。。。
       checkNull(rule, value, callback, field) {
-        if (this.form.job.jobType === 0) {
+        if (this.form.job.jobType === 1) {
           if (!value) {
             callback(new Error('请输入'.concat(field)))
           } else {
