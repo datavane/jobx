@@ -43,9 +43,9 @@ public interface JobDao {
 
     List<JobEntity> getScheduleJob();
 
-    void save(JobEntity job);
+    void addJob(JobEntity job);
 
-    void addDependency(JobEntity job);
+    void addNode(JobEntity job);
 
     void update(JobEntity job);
 
@@ -57,5 +57,6 @@ public interface JobDao {
 
     List<JobEntity> getDependencyByUser(@Param("userId")Long userId);
 
-    List<JobEntity> getJobByUser(@Param("userId")Long userId,@Param("createType")Integer createType);
+    List<JobEntity> getJob(@Param("jobType")Integer jobType);
+
 }

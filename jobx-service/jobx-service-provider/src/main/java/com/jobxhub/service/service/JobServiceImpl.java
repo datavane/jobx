@@ -22,27 +22,24 @@
 
 package com.jobxhub.service.service;
 
-import java.util.*;
-
-import static com.jobxhub.common.Constants.*;
-
 import com.alibaba.dubbo.config.annotation.Service;
 import com.google.common.collect.Lists;
 import com.jobxhub.common.Constants;
+import com.jobxhub.common.util.CommonUtils;
 import com.jobxhub.service.api.JobService;
 import com.jobxhub.service.api.RecordService;
+import com.jobxhub.service.dao.JobDao;
 import com.jobxhub.service.entity.JobEntity;
 import com.jobxhub.service.job.JobXRegistry;
-import com.jobxhub.service.dao.JobDao;
-import com.jobxhub.service.support.JobXTools;
-
-
-import com.jobxhub.common.util.CommonUtils;
 import com.jobxhub.service.model.Job;
+import com.jobxhub.service.support.JobXTools;
 import com.jobxhub.service.vo.PageBean;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpSession;
+import java.util.*;
+
+import static com.jobxhub.common.Constants.JobType;
 
 @Service
 public class JobServiceImpl implements JobService {
@@ -98,40 +95,49 @@ public class JobServiceImpl implements JobService {
         return pageBean;
     }
 
-    public void merge(Job job) {
-        JobEntity jobEntity = Job.transferEntity.apply(job);
-        if (job.getJobId() == null) {
-            jobEntity.setUpdateTime(new Date());
-            jobDao.save(jobEntity);
-            job.setJobId(jobEntity.getJobId());
-        } else {
-            jobDao.update(jobEntity);
-        }
-    }
 
-    @Override
-    public void addDependency(Job job) {
-        JobEntity jobEntity = Job.transferEntity.apply(job);
-        jobEntity.setUpdateTime(new Date());
-        jobEntity.setCreateType(Constants.CreateType.FLOW.getValue());
-        jobEntity.setJobType(Constants.JobType.DEPENDENCY.getCode());
-        jobDao.addDependency(jobEntity);
-        job.setJobId(jobEntity.getJobId());
-    }
-
+    /**
+     * 添加简单作业
+     *
+     * @param job
+     */
     @Override
     public void addJob(Job job) {
         JobEntity jobEntity = Job.transferEntity.apply(job);
         jobEntity.setUpdateTime(new Date());
-        jobEntity.setCreateType(CreateType.NORMAL.getValue());
-        jobEntity.setJobType(JobType.SIMPLE.getCode());
-        jobDao.addDependency(jobEntity);
+        jobDao.addJob(jobEntity);
+        job.setJobId(jobEntity.getJobId());
+    }
+
+    /**
+     * 添加工作流节点作业
+     *
+     * @param job
+     */
+    @Override
+    public void addNode(Job job) {
+        JobEntity jobEntity = Job.transferEntity.apply(job);
+        jobEntity.setUpdateTime(new Date());
+        jobDao.addNode(jobEntity);
+        job.setJobId(jobEntity.getJobId());
+    }
+
+    /**
+     * 添加一个工作流
+     *
+     * @param job
+     */
+    @Override
+    public void addFlow(Job job) {
+        JobEntity jobEntity = Job.transferEntity.apply(job);
+        jobEntity.setUpdateTime(new Date());
+        jobDao.addJob(jobEntity);
         job.setJobId(jobEntity.getJobId());
     }
 
     @Override
-    public List<Job> getJobByUser(Long userId,Integer createType) {
-        List<JobEntity> jobs = jobDao.getJobByUser(userId,createType);
+    public List<Job> getJob(Integer jobType) {
+        List<JobEntity> jobs = jobDao.getJob(jobType);
         if (CommonUtils.notEmpty(jobs)) {
             return Lists.transform(jobs, Job.transferModel);
         }
@@ -159,6 +165,7 @@ public class JobServiceImpl implements JobService {
     /**
      * 1)检测当前任务是否正在运行中(单一任务,流程任务)
      * 2)如果当前任务是某个流程任务在子任务,则不能删除
+     *
      * @param id
      * @return
      */
@@ -181,7 +188,7 @@ public class JobServiceImpl implements JobService {
     public boolean delete(Long jobId) throws Exception {
         Job job = getById(jobId);
         //单一任务...
-        if (job == null)return false;
+        if (job == null) return false;
         if (job.getJobType() == JobType.SIMPLE.getCode()) {
             jobxRegistry.jobUnRegister(jobId);
             jobDao.delete(jobId);
@@ -212,7 +219,7 @@ public class JobServiceImpl implements JobService {
             //恢复任务
             jobxRegistry.jobRegister(jobParam.getJobId());
         }
-        jobDao.pause(jobParam.getJobId(),jobParam.getPause());
+        jobDao.pause(jobParam.getJobId(), jobParam.getPause());
         return true;
     }
 
@@ -230,7 +237,7 @@ public class JobServiceImpl implements JobService {
     }
 
 
-    public PageBean<Job> search(HttpSession session, PageBean pageBean, Long agentId,String jobName) {
+    public PageBean<Job> search(HttpSession session, PageBean pageBean, Long agentId, String jobName) {
         Job job = new Job();
         if (!JobXTools.isPermission(session)) {
             job.setUserId(JobXTools.getUserId(session));
@@ -248,6 +255,6 @@ public class JobServiceImpl implements JobService {
     }
 
     public void updateToken(Long jobId, String token) {
-        jobDao.updateToken(jobId,token);
+        jobDao.updateToken(jobId, token);
     }
 }

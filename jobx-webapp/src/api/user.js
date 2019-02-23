@@ -1,5 +1,5 @@
 import request from '@/utils/request'
 
-export function execUser() {
+export function getExecUser() {
   return request.post('/user/execUser')
 }

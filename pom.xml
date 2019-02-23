@@ -49,15 +49,6 @@
             </roles>
             <timezone>+8</timezone>
         </developer>
-        <developer>
-            <name>StarFireflySpring</name>
-            <email>130201237@qq.com</email>
-            <url>https://github.com/StarFireflySpring</url>
-            <roles>
-                <role>Developer</role>
-            </roles>
-            <timezone>+8</timezone>
-        </developer>
     </developers>
 
     <!-- 定义统一版本号 -->

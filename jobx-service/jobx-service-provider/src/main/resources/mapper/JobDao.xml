@@ -25,7 +25,6 @@
         <result column="timeout" property="timeout"/>
         <result column="token" property="token"/>
         <result column="update_time" property="updateTime"/>
-        <result column="create_type" property="createType"/>
         <result column="user_name" property="operateUname"/>
     </resultMap>
 
@@ -50,8 +49,7 @@
         j.success_exit,
         j.timeout,
         j.token,
-        j.update_time,
-        j.create_type
+        j.update_time
     </sql>
 
     <select id="getAll" resultMap="jobEntity">
@@ -78,12 +76,13 @@
         where j.agent_id = #{agentId}
     </select>
 
-    <select id="getJobByUser" resultMap="jobEntity">
+    <select id="getJob" resultMap="jobEntity">
         select
         <include refid="query_Job"/>
         from t_job as j
-        where j.user_id=#{userId}
-        and j.create_type=#{createType}
+        <if test="job_type != null">
+            where j.job_type=#{jobType}
+        </if>
     </select>
 
     <select id="getScheduleJob" resultMap="jobEntity">
@@ -100,7 +99,7 @@
         from t_job as j
         inner join t_agent as a
         on j.agent_id = a.agent_id
-        where create_type = 1
+        where job_type < 3
         <if test="pager.filter.keys.size>0">
             <if test="pager.filter.job.userId != null">
                 and j.user_id = #{pager.filter.job.userId}
@@ -130,7 +129,7 @@
 
     <select id="getCount" resultType="java.lang.Integer">
         select count(1) from t_job as j
-        where create_type = 1
+        where create_type <![CDATA[ <  ]]> 3
         <if test="filter.keys.size>0">
             <if test="filter.job.userId != null">
                 and j.user_id = #{filter.job.userId}
@@ -156,30 +155,7 @@
         </if>
     </select>
 
-    <insert id="addDependency" parameterType="com.jobxhub.service.entity.JobEntity" useGeneratedKeys="true"
-            keyProperty="jobId">
-        insert into t_job (
-            agent_id,
-            user_id,
-            job_type,
-            job_name,
-            command,
-            success_exit,
-            create_type,
-            exec_user
-        ) values (
-            #{agentId},
-            #{userId},
-            #{jobType},
-            #{jobName},
-            #{command},
-            #{successExit},
-            #{createType},
-            #{execUser}
-        )
-    </insert>
-
-    <insert id="save" parameterType="com.jobxhub.service.entity.JobEntity" useGeneratedKeys="true" keyProperty="jobId">
+    <insert id="addJob" parameterType="com.jobxhub.service.entity.JobEntity" useGeneratedKeys="true" keyProperty="jobId">
         insert into t_job
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="agentId != null">
@@ -241,9 +217,6 @@
             </if>
             <if test="updateTime != null">
                 update_time,
-            </if>
-            <if test="createType != null">
-                create_type
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -307,10 +280,27 @@
             <if test="updateTime != null">
                 #{updateTime},
             </if>
-            <if test="createType != null">
-                #{createType}
-            </if>
         </trim>
+    </insert>
+
+    <insert id="addNode" parameterType="com.jobxhub.service.entity.JobEntity" useGeneratedKeys="true" keyProperty="jobId">
+        insert into t_job (
+            agent_id,
+            user_id,
+            job_type,
+            job_name,
+            command,
+            success_exit,
+            exec_user
+        ) values (
+            #{agentId},
+            #{userId},
+            #{jobType},
+            #{jobName},
+            #{command},
+            #{successExit},
+            #{execUser}
+        )
     </insert>
 
     <update id="update" parameterType="com.jobxhub.service.entity.JobEntity">
@@ -332,7 +322,6 @@
             timeout       =     #{timeout},
             token         =     #{token},
             update_time   =     #{updateTime},
-            create_type   =     #{createType}
         where job_id      =     #{jobId}
 	</update>
 

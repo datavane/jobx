@@ -120,7 +120,7 @@
 
           </el-table>
           <div style="margin-top: 20px">
-            <el-button size="mini" type="primary" @click="handleAddJob()">新增作业</el-button>
+            <el-button size="mini" type="primary" @click="handleAddJob()">新增节点作业</el-button>
             <el-button size="mini" type="success" @click="handleAddDependency">增加依赖</el-button>
           </div>
         </el-form-item>
@@ -186,8 +186,8 @@
         </el-form-item>
 
         <el-form-item>
-          <el-button type="primary" @click="onSubmit('jobForm')">{{$t('action.create')}}</el-button>
-          <el-button @click="onReset">{{$t('action.cancel')}}</el-button>
+          <el-button type="primary" @click="handleSubmitJob('jobForm')">{{$t('action.create')}}</el-button>
+          <el-button @click="handleResetJob">{{$t('action.cancel')}}</el-button>
         </el-form-item>
 
       </el-form>
@@ -238,7 +238,7 @@
 
         <div slot="footer" class="dialog-footer">
           <el-button @click="control.showJob = false">取 消</el-button>
-          <el-button type="primary" @click="submitDependency()">确 定</el-button>
+          <el-button type="primary" @click="handleSubmitDependency()">确 定</el-button>
         </div>
 
       </el-dialog>
@@ -250,8 +250,8 @@
 
 <script>
   import cron from '@/components/Cron'
-  import {allAgent} from '@/api/agent'
-  import {execUser} from '@/api/user'
+  import {getAgent} from '@/api/agent'
+  import {getExecUser} from '@/api/user'
   import {addJob, addWorkFlow,getJob, addDependency, getDependency} from '@/api/job'
   import CodeMirror from 'codemirror'
   import 'codemirror/addon/lint/lint.css'
@@ -279,12 +279,12 @@
           agents: [],//已有的执行器
           jobs: [
             {
-              params: {createType: 1},
+              params: {jobType: 1},
               label: this.$t('job.simpleJob'),
               options: []
             },
             {
-              params: {createType: 2},
+              params: {jobType: 3},
               label: this.$t('job.dependencyItem'),
               options: []
             }
@@ -359,14 +359,14 @@
     },
 
     created() {
-      this.getAgent()
-      this.getJob()
-      this.getExecUser()
-      this.handleInitWorkFlow()
+      this.httpGetAgent()
+      this.httpGetJob()
+      this.httpGetExecUser()
+      this.initWorkFlow()
     },
 
     mounted() {
-      this.control.command = this.handleCodeMirror(this.$refs.command)
+      this.control.command = this.initCodeMirror(this.$refs.command)
       this.control.command.on('change', cm => {
         this.form.job.command = cm.getValue()
         this.$refs.jobForm.validateField('command')
@@ -374,7 +374,144 @@
     },
 
     methods: {
+      //init初始化环境相关。。。
+      initWorkFlow() {
+        let id = new Date().getTime()
+        this.form.workFlow.count[0].id = id
+        this.form.workFlow.detail[0].id = id
+      },
 
+      initCodeMirror(el) {
+        return CodeMirror.fromTextArea(el, {
+          lineNumbers: true,
+          lint: true,
+          autoMatchParens: true,
+          mode: 'shell',
+          lineNumbers: true,	//显示行号
+          theme: "darcula",	//设置主题
+          lineWrapping: true,	//代码折叠
+          foldGutter: true,
+          gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter", 'CodeMirror-lint-markers'],
+          matchBrackets: true,
+        })
+      },
+
+      //http和后台交互相关。。。。。
+      httpGetAgent() {
+        getAgent().then(response => {
+          this.control.agents = response.body
+        })
+      },
+
+      httpGetJob() {
+        getJob(this.control.jobs[0].params).then(response => {
+          this.control.jobs[0].options = []
+          let job = response.body
+          job.forEach(x => {
+            this.control.jobs[0].options.push({
+              id: x.jobId,
+              name: x.jobName
+            })
+          })
+
+          getJob(this.control.jobs[1].params).then(response => {
+            this.control.jobs[1].options = []
+            let job = response.body
+            job.forEach(x => {
+              this.control.jobs[1].options.push({
+                id: x.jobId,
+                name: x.jobName
+              })
+            })
+          })
+
+        })
+      },
+
+      httpGetExecUser() {
+        getExecUser().then(response => {
+          this.control.execUsers = response.body
+        })
+      },
+
+      //其他事件相关。。。
+      handleSubmitJob(formName) {
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            //提交简单任务
+            if (this.form.job.jobType === 0) {
+              addJob(this.form.job).then(response =>{
+
+
+              })
+            } else {
+              this.submitWorkFlow
+            }
+          } else {
+            console.log('error submit!!')
+            return false
+          }
+        });
+      },
+
+      //提交一个复杂的工作流任务
+      submitWorkFlow() {
+
+      },
+
+      handleResetJob(formName) {
+        this.$refs[formName].resetFields()
+      },
+
+
+      handleSubmitDependency() {
+        addDependency(this.form.dependency).then(resp => {
+          this.control.showJob = false
+        })
+      },
+
+      handleAddJob() {
+        this.control.showJob = true
+        this.$nextTick(() => {
+          if (!this.control.command1) {
+            this.control.command1 = this.handleCodeMirror(this.$refs.command1)
+            this.control.command1.on('change', cm => {
+              this.form.dependency.command = cm.getValue()
+            })
+          }
+        })
+      },
+
+      handleAddDependency() {
+        let id = new Date().getMilliseconds()
+        this.form.workFlow.count.push({"id": id})
+        this.form.workFlow.detail.push({
+          id: id,
+          job: null,
+          dependency: null,
+          trigger: null
+        })
+      },
+
+      handleFindDependency(id) {
+        for (let index = 0; index < this.form.workFlow.detail.length; index++) {
+          let detail = this.form.workFlow.detail[index]
+          if (detail.id === id) {
+            return index
+          }
+        }
+      },
+
+      handleDeleteDependency(id) {
+        this.form.workFlow.count.forEach((item, index) => {
+          if (item.id == id) {
+            this.form.workFlow.count.splice(index, 1)
+            this.form.workFlow.detail.splice(index, 1)
+          }
+        })
+      },
+
+      //check..验证表单相关。。。
       checkNull(rule, value, callback, field) {
         if (this.form.job.jobType === 0) {
           if (!value) {
@@ -468,141 +605,6 @@
           callback()
         }
       },
-
-      onSubmit(formName) {
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            //提交简单任务
-            if (this.form.job.jobType === 0) {
-              addJob(this.form.job).then(response =>{
-
-
-              })
-            } else {
-              this.submitWorkFlow
-            }
-          } else {
-            console.log('error submit!!')
-            return false
-          }
-        });
-      },
-
-      //提交一个复杂的工作流任务
-      submitWorkFlow() {
-
-      },
-
-      onReset(formName) {
-        this.$refs[formName].resetFields()
-      },
-
-      getAgent() {
-        allAgent().then(response => {
-          this.control.agents = response.body
-        })
-      },
-
-      getJob() {
-
-        getJob(this.control.jobs[0].params).then(response => {
-          this.control.jobs[0].options = []
-          let job = response.body
-          job.forEach(x => {
-            this.control.jobs[0].options.push({
-              id: x.jobId,
-              name: x.jobName
-            })
-          })
-
-          getJob(this.control.jobs[1].params).then(response => {
-            this.control.jobs[1].options = []
-            let job = response.body
-            job.forEach(x => {
-              this.control.jobs[1].options.push({
-                id: x.jobId,
-                name: x.jobName
-              })
-            })
-          })
-
-        })
-      },
-
-      getExecUser() {
-        execUser().then(response => {
-          this.control.execUsers = response.body
-        })
-      },
-
-      submitDependency() {
-        addDependency(this.form.dependency).then(resp => {
-          this.control.showJob = false
-        })
-      },
-
-      handleCodeMirror(el) {
-        return CodeMirror.fromTextArea(el, {
-          lineNumbers: true,
-          lint: true,
-          autoMatchParens: true,
-          mode: 'shell',
-          lineNumbers: true,	//显示行号
-          theme: "darcula",	//设置主题
-          lineWrapping: true,	//代码折叠
-          foldGutter: true,
-          gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter", 'CodeMirror-lint-markers'],
-          matchBrackets: true,
-        })
-      },
-
-      handleAddJob() {
-        this.control.showJob = true
-        this.$nextTick(() => {
-          if (!this.control.command1) {
-            this.control.command1 = this.handleCodeMirror(this.$refs.command1)
-            this.control.command1.on('change', cm => {
-              this.form.dependency.command = cm.getValue()
-            })
-          }
-        })
-      },
-
-      handleAddDependency() {
-        let id = new Date().getMilliseconds()
-        this.form.workFlow.count.push({"id": id})
-        this.form.workFlow.detail.push({
-          id: id,
-          job: null,
-          dependency: null,
-          trigger: null
-        })
-      },
-
-      handleFindDependency(id) {
-        for (let index = 0; index < this.form.workFlow.detail.length; index++) {
-          let detail = this.form.workFlow.detail[index]
-          if (detail.id === id) {
-            return index
-          }
-        }
-      },
-
-      handleDeleteDependency(id) {
-        this.form.workFlow.count.forEach((item, index) => {
-          if (item.id == id) {
-            this.form.workFlow.count.splice(index, 1)
-            this.form.workFlow.detail.splice(index, 1)
-          }
-        })
-      },
-
-      handleInitWorkFlow() {
-        let id = new Date().getTime()
-        this.form.workFlow.count[0].id = id
-        this.form.workFlow.detail[0].id = id
-      }
-
     },
 
     watch: {

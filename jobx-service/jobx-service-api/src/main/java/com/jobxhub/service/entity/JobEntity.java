@@ -79,11 +79,6 @@ public class JobEntity implements Serializable {
     private Integer runCount;
 
     /**
-     * 作业创建类型
-     */
-    private Integer createType;
-
-    /**
      * 任务是否托管
      */
     private Boolean pause;

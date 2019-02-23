@@ -49,22 +49,43 @@ public class JobController {
     }
 
     @PostMapping("/getJob")
-    public RestResult getJob(HttpSession session,Integer createType) {
-        User user = SessionUtils.getUser(session);
-        List<Job> jobList = jobService.getJobByUser(user.getUserId(),createType);
+    public RestResult getJob(Integer jobType) {
+        List<Job> jobList = jobService.getJob(jobType);
         return RestResult.ok(jobList);
     }
 
+    /**
+     * 添加一个简单作业|工作流节点作业
+     * @param job
+     * @return
+     */
     @PostMapping("/addJob")
     public RestResult addJob(Job job) {
         jobService.addJob(job);
         return RestResult.ok(job);
     }
 
-    @PostMapping("/addDependency")
-    public RestResult addDependency(Job job) {
-        jobService.addDependency(job);
+    /**
+     * 添加一个工作流节点作业
+     * @param job
+     * @return
+     */
+    @PostMapping("/addNode")
+    public RestResult addNode(Job job) {
+        jobService.addNode(job);
         return RestResult.ok(job);
     }
+
+    /**
+     * 添加一个工作流作业
+     * @param job
+     * @return
+     */
+    @PostMapping("/addFlow")
+    public RestResult addFlow(Job job) {
+        jobService.addFlow(job);
+        return RestResult.ok(job);
+    }
+
 
 }

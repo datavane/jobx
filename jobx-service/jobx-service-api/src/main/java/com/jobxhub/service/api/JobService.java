@@ -18,10 +18,12 @@ public interface JobService {
 
     List<Job> getScheduleJob();
 
-    void addDependency(Job job);
-
     void addJob(Job job);
 
-    List<Job> getJobByUser(Long userId,Integer createType);
+    void addNode(Job job);
+
+    void addFlow(Job job);
+
+    List<Job> getJob(Integer jobType);
 
 }

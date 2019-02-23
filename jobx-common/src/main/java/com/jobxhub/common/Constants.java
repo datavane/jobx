@@ -432,9 +432,9 @@ public class Constants {
     }
 
     public enum JobType implements Serializable {
-        DEPENDENCY(-1,"依赖"),
         SIMPLE(0x0, "简单作业"),
-        FLOW(0x1, "工作流");
+        FLOW(0x1, "工作流"),
+        NODE(0x3,"工作流节点");
 
         private Integer code;
         private String description;
@@ -500,43 +500,6 @@ public class Constants {
 
         public void setDesc(String desc) {
             this.desc = desc;
-        }
-    }
-
-    public enum CreateType {
-        NORMAL(1, "正常定义的"),
-        FLOW(2, "创建工作流时定义的");
-        private Integer value;
-        private String desc;
-
-        CreateType(Integer value, String desc) {
-            this.value = value;
-            this.desc = desc;
-        }
-
-        public Integer getValue() {
-            return value;
-        }
-
-        public void setValue(Integer value) {
-            this.value = value;
-        }
-
-        public String getDesc() {
-            return desc;
-        }
-
-        public void setDesc(String desc) {
-            this.desc = desc;
-        }
-
-        public static CreateType getCreateType(Integer value) {
-            for (CreateType type : CreateType.values()) {
-                if (type.getValue().equals(value)) {
-                    return type;
-                }
-            }
-            return null;
         }
     }
 
