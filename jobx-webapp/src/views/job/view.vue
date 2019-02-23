@@ -97,8 +97,8 @@
         jobId:[],
         agents:[],
         jobTypes:[
-          {id:0,name:this.$t('job.simpleJob')},
-          {id:1,name:this.$t('job.workFlow')}
+          {id:1,name:this.$t('job.simpleJob')},
+          {id:2,name:this.$t('job.workFlow')}
         ]
       }
     },
