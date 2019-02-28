@@ -22,6 +22,16 @@
                 <el-option v-for="item in control.jobType" :key="item.id" :label="item.name" :value="item.id"/>
               </el-select>
             </el-form-item>
+
+            <el-form-item :label="$t('job.comment')">
+              <el-input
+                type="textarea"
+                :rows="4"
+                class="input-item"
+                :placeholder="$t('job.comment')"
+                v-model="form.job.comment">
+              </el-input>
+            </el-form-item>
           </div>
 
           <div v-show="control.step == 2">
@@ -192,17 +202,6 @@
                 <el-input :placeholder="$t('job.smsTemplate')" v-model="form.job.alarmSmsTemplate" clearable class="input-item"/>
               </el-form-item>
             </div>
-
-            <el-form-item :label="$t('job.comment')">
-              <el-input
-                type="textarea"
-                :rows="4"
-                class="input-item"
-                :placeholder="$t('job.comment')"
-                v-model="form.job.comment">
-              </el-input>
-            </el-form-item>
-
           </div>
 
           <div v-show="control.step == 4">

@@ -3,8 +3,8 @@ import md5 from 'md5'
 
 export function login(userName, password) {
   return request.post('/passport/login',{
-    'userName':userName,
-    'password':md5(password)
+    'userName': userName,
+    'password': md5(password)
   })
 }
 
