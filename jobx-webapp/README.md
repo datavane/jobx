@@ -4,7 +4,7 @@
 
 ```bash
 # Clone project
-git clone https://github.com/PanJiaChen/vue-admin-template.git
+git clone https://github.com/jobxhub/JobX.git
 
 # Install dependencies
 npm install
