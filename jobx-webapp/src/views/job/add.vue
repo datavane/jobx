@@ -468,7 +468,6 @@
             if (this.form.job.jobType === 1) {
               addJob(this.form.job).then(response =>{
 
-
               })
             } else {
               this.submitWorkFlow
