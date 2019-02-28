@@ -212,8 +212,8 @@
           </div>
 
           <el-form-item style="margin-top: 30px">
-            <el-button @click="handleSetpNext(-1)" v-if="control.step>1 && control.step<4">上一步</el-button>
-            <el-button @click="handleSetpNext(1)" v-if="control.step<4">下一步</el-button>
+            <el-button @click="handleStepNext(-1)" v-if="control.step>1 && control.step<3">上一步</el-button>
+            <el-button @click="handleStepNext(1)" v-if="control.step<3">下一步</el-button>
           </el-form-item>
 
       </el-form>
@@ -302,7 +302,7 @@
 
       return {
         control: {//控制页面显示,提供表单数据等...
-          step:1,
+          step:0,
           agents: [],//已有的执行器
           jobs: [
             {
@@ -456,8 +456,8 @@
         })
       },
 
-      handleSetpNext(setp){
-        this.control.step += setp;
+      handleStepNext(step){
+        this.control.step += step;
       },
 
       //其他事件相关。。。
