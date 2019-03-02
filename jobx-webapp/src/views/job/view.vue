@@ -11,7 +11,7 @@
       </el-select>
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('action.search') }}</el-button>
       <el-button class="filter-item" type="primary" icon="el-icon-plus" @click="handleAdd">{{ $t('action.add') }}</el-button>&nbsp;
-      <el-button :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">{{ $t('action.export') }}</el-button>
+      <el-button :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download">{{ $t('action.export') }}</el-button>
     </div>
 
     <div class="table-container" style="padding: 10px">
@@ -71,7 +71,7 @@
       </el-table>
     </div>
 
-    <pagination v-show="total>0" :total="total" :page.sync="queryData.pageNo" :limit.sync="queryData.pageSize" @pagination="getList" />
+    <pagination v-show="total>0" :total="total" :page.sync="queryData.pageNo" :limit.sync="queryData.pageSize" @pagination="httpGetList" />
 
   </div>
 </template>
@@ -143,7 +143,7 @@
 
       handleFilter() {
         this.queryData.pageNo=1
-        this.getList()
+        this.httpGetList()
       },
 
       handleAdd() {

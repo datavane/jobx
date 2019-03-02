@@ -3,7 +3,7 @@
 
     <div class="steps-form">
 
-      <el-steps :active="control.step" align-center style="width: 90%;margin-bottom: 50px">
+      <el-steps :active="control.step" finish-status="success" align-center style="width: 90%;margin-bottom: 50px">
         <el-step title="基础信息"></el-step>
         <el-step title="调度信息"></el-step>
         <el-step title="告警信息"></el-step>
@@ -12,7 +12,7 @@
 
       <el-form :model="form.job" ref="jobForm" :rules="jobFormRule" label-width="120px" >
 
-          <div v-show="control.step == 1">
+          <div v-show="control.step == 0">
             <el-form-item :label="$t('job.jobName')" prop="jobName">
               <el-input :placeholder="$t('job.jobName')" v-model="form.job.jobName" clearable class="input-item" />
             </el-form-item>
@@ -34,7 +34,7 @@
             </el-form-item>
           </div>
 
-          <div v-show="control.step == 2">
+          <div v-show="control.step == 1">
 
             <el-form-item :label="$t('agent.agentName')" v-show="form.job.jobType == 1" prop="agentId">
               <el-select v-model="form.job.agentId" clearable filterable class="input-item"  :placeholder="$t('agent.agentName')" >
@@ -155,7 +155,7 @@
 
           </div>
 
-          <div v-show="control.step == 3">
+          <div v-show="control.step == 2">
 
             <el-form-item :label="$t('job.runCount')" prop="runCount">
               <el-input v-model="form.job.runCount" controls-position="right" clearable class="input-item"></el-input>
@@ -204,7 +204,7 @@
             </div>
           </div>
 
-          <div v-show="control.step == 4">
+          <div v-show="control.step == 3">
             <el-form-item>
               <el-button type="primary" @click="handleSubmitJob('jobForm')">{{$t('action.create')}}</el-button>
               <el-button @click="handleResetJob">{{$t('action.cancel')}}</el-button>

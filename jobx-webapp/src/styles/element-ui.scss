@@ -122,12 +122,20 @@
    height: 40px;
  }
 
+ .el-step__line {
+   height: 4px !important;
+ }
+
+ .el-step__line-inner{
+   border-width: 2px !important;
+ }
+
  .el-step__icon.is-text{
    border:5px solid;
  }
 
  .el-step.is-horizontal .el-step__line {
-   top: 19px;
+   top: 18px;
  }
 
  .el-step__head.is-wait {
