@@ -3,14 +3,14 @@
 
     <div class="steps-form">
 
-      <el-steps :active="control.step" finish-status="success" align-center style="width: 90%;margin-bottom: 50px">
+      <el-steps :active="control.step" finish-status="success" align-center style="width:80%;margin-bottom: 50px">
         <el-step title="基础信息"></el-step>
         <el-step title="调度信息"></el-step>
         <el-step title="告警信息"></el-step>
         <el-step title="作业预览"></el-step>
       </el-steps>
 
-      <el-form :model="form.job" ref="jobForm" :rules="jobFormRule" label-width="120px" >
+      <el-form :model="form.job" ref="jobForm" :rules="jobFormRule" label-width="10%" >
 
           <div v-show="control.step == 0">
             <el-form-item :label="$t('job.jobName')" prop="jobName">
@@ -212,7 +212,7 @@
           </div>
 
           <el-form-item style="margin-top: 30px">
-            <el-button @click="handleStepNext(-1)" v-if="control.step>1 && control.step<3">上一步</el-button>
+            <el-button @click="handleStepNext(-1)" v-if="control.step>0 && control.step<3">上一步</el-button>
             <el-button @click="handleStepNext(1)" v-if="control.step<3">下一步</el-button>
           </el-form-item>
 
@@ -678,16 +678,16 @@
   .steps-form {
     position: static;
     padding-top: 50px;
-    width: 90%;
-    margin-left: 10%;
+    padding-left: 20px;
+    padding-right: 20px;
   }
 
   .input-item {
-    width: 80%;
+    width: 75%;
   }
 
   .command-input {
-    width: 80%;
+    width: 75%;
     font-size: 12px;
     position: relative;
   }
