@@ -10,7 +10,7 @@
         <el-step title="作业预览"></el-step>
       </el-steps>
 
-      <el-form :model="form.job" ref="jobForm" :rules="jobFormRule" label-width="10%" >
+      <el-form :model="form.job" :ref="formName" :rules="stepValidator" label-width="10%" >
 
           <div v-show="control.step == 0">
             <el-form-item :label="$t('job.jobName')" prop="jobName">
@@ -298,6 +298,7 @@
     components: {
       cron
     },
+
     data() {
 
       return {
@@ -359,30 +360,38 @@
             jobType:0
           }
         },
-        jobFormRule: {
-          jobName: [
-            {required: true, message: '请输入AppName', trigger: 'change'},
-            {min: 3, max: 20, message: '长度在 3 到 20 个字符'}
-          ],
-          jobType: [{required: true, message: '请选择作业类型', trigger: 'change'}],
-          cronExp: [{required: true, message: '请输入表达式', trigger: 'change'}],
-          agentId: [{trigger: 'change', validator: (r, v, c) => this.checkNull(r, v, c, this.$t('agent.agentName'))}],
-          execUser: [{trigger: 'change', validator: (r, v, c) => this.checkNull(r, v, c, this.$t('job.execUser'))}],
-          command: [{
-            trigger: 'change',
-            validator: (r, v, c) => this.checkNull(r, this.form.job.command, c, this.$t('job.command'))
-          }],
-          successExit: [{trigger: 'change', validator: (r, v, c) => this.checkSuccessExit(r, v, c)}],
-          alarmType: [{trigger: 'change', validator: this.checkAlarm}],
-          alarmDingURL: [{trigger: 'change', validator: this.checkDingURL}],
-          alarmDingAtUser: [{trigger: 'change', validator: this.checkDingAtUser}],
-          alarmEmail: [{trigger: 'change', validator: this.checkEmail}],
-          alarmSms: [{trigger: 'change', validator: this.checkSms}],
-          alarmSmsTemplate: [{
-            trigger: 'change',
-            validator: (r, v, c) => this.checkNull(r, v, c, this.$t('job.smsTemplate'))
-          }],
-        }
+        formName:'jobForm',
+        stepValidator:{},
+        validators:[
+          {
+            jobName: [
+              {required: true, message: '请输入AppName', trigger: 'change'},
+              {min: 3, max: 20, message: '长度在 3 到 20 个字符'}
+            ],
+            jobType: [{required: true, message: '请选择作业类型', trigger: 'change'}]
+          },
+          {
+            agentId: [{trigger: 'change', validator: (r, v, c) => this.checkNull(r, v, c, this.$t('agent.agentName'))}],
+            cronExp: [{required: true, message: '请输入表达式', trigger: 'change'}],
+            command: [{
+              trigger: 'change',
+              validator: (r, v, c) => this.checkNull(r, this.form.job.command, c, this.$t('job.command'))
+            }],
+            execUser: [{trigger: 'change', validator: (r, v, c) => this.checkNull(r, v, c, this.$t('job.execUser'))}],
+            successExit: [{trigger: 'change', validator: (r, v, c) => this.checkSuccessExit(r, v, c)}],
+          },
+          {
+            alarmType: [{trigger: 'change', validator: this.checkAlarm}],
+            alarmDingURL: [{trigger: 'change', validator: this.checkDingURL}],
+            alarmDingAtUser: [{trigger: 'change', validator: this.checkDingAtUser}],
+            alarmEmail: [{trigger: 'change', validator: this.checkEmail}],
+            alarmSms: [{trigger: 'change', validator: this.checkSms}],
+            alarmSmsTemplate: [{
+              trigger: 'change',
+              validator: (r, v, c) => this.checkNull(r, v, c, this.$t('job.smsTemplate'))
+            }]
+          }
+        ]
       }
     },
 
@@ -397,7 +406,7 @@
       this.control.command = this.initCodeMirror(this.$refs.command)
       this.control.command.on('change', cm => {
         this.form.job.command = cm.getValue()
-        this.$refs.jobForm.validateField('command')
+        this.$refs[this.formName].validateField('command')
       })
     },
 
@@ -456,8 +465,24 @@
         })
       },
 
-      handleStepNext(step){
-        this.control.step += step;
+      handleStepNext(step) {
+        this.$refs[this.formName].clearValidate()
+        if (step == -1) {
+          this.control.step += step
+        } else {
+          Object.assign(this.stepValidator,this.validators[this.control.step])
+          this.$refs[this.formName].validate((valid) => {
+            if (valid) {
+              //验证通过
+              this.control.step += step
+              console.log("check Success...")
+            } else {
+              console.log('error submit!!')
+              return false
+            }
+          })
+        }
+
       },
 
       //其他事件相关。。。
@@ -633,8 +658,13 @@
     },
 
     watch: {
+      'control.step':function () {
+        for(let key in this.stepValidator) {
+          delete this.stepValidator[key]
+        }
+      },
       'form.job.jobType': function (value) {
-        this.$refs.jobForm.clearValidate()
+        this.$refs[this.formName].clearValidate()
       },
 
       'form.job.alarm': function (value) {
@@ -644,12 +674,12 @@
       },
 
       'form.job.alarmType': function (value) {
-        this.$refs.jobForm.clearValidate('alarmType')
-        this.$refs.jobForm.clearValidate('alarmDingURL')
-        this.$refs.jobForm.clearValidate('alarmDingAtUser')
-        this.$refs.jobForm.clearValidate('alarmEmail')
-        this.$refs.jobForm.clearValidate('alarmSms')
-        this.$refs.jobForm.clearValidate('alarmSmsTemplate')
+        this.$refs[this.formName].clearValidate('alarmType')
+        this.$refs[this.formName].clearValidate('alarmDingURL')
+        this.$refs[this.formName].clearValidate('alarmDingAtUser')
+        this.$refs[this.formName].clearValidate('alarmEmail')
+        this.$refs[this.formName].clearValidate('alarmSms')
+        this.$refs[this.formName].clearValidate('alarmSmsTemplate')
       },
 
       'form.job.command': function (value) {
