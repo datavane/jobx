@@ -1,5 +1,5 @@
 <template lang="html">
-  <div :val="value_">
+  <div :val="value_" class="cron-container">
     <div class="line">
       <el-radio v-model="type" label="1" size="mini" border>每月</el-radio>
     </div>
@@ -135,17 +135,3 @@ export default {
   }
 }
 </script>
-<style lang="css">
-  .el-checkbox-group{
-    margin-top:10px
-  }
-  .el-radio{
-    margin-right: 0px;
-  }
-  .el-checkbox {
-    margin-right: 0px;
-  }
-  .el-checkbox+.el-checkbox {
-    margin-left: 10px;
-  }
-</style>
