@@ -149,9 +149,17 @@ export default {
   }
 }
 </script>
-
 <style lang="css">
-.el-checkbox+.el-checkbox {
+  .el-checkbox-group{
+    margin-top:10px
+  }
+  .el-radio{
+    margin-right: 0px;
+  }
+  .el-checkbox {
+    margin-right: 0px;
+  }
+  .el-checkbox+.el-checkbox {
     margin-left: 10px;
-}
+  }
 </style>

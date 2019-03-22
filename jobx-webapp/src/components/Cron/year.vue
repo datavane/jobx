@@ -124,6 +124,12 @@ export default {
 </script>
 
 <style lang="css">
+  .el-radio{
+    margin-right: 0px;
+  }
+.el-checkbox {
+  margin-right: 0px;
+}
 .el-checkbox+.el-checkbox {
     margin-left: 10px;
 }

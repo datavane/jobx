@@ -49,13 +49,13 @@
               </el-select>
             </el-form-item>
 
-            <el-dialog class="cronExp" :visible.sync="control.showCron" width="600px">
-              <cron v-model="form.job.cronExp" url="/verify/recent"></cron>
-            </el-dialog>
-
             <el-form-item :label="$t('job.cronExp')" prop="cronExp">
               <el-input :placeholder="$t('job.cronExp')" v-model="form.job.cronExp" class="input-item" @focus="control.showCron=!control.showCron"/>
             </el-form-item>
+
+            <el-dialog class="cronExp" :visible.sync="control.showCron" width="560px">
+              <cron v-model="form.job.cronExp" url="/verify/recent"></cron>
+            </el-dialog>
 
             <el-form-item :label="$t('job.command')" v-show="form.job.jobType == 1" prop="command">
               <div class="command-input">
@@ -337,7 +337,7 @@
           workFlow:[{
             jobId:null,
             parentId:null,
-            trigger:null
+            trigger:3
           }],
           dependency: {
             jobName: null,
@@ -516,7 +516,7 @@
         this.form.workFlow.push({
           jobId: null,
           parentId: null,
-          trigger: null
+          trigger: 3
         })
       },
 
@@ -751,9 +751,6 @@
       width: 25%;
       padding-right: 8px;
     }
-
   }
-
-
 
 </style>
