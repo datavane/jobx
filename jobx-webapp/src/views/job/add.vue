@@ -3,7 +3,7 @@
 
     <div class="steps-form">
 
-      <el-steps :active="control.step" finish-status="success" align-center style="width:80%;margin-bottom: 50px">
+      <el-steps :active="control.step" finish-status="success" align-center class="steps">
         <el-step title="基础信息"></el-step>
         <el-step title="调度信息"></el-step>
         <el-step title="告警信息"></el-step>
@@ -49,7 +49,7 @@
               </el-select>
             </el-form-item>
 
-            <el-dialog class="cronExp" :visible.sync="control.showCron" width="560px">
+            <el-dialog class="cronExp" :visible.sync="control.showCron" width="600px">
               <cron v-model="form.job.cronExp" url="/verify/recent"></cron>
             </el-dialog>
 
@@ -89,63 +89,50 @@
 
             <!--工作流-->
             <el-form-item :label="$t('job.dependency')" v-if="form.job.jobType == 2">
-              <el-table class="input-item dependency" border stripe highlight-current-row :data="form.workFlow.count">
-                <el-table-column :label="$t('job.job')" align="center">
-                  <template slot-scope="scope">
-                    <el-select v-model="form.workFlow.detail[handleFindNode(scope.row.id)].jobId" placeholder="请选择">
-                      <el-option-group
-                        v-for="(group,index) in control.jobs"
-                        :key="group.label"
-                        :label="group.label">
-                        <el-option
-                          v-for="item in group.options"
-                          :key="item.id"
-                          :label="item.name"
-                          :value="item.id">
+              <div v-for="item,index in form.workFlow" class="workflow">
+                <el-select v-model="item.jobId" clearable placeholder="请选择">
+                  <el-option-group
+                    v-for="(group,index) in control.jobs"
+                    :key="group.label"
+                    :label="group.label">
+                    <el-option
+                      v-for="item in group.options"
+                      :key="item.id"
+                      :label="item.name"
+                      :value="item.id">
                         <span style="float: left; color: #8492a6; font-size: 13px">
                           <font-awesome-icon icon="list" size="xs" v-if="index == 0"/>
                           <font-awesome-icon icon="sitemap" size="xs" v-if="index == 1"/>
                         </span>
-                          <span style="float: left;margin-left:5px">{{ item.name }}</span>
-                        </el-option>
-                      </el-option-group>
-                    </el-select>
-                  </template>
-                </el-table-column>
+                      <span style="float: left;margin-left:5px">{{ item.name }}</span>
+                    </el-option>
+                  </el-option-group>
+                </el-select>
 
-                <el-table-column :label="$t('job.parentDependency')" align="center">
-                  <template slot-scope="scope">
-                    <el-select v-model="form.workFlow.detail[handleFindNode(scope.row.id)].dependency" :placeholder="$t('job.parentDependency')" clearable>
-                      <el-option-group
-                        v-for="(group,index) in control.jobs"
-                        :key="group.label"
-                        :label="group.label">
-                        <el-option
-                          v-for="item in group.options"
-                          :key="item.id"
-                          :label="item.name"
-                          :value="item.id">
-                        <span style="float: left; color: #8492a6; font-size: 13px">
-                          <font-awesome-icon icon="list" size="xs" v-if="index == 0"/>
-                          <font-awesome-icon icon="sitemap" size="xs" v-if="index == 1"/>
-                        </span>
-                          <span style="float: left;margin-left:5px">{{ item.name }}</span>
-                        </el-option>
-                      </el-option-group>
-                    </el-select>
-                  </template>
-                </el-table-column>
+                <el-select v-model="item.parentId" clearable :placeholder="$t('job.parentDependency')" clearable>
+                  <el-option-group
+                    v-for="(group,index) in control.jobs"
+                    :key="group.label"
+                    :label="group.label">
+                    <el-option
+                      v-for="item in group.options"
+                      :key="item.id"
+                      :label="item.name"
+                      :value="item.id">
+                      <span style="float: left; color: #8492a6; font-size: 13px">
+                        <font-awesome-icon icon="list" size="xs" v-if="index == 0"/>
+                        <font-awesome-icon icon="sitemap" size="xs" v-if="index == 1"/>
+                      </span>
+                      <span style="float: left;margin-left:5px">{{ item.name }}</span>
+                    </el-option>
+                  </el-option-group>
+                </el-select>
 
-                <el-table-column :label="$t('job.trigger.name')" align="center">
-                  <template slot-scope="scope">
-                    <el-select v-model="form.workFlow.detail[handleFindNode(scope.row.id)].trigger" :placeholder="$t('job.trigger.name')" clearable>
-                      <el-option v-for="item in control.triggerType" :key="item.id" :label="item.name" :value="item.id"/>
-                    </el-select>
-                    <i class="el-icon-delete" type="danger" style="margin-left: 10px" v-if="form.workFlow.count.length>1" @click="handleDeleteNode(scope.row.id)"></i>
-                  </template>
-                </el-table-column>
-
-              </el-table>
+                <el-select v-model="item.trigger" :placeholder="$t('job.trigger.name')" clearable>
+                  <el-option v-for="item in control.triggerType" :key="item.id" :label="item.name" :value="item.id"/>
+                </el-select>
+                <el-button type="danger" icon="el-icon-delete" v-if="index>0" circle style="margin-left: 10px;" @click="handleDeleteNode(index)"></el-button>
+              </div>
 
               <div style="margin-top: 20px">
                 <el-button size="mini" type="primary" @click="handleAddJob()">新增依赖节点</el-button>
@@ -347,10 +334,11 @@
             timeout: 0,
             cronExp: null
           },
-          workFlow: {
-            count: [{}],
-            detail: [{}]
-          },
+          workFlow:[{
+            jobId:null,
+            parentId:null,
+            trigger:null
+          }],
           dependency: {
             jobName: null,
             agentId: null,
@@ -398,7 +386,6 @@
     created() {
       this.httpGetAgent()
       this.httpGetExecUser()
-      this.initWorkFlow()
       this.handleGetJob()
     },
 
@@ -411,13 +398,6 @@
     },
 
     methods: {
-
-      //init初始化环境相关。。。
-      initWorkFlow() {
-        let id = new Date().getTime()
-        this.form.workFlow.count[0].id = id
-        this.form.workFlow.detail[0].id = id
-      },
 
       initCodeMirror(el) {
         return CodeMirror.fromTextArea(el, {
@@ -442,8 +422,8 @@
       },
 
       handleGetJob() {
-        this.httpGetJob(0);
-        this.httpGetJob(1);
+        this.httpGetJob(0)
+        this.httpGetJob(1)
       },
 
       httpGetJob(index) {
@@ -533,32 +513,15 @@
       },
 
       handleAddNode() {
-        let id = new Date().getMilliseconds()
-        this.form.workFlow.count.push({"id": id})
-        this.form.workFlow.detail.push({
-          id: id,
-          job: null,
-          dependency: null,
+        this.form.workFlow.push({
+          jobId: null,
+          parentId: null,
           trigger: null
         })
       },
 
-      handleFindNode(id) {
-        for (let index = 0; index < this.form.workFlow.detail.length; index++) {
-          let detail = this.form.workFlow.detail[index]
-          if (detail.id === id) {
-            return index
-          }
-        }
-      },
-
-      handleDeleteNode(id) {
-        this.form.workFlow.count.forEach((item, index) => {
-          if (item.id == id) {
-            this.form.workFlow.count.splice(index, 1)
-            this.form.workFlow.detail.splice(index, 1)
-          }
-        })
+      handleDeleteNode(index) {
+        this.form.workFlow.splice(index, 1)
       },
 
       //check..验证表单相关。。。
@@ -705,6 +668,11 @@
     margin-left: 200px;
   }
 
+  .steps {
+    width:80%;
+    margin-bottom: 50px
+  }
+
   .steps-form {
     position: static;
     padding-top: 50px;
@@ -775,6 +743,15 @@
     margin-right: 25px;
     color: #8492a6;
     font-size: 13px
+  }
+
+  .workflow {
+    padding-bottom: 15px;
+    .el-select{
+      width: 25%;
+      padding-right: 8px;
+    }
+
   }
 
 
