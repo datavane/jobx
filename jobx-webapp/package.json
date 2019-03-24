@@ -35,9 +35,9 @@
     "url": "https://github.com/jobxhub/JobX/issues"
   },
   "dependencies": {
-    "@antv/g6": "^3.0.0",
     "axios": "0.18.0",
     "codemirror": "5.39.2",
+    "dagre-d3": "^0.6.3",
     "element-ui": "2.6.0",
     "js-cookie": "2.2.0",
     "md5": "^2.2.1",
@@ -75,6 +75,7 @@
     "compression-webpack-plugin": "2.0.0",
     "copy-webpack-plugin": "4.5.2",
     "css-loader": "1.0.0",
+    "dagre": "^0.8.4",
     "eslint": "4.19.1",
     "eslint-friendly-formatter": "4.0.1",
     "eslint-loader": "2.0.0",

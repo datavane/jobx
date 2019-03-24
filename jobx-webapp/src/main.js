@@ -26,9 +26,6 @@ library.add(fas, far, fab)
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.component('font-awesome-layers', FontAwesomeLayers)
 
-import G6 from '@antv/g6'
-Vue.prototype.G6 = G6
-
 import '@/icons' // icon
 import '@/permission' // permission control
 
