@@ -1,3 +1,6 @@
+<template>
+
+</template>
 <script>
   import go from '../../static/gojs/go'
   let $ = go.GraphObject.make
@@ -7,6 +10,7 @@
     data() {
       return {
         diagram: null,
+        cxElement:null
       }
     },
     mounted: function() {
@@ -14,6 +18,19 @@
       let $ = go.GraphObject.make
       let myDiagram = $(go.Diagram, this.$el,
           {
+            allowCopy: false,
+            allowDelete: false,
+            allowMove: false,
+            initialAutoScale: go.Diagram.Uniform,
+            initialContentAlignment: go.Spot.Center, //设置整个图表在容器中的位置 https://gojs.net/latest/api/symbols/Spot.html
+            allowZoom: true,
+            //"grid.visible": false,//是否显示背景栅格
+            "grid.gridCellSize": new go.Size(5, 5),//栅格大小
+            "commandHandler.copiesTree": false,  // 禁用复制快捷键
+            "commandHandler.deletesTree": false, // 禁用删除快捷键
+            //"toolManager.mouseWheelBehavior": go.ToolManager.WheelZoom, //启用视图放大缩小
+            allowLink: false,//是否允许拖拽连线
+            allowRelink: false,//是否允许重新连线
             layout: $(go.TreeLayout, { angle: 90, arrangement: go.TreeLayout.ArrangementHorizontal }),
             "undoManager.isEnabled": true,
             // Model ChangedEvents get passed up to component users
@@ -21,47 +38,28 @@
             "ChangedSelection": function(e) { self.$emit("changed-selection", e) }
           })
 
+
       myDiagram.nodeTemplate = $(go.Node,
           "Auto",
-          // define the node's outer shape
+        // define the node's outer shape
           $(go.Shape,
             "RoundedRectangle",
             {
               fill: "white", strokeWidth: 0,
-              portId: "",
               fromLinkable: true,
               toLinkable: true,
               stroke: "#5293c4",//边框颜色
-              strokeWidth: 1,
+              strokeWidth: 2,
               cursor: "pointer"
             },
             new go.Binding("fill", "color")),
-          $(go.TextBlock,
-            {
+            $(go.TextBlock,{
               margin: 5,
               stroke: "#333",
-              font: "bold 13px Helvetica, bold Arial, sans-serif"},
+              font: "bold 13px Helvetica, bold Arial, sans-serif"
+            },
             new go.Binding("text").makeTwoWay())
         )
-
-     /* myDiagram.nodeTemplate = $(
-          go.Node,
-          "Auto",
-          $(go.Shape,{
-              fill: "white",
-              strokeWidth: 1,
-              portId: "",
-              fromLinkable: true,
-              toLinkable: true,
-              cursor: "pointer"
-            },
-            new go.Binding("fill", "color")
-          ),
-          $(go.TextBlock,
-            { margin: 10, stroke: "#333", font: "bold 16px sans-serif"},
-            new go.Binding("text").makeTwoWay()
-          )
-        )*/
 
       myDiagram.linkTemplate =
         $(go.Link,
@@ -106,6 +104,22 @@
         this.diagram.updateAllRelationshipsFromData()
         this.diagram.updateAllTargetBindings()
         this.diagram.commitTransaction("updated")
+      },
+      showContextMenu:function (obj, diagram, tool) {
+        // Show only the relevant buttons given the current state.
+        let cmd = diagram.commandHandler;
+        document.getElementById("cut").style.display = cmd.canCutSelection() ? "block" : "none";
+        document.getElementById("copy").style.display = cmd.canCopySelection() ? "block" : "none";
+        document.getElementById("paste").style.display = cmd.canPasteSelection() ? "block" : "none";
+        document.getElementById("delete").style.display = cmd.canDeleteSelection() ? "block" : "none";
+        document.getElementById("color").style.display = (obj !== null ? "block" : "none");
+
+        // Now show the whole context menu element
+        this.cxElement.style.display = "block";
+        // we don't bother overriding positionContextMenu, we just do it here:
+        let mousePt = diagram.lastInput.viewPoint;
+        this.cxElement.style.left = mousePt.x + "px";
+        this.cxElement.style.top = mousePt.y + "px";
       }
     }
     
