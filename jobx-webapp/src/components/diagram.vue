@@ -1,9 +1,5 @@
-<template>
-
-</template>
-
 <script>
-  import go from '../../static/js/gojs/go.js'
+  import go from '../../src/assets/js/gojs/go'
   let $ = go.GraphObject.make
   export default {
     name: 'diagram',
@@ -24,7 +20,6 @@
             "ModelChanged": function(e) { self.$emit("model-changed", e) },
             "ChangedSelection": function(e) { self.$emit("changed-selection", e) }
           })
-
 
       myDiagram.nodeTemplate =
         $(go.Node,
@@ -49,8 +44,6 @@
               font: "bold 13px Helvetica, bold Arial, sans-serif"},
             new go.Binding("text").makeTwoWay())
         )
-
-
 
      /* myDiagram.nodeTemplate = $(
           go.Node,
@@ -80,7 +73,7 @@
           },
           $(go.Shape),
           $(go.Shape, { toArrow: "OpenTriangle" })
-        );
+        )
 
 
       this.diagram = myDiagram
@@ -119,7 +112,3 @@
     
   }
 </script>
-
-<style rel="stylesheet/scss" lang="scss" scoped>
- 
-</style>
