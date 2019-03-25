@@ -1,5 +1,5 @@
 <script>
-  import go from '../../src/assets/js/gojs/go'
+  import go from '../../static/gojs/go'
   let $ = go.GraphObject.make
   export default {
     name: 'diagram',
