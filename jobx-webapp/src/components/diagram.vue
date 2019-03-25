@@ -21,8 +21,7 @@
             "ChangedSelection": function(e) { self.$emit("changed-selection", e) }
           })
 
-      myDiagram.nodeTemplate =
-        $(go.Node,
+      myDiagram.nodeTemplate = $(go.Node,
           "Auto",
           // define the node's outer shape
           $(go.Shape,
