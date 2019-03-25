@@ -198,6 +198,16 @@
         </div>
 
         <div v-show="control.step == 3">
+          <el-card>
+            <diagram ref="diag" v-bind:model-data="diagramData" style="width: 75%;height: 500px"></diagram>
+          </el-card>
+          <!--
+          <br>Current Node:
+          <input v-model.lazy="currentNodeText" v-bind:disabled="currentNode === null">
+          <br>The saved GoJS Model:
+          <textarea style="width:100%;height:250px">{{ savedModelText }}</textarea>
+          -->
+
           <el-form-item>
             <el-button type="primary" @click="handleSubmitJob('jobForm')">{{$t('action.create')}}</el-button>
             <el-button @click="handleResetJob">{{$t('action.cancel')}}</el-button>
@@ -269,6 +279,7 @@
 
 <script>
   import cron from '@/components/Cron'
+  import diagram from '@/components/diagram'
   import {getAgent} from '@/api/agent'
   import {getExecUser} from '@/api/user'
   import {addJob, addFlow,getJob, addNode, getNode} from '@/api/job'
@@ -286,12 +297,43 @@
   import 'codemirror/mode/erlang/erlang'
   import 'codemirror/addon/lint/json-lint'
   import 'codemirror/addon/lint/javascript-lint'
+
   export default {
     components: {
-      cron
+      cron,diagram
     },
     data() {
       return {
+        diagramData: {
+          nodeDataArray: [
+            { key: 100, text: "任务开始1", color: "lightblue" },
+            { key: 101, text: "任务开始2", color: "lightblue" },
+            { key: 102, text: "任务开始3", color: "lightblue" },
+            { key: 1, text: "任务开始4", color: "lightblue" },
+            { key: 2, text: "任务1", color: "lightblue" },
+            { key: 3, text: "任务2", color: "lightblue" },
+            { key: 4, text: "任务3", color: "lightblue" },
+            { key: 5, text: "任务4", color: "lightblue" },
+            { key: 6, text: "任务5", color: "lightblue" },
+            { key: 7, text: "任务6", color: "lightblue" },
+            { key: 8, text: "任务完结", color: "lightblue" },
+          ],
+          linkDataArray: [
+            { from: 100, to: 1 },
+            { from: 101, to: 1 },
+            { from: 102, to: 1 },
+            { from: 1, to: 2 },
+            { from: 1, to: 3 },
+            { from: 1, to: 4 },
+            { from: 2, to: 5 },
+            { from: 3, to: 5 },
+            { from: 5, to: 6 },
+            { from: 5, to: 7 },
+            { from: 7, to: 8 },
+            { from: 6, to: 8 },
+          ]
+        },
+
         control: {//控制页面显示,提供表单数据等...
           step:0,
           agents: [],//已有的执行器
@@ -399,6 +441,7 @@
         this.$refs[this.formName].validateField('command')
       })
     },
+
     methods: {
       initCodeMirror(el) {
         return CodeMirror.fromTextArea(el, {
@@ -457,6 +500,10 @@
               return false
             }
           })
+
+          if (this.control.step == 3) {
+            this.handleGraph()
+          }
         }
       },
       //其他事件相关。。。
@@ -479,6 +526,8 @@
       //提交一个复杂的工作流任务
       submitWorkFlow() {
       },
+
+
       handleResetJob(formName) {
         this.$refs[formName].resetFields()
       },
@@ -509,6 +558,13 @@
       handleDeleteNode(index) {
         this.form.workFlow.splice(index, 1)
       },
+
+      handleGraph(){
+        this.$nextTick(function () {
+          this.$refs.diag.updateDiagramFromData()
+        })
+      },
+
       //check..验证表单相关。。。
       checkNull(rule, value, callback, field) {
         if (this.form.job.jobType === 1) {
