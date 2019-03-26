@@ -10,7 +10,8 @@
     data() {
       return {
         diagram: null,
-        cxElement:null
+        cxElement:null,
+        fillColor:'rgb(27,172,255)'
       }
     },
     mounted: function() {
@@ -58,29 +59,29 @@
         this.diagram.nodeTemplate = $(
           go.Node,
           "Auto",
-          { isShadowed: true },
+          { isShadowed: false },
           // define the node's outer shape
           $(go.Shape,
             "RoundedRectangle",
             {
-              fill: "white",
+              fill:this.fillColor,
               fromLinkable: true,
               fromLinkableSelfNode: true,
               fromLinkableDuplicates: true,
               toLinkable: true,
               toLinkableSelfNode: true,
               toLinkableDuplicates: true,
-              stroke: "green",//边框颜色
+              stroke: this.fillColor,//边框颜色
               strokeWidth: 1,
               cursor: "pointer"
             }
           ),
           $(
             go.TextBlock,{
-              stroke: "#333",
+              stroke: "#fff",
               font: "700 12px Droid Serif, sans-serif",
               textAlign: "center",
-              margin: 5
+              margin: 6
             },
             new go.Binding("text").makeTwoWay()
           )
@@ -93,19 +94,19 @@
             {
               curve: go.Link.Bezier,
               toShortLength: 5,
-              toEndSegmentLength: 30,
-              fromEndSegmentLength: 20,
+              toEndSegmentLength: 45,
+              fromEndSegmentLength: 10,
               adjusting: go.Link.Stretch,
             },
             $(go.Shape,
               {
                 strokeWidth: 1,
-                stroke: '#444'
+                stroke: 'rgb(125,125,125)'
               }
             ),
             $(
               go.Shape,
-              { toArrow: "Standard", fill: '#444', stroke: null }
+              { toArrow: "Standard", fill: 'rgb(125,125,125)', stroke: null }
             )
           )
       },
