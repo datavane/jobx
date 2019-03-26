@@ -196,9 +196,10 @@
           </div>
         </div>
 
-        <div v-show="control.step == 3">
-          <el-card>
-            <diagram ref="diag" v-bind:model-data="diagramData" style="width: 95%;height: 500px;"></diagram>
+        <div v-if="control.step == 3">
+
+          <el-card class="preview-card">
+            <diagram ref="diag" v-bind:model-data="diagramData" style="height:500px"></diagram>
           </el-card>
 
           <el-form-item>
@@ -553,8 +554,8 @@
         this.form.workFlow.splice(index, 1)
       },
 
-      handleGraph(){
-        this.$nextTick(function () {
+      handleGraph() {
+        this.$nextTick(()=>{
           this.$refs.diag.handleUpdateDiagram()
         })
       },

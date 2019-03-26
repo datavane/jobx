@@ -25,19 +25,19 @@
     },
 
     methods: {
-
       initDiagram() {
         this.diagram = $(
           go.Diagram,
-          this.$el, {
+          this.$el,
+          {
             allowCopy: false,
             allowDelete: false,
             allowMove: false,
             allowLink: false,//是否允许拖拽连线
             allowRelink: false,//是否允许重新连线
+            allowZoom: true,//允许缩放。。。
             initialAutoScale: go.Diagram.Uniform,
             initialContentAlignment: go.Spot.Center, //设置整个图表在容器中的位置 https://gojs.net/latest/api/symbols/Spot.html
-            allowZoom: true,//允许缩放。。。
             "grid.visible": false,//是否显示背景栅格
             "grid.gridCellSize": new go.Size(5, 5),//栅格大小
             "commandHandler.copiesTree": false,  // 禁用复制快捷键
@@ -53,7 +53,6 @@
       },
 
       initNodeTemplate() {
-
         this.diagram.nodeTemplate = $(
           go.Node,
           "Auto",
