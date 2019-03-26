@@ -42,6 +42,8 @@
             "grid.gridCellSize": new go.Size(5, 5),//栅格大小
             "commandHandler.copiesTree": false,  // 禁用复制快捷键
             "commandHandler.deletesTree": false, // 禁用删除快捷键
+            "draggingTool.dragsTree": true,
+            "commandHandler.deletesTree": true,
             //"toolManager.mouseWheelBehavior": go.ToolManager.WheelZoom, //启用视图放大缩小
             layout: $(go.TreeLayout, { angle: 90, arrangement: go.TreeLayout.ArrangementHorizontal }),
             "undoManager.isEnabled": true,
@@ -78,8 +80,7 @@
               stroke: "#333",
               font: "700 12px Droid Serif, sans-serif",
               textAlign: "center",
-              margin: 5,
-              maxSize: new go.Size(80, NaN)
+              margin: 5
             },
             new go.Binding("text").makeTwoWay()
           )
@@ -91,11 +92,21 @@
           $(go.Link,
             {
               curve: go.Link.Bezier,
+              toShortLength: 5,
               toEndSegmentLength: 30,
-              fromEndSegmentLength: 20
+              fromEndSegmentLength: 20,
+              adjusting: go.Link.Stretch,
             },
-            $(go.Shape),
-            $(go.Shape, { toArrow: "OpenTriangle" })
+            $(go.Shape,
+              {
+                strokeWidth: 1,
+                stroke: '#444'
+              }
+            ),
+            $(
+              go.Shape,
+              { toArrow: "Standard", fill: '#444', stroke: null }
+            )
           )
       },
 
