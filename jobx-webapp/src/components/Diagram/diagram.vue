@@ -27,28 +27,27 @@
     methods: {
 
       initDiagram() {
-        let self = this
         this.diagram = $(
           go.Diagram,
           this.$el, {
             allowCopy: false,
             allowDelete: false,
             allowMove: false,
+            allowLink: false,//是否允许拖拽连线
+            allowRelink: false,//是否允许重新连线
             initialAutoScale: go.Diagram.Uniform,
             initialContentAlignment: go.Spot.Center, //设置整个图表在容器中的位置 https://gojs.net/latest/api/symbols/Spot.html
-            allowZoom: true,
-            //"grid.visible": false,//是否显示背景栅格
+            allowZoom: true,//允许缩放。。。
+            "grid.visible": false,//是否显示背景栅格
             "grid.gridCellSize": new go.Size(5, 5),//栅格大小
             "commandHandler.copiesTree": false,  // 禁用复制快捷键
             "commandHandler.deletesTree": false, // 禁用删除快捷键
             //"toolManager.mouseWheelBehavior": go.ToolManager.WheelZoom, //启用视图放大缩小
-            allowLink: false,//是否允许拖拽连线
-            allowRelink: false,//是否允许重新连线
             layout: $(go.TreeLayout, { angle: 90, arrangement: go.TreeLayout.ArrangementHorizontal }),
             "undoManager.isEnabled": true,
             // Model ChangedEvents get passed up to component users
-            "ModelChanged": function(e) { self.$emit("model-changed", e) },
-            "ChangedSelection": function(e) { self.$emit("changed-selection", e) }
+            // "ModelChanged": function(e) { self.$emit("model-changed", e) },
+           // "ChangedSelection": function(e) { self.$emit("changed-selection", e) }
           }
         )
       },
@@ -125,6 +124,7 @@
         this.diagram.updateAllTargetBindings()
         this.diagram.commitTransaction("updated")
       },
+
       handleShowContextMenu:function (obj, diagram, tool) {
         // Show only the relevant buttons given the current state.
         let cmd = diagram.commandHandler;
@@ -141,6 +141,7 @@
         this.cxElement.style.left = mousePt.x + "px";
         this.cxElement.style.top = mousePt.y + "px";
       }
+
     }
     
   }

@@ -771,6 +771,4 @@
       width: 95%;height: 500px;
     }
   }
-
-
 </style>
