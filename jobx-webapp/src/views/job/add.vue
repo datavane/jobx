@@ -1,6 +1,5 @@
 <template>
   <div class="app-container">
-
     <div class="steps-form">
 
       <el-steps :active="control.step" finish-status="success" align-center class="steps">
@@ -136,7 +135,7 @@
               </div>
 
               <div class="work-item">
-                <el-button type="danger" icon="el-icon-delete" v-if="index>0" circle style="margin-left: 10px;" @click="handleDeleteNode(index)"></el-button>
+                <el-button type="danger" icon="el-icon-delete" v-if="index>0" circle @click="handleDeleteNode(index)"></el-button>
               </div>
             </div>
 
@@ -199,19 +198,14 @@
 
         <div v-show="control.step == 3">
           <el-card>
-            <diagram ref="diag" v-bind:model-data="diagramData" style="width: 75%;height: 500px"></diagram>
+            <diagram ref="diag" v-bind:model-data="diagramData" style="width: 95%;height: 500px;"></diagram>
           </el-card>
-          <!--
-          <br>Current Node:
-          <input v-model.lazy="currentNodeText" v-bind:disabled="currentNode === null">
-          <br>The saved GoJS Model:
-          <textarea style="width:100%;height:250px">{{ savedModelText }}</textarea>
-          -->
 
           <el-form-item>
             <el-button type="primary" @click="handleSubmitJob('jobForm')">{{$t('action.create')}}</el-button>
             <el-button @click="handleResetJob">{{$t('action.cancel')}}</el-button>
           </el-form-item>
+
         </div>
 
         <el-form-item style="margin-top: 30px">
@@ -693,94 +687,89 @@
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-  .steps-btn {
-    margin-left: 200px;
-  }
-  .steps {
-    width:80%;
-    margin-bottom: 50px
-  }
   .steps-form {
+    display:block;
     position: static;
     padding-top: 50px;
-    padding-left: 20px;
-    padding-right: 20px;
-  }
-  .input-item {
-    width: 75%;
-  }
-  .command-input {
-    width: 75%;
-    font-size: 12px;
-    position: relative;
-  }
-  .command-input >> .CodeMirror {
-    height: auto;
-    min-height: 300px;
-  }
-  .command-input >>> .CodeMirror-scroll {
-    min-height: 300px;
-  }
-  .command-input >>> .cm-s-rubyblue span.cm-string {
-    color: #F08047;
-  }
-  .dependency {
-    .el-table .cell, .el-table th div {
-      padding-left: 0px;
-      padding-right: 0px;
+    width: 90%;
+    margin:0 auto;
+    .steps {
+      width:91%;
+      margin-bottom: 50px
     }
-    .el-input__inner {
-      height: 30px;
-    }
-    .el-table__header-wrapper {
-      line-height: 20px;
-    }
-  }
-
-
-
-  .dependencyForm {
     .input-item {
-      width: 85%;
+      width: 91%;
     }
-    .command-input1 {
-      width: 85%;
+    .command-input {
+      width: 91%;
       font-size: 12px;
       position: relative;
-      .CodeMirror {
-        height: 150px;
+    }
+    .command-input >> .CodeMirror {
+      height: auto;
+      min-height: 300px;
+    }
+    .command-input >>> .CodeMirror-scroll {
+      min-height: 300px;
+    }
+    .command-input >>> .cm-s-rubyblue span.cm-string {
+      color: #F08047;
+    }
+    .dependency {
+      .el-table .cell, .el-table th div {
+        padding-left: 0px;
+        padding-right: 0px;
       }
-      .CodeMirror-scroll {
-        height: 150px;
+      .el-input__inner {
+        height: 30px;
+      }
+      .el-table__header-wrapper {
+        line-height: 20px;
       }
     }
-  }
-  .select-item-right {
-    float: right;
-    margin-right: 25px;
-    color: #8492a6;
-    font-size: 13px
-  }
-
-  .workflow {
-    margin-bottom:20px;
-    overflow: hidden;
-    .el-select{
-      width: 100%;
-      padding-right: 8px;
+    .dependencyForm {
+      .input-item {
+        width: 85%;
+      }
+      .command-input1 {
+        width: 85%;
+        font-size: 12px;
+        position: relative;
+        .CodeMirror {
+          height: 150px;
+        }
+        .CodeMirror-scroll {
+          height: 150px;
+        }
+      }
     }
-    .work-item {
-      float: left;
-      width: 25.222%;
+    .select-item-right {
+      float: right;
+      margin-right: 25px;
+      color: #8492a6;
+      font-size: 13px
     }
-    .work-item:last-child {
-      float: left;
-      width: 20px;
+    .workflow {
+      margin-bottom:20px;
+      overflow: hidden;
+      .el-select{
+        width: 91%;
+      }
+      .work-item {
+        float: left;
+        width: 31.222%;
+      }
+      .work-item:last-child {
+        float: left;
+        width: 20px;
+      }
+      .workRoot {
+        width: 100%;
+      }
     }
-    .workRoot {
-      width: 75.666%;
+    .preview-card {
+      width: 95%;height: 500px;
     }
-
   }
 
 

@@ -14,9 +14,21 @@
       }
     },
     mounted: function() {
-      let self = this
-      let $ = go.GraphObject.make
-      let myDiagram = $(
+      this.initDiagram()
+      this.initNodeTemplate()
+      this.initLinkTemplate()
+      this.handleUpdateModel(this.modelData)
+    },
+
+    watch: {
+      modelData: function(val) { this.handleUpdateModel(val) }
+    },
+
+    methods: {
+
+      initDiagram() {
+        let self = this
+        this.diagram = $(
           go.Diagram,
           this.$el, {
             allowCopy: false,
@@ -38,55 +50,57 @@
             "ModelChanged": function(e) { self.$emit("model-changed", e) },
             "ChangedSelection": function(e) { self.$emit("changed-selection", e) }
           }
-      )
+        )
+      },
 
-      myDiagram.nodeTemplate = $(
-        go.Node,
-        "Auto",
-        // define the node's outer shape
-        $(go.Shape,
+      initNodeTemplate() {
+
+        this.diagram.nodeTemplate = $(
+          go.Node,
+          "Auto",
+          { isShadowed: true },
+          // define the node's outer shape
+          $(go.Shape,
             "RoundedRectangle",
             {
-              fill: "white", strokeWidth: 0,
+              fill: "white",
               fromLinkable: true,
+              fromLinkableSelfNode: true,
+              fromLinkableDuplicates: true,
               toLinkable: true,
-              stroke: "#5293c4",//边框颜色
-              strokeWidth: 2,
+              toLinkableSelfNode: true,
+              toLinkableDuplicates: true,
+              stroke: "green",//边框颜色
+              strokeWidth: 1,
               cursor: "pointer"
+            }
+          ),
+          $(
+            go.TextBlock,{
+              stroke: "#333",
+              font: "700 12px Droid Serif, sans-serif",
+              textAlign: "center",
+              margin: 5,
+              maxSize: new go.Size(80, NaN)
             },
-            new go.Binding("fill", "color")
-        ),
-        $(
-          go.TextBlock,{
-            stroke: "#333",
-            font: "700 12px Droid Serif, sans-serif",
-            textAlign: "center",
-            margin: 10,
-            maxSize: new go.Size(80, NaN)
-          },
-          new go.Binding("text").makeTwoWay()
+            new go.Binding("text").makeTwoWay()
+          )
         )
-      )
+      },
 
-      myDiagram.linkTemplate =
-        $(go.Link,
-          {
-            curve: go.Link.Bezier,
-            toEndSegmentLength: 30,
-            fromEndSegmentLength: 20
-          },
-          $(go.Shape),
-          $(go.Shape, { toArrow: "OpenTriangle" })
-        )
+      initLinkTemplate() {
+        this.diagram.linkTemplate =
+          $(go.Link,
+            {
+              curve: go.Link.Bezier,
+              toEndSegmentLength: 30,
+              fromEndSegmentLength: 20
+            },
+            $(go.Shape),
+            $(go.Shape, { toArrow: "OpenTriangle" })
+          )
+      },
 
-      this.diagram = myDiagram
-
-      this.handleUpdateModel(this.modelData)
-    },
-    watch: {
-      modelData: function(val) { this.handleUpdateModel(val) }
-    },
-    methods: {
       model: function() { return this.diagram.model },
       handleUpdateModel: function(val) {
         // No GoJS transaction permitted when replacing Diagram.model.
