@@ -279,7 +279,7 @@
 
 <script>
   import cron from '@/components/Cron'
-  import diagram from '@/components/Diagram'
+  import diagram from '@/components/Diagram/diagram'
   import {getAgent} from '@/api/agent'
   import {getExecUser} from '@/api/user'
   import {addJob, addFlow,getJob, addNode, getNode} from '@/api/job'
