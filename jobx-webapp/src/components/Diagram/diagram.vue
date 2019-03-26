@@ -2,7 +2,7 @@
 
 </template>
 <script>
-  import go from '../../static/gojs/go'
+  import go from '../../../static/gojs/go'
   let $ = go.GraphObject.make
   export default {
     name: 'diagram',
@@ -16,8 +16,9 @@
     mounted: function() {
       let self = this
       let $ = go.GraphObject.make
-      let myDiagram = $(go.Diagram, this.$el,
-          {
+      let myDiagram = $(
+          go.Diagram,
+          this.$el, {
             allowCopy: false,
             allowDelete: false,
             allowMove: false,
@@ -36,13 +37,14 @@
             // Model ChangedEvents get passed up to component users
             "ModelChanged": function(e) { self.$emit("model-changed", e) },
             "ChangedSelection": function(e) { self.$emit("changed-selection", e) }
-          })
+          }
+      )
 
-
-      myDiagram.nodeTemplate = $(go.Node,
-          "Auto",
+      myDiagram.nodeTemplate = $(
+        go.Node,
+        "Auto",
         // define the node's outer shape
-          $(go.Shape,
+        $(go.Shape,
             "RoundedRectangle",
             {
               fill: "white", strokeWidth: 0,
@@ -52,14 +54,17 @@
               strokeWidth: 2,
               cursor: "pointer"
             },
-            new go.Binding("fill", "color")),
-            $(go.TextBlock,{
-              margin: 5,
-              stroke: "#333",
-              font: "bold 13px Helvetica, bold Arial, sans-serif"
-            },
-            new go.Binding("text").makeTwoWay())
+            new go.Binding("fill", "color")
+        ),
+        $(
+          go.TextBlock,{
+            margin: 5,
+            stroke: "#333",
+            font: "bold 13px Helvetica, bold Arial, sans-serif"
+          },
+          new go.Binding("text").makeTwoWay()
         )
+      )
 
       myDiagram.linkTemplate =
         $(go.Link,
@@ -71,7 +76,6 @@
           $(go.Shape),
           $(go.Shape, { toArrow: "OpenTriangle" })
         )
-
 
       this.diagram = myDiagram
 
