@@ -58,9 +58,11 @@
         ),
         $(
           go.TextBlock,{
-            margin: 5,
             stroke: "#333",
-            font: "bold 13px Helvetica, bold Arial, sans-serif"
+            font: "700 12px Droid Serif, sans-serif",
+            textAlign: "center",
+            margin: 10,
+            maxSize: new go.Size(80, NaN)
           },
           new go.Binding("text").makeTwoWay()
         )
