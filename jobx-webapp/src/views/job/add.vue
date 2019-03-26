@@ -49,7 +49,7 @@
             </el-select>
           </el-form-item>
 
-          <el-dialog class="cronExp" :visible.sync="control.showCron" width="600px">
+          <el-dialog class="cronExp" :visible.sync="control.showCron" width="550px">
             <cron v-model="form.job.cronExp" url="/verify/recent"></cron>
           </el-dialog>
 
@@ -316,7 +316,7 @@
             { key: 5, text: "任务4", color: "lightblue" },
             { key: 6, text: "任务5", color: "lightblue" },
             { key: 7, text: "任务6", color: "lightblue" },
-            { key: 8, text: "任务完结", color: "lightblue" },
+            { key: 8, text: "任务完结", color: "lightblue" }
           ],
           linkDataArray: [
             { from: 100, to: 1 },
@@ -561,7 +561,7 @@
 
       handleGraph(){
         this.$nextTick(function () {
-          this.$refs.diag.updateDiagramFromData()
+          this.$refs.diag.handleUpdateDiagram()
         })
       },
 

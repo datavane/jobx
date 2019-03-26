@@ -81,14 +81,14 @@
 
       this.diagram = myDiagram
 
-      this.updateModel(this.modelData)
+      this.handleUpdateModel(this.modelData)
     },
     watch: {
-      modelData: function(val) { this.updateModel(val) }
+      modelData: function(val) { this.handleUpdateModel(val) }
     },
     methods: {
       model: function() { return this.diagram.model },
-      updateModel: function(val) {
+      handleUpdateModel: function(val) {
         // No GoJS transaction permitted when replacing Diagram.model.
         if (val instanceof go.Model) {
           this.diagram.model = val
@@ -102,7 +102,7 @@
           this.diagram.model = m
         }
       },
-      updateDiagramFromData: function() {
+      handleUpdateDiagram: function() {
         this.diagram.startTransaction()
         // This is very general but very inefficient.
         // It would be better to modify the diagramData data by calling
@@ -111,7 +111,7 @@
         this.diagram.updateAllTargetBindings()
         this.diagram.commitTransaction("updated")
       },
-      showContextMenu:function (obj, diagram, tool) {
+      handleShowContextMenu:function (obj, diagram, tool) {
         // Show only the relevant buttons given the current state.
         let cmd = diagram.commandHandler;
         document.getElementById("cut").style.display = cmd.canCutSelection() ? "block" : "none";
