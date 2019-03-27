@@ -11,7 +11,8 @@
       return {
         diagram: null,
         cxElement:null,
-        fillColor:'rgb(27,172,255)'
+        fillColor:'rgb(27,172,255)',
+        linkColor:'rgb(125,125,125)'
       }
     },
     mounted: function() {
@@ -101,12 +102,12 @@
             $(go.Shape,
               {
                 strokeWidth: 1,
-                stroke: 'rgb(125,125,125)'
+                stroke: this.linkColor
               }
             ),
             $(
               go.Shape,
-              { toArrow: "Standard", fill: 'rgb(125,125,125)', stroke: null }
+              { toArrow: "Standard", fill: this.linkColor, stroke: null }
             )
           )
       },
