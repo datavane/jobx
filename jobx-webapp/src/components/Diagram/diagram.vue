@@ -47,11 +47,8 @@
             "draggingTool.dragsTree": true,
             "commandHandler.deletesTree": true,
             //"toolManager.mouseWheelBehavior": go.ToolManager.WheelZoom, //启用视图放大缩小
-            layout: $(go.TreeLayout, { angle: 90, arrangement: go.TreeLayout.ArrangementHorizontal }),
-            "undoManager.isEnabled": true,
-            // Model ChangedEvents get passed up to component users
-            // "ModelChanged": function(e) { self.$emit("model-changed", e) },
-           // "ChangedSelection": function(e) { self.$emit("changed-selection", e) }
+            layout: $(go.LayeredDigraphLayout,{direction:90}),
+            "undoManager.isEnabled": true
           }
         )
       },
@@ -60,8 +57,7 @@
         this.diagram.nodeTemplate = $(
           go.Node,
           "Auto",
-          { isShadowed: false },
-          // define the node's outer shape
+          {isShadowed: false },
           $(go.Shape,
             "RoundedRectangle",
             {
@@ -82,7 +78,7 @@
               stroke: "#fff",
               font: "700 13px Droid Serif, sans-serif",
               textAlign: "center",
-              margin: 6
+              margin: 8
             },
             new go.Binding("text").makeTwoWay()
           )
@@ -95,7 +91,7 @@
             {
               curve: go.Link.Bezier,
               toShortLength: 5,
-              toEndSegmentLength: 45,
+              toEndSegmentLength: 35,
               fromEndSegmentLength: 2,
               adjusting: go.Link.Stretch,
             },

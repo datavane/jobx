@@ -309,7 +309,6 @@
             { key: 101, text: "任务并行2", color: "lightblue" },
             { key: 102, text: "任务并行3", color: "lightblue" },
             { key: 103, text: "任务并行4", color: "lightblue" },
-            { key: 104, text: "任务并行5", color: "lightblue" },
             { key: 1, text: "任务开始4", color: "lightblue" },
             { key: 2, text: "任务1", color: "lightblue" },
             { key: 3, text: "任务2", color: "lightblue" },
@@ -320,6 +319,7 @@
             { key: 9, text: "任务7", color: "lightblue" },
             { key: 10, text: "任务8", color: "lightblue" },
             { key: 11, text: "任务9", color: "lightblue" },
+            { key: 12, text: "任务10", color: "lightblue" },
             { key: 8, text: "任务完结", color: "lightblue" }
           ],
           linkDataArray: [
@@ -332,6 +332,8 @@
             { from: 1, to: 4 },
             { from: 4, to: 9 },
             { from: 4, to: 10 },
+            { from: 4, to: 10 },
+            { from: 4, to: 12 },
             { from: 9, to: 11 },
             { from: 10, to: 11 },
             { from: 11, to: 8 },
@@ -341,6 +343,7 @@
             { from: 5, to: 7 },
             { from: 7, to: 8 },
             { from: 6, to: 8 },
+            { from: 12, to: 11 },
           ]
         },
 
