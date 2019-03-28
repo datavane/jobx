@@ -33,7 +33,7 @@ import com.jobxhub.service.entity.ConfigEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.alibaba.dubbo.config.annotation.Service;
+import org.apache.dubbo.config.annotation.Service;
 import javax.sql.DataSource;
 import java.io.File;
 import java.net.URL;

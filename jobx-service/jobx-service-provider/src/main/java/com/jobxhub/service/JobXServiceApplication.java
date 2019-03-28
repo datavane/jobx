@@ -20,7 +20,7 @@
  */
 package com.jobxhub.service;
 
-import com.alibaba.dubbo.config.spring.context.annotation.EnableDubbo;
+import org.apache.dubbo.config.spring.context.annotation.EnableDubbo;
 import com.jobxhub.common.Constants;
 import com.jobxhub.common.util.DateUtils;
 import com.jobxhub.common.util.SystemPropertyUtils;

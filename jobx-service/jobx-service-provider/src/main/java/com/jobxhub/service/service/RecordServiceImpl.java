@@ -33,7 +33,7 @@ import com.jobxhub.service.model.Chart;
 import com.jobxhub.service.model.Record;
 import com.jobxhub.service.vo.PageBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import com.alibaba.dubbo.config.annotation.Service;
+import org.apache.dubbo.config.annotation.Service;
 import java.util.*;
 
 import static com.jobxhub.common.util.CommonUtils.notEmpty;

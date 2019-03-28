@@ -20,7 +20,7 @@
  */
 package com.jobxhub.server.controller;
 
-import com.alibaba.dubbo.config.annotation.Reference;
+import org.apache.dubbo.config.annotation.Reference;
 import com.jobxhub.server.util.SessionUtils;
 import com.jobxhub.service.api.UserService;
 import com.jobxhub.service.model.User;
