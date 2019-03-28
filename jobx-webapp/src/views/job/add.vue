@@ -9,7 +9,7 @@
         <el-step title="作业预览"></el-step>
       </el-steps>
 
-      <el-form :model="form.job" :ref="formName" :rules="stepValidator" label-width="10%" >
+      <el-form :model="form.job" :ref="formName" :rules="stepValidator" label-width="10%">
 
         <div v-show="control.step == 0">
           <el-form-item :label="$t('job.jobName')" prop="jobName">
@@ -80,7 +80,7 @@
           <!--工作流-->
           <el-form-item :label="$t('job.dependency')" v-if="form.job.jobType == 2">
             <div v-for="(item,index) in form.workFlow" class="workflow">
-              <div :class="index == 0?'workRoot':'work-item'">
+              <div class="work-item">
                 <el-form-item>
                   <el-select v-model="item.jobId" clearable placeholder="请选择">
                     <el-option-group
@@ -105,7 +105,7 @@
 
               <div class="work-item">
                 <el-form-item>
-                  <el-select v-model="item.parentId" clearable :placeholder="$t('job.parentDependency')" clearable v-if="index>0">
+                  <el-select v-model="item.parentId" clearable :placeholder="$t('job.parentDependency')" clearable>
                     <el-option-group
                       v-for="(group,index) in control.jobs"
                       :key="group.label"
@@ -128,20 +128,24 @@
 
               <div class="work-item">
                 <el-form-item>
-                  <el-select v-model="item.trigger" :placeholder="$t('job.trigger.name')" clearable v-if="index>0">
+                  <el-select v-model="item.trigger" :placeholder="$t('job.trigger.name')" clearable>
                     <el-option v-for="item in control.triggerType" :key="item.id" :label="item.name" :value="item.id"/>
                   </el-select>
                 </el-form-item>
               </div>
 
               <div class="work-item">
-                <el-button type="danger" icon="el-icon-delete" v-if="index>0" circle @click="handleDeleteNode(index)"></el-button>
+                <el-tooltip class="item" effect="dark" content="添加一个流程作业" placement="top">
+                  <el-button type="success" icon="el-icon-plus" v-if="index==1" circle @click="handleAddNode()"></el-button>
+                </el-tooltip>
+                <el-button type="danger" icon="el-icon-delete" v-if="index>1" circle @click="handleDeleteNode(index)"></el-button>
               </div>
             </div>
 
             <div style="margin-top: 20px">
-              <el-button size="mini" type="primary" @click="handleAddJob()">新增依赖节点</el-button>
-              <el-button size="mini" type="success" @click="handleAddNode">增加依赖作业</el-button>
+              <el-tooltip class="item" effect="dark" content="新增一个作业节点" placement="top-start">
+                <el-button type="primary" icon="el-icon-plus" circle @click="handleAddJob()"></el-button>
+              </el-tooltip>
             </div>
           </el-form-item>
 
@@ -199,7 +203,7 @@
         <div v-if="control.step == 3">
 
           <el-card class="preview-card">
-            <diagram ref="diag" v-bind:model-data="diagramData" style="height:500px"></diagram>
+            <diagram ref="diag" v-bind:model-data="diagramData" style="height:800px"></diagram>
           </el-card>
 
           <el-form-item>
@@ -780,7 +784,7 @@
       }
     }
     .preview-card {
-      width: 95%;height: 500px;
+      width: 95%;height: 800px;
     }
   }
 </style>

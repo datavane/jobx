@@ -34,7 +34,7 @@
           {
             allowCopy: false,
             allowDelete: false,
-            allowMove: false,
+            allowMove: true,
             allowLink: false,//是否允许拖拽连线
             allowRelink: false,//是否允许重新连线
             allowZoom: true,//允许缩放。。。
@@ -80,7 +80,7 @@
           $(
             go.TextBlock,{
               stroke: "#fff",
-              font: "700 12px Droid Serif, sans-serif",
+              font: "700 13px Droid Serif, sans-serif",
               textAlign: "center",
               margin: 6
             },
@@ -96,7 +96,7 @@
               curve: go.Link.Bezier,
               toShortLength: 5,
               toEndSegmentLength: 45,
-              fromEndSegmentLength: 10,
+              fromEndSegmentLength: 2,
               adjusting: go.Link.Stretch,
             },
             $(go.Shape,
@@ -136,22 +136,21 @@
         this.diagram.updateAllTargetBindings()
         this.diagram.commitTransaction("updated")
       },
-
       handleShowContextMenu:function (obj, diagram, tool) {
         // Show only the relevant buttons given the current state.
-        let cmd = diagram.commandHandler;
-        document.getElementById("cut").style.display = cmd.canCutSelection() ? "block" : "none";
-        document.getElementById("copy").style.display = cmd.canCopySelection() ? "block" : "none";
-        document.getElementById("paste").style.display = cmd.canPasteSelection() ? "block" : "none";
-        document.getElementById("delete").style.display = cmd.canDeleteSelection() ? "block" : "none";
-        document.getElementById("color").style.display = (obj !== null ? "block" : "none");
+        let cmd = diagram.commandHandler
+        document.getElementById("cut").style.display = cmd.canCutSelection() ? "block" : "none"
+        document.getElementById("copy").style.display = cmd.canCopySelection() ? "block" : "none"
+        document.getElementById("paste").style.display = cmd.canPasteSelection() ? "block" : "none"
+        document.getElementById("delete").style.display = cmd.canDeleteSelection() ? "block" : "none"
+        document.getElementById("color").style.display = (obj !== null ? "block" : "none")
 
         // Now show the whole context menu element
-        this.cxElement.style.display = "block";
+        this.cxElement.style.display = "block"
         // we don't bother overriding positionContextMenu, we just do it here:
-        let mousePt = diagram.lastInput.viewPoint;
-        this.cxElement.style.left = mousePt.x + "px";
-        this.cxElement.style.top = mousePt.y + "px";
+        let mousePt = diagram.lastInput.viewPoint
+        this.cxElement.style.left = mousePt.x + "px"
+        this.cxElement.style.top = mousePt.y + "px"
       }
 
     }
