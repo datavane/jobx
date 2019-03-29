@@ -487,7 +487,6 @@
           lint: true,
           autoMatchParens: true,
           mode: 'shell',
-          lineNumbers: true,	//显示行号
           theme: "darcula",	//设置主题
           lineWrapping: true,	//代码折叠
           foldGutter: true,
@@ -524,7 +523,7 @@
       },
       handleStepNext(step) {
         this.$refs[this.formName].clearValidate()
-        if (step == -1) {
+        if (step === -1) {
           this.control.step += step
         } else {
           Object.assign(this.stepValidator,this.validators[this.control.step])
@@ -539,7 +538,7 @@
             }
           })
 
-          if (this.control.step == 3) {
+          if (this.control.step === 3) {
             this.handleGraph()
           }
         }
@@ -553,7 +552,7 @@
               addJob(this.form.job).then(response =>{
               })
             } else {
-              this.submitWorkFlow
+              this.submitWorkFlow()
             }
           } else {
             console.log('error submit!!')
@@ -616,8 +615,8 @@
         }
       },
       checkSuccessExit(rule, value, callback) {
-        if (this.form.job.alarm == 0) {
-          if (value == null || value == undefined || value.length == 0) {
+        if (this.form.job.alarm === 0) {
+          if (value == null || value == undefined || value.length === 0) {
             callback(new Error('请输入成功标志'))
           } else {
             if (!this.$verify.isPositiveNum(value)) {
@@ -631,8 +630,8 @@
         }
       },
       checkAlarm(rule, value, callback) {
-        if (this.form.job.alarm == 1) {
-          if (!value || value.length == 0) {
+        if (this.form.job.alarm === 1) {
+          if (!value || value.length === 0) {
             callback(new Error('请至少选择一种报警通知方式'))
           } else {
             callback()
@@ -642,7 +641,7 @@
         }
       },
       checkDingURL(rule, value, callback) {
-        if (this.form.job.alarm == 1 && this.form.job.alarmType.indexOf(1) > -1) {
+        if (this.form.job.alarm === 1 && this.form.job.alarmType.indexOf(1) > -1) {
           if (!value) {
             callback(new Error('请输入钉钉机器人URL'))
           } else if (!this.$verify.isDingTaskURL(value)) {
@@ -655,7 +654,7 @@
         }
       },
       checkDingAtUser(rule, value, callback) {
-        if (this.form.job.alarm == 1 && this.form.job.alarmType.indexOf(1) > -1) {
+        if (this.form.job.alarm === 1 && this.form.job.alarmType.indexOf(1) > -1) {
           if (value && !this.$verify.isPhone(value)) {
             callback(new Error('钉钉@通知人,格式有误,请参考钉钉官网规范'));
           } else {
@@ -666,7 +665,7 @@
         }
       },
       checkEmail(rule, value, callback) {
-        if (this.form.job.alarm == 1 && this.form.job.alarmType.indexOf(2) > -1) {
+        if (this.form.job.alarm === 1 && this.form.job.alarmType.indexOf(2) > -1) {
           if (!value) {
             callback(new Error('请输入正确的邮箱地址'))
           } else if (!this.$verify.isEmail(value)) {
@@ -679,7 +678,7 @@
         }
       },
       checkSms(rule, value, callback) {
-        if (this.form.job.alarm == 1 && this.form.job.alarmType.indexOf(2) > -1) {
+        if (this.form.job.alarm === 1 && this.form.job.alarmType.indexOf(2) > -1) {
           if (!value) {
             callback(new Error('请输入正确短信通道商http请求URL'))
           } else if (!this.$verify.isURL(value)) {
