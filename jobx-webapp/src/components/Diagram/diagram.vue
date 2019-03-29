@@ -41,7 +41,6 @@
             initialAutoScale: go.Diagram.Uniform,
             initialContentAlignment: go.Spot.Center, //设置整个图表在容器中的位置 https://gojs.net/latest/api/symbols/Spot.html
             "grid.visible": false,//是否显示背景栅格
-            "grid.gridCellSize": new go.Size(5, 5),//栅格大小
             "commandHandler.copiesTree": false,  // 禁用复制快捷键
             "commandHandler.deletesTree": false, // 禁用删除快捷键
             "draggingTool.dragsTree": true,
@@ -57,7 +56,7 @@
         this.diagram.nodeTemplate = $(
           go.Node,
           "Auto",
-          {isShadowed: false },
+          {isShadowed: true },
           $(go.Shape,
             "RoundedRectangle",
             {
