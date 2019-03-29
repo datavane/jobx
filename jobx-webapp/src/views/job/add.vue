@@ -201,16 +201,13 @@
         </div>
 
         <div v-if="control.step == 3">
-
           <el-card class="preview-card">
-            <diagram ref="diag" v-bind:model-data="diagramData" style="height:800px"></diagram>
+            <diagram ref="diag" :data="diagramData" :layout="diagramLayout" style="height:800px"></diagram>
           </el-card>
-
           <el-form-item>
             <el-button type="primary" @click="handleSubmitJob('jobForm')">{{$t('action.create')}}</el-button>
             <el-button @click="handleResetJob">{{$t('action.cancel')}}</el-button>
           </el-form-item>
-
         </div>
 
         <el-form-item style="margin-top: 30px">
@@ -303,50 +300,78 @@
     },
     data() {
       return {
+        diagramLayout:'TB',//TB(上下),BT(下上),LR(左右),RL(右左)
         diagramData: {
           nodeDataArray: [
-            { key: 100, text: "任务并行1", color: "lightblue" },
-            { key: 101, text: "任务并行2", color: "lightblue" },
-            { key: 102, text: "任务并行3", color: "lightblue" },
-            { key: 103, text: "任务并行4", color: "lightblue" },
-            { key: 1, text: "任务开始4", color: "lightblue" },
-            { key: 2, text: "任务1", color: "lightblue" },
-            { key: 3, text: "任务2", color: "lightblue" },
-            { key: 4, text: "任务3", color: "lightblue" },
-            { key: 5, text: "任务4", color: "lightblue" },
-            { key: 6, text: "任务5", color: "lightblue" },
-            { key: 7, text: "任务6", color: "lightblue" },
-            { key: 9, text: "任务7", color: "lightblue" },
-            { key: 10, text: "任务8", color: "lightblue" },
-            { key: 11, text: "任务9", color: "lightblue" },
-            { key: 12, text: "任务10", color: "lightblue" },
-            { key: 8, text: "任务完结", color: "lightblue" }
+            { key: 1, text: "zhekou_ab_case"},
+            { key: 2, text: "hds_mysql_high_flow"},
+            { key: 3, text: "member_device"},
+            { key: 4, text: "sm_ftp_download"},
+            { key: 5, text: "hds_mysql_high_other_flow"},
+            { key: 6, text: "hdw_user_new_device"},
+            { key: 7, text: "hdw_business_entrance"},
+            { key: 8, text: "hds_parser_log_high_flow"},
+            { key: 9, text: "hdw_user_product_order_flow"},
+            { key: 10, text: "sm_black_device"},
+            { key: 11, text: "hdw_view_order_model"},
+            { key: 12, text: "hds_parser_log_normal_flow"},
+            { key: 13, text: "hdw_user_new_active"},
+            { key: 14, text: "hdw_app_base_stat_flow"},
+            { key: 15, text: "hdm_server_data_flow"},
+            { key: 16, text: "hdm_user_order"},
+            { key: 17, text: "real_time_flow"},
+            { key: 18, text: "hdw_ab_test_flow"},
+            { key: 19, text: "hds_parser_log_low_flow"},
+            { key: 20, text: "hdm_analysis_demand_flow"},
+            { key: 21, text: "device_push_kafka"},
+            { key: 22, text: "hdm_alg_data_flow"},
+            { key: 23, text: "tag_flow"},
+            { key: 24, text: "analysis_task_order_new"},
+            { key: 25, text: "end"},
           ],
           linkDataArray: [
-            { from: 100, to: 1 },
-            { from: 101, to: 1 },
-            { from: 102, to: 1 },
-            { from: 103, to: 1 },
-            { from: 1, to: 2 },
-            { from: 1, to: 3 },
-            { from: 1, to: 4 },
-            { from: 4, to: 9 },
-            { from: 4, to: 10 },
-            { from: 4, to: 10 },
-            { from: 4, to: 12 },
-            { from: 9, to: 11 },
-            { from: 10, to: 11 },
-            { from: 11, to: 8 },
+            { from: 1, to: 8 },
             { from: 2, to: 5 },
-            { from: 3, to: 5 },
-            { from: 5, to: 6 },
+            { from: 2, to: 9 },
+            { from: 3, to: 6 },
+            { from: 4, to: 6 },
             { from: 5, to: 7 },
-            { from: 7, to: 8 },
+            { from: 5, to: 11 },
             { from: 6, to: 8 },
-            { from: 12, to: 11 },
+            { from: 6, to: 9 },
+            { from: 6, to: 10 },
+            { from: 7, to: 17 },
+            { from: 8, to: 12 },
+            { from: 8, to: 13 },
+            { from: 8, to: 14 },
+            { from: 9, to: 11 },
+            { from: 9, to: 13 },
+            { from: 9, to: 14 },
+            { from: 9, to: 15 },
+            { from: 9, to: 16 },
+            { from: 10, to: 25 },
+            { from: 11, to: 18 },
+            { from: 12, to: 19 },
+            { from: 13, to: 17 },
+            { from: 13, to: 18 },
+            { from: 13, to: 20 },
+            { from: 13, to: 21 },
+            { from: 13, to: 22 },
+            { from: 13, to: 23 },
+            { from: 14, to: 23 },
+            { from: 15, to: 25 },
+            { from: 15, to: 25 },
+            { from: 16, to: 25 },
+            { from: 17, to: 25 },
+            { from: 18, to: 25 },
+            { from: 20, to: 24 },
+            { from: 19, to: 25 },
+            { from: 21, to: 25 },
+            { from: 22, to: 25 },
+            { from: 23, to: 25 },
+            { from: 24, to: 25 },
           ]
         },
-
         control: {//控制页面显示,提供表单数据等...
           step:0,
           agents: [],//已有的执行器

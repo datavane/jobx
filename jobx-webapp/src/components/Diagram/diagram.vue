@@ -6,7 +6,7 @@
   let $ = go.GraphObject.make
   export default {
     name: 'diagram',
-    props: ["modelData"],  // accept model data as a parameter
+    props: ["data","layout"],  // accept model data as a parameter
     data() {
       return {
         diagram: null,
@@ -19,11 +19,11 @@
       this.initDiagram()
       this.initNodeTemplate()
       this.initLinkTemplate()
-      this.handleUpdateModel(this.modelData)
+      this.handleUpdateModel(this.data)
     },
 
     watch: {
-      modelData: function(val) { this.handleUpdateModel(val) }
+      data: function(val) { this.handleUpdateModel(val) }
     },
 
     methods: {
@@ -45,18 +45,26 @@
             "commandHandler.deletesTree": false, // 禁用删除快捷键
             "draggingTool.dragsTree": true,
             "commandHandler.deletesTree": true,
-            //"toolManager.mouseWheelBehavior": go.ToolManager.WheelZoom, //启用视图放大缩小
-            layout: $(go.LayeredDigraphLayout,{direction:90}),
+            "toolManager.mouseWheelBehavior": go.ToolManager.WheelZoom, //启用视图放大缩小
+            layout: $(go.LayeredDigraphLayout,{direction:this.initLayout()}),
             "undoManager.isEnabled": true
           }
         )
       },
 
+      initLayout() {
+        if (this.layout === 'LR')   return 0
+        if (this.layout === 'RL')   return 180
+        if (this.layout === 'TB')   return 90
+        if (this.layout === 'BT')   return 270
+        //默认上线
+        return 90
+      },
       initNodeTemplate() {
         this.diagram.nodeTemplate = $(
           go.Node,
           "Auto",
-          {isShadowed: true },
+          {isShadowed: false },
           $(go.Shape,
             "RoundedRectangle",
             {
@@ -75,7 +83,7 @@
           $(
             go.TextBlock,{
               stroke: "#fff",
-              font: "700 13px Droid Serif, sans-serif",
+              font: "700 14px Droid Serif, sans-serif",
               textAlign: "center",
               margin: 8
             },
