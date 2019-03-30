@@ -2,12 +2,13 @@
   <div :class="{'fullScreen':fullScreen}">
     <div class="option">
        <el-dropdown size="small" @command="handleDirection">
-         <el-button type="success" circle> <font-awesome-icon icon="sitemap" size="xs"/></el-button>
+         <el-button type="success" size="mini">布局</el-button>
         <el-dropdown-menu slot="dropdown" style="z-index: 9999">
           <el-dropdown-item v-for="item in directions" :key="item.value" :command="item.value"> {{item.label}} </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
-      <el-button type="primary" circle @click="handleFullScreen()" > <font-awesome-icon icon="sitemap" size="xs"/></el-button>
+      <el-button type="primary" @click="handleRefresh()" size="mini">重置</el-button>
+      <el-button type="primary" @click="handleFullScreen()" size="mini">全屏</el-button>
     </div>
     <div ref="diagram" :style="diagStyle" class="diagram"></div>
   </div>
@@ -60,6 +61,11 @@
       }
     },
     methods: {
+
+      model(){
+        return this.diagram.model
+      },
+
       initDiagram() {
         this.diagram = $(
           go.Diagram,
@@ -162,9 +168,11 @@
         }
       },
 
-      model(){
-        return this.diagram.model
+      handleRefresh(){
+        this.handleUpdateModel(this.data)
       },
+
+
       handleUpdateModel (val) {
         // No GoJS transaction permitted when replacing Diagram.model.
         if (val instanceof go.Model) {
