@@ -1,6 +1,5 @@
 <template>
   <div class="app-container">
-    <div class="steps-form">
 
       <el-steps :active="control.step" finish-status="success" align-center class="steps">
         <el-step title="基础信息"></el-step>
@@ -10,7 +9,8 @@
         <el-step title="提交完成"></el-step>
       </el-steps>
 
-      <el-form :model="form.job" :ref="formName" :rules="stepValidator" label-width="10%">
+
+      <el-form :model="form.job" :ref="formName" :rules="stepValidator" label-width="10%" class="steps-form">
 
         <div v-show="control.step == 0">
           <el-form-item :label="$t('job.jobName')" prop="jobName">
@@ -212,7 +212,7 @@
 
             <div class="detail_step">
               <div class="title"><i class="el-icon-tickets"></i>&nbsp;基础信息
-                <el-button type="primary" icon="el-icon-edit" size="mini" @click="control.step = 0">编辑</el-button>
+                <i class="el-icon-edit-outline edit" @click="control.step = 2"></i>
               </div>
               <div class="line"></div>
               <div class="detail_table">
@@ -233,7 +233,7 @@
 
             <div class="detail_step">
               <div class="title"><i class="el-icon-tickets"></i>&nbsp;基础信息
-                <el-button type="primary" icon="el-icon-edit" size="mini" @click="control.step = 1">编辑</el-button>
+                <i class="el-icon-edit-outline edit" @click="control.step = 2"></i>
               </div>
               <div class="line"></div>
               <div class="detail_table">
@@ -254,7 +254,7 @@
 
             <div class="detail_step">
               <div class="title"><i class="el-icon-tickets"></i>&nbsp;基础信息
-                <el-button type="primary" icon="el-icon-edit" size="mini" @click="control.step = 2">编辑</el-button>
+                <i class="el-icon-edit-outline edit" @click="control.step = 2"></i>
               </div>
               <div class="line"></div>
               <div class="detail_table">
@@ -276,7 +276,9 @@
             <div class="detail_step">
               <div class="title">DAG预览图</div>
               <div class="line"></div>
-              <diagram ref="diag" :data="diagramData"></diagram>
+              <div class="detail_table">
+                <diagram ref="diag" :data="diagramData"></diagram>
+              </div>
             </div>
 
           </div>
@@ -345,7 +347,6 @@
 
       </el-dialog>
 
-    </div>
   </div>
 
 </template>
@@ -483,7 +484,6 @@
           showJob: false,//是否显示添加作业弹窗,
           command: null,
           command1: null,
-          activeTab:'first'
         },
         form: {//绑定form表单的数据
           job: {
@@ -679,6 +679,11 @@
         })
       },
 
+      handleShowEdit(name) {
+
+        this.$refs[name].style.display = 'block'
+      },
+
       //check..验证表单相关。。。
       checkNull(rule, value, callback, field) {
         if (this.form.job.jobType == 1) {
@@ -807,16 +812,18 @@
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
+  .steps {
+    width:90%;
+    margin: 0 auto;
+    margin-top: 50px;
+  }
+
   .steps-form {
     display:block;
     position: static;
     padding-top: 50px;
-    width: 90%;
+    width: 75%;
     margin:0 auto;
-    .steps {
-      width:100%;
-      margin-bottom: 50px
-    }
     .input-item {
       width: 91%;
     }
@@ -896,33 +903,33 @@
           color: #2f2f2f;
           font-size: 16px;
           font-weight: 700;
+          margin-top: 10px;
           margin-bottom: 10px;
           i{
             color:#909399;
           }
-          .el-button{
+          .edit{
             float: right;
             cursor: pointer;
-            color: #f4f4f5;
-            padding: 7px;
+            padding: 10px;
             &:hover{
-              color: #ffffff;
+              color: #40a9ff;
             }
           }
         }
         .line{
           width: 100%;
           height: 1px;
-          background-color:#ddd;
+          background-color:#fff;
         }
         .detail_table {
           table {
             width: 90%;
-            padding-top: 30px;
+            padding-top: 10px;
             padding-bottom: 10px;
             tr td {
               width: 33%;
-              height: 30px;
+              height: 35px;
               font-size: 13px;
               color: #555;
               line-height: 1;
@@ -934,8 +941,11 @@
               }
             }
           }
+          border: 1px dashed #d9d9d9;
+          border-radius: 10px;
           &:hover{
-            background-color: #F2F6FC;
+            background-color: #e6f7ff;
+            border: 1px dashed #40a9ff;
           }
 
         }
