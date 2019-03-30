@@ -264,9 +264,9 @@
     width: 100%;
     height: 100%;
     z-index: 9999;
-    left: 0px;
-    top: 0px;
-    padding:0px;
+    left: 0;
+    top: 0;
+    padding:0;
   }
   .diagram {
     min-height: 400px;
