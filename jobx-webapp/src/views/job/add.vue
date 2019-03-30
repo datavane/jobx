@@ -7,6 +7,7 @@
         <el-step title="调度信息"></el-step>
         <el-step title="告警信息"></el-step>
         <el-step title="作业预览"></el-step>
+        <el-step title="提交完成"></el-step>
       </el-steps>
 
       <el-form :model="form.job" :ref="formName" :rules="stepValidator" label-width="10%">
@@ -78,11 +79,14 @@
           </el-form-item>
 
           <!--工作流-->
-          <el-form-item :label="$t('job.dependency')" v-if="form.job.jobType == 2">
+          <el-form-item v-if="form.job.jobType == 2" :label="$t('job.dependency')">
             <div v-for="(item,index) in form.workFlow" class="workflow">
               <div :class=" index==0 ?'workRoot':'work-item'">
                 <el-form-item>
-                  <el-select v-model="item.jobId" clearable placeholder="请选择">
+                  <el-select
+                    v-model="item.jobId"
+                    clearable
+                    placeholder="请选择">
                     <el-option-group
                       v-for="(group,index) in control.jobs"
                       :key="group.label"
@@ -105,7 +109,10 @@
 
               <div class="work-item" v-if="index > 0">
                 <el-form-item>
-                  <el-select v-model="item.parentId" clearable :placeholder="$t('job.parentDependency')" clearable>
+                  <el-select
+                    v-model="item.parentId"
+                    clearable
+                    :placeholder="$t('job.parentDependency')">
                     <el-option-group
                       v-for="(group,index) in control.jobs"
                       :key="group.label"
@@ -201,9 +208,77 @@
         </div>
 
         <div v-if="control.step == 3">
-          <el-card class="preview-card">
-            <diagram ref="diag" :data="diagramData"></diagram>
-          </el-card>
+          <div class="preview-card">
+
+            <div class="detail_step">
+              <div class="title"><i class="el-icon-tickets"></i>&nbsp;基础信息
+                <el-button type="primary" icon="el-icon-edit" size="mini">编辑</el-button>
+              </div>
+              <div class="line"></div>
+              <div class="detail_table">
+                <table>
+                  <tr>
+                    <td>生日：1900-01-01</td>
+                    <td>手机：138****0000</td>
+                    <td>邮箱：123456@gmail.com</td>
+                  </tr>
+                  <tr>
+                    <td>性别：女</td>
+                    <td>城市：上海市</td>
+                    <td>地址：xx区xx弄</td>
+                  </tr>
+                  <tr>
+                    <td>生日：1900-01-01</td>
+                    <td>手机：138****0000</td>
+                    <td>邮箱：123456@gmail.com</td>
+                  </tr>
+                  <tr>
+                    <td>性别：女</td>
+                    <td>城市：上海市</td>
+                    <td>地址：xx区xx弄</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+
+            <div class="detail_step">
+              <div class="title"><i class="el-icon-tickets"></i>&nbsp;基础信息
+                <el-button type="primary" icon="el-icon-edit" size="mini">编辑</el-button>
+              </div>
+              <div class="line"></div>
+              <div class="detail_table">
+                <table>
+                  <tr>
+                    <td>生日：1900-01-01</td>
+                    <td>手机：138****0000</td>
+                    <td>邮箱：123456@gmail.com</td>
+                  </tr>
+                  <tr>
+                    <td>性别：女</td>
+                    <td>城市：上海市</td>
+                    <td>地址：xx区xx弄</td>
+                  </tr>
+                  <tr>
+                    <td>生日：1900-01-01</td>
+                    <td>手机：138****0000</td>
+                    <td>邮箱：123456@gmail.com</td>
+                  </tr>
+                  <tr>
+                    <td>性别：女</td>
+                    <td>城市：上海市</td>
+                    <td>地址：xx区xx弄</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+
+            <div class="detail_step">
+              <div class="title">DAG预览图</div>
+              <div class="line"></div>
+              <diagram ref="diag" :data="diagramData"></diagram>
+            </div>
+
+          </div>
 
           <el-form-item>
             <el-button type="primary" @click="handleSubmitJob('jobForm')">{{$t('action.create')}}</el-button>
@@ -406,7 +481,8 @@
           showCron: false,//是否显示cron控件
           showJob: false,//是否显示添加作业弹窗,
           command: null,
-          command1: null
+          command1: null,
+          activeTab:'first'
         },
         form: {//绑定form表单的数据
           job: {
@@ -737,7 +813,7 @@
     width: 90%;
     margin:0 auto;
     .steps {
-      width:91%;
+      width:100%;
       margin-bottom: 50px
     }
     .input-item {
@@ -801,17 +877,70 @@
       .work-item {
         float: left;
         width: 31.222%;
-      }
-      .work-item:last-child {
-        float: left;
-        width: 20px;
+        &:last-child {
+          float: left;
+          width: 20px;
+        }
       }
       .workRoot {
         width: 100%;
       }
     }
     .preview-card {
-      width: 95%;height: 800px;
+      width: 100%;
+      padding:0 5%;
+      .detail_step {
+        margin-bottom: 20px;
+        .title{
+          color: #2f2f2f;
+          font-size: 16px;
+          font-weight: 700;
+          margin-bottom: 10px;
+          i{
+            color:#909399;
+          }
+          .el-button{
+            float: right;
+            cursor: pointer;
+            color: #f4f4f5;
+            padding: 7px;
+            &:hover{
+              color: #ffffff;
+            }
+          }
+        }
+        .line{
+          width: 100%;
+          height: 1px;
+          background-color:#ddd;
+        }
+        .detail_table {
+          table {
+            width: 90%;
+            padding-top: 30px;
+            padding-bottom: 10px;
+            tr td {
+              width: 33%;
+              height: 30px;
+              font-size: 13px;
+              color: #555;
+              line-height: 1;
+              &:not(:first-child) {
+                padding-left: 50px;
+              }
+              &:first-child {
+                padding-left: 20px;
+              }
+            }
+          }
+          &:hover{
+            background-color: #F2F6FC;
+          }
+
+        }
+      }
+
     }
   }
+
 </style>
