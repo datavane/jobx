@@ -21,7 +21,7 @@
     data() {
       return {
         diagram: null,
-        direction:90,
+        direction:0,
         fullScreen:false,
         diagStyle:{
           height:"500px"
@@ -29,13 +29,13 @@
         borderColor:'green',
         //fillColor:'rgb(27,172,255)',
         fillColor:'#fff',
-        linkColor:'rgb(105,105,105)',
+        linkColor:'rgb(95,95,105)',
         fontColor:'#333',
         directions:[
+          {value:0,label:'从左到右'},
+          {value:180,label:'从右到左'},
           {value:90,label:'从上到下'},
           {value:270,label:'从下到上'},
-          {value:0,label:'从左到右'},
-          {value:180,label:'从右到左'}
         ]
       }
     },
@@ -75,7 +75,7 @@
             allowZoom: true,//允许缩放。。。
             initialAutoScale: go.Diagram.Uniform,//自适应
             initialContentAlignment: go.Spot.Center,
-            minScale:0.5,//画布最小比例
+            minScale:0.4,//画布最小比例
             maxScale:1.5,//画布最大比例
             "animationManager.isEnabled": true,//禁止画布初始化动画
             "toolManager.mouseWheelBehavior": go.ToolManager.WheelZoom, //启用视图放大缩小
