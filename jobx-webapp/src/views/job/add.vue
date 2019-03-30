@@ -212,21 +212,11 @@
 
             <div class="detail_step">
               <div class="title"><i class="el-icon-tickets"></i>&nbsp;基础信息
-                <el-button type="primary" icon="el-icon-edit" size="mini">编辑</el-button>
+                <el-button type="primary" icon="el-icon-edit" size="mini" @click="control.step = 0">编辑</el-button>
               </div>
               <div class="line"></div>
               <div class="detail_table">
                 <table>
-                  <tr>
-                    <td>生日：1900-01-01</td>
-                    <td>手机：138****0000</td>
-                    <td>邮箱：123456@gmail.com</td>
-                  </tr>
-                  <tr>
-                    <td>性别：女</td>
-                    <td>城市：上海市</td>
-                    <td>地址：xx区xx弄</td>
-                  </tr>
                   <tr>
                     <td>生日：1900-01-01</td>
                     <td>手机：138****0000</td>
@@ -243,7 +233,7 @@
 
             <div class="detail_step">
               <div class="title"><i class="el-icon-tickets"></i>&nbsp;基础信息
-                <el-button type="primary" icon="el-icon-edit" size="mini">编辑</el-button>
+                <el-button type="primary" icon="el-icon-edit" size="mini" @click="control.step = 1">编辑</el-button>
               </div>
               <div class="line"></div>
               <div class="detail_table">
@@ -258,6 +248,17 @@
                     <td>城市：上海市</td>
                     <td>地址：xx区xx弄</td>
                   </tr>
+                </table>
+              </div>
+            </div>
+
+            <div class="detail_step">
+              <div class="title"><i class="el-icon-tickets"></i>&nbsp;基础信息
+                <el-button type="primary" icon="el-icon-edit" size="mini" @click="control.step = 2">编辑</el-button>
+              </div>
+              <div class="line"></div>
+              <div class="detail_table">
+                <table>
                   <tr>
                     <td>生日：1900-01-01</td>
                     <td>手机：138****0000</td>
