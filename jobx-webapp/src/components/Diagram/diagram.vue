@@ -83,13 +83,13 @@
             initialContentAlignment: go.Spot.Center,
             maxScale:1.5,//画布最大比例
             "animationManager.isEnabled": false,//禁止画布初始化动画
+            "undoManager.isEnabled": true,
             "toolManager.mouseWheelBehavior": go.ToolManager.WheelZoom, //启用视图放大缩小
             "grid.visible": false,//是否显示背景栅格
             "commandHandler.copiesTree": false,  // 禁用复制快捷键
             "commandHandler.deletesTree": false, // 禁用删除快捷键
             "draggingTool.dragsTree": true,
-            layout: $(go.LayeredDigraphLayout,{direction:this.direction}),
-            "undoManager.isEnabled": true
+            layout: $(go.LayeredDigraphLayout,{direction:this.direction})
           }
         )
       },
