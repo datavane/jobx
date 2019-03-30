@@ -11,7 +11,7 @@
 
       <el-form :model="form.job" :ref="formName" :rules="stepValidator" label-width="10%">
 
-        <div v-show="control.step == 0">
+        <div v-show="control.step === 0">
           <el-form-item :label="$t('job.jobName')" prop="jobName">
             <el-input :placeholder="$t('job.jobName')" v-model="form.job.jobName" clearable class="input-item" />
           </el-form-item>
@@ -33,9 +33,9 @@
           </el-form-item>
         </div>
 
-        <div v-show="control.step == 1">
+        <div v-show="control.step === 1">
 
-          <el-form-item :label="$t('agent.agentName')" v-show="form.job.jobType == 1" prop="agentId">
+          <el-form-item :label="$t('agent.agentName')" v-show="form.job.jobType === 1" prop="agentId">
             <el-select v-model="form.job.agentId" clearable filterable class="input-item"  :placeholder="$t('agent.agentName')" >
               <el-option
                 v-for="item in control.agents"
@@ -56,13 +56,13 @@
             <el-input :placeholder="$t('job.cronExp')" v-model="form.job.cronExp" class="input-item" @focus="control.showCron=!control.showCron"/>
           </el-form-item>
 
-          <el-form-item :label="$t('job.command')" v-show="form.job.jobType == 1" prop="command">
+          <el-form-item :label="$t('job.command')" v-show="form.job.jobType === 1" prop="command">
             <div class="command-input">
               <textarea ref="command" placeholder="请输入内容" v-model="form.job.command"/>
             </div>
           </el-form-item>
 
-          <el-form-item :label="$t('job.execUser')" v-show="form.job.jobType == 1" prop="execUser">
+          <el-form-item :label="$t('job.execUser')" v-show="form.job.jobType === 1" prop="execUser">
             <el-select v-model="form.job.execUser" clearable filterable class="input-item" :placeholder="$t('job.execUser')">
               <el-option
                 v-for="item in control.execUsers"
@@ -73,12 +73,12 @@
             </el-select>
           </el-form-item>
 
-          <el-form-item :label="$t('job.successExit')"  v-if="form.job.jobType == 1" prop="successExit">
+          <el-form-item :label="$t('job.successExit')"  v-if="form.job.jobType === 1" prop="successExit">
             <el-input :placeholder="$t('job.successExit')" v-model.number="form.job.successExit" clearable class="input-item"/>
           </el-form-item>
 
           <!--工作流-->
-          <el-form-item :label="$t('job.dependency')" v-if="form.job.jobType == 2">
+          <el-form-item :label="$t('job.dependency')" v-if="form.job.jobType === 2">
             <div v-for="(item,index) in form.workFlow" class="workflow">
               <div class="work-item">
                 <el-form-item>
@@ -93,8 +93,8 @@
                         :label="item.name"
                         :value="item.id">
                             <span style="float: left; color: #8492a6; font-size: 13px">
-                              <font-awesome-icon icon="list" size="xs" v-if="index == 0"/>
-                              <font-awesome-icon icon="sitemap" size="xs" v-if="index == 1"/>
+                              <font-awesome-icon icon="list" size="xs" v-if="index === 0"/>
+                              <font-awesome-icon icon="sitemap" size="xs" v-if="index === 1"/>
                             </span>
                         <span style="float: left;margin-left:5px">{{ item.name }}</span>
                       </el-option>
@@ -116,8 +116,8 @@
                         :label="item.name"
                         :value="item.id">
                           <span style="float: left; color: #8492a6; font-size: 13px">
-                            <font-awesome-icon icon="list" size="xs" v-if="index == 0"/>
-                            <font-awesome-icon icon="sitemap" size="xs" v-if="index == 1"/>
+                            <font-awesome-icon icon="list" size="xs" v-if="index === 0"/>
+                            <font-awesome-icon icon="sitemap" size="xs" v-if="index === 1"/>
                           </span>
                         <span style="float: left;margin-left:5px">{{ item.name }}</span>
                       </el-option>
@@ -136,7 +136,7 @@
 
               <div class="work-item">
                 <el-tooltip class="item" effect="dark" content="添加一个流程作业" placement="top">
-                  <el-button type="success" icon="el-icon-plus" v-if="index==1" circle @click="handleAddNode()"></el-button>
+                  <el-button type="success" icon="el-icon-plus" v-if="index === 1" circle @click="handleAddNode()"></el-button>
                 </el-tooltip>
                 <el-button type="danger" icon="el-icon-delete" v-if="index>1" circle @click="handleDeleteNode(index)"></el-button>
               </div>
@@ -151,7 +151,7 @@
 
         </div>
 
-        <div v-show="control.step == 2">
+        <div v-show="control.step === 2">
 
           <el-form-item :label="$t('job.runCount')" prop="runCount">
             <el-input v-model="form.job.runCount" controls-position="right" clearable class="input-item"></el-input>
@@ -172,7 +172,7 @@
           </el-form-item>
 
           <!--告警方式-->
-          <div v-if="form.job.alarm==1">
+          <div v-if="form.job.alarm ===1 ">
             <el-form-item :label="$t('job.alarmType')" prop="alarmType">
               <el-select v-model="form.job.alarmType" :placeholder="$t('job.alarmType')" clearable multiple class="input-item">
                 <el-option v-for="item in control.alarmType" :key="item.id" :label="item.name" :value="item.id"/>
@@ -200,10 +200,11 @@
           </div>
         </div>
 
-        <div v-if="control.step == 3">
+        <div v-if="control.step === 3">
           <el-card class="preview-card">
-            <diagram ref="diag" :data="diagramData" :layout="diagramLayout" style="height:800px"></diagram>
+            <diagram ref="diag" :data="diagramData"></diagram>
           </el-card>
+
           <el-form-item>
             <el-button type="primary" @click="handleSubmitJob('jobForm')">{{$t('action.create')}}</el-button>
             <el-button @click="handleResetJob">{{$t('action.cancel')}}</el-button>
@@ -251,7 +252,7 @@
 
           <el-form-item :label="$t('job.command')">
             <div class="command-input1">
-              <textarea ref="command1" placeholder="请输入内容" v-model="form.dependency.command"/>
+              <textarea ref="command1" placeholder="请输入内容" v-model="form.dependency.command"></textarea>
             </div>
           </el-form-item>
 
@@ -300,7 +301,6 @@
     },
     data() {
       return {
-        diagramLayout:'TB',//TB(上下),BT(下上),LR(左右),RL(右左)
         diagramData: {
           nodeDataArray: [
             { key: 1, text: "zhekou_ab_case"},
