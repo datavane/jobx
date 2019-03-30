@@ -125,7 +125,6 @@
           )
         )
       },
-
       initLinkTemplate() {
         this.diagram.linkTemplate = $(go.Link,
           {
@@ -147,16 +146,14 @@
           )
         )
       },
-
       handleDirection(val){
         this.direction = val
       },
-
       initDiagramStyle() {
         if (this.fullScreen) {
           this.diagStyle.height = window.document.body.offsetHeight + "px"
           if (this.diagram) {
-            this.diagram.minScale = 0.5
+            this.diagram.minScale = 0.4
             this.handleUpdateModel(this.data)
           }
         }else {
