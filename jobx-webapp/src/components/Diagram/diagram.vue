@@ -75,9 +75,8 @@
             allowZoom: true,//允许缩放。。。
             initialAutoScale: go.Diagram.Uniform,//自适应
             initialContentAlignment: go.Spot.Center,
-            minScale:0.4,//画布最小比例
             maxScale:1.5,//画布最大比例
-            "animationManager.isEnabled": true,//禁止画布初始化动画
+            "animationManager.isEnabled": false,//禁止画布初始化动画
             "toolManager.mouseWheelBehavior": go.ToolManager.WheelZoom, //启用视图放大缩小
             "grid.visible": false,//是否显示背景栅格
             "commandHandler.copiesTree": false,  // 禁用复制快捷键
@@ -152,11 +151,13 @@
           this.diagStyle.height = window.document.body.offsetHeight + "px"
           if (this.diagram) {
             this.diagram.minScale = 0.5
+            this.handleUpdateModel(this.data)
           }
         }else {
           this.diagStyle.height = this.data.nodeDataArray.length * 25+ "px"
           if (this.diagram) {
             this.diagram.minScale = 0.8
+            this.handleUpdateModel(this.data)
           }
         }
       },
