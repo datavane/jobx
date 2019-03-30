@@ -11,7 +11,7 @@
 
       <el-form :model="form.job" :ref="formName" :rules="stepValidator" label-width="10%">
 
-        <div v-show="control.step === 0">
+        <div v-show="control.step == 0">
           <el-form-item :label="$t('job.jobName')" prop="jobName">
             <el-input :placeholder="$t('job.jobName')" v-model="form.job.jobName" clearable class="input-item" />
           </el-form-item>
@@ -33,9 +33,9 @@
           </el-form-item>
         </div>
 
-        <div v-show="control.step === 1">
+        <div v-show="control.step == 1">
 
-          <el-form-item :label="$t('agent.agentName')" v-show="form.job.jobType === 1" prop="agentId">
+          <el-form-item :label="$t('agent.agentName')" v-show="form.job.jobType == 1" prop="agentId">
             <el-select v-model="form.job.agentId" clearable filterable class="input-item"  :placeholder="$t('agent.agentName')" >
               <el-option
                 v-for="item in control.agents"
@@ -56,13 +56,13 @@
             <el-input :placeholder="$t('job.cronExp')" v-model="form.job.cronExp" class="input-item" @focus="control.showCron=!control.showCron"/>
           </el-form-item>
 
-          <el-form-item :label="$t('job.command')" v-show="form.job.jobType === 1" prop="command">
+          <el-form-item :label="$t('job.command')" v-show="form.job.jobType == 1" prop="command">
             <div class="command-input">
               <textarea ref="command" placeholder="请输入内容" v-model="form.job.command"/>
             </div>
           </el-form-item>
 
-          <el-form-item :label="$t('job.execUser')" v-show="form.job.jobType === 1" prop="execUser">
+          <el-form-item :label="$t('job.execUser')" v-show="form.job.jobType == 1" prop="execUser">
             <el-select v-model="form.job.execUser" clearable filterable class="input-item" :placeholder="$t('job.execUser')">
               <el-option
                 v-for="item in control.execUsers"
@@ -73,14 +73,14 @@
             </el-select>
           </el-form-item>
 
-          <el-form-item :label="$t('job.successExit')"  v-if="form.job.jobType === 1" prop="successExit">
+          <el-form-item :label="$t('job.successExit')"  v-if="form.job.jobType == 1" prop="successExit">
             <el-input :placeholder="$t('job.successExit')" v-model.number="form.job.successExit" clearable class="input-item"/>
           </el-form-item>
 
           <!--工作流-->
-          <el-form-item :label="$t('job.dependency')" v-if="form.job.jobType === 2">
+          <el-form-item :label="$t('job.dependency')" v-if="form.job.jobType == 2">
             <div v-for="(item,index) in form.workFlow" class="workflow">
-              <div class="work-item">
+              <div :class=" index==0 ?'workRoot':'work-item'">
                 <el-form-item>
                   <el-select v-model="item.jobId" clearable placeholder="请选择">
                     <el-option-group
@@ -93,8 +93,8 @@
                         :label="item.name"
                         :value="item.id">
                             <span style="float: left; color: #8492a6; font-size: 13px">
-                              <font-awesome-icon icon="list" size="xs" v-if="index === 0"/>
-                              <font-awesome-icon icon="sitemap" size="xs" v-if="index === 1"/>
+                              <font-awesome-icon icon="list" size="xs" v-if="index == 0"/>
+                              <font-awesome-icon icon="sitemap" size="xs" v-if="index == 1"/>
                             </span>
                         <span style="float: left;margin-left:5px">{{ item.name }}</span>
                       </el-option>
@@ -103,7 +103,7 @@
                 </el-form-item>
               </div>
 
-              <div class="work-item">
+              <div class="work-item" v-if="index > 0">
                 <el-form-item>
                   <el-select v-model="item.parentId" clearable :placeholder="$t('job.parentDependency')" clearable>
                     <el-option-group
@@ -116,8 +116,8 @@
                         :label="item.name"
                         :value="item.id">
                           <span style="float: left; color: #8492a6; font-size: 13px">
-                            <font-awesome-icon icon="list" size="xs" v-if="index === 0"/>
-                            <font-awesome-icon icon="sitemap" size="xs" v-if="index === 1"/>
+                            <font-awesome-icon icon="list" size="xs" v-if="index == 0"/>
+                            <font-awesome-icon icon="sitemap" size="xs" v-if="index == 1"/>
                           </span>
                         <span style="float: left;margin-left:5px">{{ item.name }}</span>
                       </el-option>
@@ -126,7 +126,7 @@
                 </el-form-item>
               </div>
 
-              <div class="work-item">
+              <div class="work-item" v-if="index > 0">
                 <el-form-item>
                   <el-select v-model="item.trigger" :placeholder="$t('job.trigger.name')" clearable>
                     <el-option v-for="item in control.triggerType" :key="item.id" :label="item.name" :value="item.id"/>
@@ -136,7 +136,7 @@
 
               <div class="work-item">
                 <el-tooltip class="item" effect="dark" content="添加一个流程作业" placement="top">
-                  <el-button type="success" icon="el-icon-plus" v-if="index === 1" circle @click="handleAddNode()"></el-button>
+                  <el-button type="success" icon="el-icon-plus" v-if="index == 1" circle @click="handleAddNode()"></el-button>
                 </el-tooltip>
                 <el-button type="danger" icon="el-icon-delete" v-if="index>1" circle @click="handleDeleteNode(index)"></el-button>
               </div>
@@ -151,7 +151,7 @@
 
         </div>
 
-        <div v-show="control.step === 2">
+        <div v-show="control.step == 2">
 
           <el-form-item :label="$t('job.runCount')" prop="runCount">
             <el-input v-model="form.job.runCount" controls-position="right" clearable class="input-item"></el-input>
@@ -172,7 +172,7 @@
           </el-form-item>
 
           <!--告警方式-->
-          <div v-if="form.job.alarm ===1 ">
+          <div v-if="form.job.alarm ==1 ">
             <el-form-item :label="$t('job.alarmType')" prop="alarmType">
               <el-select v-model="form.job.alarmType" :placeholder="$t('job.alarmType')" clearable multiple class="input-item">
                 <el-option v-for="item in control.alarmType" :key="item.id" :label="item.name" :value="item.id"/>
@@ -200,7 +200,7 @@
           </div>
         </div>
 
-        <div v-if="control.step === 3">
+        <div v-if="control.step == 3">
           <el-card class="preview-card">
             <diagram ref="diag" :data="diagramData"></diagram>
           </el-card>
@@ -523,7 +523,7 @@
       },
       handleStepNext(step) {
         this.$refs[this.formName].clearValidate()
-        if (step === -1) {
+        if (step == -1) {
           this.control.step += step
         } else {
           Object.assign(this.stepValidator,this.validators[this.control.step])
@@ -538,7 +538,7 @@
             }
           })
 
-          if (this.control.step === 3) {
+          if (this.control.step == 3) {
             this.handleGraph()
           }
         }
@@ -548,7 +548,7 @@
         this.$refs[formName].validate((valid) => {
           if (valid) {
             //提交简单任务
-            if (this.form.job.jobType === 1) {
+            if (this.form.job.jobType == 1) {
               addJob(this.form.job).then(response =>{
               })
             } else {
@@ -604,7 +604,7 @@
 
       //check..验证表单相关。。。
       checkNull(rule, value, callback, field) {
-        if (this.form.job.jobType === 1) {
+        if (this.form.job.jobType == 1) {
           if (!value) {
             callback(new Error('请输入'.concat(field)))
           } else {
@@ -615,8 +615,8 @@
         }
       },
       checkSuccessExit(rule, value, callback) {
-        if (this.form.job.alarm === 0) {
-          if (value == null || value == undefined || value.length === 0) {
+        if (this.form.job.alarm == 0) {
+          if (value == null || value == undefined || value.length == 0) {
             callback(new Error('请输入成功标志'))
           } else {
             if (!this.$verify.isPositiveNum(value)) {
@@ -630,8 +630,8 @@
         }
       },
       checkAlarm(rule, value, callback) {
-        if (this.form.job.alarm === 1) {
-          if (!value || value.length === 0) {
+        if (this.form.job.alarm == 1) {
+          if (!value || value.length == 0) {
             callback(new Error('请至少选择一种报警通知方式'))
           } else {
             callback()
@@ -641,7 +641,7 @@
         }
       },
       checkDingURL(rule, value, callback) {
-        if (this.form.job.alarm === 1 && this.form.job.alarmType.indexOf(1) > -1) {
+        if (this.form.job.alarm == 1 && this.form.job.alarmType.indexOf(1) > -1) {
           if (!value) {
             callback(new Error('请输入钉钉机器人URL'))
           } else if (!this.$verify.isDingTaskURL(value)) {
@@ -654,7 +654,7 @@
         }
       },
       checkDingAtUser(rule, value, callback) {
-        if (this.form.job.alarm === 1 && this.form.job.alarmType.indexOf(1) > -1) {
+        if (this.form.job.alarm == 1 && this.form.job.alarmType.indexOf(1) > -1) {
           if (value && !this.$verify.isPhone(value)) {
             callback(new Error('钉钉@通知人,格式有误,请参考钉钉官网规范'));
           } else {
@@ -665,7 +665,7 @@
         }
       },
       checkEmail(rule, value, callback) {
-        if (this.form.job.alarm === 1 && this.form.job.alarmType.indexOf(2) > -1) {
+        if (this.form.job.alarm == 1 && this.form.job.alarmType.indexOf(2) > -1) {
           if (!value) {
             callback(new Error('请输入正确的邮箱地址'))
           } else if (!this.$verify.isEmail(value)) {
@@ -678,7 +678,7 @@
         }
       },
       checkSms(rule, value, callback) {
-        if (this.form.job.alarm === 1 && this.form.job.alarmType.indexOf(2) > -1) {
+        if (this.form.job.alarm == 1 && this.form.job.alarmType.indexOf(2) > -1) {
           if (!value) {
             callback(new Error('请输入正确短信通道商http请求URL'))
           } else if (!this.$verify.isURL(value)) {
@@ -701,7 +701,7 @@
         this.$refs[this.formName].clearValidate()
       },
       'form.job.alarm': function (value) {
-        if (value === 0) {
+        if (value == 0) {
           this.form.alarmType = []
         }
       },
