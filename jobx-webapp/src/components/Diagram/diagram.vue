@@ -2,7 +2,9 @@
   <div :class="{'fullScreen':fullScreen}">
     <div class="option">
       <el-dropdown size="small" @command="handleDirection">
-        <font-awesome-icon icon="sitemap" class="opticon"></font-awesome-icon>
+         <span class="el-dropdown-link">
+          <font-awesome-icon icon="sitemap" class="opticon"></font-awesome-icon>
+        </span>
         <el-dropdown-menu slot="dropdown" style="z-index: 9999">
           <el-dropdown-item v-for="item in directions" :key="item.value" :command="item.value"> {{item.label}} </el-dropdown-item>
         </el-dropdown-menu>
@@ -263,7 +265,7 @@
     position: fixed;
     width: 100%;
     height: 100%;
-    z-index: 9999;
+    z-index: 1002;
     left: 0;
     top: 0;
     padding:0;
@@ -273,7 +275,8 @@
     width: 100%;
     clear: both;
   }
-  .option{
+  .option {
+    z-index: 1002;
     margin: 20px;
     float: right;
     .opticon{

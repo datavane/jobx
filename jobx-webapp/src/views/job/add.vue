@@ -67,6 +67,7 @@
             <el-select v-model="form.job.execUser" clearable filterable class="input-item" :placeholder="$t('job.execUser')">
               <el-option
                 v-for="item in control.execUsers"
+                collapse-tags
                 :key="item"
                 :label="item"
                 :value="item">
@@ -218,10 +219,8 @@
               <div class="detail_table">
                 <table>
                   <tr>
-                    <td colspan="2">{{$t('job.jobName')}}：{{form.job.jobName}}</td>
-                  </tr>
-                  <tr>
-                    <td colspan="2">
+                    <td>{{$t('job.jobName')}}：{{form.job.jobName}}</td>
+                    <td>
                       {{$t('job.jobType')}}：
                       <span v-if="form.job.jobType == 1">{{$t('job.simpleJob')}}</span>
                       <span v-else>{{$t('job.workFlow')}}</span>
@@ -273,8 +272,8 @@
                     <td>{{$t('job.runCount')}}：{{form.job.runCount}}</td>
                     <td>{{$t('job.timeout')}}：{{form.job.timeout}}</td>
                   </tr>
-                  <tr v-if="form.job.alarm ==1">
-                    <td>
+                  <tr>
+                    <td :colspan="form.job.alarm ==1?1:2">
                       {{$t('job.alarm')}}：
                       <el-switch
                         disabled
@@ -285,7 +284,7 @@
                         inactive-value="0">
                       </el-switch>
                     </td>
-                    <td>{{$t('job.alarmType')}}：<el-tag v-for="(item,index) in choose.alarmType" size="small" style="margin-right: 10px">{{item}}</el-tag></td>
+                    <td v-if="form.job.alarm ==1">{{$t('job.alarmType')}}：<el-tag v-for="(item,index) in choose.alarmType" size="small" style="margin-right: 10px">{{item}}</el-tag></td>
                   </tr>
 
                   <tr v-if="form.job.alarm == 1 && form.job.alarmType.indexOf(1)>-1">
@@ -328,9 +327,24 @@
           </el-form-item>
         </div>
 
+        <div v-if="control.step == 4">
+          <div class="create_success">
+            <div class="success">
+              <font-awesome-icon icon="check-circle" class="success"></font-awesome-icon>
+              <div>操作成功</div>
+            </div>
+            <div class="box">
+              付款账户：ant-design@alipay.com
+              收款账户：test@example.com
+              收款人姓名：Alex
+              转账金额：500 元
+            </div>
+          </div>
+        </div>
+
         <el-form-item style="margin-top: 30px">
-          <el-button @click="handleStepNext(-1)" v-if="control.step>0 && control.step<3">上一步</el-button>
-          <el-button @click="handleStepNext(1)" v-if="control.step<3">下一步</el-button>
+          <el-button @click="handleStepNext(-1)" type="primary" v-if="control.step>0 && control.step<3">上一步</el-button>
+          <el-button @click="handleStepNext(1)" type="primary" v-if="control.step<3">下一步</el-button>
         </el-form-item>
 
       </el-form>
@@ -665,6 +679,8 @@
       },
       //其他事件相关。。。
       handleSubmitJob(formName) {
+        this.control.step += 1
+
         this.$refs[formName].validate((valid) => {
           if (valid) {
             //提交简单任务
@@ -679,6 +695,7 @@
             return false
           }
         });
+
       },
       //提交一个复杂的工作流任务
       submitWorkFlow() {
@@ -985,7 +1002,7 @@
           border-radius: 10px;
           margin-bottom: 20px;
           &:hover{
-            background-color: #e6f7ff;
+            background-color: #f9fafc;
             border: 1px dashed #40a9ff;
           }
           table {
@@ -1011,5 +1028,35 @@
       }
 
     }
+
+    .create_success{
+      width: 500px;
+      display:block;
+      position: static;
+      margin: 10px auto;
+      .success{
+        width: 100px;
+        display:block;
+        margin: 10px auto;
+        svg{
+          font-size: 70px;
+          color: #52c41a;
+        }
+        div {
+          margin-top: 20px;
+          margin-bottom: 20px;
+          font-size: 24px;
+          color: #000;
+        }
+      }
+      .box{
+        display: none;
+        width: 600px;
+        height: 400px;
+        background: #fafafa;
+      }
+
+    }
+
   }
 </style>
