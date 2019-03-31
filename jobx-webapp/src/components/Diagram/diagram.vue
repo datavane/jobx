@@ -1,14 +1,14 @@
 <template>
   <div :class="{'fullScreen':fullScreen}">
     <div class="option">
-       <el-dropdown size="small" @command="handleDirection">
-         <el-button type="success" size="mini">布局</el-button>
+      <el-dropdown size="small" @command="handleDirection">
+        <font-awesome-icon icon="sitemap" class="opticon"></font-awesome-icon>
         <el-dropdown-menu slot="dropdown" style="z-index: 9999">
           <el-dropdown-item v-for="item in directions" :key="item.value" :command="item.value"> {{item.label}} </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
-      <el-button type="primary" @click="handleRefresh()" size="mini">重置</el-button>
-      <el-button type="primary" @click="handleFullScreen()" size="mini">全屏</el-button>
+      <font-awesome-icon icon="undo" @click="handleRefresh()" class="opticon"></font-awesome-icon>
+      <font-awesome-icon :icon="fullScreen?'expand-arrows-alt':'expand'"  @click="handleFullScreen()" class="opticon"></font-awesome-icon>
     </div>
     <div ref="diagram" :style="diagStyle" class="diagram"></div>
   </div>
@@ -276,5 +276,12 @@
   .option{
     margin: 20px;
     float: right;
+    .opticon{
+      margin-right: 10px;
+      cursor: pointer;
+      &:hover{
+        color: #40a9ff;
+      }
+    }
   }
 </style>

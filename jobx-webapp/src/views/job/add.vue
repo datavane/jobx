@@ -161,7 +161,7 @@
         <div v-show="control.step == 2">
 
           <el-form-item :label="$t('job.runCount')" prop="runCount">
-            <el-input v-model="form.job.runCount" controls-position="right" clearable class="input-item"></el-input>
+            <el-input-number v-model="form.job.runCount" controls-position="right" clearable :min="0" :max="10" class="input-item"></el-input-number>
           </el-form-item>
 
           <el-form-item :label="$t('job.timeout')" prop="timeout">
@@ -212,63 +212,102 @@
 
             <div class="detail_step">
               <div class="title"><i class="el-icon-tickets"></i>&nbsp;基础信息
-                <i class="el-icon-edit-outline edit" @click="control.step = 2"></i>
+                <i class="el-icon-edit-outline edit" @click="control.step = 0"></i>
               </div>
               <div class="line"></div>
               <div class="detail_table">
                 <table>
                   <tr>
-                    <td>生日：1900-01-01</td>
-                    <td>手机：138****0000</td>
-                    <td>邮箱：123456@gmail.com</td>
+                    <td colspan="2">{{$t('job.jobName')}}：{{form.job.jobName}}</td>
                   </tr>
                   <tr>
-                    <td>性别：女</td>
-                    <td>城市：上海市</td>
-                    <td>地址：xx区xx弄</td>
+                    <td colspan="2">
+                      {{$t('job.jobType')}}：
+                      <span v-if="form.job.jobType == 1">{{$t('job.simpleJob')}}</span>
+                      <span v-else>{{$t('job.workFlow')}}</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="2">{{$t('job.comment')}}：{{form.job.comment}}</td>
                   </tr>
                 </table>
               </div>
             </div>
 
             <div class="detail_step">
-              <div class="title"><i class="el-icon-tickets"></i>&nbsp;基础信息
-                <i class="el-icon-edit-outline edit" @click="control.step = 2"></i>
+              <div class="title"><i class="el-icon-tickets"></i>&nbsp;调度信息
+                <i class="el-icon-edit-outline edit" @click="control.step = 1"></i>
               </div>
               <div class="line"></div>
               <div class="detail_table">
-                <table>
+                <table v-if="form.job.jobType == 1">
                   <tr>
-                    <td>生日：1900-01-01</td>
-                    <td>手机：138****0000</td>
-                    <td>邮箱：123456@gmail.com</td>
+                    <td>{{$t('agent.agentName')}}：{{choose.agentName}}</td>
+                    <td>{{$t('job.cronExp')}}：{{form.job.cronExp}}</td>
                   </tr>
                   <tr>
-                    <td>性别：女</td>
-                    <td>城市：上海市</td>
-                    <td>地址：xx区xx弄</td>
+                    <td>{{$t('job.execUser')}}：<el-tag size="small" type="success">{{form.job.execUser}}</el-tag></td>
+                    <td>{{$t('job.successExit')}}：{{form.job.successExit}}</td>
+                  </tr>
+                  <tr>
+                    <td colspan="2">{{$t('job.command')}}：{{form.job.command}}</td>
+                  </tr>
+                </table>
+                <table v-else>
+                  <tr>
+                    <td>作业节点数: {{form.workFlow.length}}</td>
+                    <td>{{$t('job.cronExp')}}：{{form.job.cronExp}}</td>
                   </tr>
                 </table>
               </div>
             </div>
 
             <div class="detail_step">
-              <div class="title"><i class="el-icon-tickets"></i>&nbsp;基础信息
+              <div class="title"><i class="el-icon-tickets"></i>&nbsp;告警信息
                 <i class="el-icon-edit-outline edit" @click="control.step = 2"></i>
               </div>
               <div class="line"></div>
               <div class="detail_table">
                 <table>
                   <tr>
-                    <td>生日：1900-01-01</td>
-                    <td>手机：138****0000</td>
-                    <td>邮箱：123456@gmail.com</td>
+                    <td>{{$t('job.runCount')}}：{{form.job.runCount}}</td>
+                    <td>{{$t('job.timeout')}}：{{form.job.timeout}}</td>
                   </tr>
-                  <tr>
-                    <td>性别：女</td>
-                    <td>城市：上海市</td>
-                    <td>地址：xx区xx弄</td>
+                  <tr v-if="form.job.alarm ==1">
+                    <td>
+                      {{$t('job.alarm')}}：
+                      <el-switch
+                        disabled
+                        v-model="form.job.alarm"
+                        active-color="#13ce66"
+                        inactive-color="#ff4949"
+                        active-value="1"
+                        inactive-value="0">
+                      </el-switch>
+                    </td>
+                    <td>{{$t('job.alarmType')}}：<el-tag v-for="(item,index) in choose.alarmType" size="small" style="margin-right: 10px">{{item}}</el-tag></td>
                   </tr>
+
+                  <tr v-if="form.job.alarm == 1 && form.job.alarmType.indexOf(1)>-1">
+                    <td colspan="2">{{$t('job.dingTask')}}：{{form.job.alarmDingURL}}</td>
+                  </tr>
+
+                  <tr v-if="form.job.alarm == 1 && form.job.alarmType.indexOf(1)>-1">
+                    <td colspan="2">{{$t('job.atUser')}}：{{form.job.alarmDingAtUser}}</td>
+                  </tr>
+
+                  <tr v-if="form.job.alarm == 1 && form.job.alarmType.indexOf(2)>-1">
+                    <td colspan="2">{{$t('job.email')}}：{{form.job.alarmEmail}}</td>
+                  </tr>
+
+                  <tr v-if="form.job.alarm == 1 && form.job.alarmType.indexOf(3)>-1">
+                    <td colspan="2">{{$t('job.sms')}}：{{form.job.alarmSms}}</td>
+                  </tr>
+
+                  <tr v-if="form.job.alarm == 1 && form.job.alarmType.indexOf(3)>-1">
+                    <td colspan="2">{{$t('job.smsTemplate')}}：{{form.job.alarmSmsTemplate}}</td>
+                  </tr>
+
                 </table>
               </div>
             </div>
@@ -484,6 +523,10 @@
           showJob: false,//是否显示添加作业弹窗,
           command: null,
           command1: null,
+        },
+        choose:{
+          agentName:null,
+          alarmType:[]
         },
         form: {//绑定form表单的数据
           job: {
@@ -774,34 +817,48 @@
       },
     },
     watch: {
-      'control.step':function () {
+      'control.step'() {
         for(let key in this.stepValidator) {
           delete this.stepValidator[key]
         }
       },
-      'form.job.jobType': function (value) {
+      'form.job.agentId'(value){
+        this.control.agents.forEach((item,index)=>{
+          if (item.agentId == value) {
+            this.choose.agentName = item.agentName
+          }
+        })
+      },
+      'form.job.jobType'(value) {
         this.$refs[this.formName].clearValidate()
       },
-      'form.job.alarm': function (value) {
+      'form.job.alarm'(value) {
         if (value == 0) {
           this.form.alarmType = []
         }
       },
-      'form.job.alarmType': function (value) {
+      'form.job.alarmType' (value) {
         this.$refs[this.formName].clearValidate('alarmType')
         this.$refs[this.formName].clearValidate('alarmDingURL')
         this.$refs[this.formName].clearValidate('alarmDingAtUser')
         this.$refs[this.formName].clearValidate('alarmEmail')
         this.$refs[this.formName].clearValidate('alarmSms')
         this.$refs[this.formName].clearValidate('alarmSmsTemplate')
+        this.choose.alarmType = []
+        this.control.alarmType.forEach((item,index)=>{
+          if (value.indexOf(item.id)>-1) {
+            this.choose.alarmType.push(item.name)
+          }
+        })
+
       },
-      'form.job.command': function (value) {
+      'form.job.command' (value) {
         let codeValue = this.control.command.getValue()
         if (value !== codeValue) {
           this.control.command.setValue(value)
         }
       },
-      'form.dependency.command': function (value) {
+      'form.dependency.command' (value) {
         let codeValue = this.control.command1.getValue()
         if (value !== codeValue) {
           this.control.command1.setValue(value)
@@ -904,7 +961,7 @@
           font-size: 16px;
           font-weight: 700;
           margin-top: 10px;
-          margin-bottom: 10px;
+          margin-bottom: 15px;
           i{
             color:#909399;
           }
@@ -923,12 +980,20 @@
           background-color:#fff;
         }
         .detail_table {
+          border: 1px dashed #d9d9d9;
+          background-color: #fff;
+          border-radius: 10px;
+          margin-bottom: 20px;
+          &:hover{
+            background-color: #e6f7ff;
+            border: 1px dashed #40a9ff;
+          }
           table {
             width: 90%;
             padding-top: 10px;
             padding-bottom: 10px;
             tr td {
-              width: 33%;
+              width: 50%;
               height: 35px;
               font-size: 13px;
               color: #555;
@@ -941,17 +1006,10 @@
               }
             }
           }
-          border: 1px dashed #d9d9d9;
-          border-radius: 10px;
-          &:hover{
-            background-color: #e6f7ff;
-            border: 1px dashed #40a9ff;
-          }
 
         }
       }
 
     }
   }
-
 </style>

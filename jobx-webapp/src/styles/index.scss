@@ -42,9 +42,13 @@ a:hover {
   text-decoration: none;
 }
 
-div:focus{
+div,canvas:focus{
   outline: none;
  }
+
+div,canvas:active{
+  outline: none;
+}
 
 a:focus,
 a:active {
