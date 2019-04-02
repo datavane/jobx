@@ -12,6 +12,7 @@
 
       <el-form :model="form.job" :ref="formName" :rules="stepValidator" label-width="10%" class="steps-form">
 
+        <!--######## 基础信息 ######## -->
         <div v-show="control.step == 0">
           <el-form-item :label="$t('job.jobName')" prop="jobName">
             <el-input :placeholder="$t('job.jobName')" v-model="form.job.jobName" clearable class="input-item" />
@@ -34,6 +35,7 @@
           </el-form-item>
         </div>
 
+        <!--######## 调度信息 ######## -->
         <div v-show="control.step == 1">
 
           <el-form-item :label="$t('agent.agentName')" v-show="form.job.jobType == 1" prop="agentId">
@@ -83,7 +85,7 @@
           <el-form-item v-if="form.job.jobType == 2" :label="$t('job.dependency')">
             <div v-for="(item,index) in form.workFlow" class="workflow">
               <div :class=" index==0 ?'workRoot':'work-item'">
-                <el-form-item>
+                <el-form-item :prop="'jobId'+index">
                   <el-select
                     v-model="item.jobId"
                     clearable
@@ -109,7 +111,7 @@
               </div>
 
               <div class="work-item" v-if="index > 0">
-                <el-form-item>
+                <el-form-item :prop="'parentId'+index">
                   <el-select
                     v-model="item.parentId"
                     clearable
@@ -135,7 +137,7 @@
               </div>
 
               <div class="work-item" v-if="index > 0">
-                <el-form-item>
+                <el-form-item :prop="'trigger'+index">
                   <el-select v-model="item.trigger" :placeholder="$t('job.trigger.name')" clearable>
                     <el-option v-for="item in control.triggerType" :key="item.id" :label="item.name" :value="item.id"/>
                   </el-select>
@@ -159,6 +161,8 @@
 
         </div>
 
+
+        <!--######## 告警信息 ######## -->
         <div v-show="control.step == 2">
 
           <el-form-item :label="$t('job.runCount')" prop="runCount">
@@ -208,6 +212,7 @@
           </div>
         </div>
 
+        <!--######## 作业预览 ######## -->
         <div v-if="control.step == 3">
           <div class="preview-card">
 
@@ -284,7 +289,7 @@
                         inactive-value="0">
                       </el-switch>
                     </td>
-                    <td v-if="form.job.alarm ==1">{{$t('job.alarmType')}}：<el-tag v-for="(item,index) in choose.alarmType" size="small" style="margin-right: 10px">{{item}}</el-tag></td>
+                    <td v-if="form.job.alarm ==1">{{$t('job.alarmType')}}：<el-tag v-for="item in choose.alarmType" size="small" key="item" style="margin-right: 10px">{{item}}</el-tag></td>
                   </tr>
 
                   <tr v-if="form.job.alarm == 1 && form.job.alarmType.indexOf(1)>-1">
@@ -569,6 +574,7 @@
         },
         formName:'jobForm',
         stepValidator:{},
+        dynamicValidators:{},
         validators:[
           {
             jobName: [
@@ -598,7 +604,7 @@
               validator: (r, v, c) => this.checkNull(r, v, c, this.$t('job.smsTemplate'))
             }]
           }
-        ]
+        ],
       }
     },
     created() {
@@ -661,6 +667,9 @@
           this.control.step += step
         } else {
           Object.assign(this.stepValidator,this.validators[this.control.step])
+          if (this.control.step == 1 && this.form.job.jobType == 2) {
+            Object.assign(this.stepValidator,this.dynamicValidators)
+          }
           this.$refs[this.formName].validate((valid) => {
             if (valid) {
               //验证通过
@@ -728,6 +737,7 @@
           parentId: null,
           trigger: null
         })
+        this.handleFlowRule()
       },
       handleDeleteNode(index) {
         this.form.workFlow.splice(index, 1)
@@ -737,6 +747,23 @@
         this.$nextTick(()=>{
           this.$refs.diag.handleUpdateDiagram()
         })
+      },
+
+      handleFlowRule() {
+        let index = this.form.workFlow.length-1
+        if (arguments.length == 1){
+          index = arguments[0]
+        }
+        let jobId = "jobId"+index
+        let parentId = "parentId"+index
+        let trigger = "trigger"+index
+        let validator = {}
+        validator[jobId] = [{trigger: 'blur',required : true,message:'依赖不能为空'}]
+        if (index>0) {
+          validator[parentId] = [{trigger: 'blur',required : true,message:'父级依赖不能为空'}]
+          validator[trigger] = [{trigger: 'blur',required : true,message:'触发方式不能为空'}]
+        }
+        Object.assign(this.dynamicValidators,validator)
       },
 
       handleShowEdit(name) {
@@ -847,6 +874,11 @@
         })
       },
       'form.job.jobType'(value) {
+        if (value == 2) {
+          this.dynamicValidators = []
+          this.handleFlowRule(0)
+          this.handleFlowRule(1)
+        }
         this.$refs[this.formName].clearValidate()
       },
       'form.job.alarm'(value) {
@@ -881,6 +913,9 @@
           this.control.command1.setValue(value)
         }
       },
+      'form.workFlow'() {
+
+      }
     }
   }
 </script>
@@ -958,7 +993,7 @@
       }
       .work-item {
         float: left;
-        width: 31.222%;
+        width: 31.333%;
         &:last-child {
           float: left;
           width: 20px;
@@ -1026,10 +1061,9 @@
 
         }
       }
-
     }
 
-    .create_success{
+    .create_success {
       width: 500px;
       display:block;
       position: static;
