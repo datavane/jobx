@@ -9,9 +9,7 @@
         <el-step title="提交完成"></el-step>
       </el-steps>
 
-
       <el-form :model="form.job" :ref="formName" :rules="stepValidator" label-width="10%" class="steps-form">
-
         <!--######## 基础信息 ######## -->
         <div v-show="control.step == 0">
           <el-form-item :label="$t('job.jobName')" prop="jobName">
@@ -84,10 +82,10 @@
           <!--工作流-->
           <el-form-item v-if="form.job.jobType == 2" :label="$t('job.dependency')">
             <div v-for="(item,index) in form.workFlow" class="workflow">
-              <div :class=" index==0 ?'workRoot':'work-item'">
-                <el-form-item :prop="'jobId'+index">
+              <div :class="index==0 ?'workRoot':'work-item'">
+                <el-form-item :prop="'jobId'+item.key">
                   <el-select
-                    v-model="item.jobId"
+                    v-model="form.job['jobId'+item.key]"
                     clearable
                     placeholder="请选择">
                     <el-option-group
@@ -111,9 +109,9 @@
               </div>
 
               <div class="work-item" v-if="index > 0">
-                <el-form-item :prop="'parentId'+index">
+                <el-form-item :prop="'parentId'+item.key">
                   <el-select
-                    v-model="item.parentId"
+                    v-model="form.job['parentId'+item.key]"
                     clearable
                     :placeholder="$t('job.parentDependency')">
                     <el-option-group
@@ -137,8 +135,8 @@
               </div>
 
               <div class="work-item" v-if="index > 0">
-                <el-form-item :prop="'trigger'+index">
-                  <el-select v-model="item.trigger" :placeholder="$t('job.trigger.name')" clearable>
+                <el-form-item :prop="'trigger'+item.key">
+                  <el-select v-model="form.job['trigger'+item.key]" :placeholder="$t('job.trigger.name')" clearable>
                     <el-option v-for="item in control.triggerType" :key="item.id" :label="item.name" :value="item.id"/>
                   </el-select>
                 </el-form-item>
@@ -557,8 +555,10 @@
             cronExp: null
           },
           workFlow:[{
+            key:Date.now(),
             jobId:null
           },{
+            key:Date.now()+1,
             jobId:null,
             parentId:null,
             trigger:null
@@ -668,6 +668,7 @@
         } else {
           Object.assign(this.stepValidator,this.validators[this.control.step])
           if (this.control.step == 1 && this.form.job.jobType == 2) {
+            //动态表单验证....
             Object.assign(this.stepValidator,this.dynamicValidators)
           }
           this.$refs[this.formName].validate((valid) => {
@@ -686,6 +687,7 @@
           }
         }
       },
+
       //其他事件相关。。。
       handleSubmitJob(formName) {
         this.control.step += 1
@@ -732,13 +734,16 @@
         })
       },
       handleAddNode() {
+        let key = Date.now()
         this.form.workFlow.push({
+          key:key,
           jobId: null,
           parentId: null,
           trigger: null
         })
-        this.handleFlowRule()
+        this.handleFlowRule(key)
       },
+
       handleDeleteNode(index) {
         this.form.workFlow.splice(index, 1)
       },
@@ -749,25 +754,20 @@
         })
       },
 
-      handleFlowRule() {
-        let index = this.form.workFlow.length-1
-        if (arguments.length == 1){
-          index = arguments[0]
-        }
-        let jobId = "jobId"+index
-        let parentId = "parentId"+index
-        let trigger = "trigger"+index
+      handleFlowRule(key,isDefault) {
+        let jobId = "jobId"+key
+        let parentId = "parentId"+key
+        let trigger = "trigger"+key
         let validator = {}
-        validator[jobId] = [{trigger: 'blur',required : true,message:'依赖不能为空'}]
-        if (index>0) {
-          validator[parentId] = [{trigger: 'blur',required : true,message:'父级依赖不能为空'}]
-          validator[trigger] = [{trigger: 'blur',required : true,message:'触发方式不能为空'}]
+        validator[jobId] = [{trigger: 'change',required : true,message:'依赖不能为空'}]
+        if (!isDefault) {
+          validator[parentId] = [{trigger: 'change',required : true,message:'父级依赖不能为空'}]
+          validator[trigger] = [{trigger: 'change',required : true,message:'触发方式不能为空'}]
         }
         Object.assign(this.dynamicValidators,validator)
       },
 
       handleShowEdit(name) {
-
         this.$refs[name].style.display = 'block'
       },
 
@@ -783,6 +783,7 @@
           callback()
         }
       },
+
       checkSuccessExit(rule, value, callback) {
         if (this.form.job.alarm == 0) {
           if (value == null || value == undefined || value.length == 0) {
@@ -798,6 +799,7 @@
           callback()
         }
       },
+
       checkAlarm(rule, value, callback) {
         if (this.form.job.alarm == 1) {
           if (!value || value.length == 0) {
@@ -876,8 +878,8 @@
       'form.job.jobType'(value) {
         if (value == 2) {
           this.dynamicValidators = []
-          this.handleFlowRule(0)
-          this.handleFlowRule(1)
+          this.handleFlowRule(this.form.workFlow[0].key,true)
+          this.handleFlowRule(this.form.workFlow[1].key)
         }
         this.$refs[this.formName].clearValidate()
       },
@@ -987,7 +989,7 @@
     }
     .workflow {
       margin-bottom:20px;
-      overflow: hidden;
+      height: 42px;
       .el-select{
         width: 91%;
       }
