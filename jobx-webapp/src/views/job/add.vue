@@ -49,12 +49,12 @@
             </el-select>
           </el-form-item>
 
-          <el-dialog class="cronExp" :visible.sync="control.showCron" width="550px">
+          <el-dialog class="cronExp" :visible.sync="control.cronVisible" width="550px">
             <cron v-model="form.job.cronExp" url="/verify/recent"></cron>
           </el-dialog>
 
           <el-form-item :label="$t('job.cronExp')" prop="cronExp">
-            <el-input :placeholder="$t('job.cronExp')" v-model="form.job.cronExp" class="input-item" @focus="control.showCron=!control.showCron"/>
+            <el-input :placeholder="$t('job.cronExp')" v-model="form.job.cronExp" class="input-item" @focus="control.cronVisible=!control.cronVisible"/>
           </el-form-item>
 
           <el-form-item :label="$t('job.command')" v-show="form.job.jobType == 1" prop="command">
@@ -86,6 +86,7 @@
                 <el-form-item :prop="'jobId'+item.key">
                   <el-select
                     v-model="form.job['jobId'+item.key]"
+                    @change="handleParentNode(item.key)"
                     clearable
                     placeholder="请选择">
                     <el-option-group
@@ -114,6 +115,16 @@
                     v-model="form.job['parentId'+item.key]"
                     clearable
                     :placeholder="$t('job.parentDependency')">
+
+                    <el-option
+                      v-for="node in parentNode"
+                      v-if=" item.key!= node.key"
+                      :key="node.id"
+                      :label="node.name"
+                      :value="node.id">
+                      <span>{{ node.name }}</span>
+                    </el-option>
+                    <!--
                     <el-option-group
                       v-for="(group,index) in control.jobs"
                       :key="group.label"
@@ -129,7 +140,7 @@
                           </span>
                         <span style="float: left;margin-left:5px">{{ item.name }}</span>
                       </el-option>
-                    </el-option-group>
+                    </el-option-group>-->
                   </el-select>
                 </el-form-item>
               </div>
@@ -146,7 +157,7 @@
                 <el-tooltip class="item" effect="dark" content="添加一个流程作业" placement="top">
                   <el-button type="success" icon="el-icon-plus" v-if="index == 1" circle @click="handleAddNode()"></el-button>
                 </el-tooltip>
-                <el-button type="danger" icon="el-icon-delete" v-if="index>1" circle @click="handleDeleteNode(index)"></el-button>
+                <el-button type="danger" icon="el-icon-delete" v-if="index>1" circle @click="handleDeleteNode(index,item.key)"></el-button>
               </div>
             </div>
 
@@ -353,7 +364,7 @@
       </el-form>
 
       <!--工作流添加弹窗-->
-      <el-dialog :visible.sync="control.showJob" width="700px" class="dependencyForm">
+      <el-dialog :visible.sync="control.jobVisible" width="700px" class="dependencyForm">
         <el-form ref="job" label-width="100px">
 
           <el-form-item :label="$t('job.jobName')">
@@ -397,7 +408,7 @@
         </el-form>
 
         <div slot="footer" class="dialog-footer">
-          <el-button @click="control.showJob = false">取 消</el-button>
+          <el-button @click="control.jobVisible = false">取 消</el-button>
           <el-button type="primary" @click="handleSubmitNode()">确 定</el-button>
         </div>
 
@@ -435,7 +446,9 @@
     data() {
       return {
         diagramData: {
-          nodeDataArray: [
+          nodeDataArray: [],
+          linkDataArray: [],
+          nodeDataArray1: [
             { key: 1, text: "zhekou_ab_case"},
             { key: 2, text: "hds_mysql_high_flow"},
             { key: 3, text: "member_device"},
@@ -462,7 +475,7 @@
             { key: 24, text: "analysis_task_order_new"},
             { key: 25, text: "end"},
           ],
-          linkDataArray: [
+          linkDataArray1: [
             { from: 1, to: 8 },
             { from: 2, to: 5 },
             { from: 2, to: 9 },
@@ -536,8 +549,8 @@
             {id: 1, name: this.$t('job.simpleJob')},
             {id: 2, name: this.$t('job.workFlow')}
           ],
-          showCron: false,//是否显示cron控件
-          showJob: false,//是否显示添加作业弹窗,
+          cronVisible: false,//是否显示cron控件
+          jobVisible: false,//是否显示添加作业弹窗,
           command: null,
           command1: null,
         },
@@ -545,6 +558,9 @@
           agentName:null,
           alarmType:[]
         },
+        parentNode:[
+
+        ],
         form: {//绑定form表单的数据
           job: {
             jobType: 1,
@@ -691,7 +707,6 @@
       //其他事件相关。。。
       handleSubmitJob(formName) {
         this.control.step += 1
-
         this.$refs[formName].validate((valid) => {
           if (valid) {
             //提交简单任务
@@ -718,12 +733,12 @@
       },
       handleSubmitNode() {
         addNode(this.form.dependency).then(resp => {
-          this.control.showJob = false
+          this.control.jobVisible = false
           this.httpGetJob(1);
         })
       },
       handleAddJob() {
-        this.control.showJob = true
+        this.control.jobVisible = true
         this.$nextTick(() => {
           if (!this.control.command1) {
             this.control.command1 = this.initCodeMirror(this.$refs.command1)
@@ -744,14 +759,85 @@
         this.handleFlowRule(key)
       },
 
-      handleDeleteNode(index) {
+      handleParentNode(key) {
+        let jobId = this.form.job["jobId"+key]
+        try {
+          this.control.jobs.forEach((item,index)=>{
+            item.options.forEach((job,i)=>{
+              if(job.id == jobId) {
+                this.parentNode.push({
+                  key:key,
+                  id:job.id,
+                  name:job.name
+                })
+                console.log(key)
+                throw new Error("break")
+              }
+            })
+          })
+        }catch (e) {}
+      },
+
+      handleDeleteNode(index,key) {
         this.form.workFlow.splice(index, 1)
+        delete this.form.job["jobId"+key]
+        delete this.form.job["parentId"+key]
+        delete this.form.job["trigger"+key]
+        try {
+          this.parentNode.forEach((item,index)=>{
+            if(item.key == key) {
+              this.parentNode.splice(index, 1)
+              throw new Error("break")
+            }
+          })
+        }catch (e) {}
       },
 
       handleGraph() {
+
+        /**
+         * nodeDataArray: [
+         { key: 1, text: "zhekou_ab_case"},
+         ],
+         linkDataArray: [
+         { from: 1, to: 8 }
+         ],
+         */
+        this.diagramData.nodeDataArray = []
+        this.diagramData.linkDataArray = []
+        let regexp = /jobId[0-9]*$/
+        for (let k in this.form.job) {
+          if (regexp.test(k)) {
+            let key = k.replace(/jobId/,"")
+            let jobId = this.form.job[k]
+            try{
+              this.control.jobs.forEach((item,index)=>{
+                item.options.forEach((job,i)=>{
+                  if(job.id == jobId) {
+                    this.diagramData.nodeDataArray.push({
+                      key: jobId, text: job.name
+                    })
+                    throw new Error("break")
+                  }
+                })
+              })
+            }catch (e) {}
+
+            let parentId = this.form.job["parentId"+key]
+            if (parentId) {
+              this.diagramData.linkDataArray.push({
+                from: parentId, to: jobId
+              })
+            }
+          }
+        }
+
+        console.log(this.diagramData)
+
         this.$nextTick(()=>{
           this.$refs.diag.handleUpdateDiagram()
         })
+
       },
 
       handleFlowRule(key,isDefault) {
@@ -765,10 +851,6 @@
           validator[trigger] = [{trigger: 'change',required : true,message:'触发方式不能为空'}]
         }
         Object.assign(this.dynamicValidators,validator)
-      },
-
-      handleShowEdit(name) {
-        this.$refs[name].style.display = 'block'
       },
 
       //check..验证表单相关。。。
@@ -928,7 +1010,6 @@
     margin: 0 auto;
     margin-top: 50px;
   }
-
   .steps-form {
     display:block;
     position: static;
@@ -1060,7 +1141,6 @@
               }
             }
           }
-
         }
       }
     }
