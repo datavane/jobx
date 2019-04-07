@@ -44,13 +44,7 @@ public class UserController {
 
     @PostMapping("/info")
     public RestResult getInfo(HttpSession session) {
-        User user = SessionUtils.getUser(session);
-        if (user != null) {
-            return RestResult.ok(200)
-                    .put("name",user.getUserName())
-                    .put("avatar",user.getHeaderPath());
-        }
-        return null;
+        return RestResult.ok(200);
     }
 
     @PostMapping("/execUser")

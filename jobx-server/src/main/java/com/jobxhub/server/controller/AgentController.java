@@ -48,6 +48,6 @@ public class AgentController {
     @PostMapping("/all")
     public RestResult all() {
         List<Agent> agents = agentService.getAll();
-        return RestResult.rest(200, agents);
+        return RestResult.ok(agents);
     }
 }

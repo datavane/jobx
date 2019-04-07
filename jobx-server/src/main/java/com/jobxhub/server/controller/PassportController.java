@@ -21,11 +21,11 @@
 package com.jobxhub.server.controller;
 
 
+import com.jobxhub.service.vo.RestStatus;
 import org.apache.dubbo.config.annotation.Reference;
 import com.jobxhub.common.Constants;
 import com.jobxhub.common.util.CommonUtils;
 import com.jobxhub.common.util.DigestUtils;
-import com.jobxhub.server.util.SessionUtils;
 import com.jobxhub.service.api.UserService;
 import com.jobxhub.service.model.User;
 import com.jobxhub.service.vo.RestResult;
@@ -54,7 +54,7 @@ public class PassportController {
 
         User user = userService.login(userName, password);
         if (user == null) {
-            return RestResult.rest(500);
+            return RestResult.rest(RestStatus.UNAUTHORIZED);
         }
         //提示用户更改默认密码
         byte[] salt = DigestUtils.decodeHex(user.getSalt());
@@ -62,7 +62,7 @@ public class PassportController {
         String hashPass = DigestUtils.encodeHex(hashPassword);
 
         if (user.getUserName().equals(Constants.PARAM_DEF_USER_KEY) && user.getPassword().equals(hashPass)) {
-            return RestResult.rest(201);
+            return RestResult.rest(RestStatus.UNAUTHORIZED);
         }
 
         if (user.getHeaderPic() != null) {
@@ -73,22 +73,23 @@ public class PassportController {
             user.setHeaderPath(getWebUrlPath(request) + "/upload/" + name);
         }
 
-        String xsrf = (String) session.getAttribute(Constants.PARAM_XSRF_NAME_KEY);
-        if (xsrf != null) {
-            session.removeAttribute(xsrf);
-            session.removeAttribute(Constants.PARAM_XSRF_NAME_KEY);
+        String token = (String) session.getAttribute(Constants.PARAM_ACCESS_TOKEN_KEY);
+        if (token != null) {
+            session.removeAttribute(token);
+            session.removeAttribute(Constants.PARAM_ACCESS_TOKEN_KEY);
         }
-        xsrf = CommonUtils.uuid();
-        session.setAttribute(Constants.PARAM_XSRF_NAME_KEY, xsrf);
+        token = CommonUtils.uuid();
+        session.setAttribute(Constants.PARAM_ACCESS_TOKEN_KEY, token);
         //登陆成功了则生成csrf...
-        log.info("[JobX]login seccussful,generate csrf:{}", xsrf);
-        session.setAttribute(xsrf, user);
-        return RestResult.ok().put("token", xsrf);
+        log.info("[JobX]login seccussful,generate csrf:{}", token);
+        session.setAttribute(token, user);
+        return RestResult.ok().put("token", token);
     }
 
     @PostMapping("/logout")
-    public RestResult logout(HttpSession session) {
-        SessionUtils.invalidSession(session);
+    public RestResult logout(HttpServletRequest request) {
+        String token = request.getHeader("Access-Token");
+        request.getSession().removeAttribute(token);
         return RestResult.ok();
     }
 

@@ -113,9 +113,10 @@
                 <el-form-item :prop="'parentId'+item.key">
                   <el-select
                     v-model="form.job['parentId'+item.key]"
+                    multiple
+                    collapse-tags
                     clearable
                     :placeholder="$t('job.parentDependency')">
-
                     <el-option
                       v-for="node in parentNode"
                       v-if=" item.key!= node.key"
@@ -124,23 +125,6 @@
                       :value="node.id">
                       <span>{{ node.name }}</span>
                     </el-option>
-                    <!--
-                    <el-option-group
-                      v-for="(group,index) in control.jobs"
-                      :key="group.label"
-                      :label="group.label">
-                      <el-option
-                        v-for="item in group.options"
-                        :key="item.id"
-                        :label="item.name"
-                        :value="item.id">
-                          <span style="float: left; color: #8492a6; font-size: 13px">
-                            <font-awesome-icon icon="list" size="xs" v-if="index == 0"/>
-                            <font-awesome-icon icon="sitemap" size="xs" v-if="index == 1"/>
-                          </span>
-                        <span style="float: left;margin-left:5px">{{ item.name }}</span>
-                      </el-option>
-                    </el-option-group>-->
                   </el-select>
                 </el-form-item>
               </div>
@@ -167,9 +151,7 @@
               </el-tooltip>
             </div>
           </el-form-item>
-
         </div>
-
 
         <!--######## 告警信息 ######## -->
         <div v-show="control.step == 2">
@@ -761,21 +743,23 @@
 
       handleParentNode(key) {
         let jobId = this.form.job["jobId"+key]
-        try {
+        let exists = this.parentNode.some((item,index)=>{
+          return item.id == jobId
+        })
+        if(!exists) {
           this.control.jobs.forEach((item,index)=>{
-            item.options.forEach((job,i)=>{
+            item.options.some(job=>{
               if(job.id == jobId) {
                 this.parentNode.push({
                   key:key,
                   id:job.id,
                   name:job.name
                 })
-                console.log(key)
-                throw new Error("break")
               }
+              return job.id == jobId
             })
           })
-        }catch (e) {}
+        }
       },
 
       handleDeleteNode(index,key) {
@@ -783,26 +767,15 @@
         delete this.form.job["jobId"+key]
         delete this.form.job["parentId"+key]
         delete this.form.job["trigger"+key]
-        try {
-          this.parentNode.forEach((item,index)=>{
-            if(item.key == key) {
-              this.parentNode.splice(index, 1)
-              throw new Error("break")
-            }
-          })
-        }catch (e) {}
+        this.parentNode.some((item,index)=>{
+          if(item.key == key) {
+            this.parentNode.splice(index, 1)
+          }
+          return item.key == key
+        })
       },
 
       handleGraph() {
-
-        /**
-         * nodeDataArray: [
-         { key: 1, text: "zhekou_ab_case"},
-         ],
-         linkDataArray: [
-         { from: 1, to: 8 }
-         ],
-         */
         this.diagramData.nodeDataArray = []
         this.diagramData.linkDataArray = []
         let regexp = /jobId[0-9]*$/
@@ -810,34 +783,31 @@
           if (regexp.test(k)) {
             let key = k.replace(/jobId/,"")
             let jobId = this.form.job[k]
-            try{
-              this.control.jobs.forEach((item,index)=>{
-                item.options.forEach((job,i)=>{
-                  if(job.id == jobId) {
-                    this.diagramData.nodeDataArray.push({
-                      key: jobId, text: job.name
-                    })
-                    throw new Error("break")
-                  }
-                })
+            this.control.jobs.forEach((item,index)=>{
+              item.options.some((job,i)=>{
+                if(job.id == jobId) {
+                  this.diagramData.nodeDataArray.push({
+                    key: jobId,
+                    text: job.name
+                  })
+                }
+                return job.id == jobId
               })
-            }catch (e) {}
-
-            let parentId = this.form.job["parentId"+key]
-            if (parentId) {
-              this.diagramData.linkDataArray.push({
-                from: parentId, to: jobId
+            })
+            let parentIds = this.form.job["parentId"+key]
+            if (parentIds && parentIds.length) {
+              parentIds.forEach((pid,index)=>{
+                this.diagramData.linkDataArray.push({
+                  from: pid,
+                  to: jobId
+                })
               })
             }
           }
         }
-
-        console.log(this.diagramData)
-
         this.$nextTick(()=>{
           this.$refs.diag.handleUpdateDiagram()
         })
-
       },
 
       handleFlowRule(key,isDefault) {
@@ -845,9 +815,9 @@
         let parentId = "parentId"+key
         let trigger = "trigger"+key
         let validator = {}
-        validator[jobId] = [{trigger: 'change',required : true,message:'依赖不能为空'}]
+        validator[jobId] = [{trigger: 'change', validator: (r, v, c) => this.checkDependency(r, v, c,key)}]
         if (!isDefault) {
-          validator[parentId] = [{trigger: 'change',required : true,message:'父级依赖不能为空'}]
+          validator[parentId] =  [{trigger: 'change', validator: (r, v, c) => this.checkParent(r, v, c,key)}]
           validator[trigger] = [{trigger: 'change',required : true,message:'触发方式不能为空'}]
         }
         Object.assign(this.dynamicValidators,validator)
@@ -863,6 +833,76 @@
           }
         } else {
           callback()
+        }
+      },
+
+      //检查依赖,不能有循环依赖....
+      checkDependency(rule, value, callback, key) {
+        if(!value) {
+          callback(new Error('依赖不能为空'))
+        }else {
+          let regexp = /jobId[0-9]*$/
+          let exists = false
+          for(let k in this.form.job) {
+            if(regexp.test(k)) {
+              let jobId = this.form.job[k]
+              let _key = k.replace(/jobId/,"")
+              //该任务已经存在,
+              if(jobId == value && _key != key) {
+                exists = true
+                break
+              }
+            }
+          }
+          if(exists) {
+            callback(new Error('该依赖已经使用,不能出现循环依赖'))
+          }else {
+            callback()
+          }
+        }
+      },
+
+      /**
+       *
+       * @param rule
+       * @param value
+       * @param callback
+       * @param key
+       * @description :
+       * 检查是否有父子循环依赖(即:检查pid对应job的pid是否是当前任务的id)
+       * 如:
+       *  id: 5    pid:10   11111111
+       *  id: 10   pid:5
+       *
+       */
+      checkParent(rule, value, callback, key) {
+        if( value.length === 0 ) {
+          callback(new Error('父依赖不能为空'))
+        }else {
+          //当前任务的jobId
+          let jobId = this.form.job["jobId"+key]
+          let regexp = /jobId[0-9]*$/
+          let exists = false
+          value.some(pid=>{
+            for(let k in this.form.job) {
+              if(regexp.test(k)) {
+                if(pid === this.form.job[k]) {
+                  let pk = "parentId"+k.replace(/jobId/,'')
+                  let array = this.form.job[pk]
+                  if(array && array.indexOf(jobId)>-1) {
+                    exists = true
+                    break
+                  }
+                }
+              }
+            }
+            return exists
+          })
+          if(exists) {
+            callback(new Error('不能出现父子循环依赖'))
+          }else {
+            callback()
+          }
         }
       },
 

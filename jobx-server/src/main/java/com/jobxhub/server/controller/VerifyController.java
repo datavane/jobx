@@ -22,6 +22,7 @@ package com.jobxhub.server.controller;
 
 import com.jobxhub.common.util.DateUtils;
 import com.jobxhub.service.vo.RestResult;
+import com.jobxhub.service.vo.RestStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.TriggerUtils;
 import org.quartz.impl.triggers.CronTriggerImpl;
@@ -52,7 +53,7 @@ public class VerifyController {
             return RestResult.ok(list);
         } catch (ParseException e) {
             e.printStackTrace();
-            return RestResult.rest(412).setBody(e.getLocalizedMessage());
+            return RestResult.rest(RestStatus.INVALID).setBody(e.getLocalizedMessage());
         }
     }
 

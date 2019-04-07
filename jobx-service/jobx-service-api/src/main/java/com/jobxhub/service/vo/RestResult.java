@@ -33,8 +33,8 @@ public class RestResult {
     public RestResult(){
     }
 
-    public RestResult(int code,Object body){
-        this.code = code;
+    public RestResult(RestStatus status,Object body){
+        this.code = status.getStatus();
         this.body = body;
     }
 
@@ -45,25 +45,25 @@ public class RestResult {
         return result;
     }
 
-    public static RestResult rest(int code) {
+    public static RestResult rest(RestStatus status) {
         RestResult result = new RestResult();
-        result.setCode(code);
+        result.setCode(status.getStatus());
         return result;
     }
 
-    public static RestResult rest(int code,Object object) {
-        RestResult restResult = rest(code);
+
+    public static RestResult rest(RestStatus status,Object object) {
+        RestResult restResult = rest(status);
         restResult.setBody(object);
         return restResult;
     }
 
     public static RestResult ok() {
-        RestResult restResult = rest(200);
-        return restResult;
+        return rest(RestStatus.Ok);
     }
 
     public static RestResult ok(Object body) {
-        RestResult restResult = rest(200);
+        RestResult restResult = rest(RestStatus.Ok);
         restResult.setBody(body);
         return restResult;
     }
@@ -72,7 +72,7 @@ public class RestResult {
         return code;
     }
 
-    public RestResult setCode(int code) {
+    private RestResult setCode(int code) {
         this.code = code;
         return this;
     }

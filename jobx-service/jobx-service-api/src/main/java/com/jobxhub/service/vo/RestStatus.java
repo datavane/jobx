@@ -23,6 +23,9 @@ package com.jobxhub.service.vo;
 public enum RestStatus {
 
     Ok(200),
+    UNAUTHORIZED(401),
+    ERROR(500),
+    INVALID(412),
     NOT_FOUNT(404);
 
     private int status;
