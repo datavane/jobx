@@ -21,23 +21,10 @@
 
 package com.jobxhub.common.util;
 
-import com.jobxhub.common.util.internal.Unsafe;
-
 import java.io.*;
 
 public class ExceptionUtils {
 
-    /**
-     * Raises an exception bypassing compiler checks for checked exceptions.
-     */
-    public static void throwException(Throwable t) {
-        sun.misc.Unsafe unsafe = Unsafe.getUnsafe();
-        if (unsafe != null) {
-            unsafe.throwException(t);
-        } else {
-            ExceptionUtils.<RuntimeException>throwException0(t);
-        }
-    }
 
     /**
      * 类型转换只是骗过前端javac编译器, 泛型只是个语法糖, 在javac编译后会解除语法糖将类型擦除,
@@ -54,7 +41,7 @@ public class ExceptionUtils {
      * throws java.lang.Throwable
      */
     @SuppressWarnings("unchecked")
-    private static <E extends Throwable> void throwException0(Throwable t) throws E {
+    public static <E extends Throwable> void throwException(Throwable t) throws E {
         throw (E) t;
     }
 

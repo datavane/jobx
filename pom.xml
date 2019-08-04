@@ -16,9 +16,8 @@
         <module>jobx-examples</module>
         <module>jobx-api</module>
         <module>jobx-agent</module>
-        <module>jobx-service</module>
         <module>jobx-server</module>
-        <module>jobx-webapp</module>
+        <module>jobx-web</module>
     </modules>
 
     <packaging>pom</packaging>
@@ -79,10 +78,7 @@
         <java.version>1.8</java.version>
         <platform-bom.version>2.0.3.RELEASE</platform-bom.version>
         <mysql.version>8.0.12</mysql.version>
-        <mybatis-spring.version>1.3.2</mybatis-spring.version>
-        <spring-boot-dubbo.version>2.0.0</spring-boot-dubbo.version>
-        <dubbo.version>2.7.0</dubbo.version>
-        <spring-boot.version>2.1.1.RELEASE</spring-boot.version>
+        <mybatis-plus.version>3.1.0</mybatis-plus.version>
         <curator.version>4.2.0</curator.version>
 
         <!-- Build args -->
@@ -169,25 +165,13 @@
 
             <dependency>
                 <groupId>com.jobxhub</groupId>
-                <artifactId>jobx-service</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.jobxhub</groupId>
-                <artifactId>jobx-service-api</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.jobxhub</groupId>
                 <artifactId>jobx-server</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.jobxhub</groupId>
-                <artifactId>jobx-webapp</artifactId>
+                <artifactId>jobx-web</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -298,57 +282,6 @@
                 <version>1.0.2</version>
             </dependency>
 
-            <!--mybatis-->
-            <dependency>
-                <groupId>org.mybatis.spring.boot</groupId>
-                <artifactId>mybatis-spring-boot-starter</artifactId>
-                <version>${mybatis-spring.version}</version>
-            </dependency>
-
-            <!-- Apache Dubbo  -->
-            <dependency>
-                <groupId>org.apache.dubbo</groupId>
-                <artifactId>dubbo</artifactId>
-                <version>${dubbo.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>org.springframework</groupId>
-                        <artifactId>spring</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>javax.servlet</groupId>
-                        <artifactId>servlet-api</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>log4j</groupId>
-                        <artifactId>log4j</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-
-            <!-- Dubbo Spring Boot Starter -->
-            <dependency>
-                <groupId>org.apache.dubbo</groupId>
-                <artifactId>dubbo-spring-boot-starter</artifactId>
-                <version>${dubbo.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>org.springframework.boot</groupId>
-                        <artifactId>spring-boot-starter</artifactId>
-                    </exclusion>
-                    <!-- Dubbo -->
-                    <exclusion>
-                        <groupId>org.apache.dubbo</groupId>
-                        <artifactId>dubbo</artifactId>
-                    </exclusion>
-                    <!-- ZK -->
-                    <exclusion>
-                        <groupId>org.apache.zookeeper</groupId>
-                        <artifactId>zookeeper</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-
             <dependency>
                 <groupId>org.apache.curator</groupId>
                 <artifactId>curator-framework</artifactId>
@@ -374,18 +307,6 @@
                 <artifactId>javax.websocket-api</artifactId>
                 <version>1.1</version>
                 <scope>provided</scope>
-            </dependency>
-
-            <dependency>
-                <groupId>javax.servlet</groupId>
-                <artifactId>javax.servlet-api</artifactId>
-                <version>3.1.0</version>
-            </dependency>
-
-            <dependency>
-                <groupId>javax.servlet.jsp</groupId>
-                <artifactId>jsp-api</artifactId>
-                <version>2.2</version>
             </dependency>
 
             <dependency>
@@ -468,7 +389,7 @@
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
-                <version>3.1</version>
+                <version>3.8.1</version>
             </dependency>
 
             <dependency>
@@ -543,7 +464,7 @@
             <dependency>
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
-                <version>5.1.46</version>
+                <version>8.0.17</version>
             </dependency>
 
             <dependency>

@@ -21,12 +21,8 @@
 
 package com.jobxhub.common.util;
 
-import com.jobxhub.common.util.collection.NonBlockingHashMap;
-import com.jobxhub.common.util.collection.NonBlockingHashMapLong;
-
 import java.util.*;
 import com.jobxhub.common.util.collection.HashMap;
-import java.util.concurrent.ConcurrentMap;
 
 import static com.jobxhub.common.util.AssertUtils.checkArgument;
 import static com.jobxhub.common.util.AssertUtils.checkNotNull;
@@ -204,41 +200,6 @@ public final class ContainerUtils {
         return new TreeMap<K, V>();
     }
 
-    /**
-     * Creates a mutable, empty {@code ConcurrentMap} instance.
-     */
-    public static <K, V> ConcurrentMap<K, V> newConcurrentMap(boolean useNonBlocking) {
-        if (useNonBlocking) {
-            return new NonBlockingHashMap();
-        }
-        return new HashMap<K, V>();
-    }
-
-    /**
-     * Creates a {@code ConcurrentMap} instance, with a high enough "initial capacity"
-     * that it should hold {@code expectedSize} elements without growth.
-     */
-    public static <K, V> ConcurrentMap<K, V> newConcurrentMap(int initialCapacity, boolean useNonBlocking) {
-        if (useNonBlocking) {
-            return new NonBlockingHashMap<K, V>(initialCapacity);
-        }
-        return new HashMap<K, V>(initialCapacity);
-    }
-
-    /**
-     * Creates a mutable, empty {@code NonBlockingHashMapLong} instance.
-     */
-    public static <V> ConcurrentMap<Long, V> newConcurrentMapLong() {
-        return new NonBlockingHashMapLong();
-    }
-
-    /**
-     * Creates a {@code NonBlockingHashMapLong} instance, with a high enough "initial capacity"
-     * that it should hold {@code expectedSize} elements without growth.
-     */
-    public static <V> ConcurrentMap<Long, V> newConcurrentMapLong(int initialCapacity) {
-        return new NonBlockingHashMapLong(initialCapacity);
-    }
 
     /**
      * Returns a capacity that is sufficient to keep the map from being resized as

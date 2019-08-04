@@ -20,7 +20,6 @@
  */
 package com.jobxhub.common.util.collection;
 
-import sun.misc.Unsafe;
 
 import java.io.Serializable;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
@@ -44,35 +43,7 @@ public class ConcurrentAutoTable implements Serializable {
 
     private static final long serialVersionUID = -754466836461919739L;
 
-    private static Unsafe unsafe = Unsafe.getUnsafe();
-
     // --- public interface ---
-
-    /**
-     * Add the given value to current counter value.  Concurrent updates will
-     * not be lost, but addAndGet or getAndAdd are not implemented because the
-     * total counter value (i.e., {@link #get}) is not atomically updated.
-     * Updates are striped across an array of counters to avoid cache contention
-     * and has been tested with performance scaling linearly up to 768 CPUs.
-     */
-    public void add(long x) {
-        add_if(x);
-    }
-
-    /**
-     * {@link #add} with -1
-     */
-    public void decrement() {
-        add_if(-1L);
-    }
-
-    /**
-     * {@link #add} with +1
-     */
-    public void increment() {
-        add_if(1L);
-    }
-
     /**
      * Atomically set the sum of the striped counters to specified value.
      * Rather more expensive than a simple store, in order to remain atomic.
@@ -137,13 +108,6 @@ public class ConcurrentAutoTable implements Serializable {
         return _cat._t.length;
     }
 
-    // Only add 'x' to some slot in table, hinted at by 'hash'.  The sum can
-    // overflow.  Value is CAS'd so no counts are lost.  The CAS is retried until
-    // it succeeds.  Returned value is the old value.
-    private long add_if(long x) {
-        return _cat.add_if(x, hash(), this);
-    }
-
     // The underlying array of concurrently updated long counters
     private volatile CAT _cat = new CAT(null, 16/*Start Small, Think Big!*/, 0L);
     private static AtomicReferenceFieldUpdater<ConcurrentAutoTable, CAT> _catUpdater =
@@ -163,18 +127,7 @@ public class ConcurrentAutoTable implements Serializable {
     // --- CAT -----------------------------------------------------------------
     private static class CAT implements Serializable {
 
-        // Unsafe crud: get a function which will CAS arrays
-        private static final int _Lbase = unsafe.arrayBaseOffset(long[].class);
-        private static final int _Lscale = unsafe.arrayIndexScale(long[].class);
 
-        private static long rawIndex(long[] ary, int i) {
-            assert i >= 0 && i < ary.length;
-            return _Lbase + i * _Lscale;
-        }
-
-        private static boolean CAS(long[] A, int idx, long old, long nnn) {
-            return unsafe.compareAndSwapLong(A, rawIndex(A, idx), old, nnn);
-        }
 
         //volatile long _resizers;    // count of threads attempting a resize
         //static private final AtomicLongFieldUpdater<CAT> _resizerUpdater =
@@ -191,51 +144,6 @@ public class ConcurrentAutoTable implements Serializable {
             _t = new long[sz];
             _t[0] = init;
         }
-
-        // Only add 'x' to some slot in table, hinted at by 'hash'.  The sum can
-        // overflow.  Value is CAS'd so no counts are lost.  The CAS is attempted
-        // ONCE.
-        public long add_if(long x, int hash, ConcurrentAutoTable master) {
-            final long[] t = _t;
-            final int idx = hash & (t.length - 1);
-            // Peel loop; try once fast
-            long old = t[idx];
-            final boolean ok = CAS(t, idx, old, old + x);
-            if (ok) return old;      // Got it
-            // Try harder
-            int cnt = 0;
-            while (true) {
-                old = t[idx];
-                if (CAS(t, idx, old, old + x)) break; // Got it!
-                cnt++;
-            }
-            if (cnt < MAX_SPIN) return old; // Allowable spin loop count
-            if (t.length >= 1024 * 1024) return old; // too big already
-
-            // Too much contention; double array size in an effort to reduce contention
-            //long r = _resizers;
-            //final int newbytes = (t.length<<1)<<3/*word to bytes*/;
-            //while( !_resizerUpdater.compareAndSet(this,r,r+newbytes) )
-            //  r = _resizers;
-            //r += newbytes;
-            if (master._cat != this) return old; // Already doubled, don't bother
-            //if( (r>>17) != 0 ) {      // Already too much allocation attempts?
-            //  // We could use a wait with timeout, so we'll wakeup as soon as the new
-            //  // table is ready, or after the timeout in any case.  Annoyingly, this
-            //  // breaks the non-blocking property - so for now we just briefly sleep.
-            //  //synchronized( this ) { wait(8*megs); }         // Timeout - we always wakeup
-            //  try { Thread.sleep(r>>17); } catch( InterruptedException e ) { }
-            //  if( master._cat != this ) return old;
-            //}
-
-            CAT newcat = new CAT(this, t.length * 2, 0);
-            // Take 1 stab at updating the CAT with the new larger size.  If this
-            // fails, we assume some other thread already expanded the CAT - so we
-            // do not need to retry until it succeeds.
-            while (master._cat == this && !master.CAS_cat(this, newcat)) {/*empty*/}
-            return old;
-        }
-
 
         // Return the current sum of all things in the table.  Writers can be
         // updating the table furiously, so the sum is only locally accurate.
