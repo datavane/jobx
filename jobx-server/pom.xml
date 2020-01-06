@@ -24,7 +24,7 @@
 
         <dependency>
             <groupId>com.jobxhub</groupId>
-            <artifactId>jobx-rpc</artifactId>
+            <artifactId>jobx-rpc-api</artifactId>
         </dependency>
 
         <!-- Spring -->

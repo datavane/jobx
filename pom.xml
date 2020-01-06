@@ -80,6 +80,7 @@
         <tomcat.version>8.5.2</tomcat.version>
         <asm.version>5.2</asm.version>
         <cglib.version>3.2.5</cglib.version>
+        <revision>1.2.0-RELEASE</revision>
     </properties>
 
     <dependencies>
@@ -114,6 +115,12 @@
             <dependency>
                 <groupId>com.jobxhub</groupId>
                 <artifactId>jobx-rpc</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.jobxhub</groupId>
+                <artifactId>jobx-rpc-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

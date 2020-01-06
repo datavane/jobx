@@ -17,7 +17,7 @@
         </dependency>
         <dependency>
             <groupId>com.jobxhub</groupId>
-            <artifactId>jobx-rpc</artifactId>
+            <artifactId>jobx-rpc-api</artifactId>
         </dependency>
         <dependency>
             <groupId>com.corundumstudio.socketio</groupId>

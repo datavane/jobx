@@ -6,44 +6,15 @@
         <artifactId>jobx</artifactId>
         <groupId>com.jobxhub</groupId>
         <version>1.2.0-RELEASE</version>
+<!--        <version>${revision}</version>-->
+<!--        <relativePath>../pom.xml</relativePath>-->
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>jobx-rpc</artifactId>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>7</source>
-                    <target>7</target>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
-
-    <dependencies>
-
-        <dependency>
-            <groupId>com.jobxhub</groupId>
-            <artifactId>jobx-common</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-all</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.mina</groupId>
-            <artifactId>mina-core</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.zookeeper</groupId>
-            <artifactId>zookeeper</artifactId>
-        </dependency>
-
-    </dependencies>
-
+    <packaging>pom</packaging>
+    <modules>
+        <module>jobx-rpc-netty4</module>
+        <module>jobx-rpc-mina</module>
+        <module>jobx-rpc-api</module>
+    </modules>
 </project>
