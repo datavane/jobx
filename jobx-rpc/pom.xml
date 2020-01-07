@@ -5,9 +5,7 @@
     <parent>
         <artifactId>jobx</artifactId>
         <groupId>com.jobxhub</groupId>
-        <version>1.2.0-RELEASE</version>
-<!--        <version>${revision}</version>-->
-<!--        <relativePath>../pom.xml</relativePath>-->
+        <version>${revision}</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>jobx-rpc</artifactId>

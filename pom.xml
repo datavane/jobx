@@ -7,7 +7,7 @@
 
     <groupId>com.jobxhub</groupId>
     <artifactId>jobx</artifactId>
-    <version>1.2.0-RELEASE</version>
+    <version>${revision}</version>
     <modules>
         <module>jobx-common</module>
         <module>jobx-registry</module>
