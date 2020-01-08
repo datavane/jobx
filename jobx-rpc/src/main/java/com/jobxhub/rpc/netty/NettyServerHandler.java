@@ -69,7 +69,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<Request> {
             public void run() {
 
                 if (logger.isDebugEnabled()) {
-                    logger.debug("[JobX]Receive request {}" + request.getId());
+                    logger.debug("[JobX]Receive request {}", request.getId());
                 }
 
                 if (!request.getAction().equals(Action.UPLOAD)) {
