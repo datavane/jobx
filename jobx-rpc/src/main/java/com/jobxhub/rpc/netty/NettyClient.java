@@ -26,6 +26,8 @@ import com.jobxhub.common.job.Request;
 import com.jobxhub.common.job.Response;
 import com.jobxhub.rpc.InvokeCallback;
 import com.jobxhub.rpc.RpcFuture;
+import com.jobxhub.rpc.netty.idle.IdleClientHandler;
+import com.jobxhub.rpc.netty.idle.JobXIdleStateHandler;
 import com.jobxhub.rpc.support.AbstractClient;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.PooledByteBufAllocator;
@@ -33,6 +35,7 @@ import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.concurrent.DefaultThreadFactory;
 
 import java.util.concurrent.TimeoutException;
@@ -60,6 +63,8 @@ public class NettyClient extends AbstractClient {
                     @Override
                     public void initChannel(SocketChannel channel) throws Exception {
                         channel.pipeline().addLast(
+                                new JobXIdleStateHandler(),
+                                new IdleClientHandler(),
                                 NettyCodecAdapter.getCodecAdapter().getDecoder(Response.class),
                                 NettyCodecAdapter.getCodecAdapter().getEncoder(Request.class),
                                 new NettyClientHandler(NettyClient.this, request)

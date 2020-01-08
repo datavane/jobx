@@ -21,6 +21,8 @@
 
 package com.jobxhub.rpc.netty;
 
+import com.jobxhub.rpc.netty.idle.IdleServerHandler;
+import com.jobxhub.rpc.netty.idle.JobXIdleStateHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.*;
@@ -82,7 +84,9 @@ public class NettyServer implements Server {
                             @Override
                             protected void initChannel(SocketChannel channel) throws Exception {
                                 channel.pipeline().addLast(
+                                        new JobXIdleStateHandler(),
                                         new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 0, 4, 0, 0),
+                                        new IdleServerHandler(),
                                         NettyCodecAdapter.getCodecAdapter().getDecoder(Request.class),
                                         NettyCodecAdapter.getCodecAdapter().getEncoder(Response.class),
                                         new NettyServerHandler(serverHandler)
